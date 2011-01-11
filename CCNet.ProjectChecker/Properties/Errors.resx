@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ForbiddenFiles" xml:space="preserve">
+    <value>The following files were considered as forbidden by some reason:
+{0}
+Please do not use them in your project.</value>
+  </data>
+  <data name="UnknownConfiguration" xml:space="preserve">
+    <value>Found unknown configuration {0}.
+Use standard configurations only: Debug and Release.</value>
+  </data>
+  <data name="WrongAssemblyInfoContents" xml:space="preserve">
+    <value>Some assembly information seem not to conform the agreements:
+{0}</value>
+  </data>
+  <data name="WrongAssemblyInfoFileLocation" xml:space="preserve">
+    <value>Assembly information file should be named as AssemblyInfo.cs and should be placed in Properties folder.</value>
+  </data>
+  <data name="WrongCommonProperties" xml:space="preserve">
+    <value>Some project properties seem not to conform the agreements:
+{0}</value>
+  </data>
+  <data name="WrongConfigFileLocation" xml:space="preserve">
+    <value>The project should have configuration file named as {0} and placed in root folder.</value>
+  </data>
+  <data name="WrongDebugProperties" xml:space="preserve">
+    <value>Some project properties for Debug configuration seem not to conform the agreements:
+{0}</value>
+  </data>
+  <data name="WrongFileProperties" xml:space="preserve">
+    <value>Some properties for {0} file seem not to conform the agreements:
+{1}</value>
+  </data>
+  <data name="WrongFileSet" xml:space="preserve">
+    <value>All files under source control should match the files included into project:
+{0}
+Include necessary files into project or remove them from source control.</value>
+  </data>
+  <data name="WrongManifestContents" xml:space="preserve">
+    <value>Some manifest file contents seem not to conform the agreements:
+{0}</value>
+  </data>
+  <data name="WrongManifestFileLocation" xml:space="preserve">
+    <value>Manifest file should be named as App.manifest and should be placed in Properties folder.</value>
+  </data>
+  <data name="WrongPlatform" xml:space="preserve">
+    <value>Project is supposed to use the only {0} platform, but now it uses {1}.</value>
+  </data>
+  <data name="WrongProjectFileLocation" xml:space="preserve">
+    <value>Project file should be named as {0}.csproj and should be placed in project root folder.</value>
+  </data>
+  <data name="WrongReferences" xml:space="preserve">
+    <value>Some references seem not to conform the agreements:
+{0}
+Try to resolve errors by removing references and adding them again in the right way.</value>
+  </data>
+  <data name="WrongReleaseProperties" xml:space="preserve">
+    <value>Some project properties for Release configuration seem not to conform the agreements:
+{0}</value>
+  </data>
+  <data name="WrongVisualStudioVersion" xml:space="preserve">
+    <value>Project is supposed to be created in Visual Studio {0}, but now it seems to be created in Visual Studio {1}.</value>
+  </data>
+</root>
