@@ -27,5 +27,13 @@ namespace CCNet.ProjectNotifier
 		{
 			get { return Default.GetValue("RootPath"); }
 		}
+
+		/// <summary>
+		/// Gets references folder name.
+		/// </summary>
+		public static string ReferencesFolderName
+		{
+			get { return Default.GetValue("ReferencesFolderName"); }
+		}
 	}
 }

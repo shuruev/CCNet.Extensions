@@ -120,6 +120,9 @@
   <data name="LogReferencedBy" xml:space="preserve">
     <value>[REFERENCED BY] {0}</value>
   </data>
+  <data name="LogTriggeredBuild" xml:space="preserve">
+    <value>[TRIGGERED BUILD FOR] {0}</value>
+  </data>
   <data name="UsageInfo" xml:space="preserve">
     <value>Notifies other projects about successful build.
 

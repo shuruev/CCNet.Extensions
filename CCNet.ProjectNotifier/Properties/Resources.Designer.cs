@@ -70,6 +70,15 @@ namespace CCNet.ProjectNotifier.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to [TRIGGERED BUILD FOR] {0}.
+        /// </summary>
+        internal static string LogTriggeredBuild {
+            get {
+                return ResourceManager.GetString("LogTriggeredBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifies other projects about successful build.
         ///
         ///CCNet.ProjectNotifier.exe [Property1=Value1] [Property2=Value2] ....

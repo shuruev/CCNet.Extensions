@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CCNet.Common;
 using CCNet.ProjectNotifier.Properties;
+using QuickGraph;
 
 namespace CCNet.ProjectNotifier
 {
@@ -17,8 +20,9 @@ namespace CCNet.ProjectNotifier
 		{
 			/*xxxargs = new[]
 			{
-				@"ProjectName=RSDN Editor",
-				@"RootPath=\\rufrt-vxbuild\e$\CCNET"
+				@"ProjectName=VXStorage",
+				@"RootPath=\\rufrt-vxbuild\e$\CCNET",
+				@"ReferencesFolderName=References",
 			};*/
 
 			if (args == null || args.Length == 0)
@@ -57,11 +61,28 @@ namespace CCNet.ProjectNotifier
 		/// </summary>
 		private static void PerformNotifications()
 		{
+			var graph = new AdjacencyGraph<string, Edge<string>>();
+
+			foreach (string projectFolder in Directory.GetDirectories(Arguments.RootPath))
+			{
+				string projectName = Path.GetFileName(projectFolder);
+				string referencesDirectory = Path.Combine(projectFolder, Arguments.ReferencesFolderName);
+				List<string> references = ReferenceMark.GetCurrent(ReferenceType.Internal, referencesDirectory);
+
+				graph.AddVerticesAndEdgeRange(
+					references.Select(
+						referenceName => new Edge<string>(referenceName, projectName)));
+			}
+
+			GraphHelper.RemoveExplicitEdges(graph);
+
+			List<string> projectsToNotify = graph.OutEdges(Arguments.ProjectName)
+				.Select(edge => edge.Target)
+				.ToList();
+
 			string fileName = ReferenceMark.GetReferenceMarkName(Arguments.ProjectName);
 			foreach (string file in Directory.GetFiles(Arguments.RootPath, fileName, SearchOption.AllDirectories))
 			{
-				ReferenceMark.MarkUpdatedFile(file);
-
 				string path = Path.GetDirectoryName(file);
 				path = Path.GetDirectoryName(path);
 				path = Path.GetDirectoryName(path);
@@ -70,6 +91,15 @@ namespace CCNet.ProjectNotifier
 				Console.WriteLine(
 					Resources.LogReferencedBy,
 					projectName);
+
+				if (projectsToNotify.Contains(projectName))
+				{
+					ReferenceMark.MarkUpdatedFile(file);
+
+					Console.WriteLine(
+						Resources.LogTriggeredBuild,
+						projectName);
+				}
 			}
 		}
 
