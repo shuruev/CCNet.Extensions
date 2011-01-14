@@ -65,12 +65,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentProperties.cs" />
+    <Compile Include="Enumerations\ProjectType.cs" />
+    <Compile Include="Enumerations\TargetFramework.cs" />
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Helpers\CopyToOutputDirectory.cs" />
     <Compile Include="Helpers\ProjectItemType.cs" />
     <Compile Include="Helpers\ProjectItem.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
+    <Compile Include="Helpers\ServiceHelper.cs" />
+    <Compile Include="Helpers\ServiceItem.cs" />
+    <Compile Include="Helpers\ServiceTransaction.cs" />
     <Compile Include="ReferenceFolder\ReferenceFile.cs" />
     <Compile Include="ReferenceFolder\ReferenceFolder.cs" />
     <Compile Include="Helpers\Reference.cs" />
@@ -90,6 +95,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -13,12 +13,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.ProjectNotifier", "CC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.ProjectNotifier.Tests", "CCNet.ProjectNotifier.Tests\CCNet.ProjectNotifier.Tests.csproj", "{D792F3A8-BDBD-4BEB-B916-A88478AE805E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{70585E0A-1556-4CF7-83F5-2603536C2737}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.ServiceChecker", "CCNet.ServiceChecker\CCNet.ServiceChecker.csproj", "{6B07E871-53E5-4C6E-90E2-763188E4E512}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B6066512-0720-4A69-9BD1-4534AF8DA555}"
 	ProjectSection(SolutionItems) = preProject
 		CCNet.Extensions.vsmdi = CCNet.Extensions.vsmdi
 		Local.testsettings = Local.testsettings
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Common.Test", "CCNet.Common.Test\CCNet.Common.Test.csproj", "{4E6AD2C7-7C0B-4B24-9B9D-1CCA5AF7087C}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -93,6 +97,26 @@ Global
 		{D792F3A8-BDBD-4BEB-B916-A88478AE805E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D792F3A8-BDBD-4BEB-B916-A88478AE805E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D792F3A8-BDBD-4BEB-B916-A88478AE805E}.Release|x86.ActiveCfg = Release|Any CPU
+		{6B07E871-53E5-4C6E-90E2-763188E4E512}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{6B07E871-53E5-4C6E-90E2-763188E4E512}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{6B07E871-53E5-4C6E-90E2-763188E4E512}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{6B07E871-53E5-4C6E-90E2-763188E4E512}.Debug|x86.ActiveCfg = Debug|x86
+		{6B07E871-53E5-4C6E-90E2-763188E4E512}.Debug|x86.Build.0 = Debug|x86
+		{6B07E871-53E5-4C6E-90E2-763188E4E512}.Release|Any CPU.ActiveCfg = Release|x86
+		{6B07E871-53E5-4C6E-90E2-763188E4E512}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{6B07E871-53E5-4C6E-90E2-763188E4E512}.Release|Mixed Platforms.Build.0 = Release|x86
+		{6B07E871-53E5-4C6E-90E2-763188E4E512}.Release|x86.ActiveCfg = Release|x86
+		{6B07E871-53E5-4C6E-90E2-763188E4E512}.Release|x86.Build.0 = Release|x86
+		{4E6AD2C7-7C0B-4B24-9B9D-1CCA5AF7087C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E6AD2C7-7C0B-4B24-9B9D-1CCA5AF7087C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E6AD2C7-7C0B-4B24-9B9D-1CCA5AF7087C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4E6AD2C7-7C0B-4B24-9B9D-1CCA5AF7087C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4E6AD2C7-7C0B-4B24-9B9D-1CCA5AF7087C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4E6AD2C7-7C0B-4B24-9B9D-1CCA5AF7087C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E6AD2C7-7C0B-4B24-9B9D-1CCA5AF7087C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E6AD2C7-7C0B-4B24-9B9D-1CCA5AF7087C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4E6AD2C7-7C0B-4B24-9B9D-1CCA5AF7087C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4E6AD2C7-7C0B-4B24-9B9D-1CCA5AF7087C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
