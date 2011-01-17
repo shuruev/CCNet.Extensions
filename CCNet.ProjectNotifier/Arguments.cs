@@ -1,4 +1,4 @@
-using CCNet.Common;
+﻿using CCNet.Common;
 
 namespace CCNet.ProjectNotifier
 {
