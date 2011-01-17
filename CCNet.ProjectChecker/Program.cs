@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -212,6 +213,14 @@ namespace CCNet.ProjectChecker
 		/// <summary>
 		/// Checks "WrongCommonProperties" condition.
 		/// </summary>
+		[SuppressMessage(
+			"Shuruev.StyleCop.CSharp.StyleCopPlus",
+			"SP2100:CodeLineMustNotBeLongerThan",
+			Justification = "Allowed here for better maintability.")]
+		[SuppressMessage(
+			"Shuruev.StyleCop.CSharp.StyleCopPlus",
+			"SP2101:MethodMustNotContainMoreLinesThan",
+			Justification = "Allowed here for better maintability.")]
 		private static void CheckWrongCommonProperties()
 		{
 			Dictionary<string, string> properties = ProjectHelper.GetCommonProperties();
@@ -602,6 +611,10 @@ namespace CCNet.ProjectChecker
 		/// <summary>
 		/// Checks "WrongManifestContents" condition.
 		/// </summary>
+		[SuppressMessage(
+			"Shuruev.StyleCop.CSharp.StyleCopPlus",
+			"SP2100:CodeLineMustNotBeLongerThan",
+			Justification = "Allowed for here better maintability.")]
 		public static void CheckWrongManifestContents()
 		{
 			if (Arguments.ProjectType != ProjectType.ClickOnce)
