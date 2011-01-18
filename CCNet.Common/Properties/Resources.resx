@@ -133,6 +133,18 @@
   <data name="MissingRequiredProperty" xml:space="preserve">
     <value>- missing required property {0}: "{1}"</value>
   </data>
+  <data name="ServiceInstallError" xml:space="preserve">
+    <value>Service install process failed. Binary path: "{0}".</value>
+  </data>
+  <data name="ServiceUninstallError" xml:space="preserve">
+    <value>Service uninstall process failed. Binary path: "{0}".</value>
+  </data>
+  <data name="TransactionFileNotFound" xml:space="preserve">
+    <value>Transaction file was not found.</value>
+  </data>
+  <data name="UnclosedTransactionFileFound" xml:space="preserve">
+    <value>Unclosed transaction file was found. You cannot open another transaction before closing current.</value>
+  </data>
   <data name="UnexpectedEntry" xml:space="preserve">
     <value>- found unexpected entry "{0}"</value>
   </data>

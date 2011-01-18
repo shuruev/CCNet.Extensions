@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
+using CCNet.Common.Properties;
 
 namespace CCNet.Common.Helpers
 {
@@ -23,72 +24,49 @@ namespace CCNet.Common.Helpers
 		/// <summary>
 		/// Opens service transaction.
 		/// </summary>
-		public static void Begin(ServiceItem[] services)
+		public static void Begin(List<ServiceItem> services)
 		{
-			XmlSerializer serializer = new XmlSerializer(typeof(ServiceItem[]));
-
-			List<ServiceItem> list = new List<ServiceItem>();
-
 			if (File.Exists(FilePathName))
 			{
-				using (TextReader tr = new StreamReader(FilePathName))
-				{
-					list.AddRange(
-						(ServiceItem[])serializer.Deserialize(tr));
-				}
+				throw new InvalidOperationException(Resources.UnclosedTransactionFileFound);
 			}
 
-			list.AddRange(services);
-
+			XmlSerializer serializer = new XmlSerializer(typeof(List<ServiceItem>));
 			using (TextWriter tw = new StreamWriter(FilePathName))
 			{
-				serializer.Serialize(tw, list.ToArray());
+				serializer.Serialize(tw, services);
 			}
 		}
 
 		/// <summary>
 		/// Commit service transaction.
 		/// </summary>
-		public static void Commit(string serviceExecutablePath)
+		public static void Commit()
 		{
-			XmlSerializer serializer = new XmlSerializer(typeof(ServiceItem[]));
-
-			var list = new ServiceItem[0];
-
-			if (File.Exists(FilePathName))
+			if (!File.Exists(FilePathName))
 			{
-				using (TextReader tr = new StreamReader(FilePathName))
-				{
-					list = (ServiceItem[])serializer.Deserialize(tr);
-				}
+				throw new InvalidOperationException(Resources.UnclosedTransactionFileFound);
 			}
 
-			using (TextWriter tw = new StreamWriter(FilePathName))
-			{
-				serializer.Serialize(
-					tw,
-					list
-						.Where(service => service.BinaryPathName != serviceExecutablePath)
-						.ToArray());
-			}
+			File.Delete(FilePathName);
 		}
 
 		/// <summary>
 		/// Gets uncommited services.
 		/// </summary>
-		public static ServiceItem[] GetUncommited()
+		public static List<ServiceItem> GetUncommited()
 		{
-			XmlSerializer serializer = new XmlSerializer(typeof(ServiceItem[]));
+			XmlSerializer serializer = new XmlSerializer(typeof(List<ServiceItem>));
 
 			if (File.Exists(FilePathName))
 			{
 				using (TextReader tr = new StreamReader(FilePathName))
 				{
-					return (ServiceItem[])serializer.Deserialize(tr);
+					return (List<ServiceItem>)serializer.Deserialize(tr);
 				}
 			}
 
-			return new ServiceItem[0];
+			return new List<ServiceItem>();
 		}
 	}
 }

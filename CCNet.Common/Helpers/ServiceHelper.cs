@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using CCNet.Common.Properties;
 
 namespace CCNet.Common.Helpers
 {
@@ -35,19 +36,17 @@ namespace CCNet.Common.Helpers
 		public static void DeletePreviouslyInstalledServices()
 		{
 			var services = ServiceTransaction.GetUncommited();
+
 			foreach (var service in services)
 			{
 				UninstallService(
-					service.TargetFrameWork,
+					service.TargetFramework,
 					service.BinaryPathName);
 			}
 
-			var distinctBinaries =
-				services.Select(p => p.BinaryPathName).Distinct();
-
-			foreach (var binaryPathName in distinctBinaries)
+			if (services.Count > 0)
 			{
-				ServiceTransaction.Commit(binaryPathName);
+				ServiceTransaction.Commit();
 			}
 		}
 
@@ -60,14 +59,9 @@ namespace CCNet.Common.Helpers
 		{
 			HashSet<ServiceItem> oldServices = GetInstalledServices();
 
-			bool ok = InstallService(
+			InstallService(
 				targetFramework,
 				binaryPathName);
-
-			if (!ok)
-			{
-				return null;
-			}
 
 			HashSet<ServiceItem> newServices = GetInstalledServices();
 
@@ -75,21 +69,17 @@ namespace CCNet.Common.Helpers
 
 			foreach (var serviceItem in newServices)
 			{
-				serviceItem.TargetFrameWork = targetFramework;
+				serviceItem.TargetFramework = targetFramework;
 				serviceItem.BinaryPathName = GetInstalledServiceBinaryPathName(serviceItem.ServiceName);
 			}
 
-			ServiceTransaction.Begin(newServices.ToArray());
+			ServiceTransaction.Begin(newServices.ToList());
 
-			ok = UninstallService(
+			UninstallService(
 				targetFramework,
 				binaryPathName);
-			if (!ok)
-			{
-				return null;
-			}
 
-			ServiceTransaction.Commit(binaryPathName);
+			ServiceTransaction.Commit();
 
 			return newServices.ToList();
 		}
@@ -156,7 +146,7 @@ namespace CCNet.Common.Helpers
 		}
 
 		/// <summary>
-		/// Parses output of "sc qc SERVICE_NAME>" command to extract binary path name.
+		/// Parses output of "sc qc SERVICE_NAME" command to extract binary path name.
 		/// </summary>
 		private static string ParseServiceBinaryPathName(string output)
 		{
@@ -183,7 +173,7 @@ namespace CCNet.Common.Helpers
 		/// <summary>
 		/// Installs services.
 		/// </summary>
-		private static bool InstallService(
+		private static void InstallService(
 			TargetFramework targetFramework,
 			string binaryPathName)
 		{
@@ -209,13 +199,22 @@ namespace CCNet.Common.Helpers
 			p.Start();
 			p.WaitForExit();
 
-			return p.ExitCode == 0;
+			if (p.ExitCode == 0)
+			{
+				return;
+			}
+
+			string message = string.Format(
+					Resources.ServiceInstallError,
+					binaryPathName);
+
+			throw new InvalidOperationException(message);
 		}
 
 		/// <summary>
 		/// Uninstalls services.
 		/// </summary>
-		private static bool UninstallService(
+		private static void UninstallService(
 			TargetFramework targetFramework,
 			string binaryPathName)
 		{
@@ -241,11 +240,20 @@ namespace CCNet.Common.Helpers
 			p.Start();
 			p.WaitForExit();
 
-			return p.ExitCode == 0;
+			if (p.ExitCode == 0)
+			{
+				return;
+			}
+
+			string message = string.Format(
+					Resources.ServiceUninstallError,
+					binaryPathName);
+
+			throw new InvalidOperationException(message);
 		}
 
 		/// <summary>
-		/// Creates a process calling SourceSafe client.
+		/// Creates a process.
 		/// </summary>
 		private static Process CreateConsoleCall(
 			string command,

@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Common.Test", "CCNet.Common.Test\CCNet.Common.Test.csproj", "{4E6AD2C7-7C0B-4B24-9B9D-1CCA5AF7087C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Common.Tests", "CCNet.Common.Tests\CCNet.Common.Tests.csproj", "{4E6AD2C7-7C0B-4B24-9B9D-1CCA5AF7087C}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
