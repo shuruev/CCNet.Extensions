@@ -337,7 +337,8 @@
       <requires>v != null</requires>
       <ensures>!Contract.Result&lt;bool&gt;() || 
                 (Contract.ValueAtReturn(out edges) != null &amp;&amp; 
-                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))</ensures>
+                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))
+</ensures>
     </member>
     <member name="M:QuickGraph.IImplicitGraph`2.OutEdge(`0,System.Int32)">
       <summary>
@@ -1146,7 +1147,8 @@
       <ensures>Enumerable.All(
                 Contract.Result&lt;IEnumerable&lt;TEdge&gt;&gt;(), 
                 edge =&gt; edge != null &amp;&amp; edge.Target.Equals(v)
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="M:QuickGraph.IBidirectionalIncidenceGraph`2.TryGetInEdges(`0,System.Collections.Generic.IEnumerable{`1}@)">
       <summary>
@@ -1163,7 +1165,8 @@
                 Enumerable.All(
                 Contract.ValueAtReturn&lt;IEnumerable&lt;TEdge&gt;&gt;(out edges),
                 edge =&gt; edge != null &amp;&amp; edge.Target.Equals(v)
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="M:QuickGraph.IBidirectionalIncidenceGraph`2.InEdge(`0,System.Int32)">
       <summary>
@@ -3519,7 +3522,8 @@
                  Enumerable.All(
                     Contract.ValueAtReturn&lt;IEnumerable&lt;TEdge&gt;&gt;(out result),
                     e =&gt; e != null))
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="M:QuickGraph.EdgeExtensions.GetUndirectedVertexEquality``2">
       <summary>
@@ -4768,7 +4772,8 @@
       <requires inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">v != null</requires>
       <ensures inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">!Contract.Result&lt;bool&gt;() || 
                 (Contract.ValueAtReturn(out edges) != null &amp;&amp; 
-                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))</ensures>
+                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))
+</ensures>
     </member>
     <member name="M:QuickGraph.AdjacencyGraph`2.OutDegree(`0)">
       <requires inheritedFrom="M:QuickGraph.IImplicitGraph`2.OutDegree(`0)" inheritedFromTypeName="IImplicitGraph">v != null</requires>
@@ -4983,7 +4988,8 @@
                 Enumerable.All(
                 Contract.ValueAtReturn&lt;IEnumerable&lt;TEdge&gt;&gt;(out edges),
                 edge =&gt; edge != null &amp;&amp; edge.Target.Equals(v)
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="M:QuickGraph.BidirectionalGraph`2.AddEdge(`1)">
       <requires inheritedFrom="M:QuickGraph.IMutableEdgeListGraph`2.AddEdge(`1)" inheritedFromTypeName="IMutableEdgeListGraph">e != null</requires>
@@ -5062,7 +5068,8 @@
       <requires inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">v != null</requires>
       <ensures inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">!Contract.Result&lt;bool&gt;() || 
                 (Contract.ValueAtReturn(out edges) != null &amp;&amp; 
-                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))</ensures>
+                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))
+</ensures>
     </member>
     <member name="M:QuickGraph.BidirectionalGraph`2.AddVerticesAndEdge(`1)">
       <requires inheritedFrom="M:QuickGraph.IMutableVertexAndEdgeSet`2.AddVerticesAndEdge(`1)" inheritedFromTypeName="IMutableVertexAndEdgeSet">edge != null</requires>
@@ -5195,7 +5202,8 @@
       <ensures inheritedFrom="M:QuickGraph.IBidirectionalIncidenceGraph`2.InEdges(`0)" inheritedFromTypeName="IBidirectionalIncidenceGraph">Enumerable.All(
                 Contract.Result&lt;IEnumerable&lt;TEdge&gt;&gt;(), 
                 edge =&gt; edge != null &amp;&amp; edge.Target.Equals(v)
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="M:QuickGraph.DelegateImplicitGraph`2.OutDegree(`0)">
       <requires inheritedFrom="M:QuickGraph.IImplicitGraph`2.OutDegree(`0)" inheritedFromTypeName="IImplicitGraph">v != null</requires>
@@ -5225,7 +5233,8 @@
       <requires inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">v != null</requires>
       <ensures inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">!Contract.Result&lt;bool&gt;() || 
                 (Contract.ValueAtReturn(out edges) != null &amp;&amp; 
-                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))</ensures>
+                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))
+</ensures>
     </member>
     <member name="M:QuickGraph.DelegateImplicitGraph`2.ContainsVertex(`0)">
       <requires inheritedFrom="M:QuickGraph.IImplicitVertexSet`1.ContainsVertex(`0)" inheritedFromTypeName="IImplicitVertexSet">vertex != null</requires>
@@ -5289,7 +5298,8 @@
                 Enumerable.All(
                 Contract.ValueAtReturn&lt;IEnumerable&lt;TEdge&gt;&gt;(out edges),
                 edge =&gt; edge != null &amp;&amp; edge.Target.Equals(v)
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="M:QuickGraph.ReversedBidirectionalGraph`2.IsOutEdgesEmpty(`0)">
       <pure />
@@ -5395,7 +5405,8 @@
       <requires inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">v != null</requires>
       <ensures inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">!Contract.Result&lt;bool&gt;() || 
                 (Contract.ValueAtReturn(out edges) != null &amp;&amp; 
-                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))</ensures>
+                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))
+</ensures>
     </member>
     <member name="P:QuickGraph.ReversedBidirectionalGraph`2.Vertices">
       <getter>
@@ -5410,7 +5421,8 @@
       <ensures inheritedFrom="M:QuickGraph.IBidirectionalIncidenceGraph`2.InEdges(`0)" inheritedFromTypeName="IBidirectionalIncidenceGraph">Enumerable.All(
                 Contract.Result&lt;IEnumerable&lt;TEdge&gt;&gt;(), 
                 edge =&gt; edge != null &amp;&amp; edge.Target.Equals(v)
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="M:QuickGraph.ReversedBidirectionalGraph`2.IsInEdgesEmpty(`0)">
       <pure />
@@ -5561,7 +5573,8 @@
                 Enumerable.All(
                 Contract.ValueAtReturn&lt;IEnumerable&lt;TEdge&gt;&gt;(out edges),
                 edge =&gt; edge != null &amp;&amp; edge.Target.Equals(v)
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="M:QuickGraph.BidirectionalMatrixGraph`1.AddEdge(`0)">
       <requires inheritedFrom="M:QuickGraph.IMutableEdgeListGraph`2.AddEdge(`1)" inheritedFromTypeName="IMutableEdgeListGraph">e != null</requires>
@@ -5663,7 +5676,8 @@
       <requires inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">v != null</requires>
       <ensures inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">!Contract.Result&lt;bool&gt;() || 
                 (Contract.ValueAtReturn(out edges) != null &amp;&amp; 
-                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))</ensures>
+                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))
+</ensures>
     </member>
     <member name="M:QuickGraph.BidirectionalMatrixGraph`1.InEdges(System.Int32)">
       <pure />
@@ -5673,7 +5687,8 @@
       <ensures inheritedFrom="M:QuickGraph.IBidirectionalIncidenceGraph`2.InEdges(`0)" inheritedFromTypeName="IBidirectionalIncidenceGraph">Enumerable.All(
                 Contract.Result&lt;IEnumerable&lt;TEdge&gt;&gt;(), 
                 edge =&gt; edge != null &amp;&amp; edge.Target.Equals(v)
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="M:QuickGraph.BidirectionalMatrixGraph`1.IsInEdgesEmpty(System.Int32)">
       <pure />
@@ -5747,7 +5762,8 @@
                 Enumerable.All(
                 Contract.ValueAtReturn&lt;IEnumerable&lt;TEdge&gt;&gt;(out edges),
                 edge =&gt; edge != null &amp;&amp; edge.Target.Equals(v)
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="M:QuickGraph.Predicates.FilteredBidirectionalGraph`3.ContainsEdge(`1)">
       <pure />
@@ -5790,7 +5806,8 @@
       <ensures inheritedFrom="M:QuickGraph.IBidirectionalIncidenceGraph`2.InEdges(`0)" inheritedFromTypeName="IBidirectionalIncidenceGraph">Enumerable.All(
                 Contract.Result&lt;IEnumerable&lt;TEdge&gt;&gt;(), 
                 edge =&gt; edge != null &amp;&amp; edge.Target.Equals(v)
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="M:QuickGraph.Predicates.FilteredBidirectionalGraph`3.IsInEdgesEmpty(`0)">
       <pure />
@@ -5866,7 +5883,8 @@
                         edge != null &amp;&amp; 
                         ithis.ContainsEdge(edge.Source, edge.Target) &amp;&amp; 
                         (edge.Source.Equals(v) || edge.Target.Equals(v))
-                    )</ensures>
+                    )
+</ensures>
     </member>
     <member name="P:QuickGraph.Predicates.FilteredUndirectedGraph`3.EdgeCount">
       <getter>
@@ -6019,7 +6037,8 @@
       <requires inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">v != null</requires>
       <ensures inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">!Contract.Result&lt;bool&gt;() || 
                 (Contract.ValueAtReturn(out edges) != null &amp;&amp; 
-                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))</ensures>
+                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))
+</ensures>
     </member>
     <member name="M:QuickGraph.Predicates.IsolatedVertexPredicate`2.Test(`0)">
       <pure />
@@ -6100,7 +6119,8 @@
                         edge != null &amp;&amp; 
                         ithis.ContainsEdge(edge.Source, edge.Target) &amp;&amp; 
                         (edge.Source.Equals(v) || edge.Target.Equals(v))
-                    )</ensures>
+                    )
+</ensures>
     </member>
     <member name="P:QuickGraph.ArrayUndirectedGraph`2.EdgeCount">
       <getter>
@@ -6178,7 +6198,8 @@
                 Enumerable.All(
                 Contract.ValueAtReturn&lt;IEnumerable&lt;TEdge&gt;&gt;(out edges),
                 edge =&gt; edge != null &amp;&amp; edge.Target.Equals(v)
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="P:QuickGraph.ArrayBidirectionalGraph`2.IsEdgesEmpty">
       <getter>
@@ -6231,7 +6252,8 @@
       <requires inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">v != null</requires>
       <ensures inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">!Contract.Result&lt;bool&gt;() || 
                 (Contract.ValueAtReturn(out edges) != null &amp;&amp; 
-                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))</ensures>
+                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))
+</ensures>
     </member>
     <member name="M:QuickGraph.ArrayBidirectionalGraph`2.InEdges(`0)">
       <requires inheritedFrom="M:QuickGraph.IBidirectionalIncidenceGraph`2.InEdges(`0)" inheritedFromTypeName="IBidirectionalIncidenceGraph">v != null</requires>
@@ -6240,7 +6262,8 @@
       <ensures inheritedFrom="M:QuickGraph.IBidirectionalIncidenceGraph`2.InEdges(`0)" inheritedFromTypeName="IBidirectionalIncidenceGraph">Enumerable.All(
                 Contract.Result&lt;IEnumerable&lt;TEdge&gt;&gt;(), 
                 edge =&gt; edge != null &amp;&amp; edge.Target.Equals(v)
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="M:QuickGraph.ArrayBidirectionalGraph`2.IsInEdgesEmpty(`0)">
       <requires inheritedFrom="M:QuickGraph.IBidirectionalIncidenceGraph`2.IsInEdgesEmpty(`0)" inheritedFromTypeName="IBidirectionalIncidenceGraph">v != null</requires>
@@ -6315,7 +6338,8 @@
                         edge != null &amp;&amp; 
                         ithis.ContainsEdge(edge.Source, edge.Target) &amp;&amp; 
                         (edge.Source.Equals(v) || edge.Target.Equals(v))
-                    )</ensures>
+                    )
+</ensures>
     </member>
     <member name="P:QuickGraph.DelegateImplicitUndirectedGraph`2.EdgeEqualityComparer">
       <getter>
@@ -6389,7 +6413,8 @@
       <requires inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">v != null</requires>
       <ensures inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">!Contract.Result&lt;bool&gt;() || 
                 (Contract.ValueAtReturn(out edges) != null &amp;&amp; 
-                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))</ensures>
+                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))
+</ensures>
     </member>
     <member name="M:QuickGraph.BidirectionAdapterGraph`2.InDegree(`0)">
       <pure />
@@ -6433,7 +6458,8 @@
                 Enumerable.All(
                 Contract.ValueAtReturn&lt;IEnumerable&lt;TEdge&gt;&gt;(out edges),
                 edge =&gt; edge != null &amp;&amp; edge.Target.Equals(v)
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="P:QuickGraph.BidirectionAdapterGraph`2.VertexCount">
       <getter>
@@ -6464,7 +6490,8 @@
       <ensures inheritedFrom="M:QuickGraph.IBidirectionalIncidenceGraph`2.InEdges(`0)" inheritedFromTypeName="IBidirectionalIncidenceGraph">Enumerable.All(
                 Contract.Result&lt;IEnumerable&lt;TEdge&gt;&gt;(), 
                 edge =&gt; edge != null &amp;&amp; edge.Target.Equals(v)
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="M:QuickGraph.BidirectionAdapterGraph`2.IsInEdgesEmpty(`0)">
       <pure />
@@ -6620,7 +6647,8 @@
                         edge != null &amp;&amp; 
                         ithis.ContainsEdge(edge.Source, edge.Target) &amp;&amp; 
                         (edge.Source.Equals(v) || edge.Target.Equals(v))
-                    )</ensures>
+                    )
+</ensures>
     </member>
     <member name="M:QuickGraph.UndirectedGraph`2.OnVertexRemoved(`0)">
       <requires>args != null</requires>
@@ -7296,7 +7324,8 @@
       <requires inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">v != null</requires>
       <ensures inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">!Contract.Result&lt;bool&gt;() || 
                 (Contract.ValueAtReturn(out edges) != null &amp;&amp; 
-                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))</ensures>
+                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))
+</ensures>
     </member>
     <member name="M:QuickGraph.Algorithms.AlgorithmBase`1.#ctor(`0)">
       <requires>visitedGraph != null</requires>
@@ -7441,7 +7470,8 @@
       <requires>v != null</requires>
       <ensures>this.DiscoverTimes[u] &lt; this.DiscoverTimes[v] 
                 ? Contract.Result&lt;TVertex&gt;().Equals(u) 
-                : Contract.Result&lt;TVertex&gt;().Equals(v)</ensures>
+                : Contract.Result&lt;TVertex&gt;().Equals(v)
+</ensures>
     </member>
     <member name="M:QuickGraph.Algorithms.ConnectedComponents.StronglyConnectedComponentsAlgorithm`2.InternalCompute">
       <ensures>this.ComponentCount &gt;= 0</ensures>
@@ -7465,7 +7495,8 @@
                 Enumerable.All(
                 Contract.ValueAtReturn&lt;IEnumerable&lt;TEdge&gt;&gt;(out edges),
                 edge =&gt; edge != null &amp;&amp; edge.Target.Equals(v)
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="M:QuickGraph.DelegateBidirectionalIncidenceGraph`2.#ctor(QuickGraph.TryFunc{`0,System.Collections.Generic.IEnumerable{`1}},QuickGraph.TryFunc{`0,System.Collections.Generic.IEnumerable{`1}})">
       <requires>tryGetInEdges != null</requires>
@@ -7487,7 +7518,8 @@
       <ensures inheritedFrom="M:QuickGraph.IBidirectionalIncidenceGraph`2.InEdges(`0)" inheritedFromTypeName="IBidirectionalIncidenceGraph">Enumerable.All(
                 Contract.Result&lt;IEnumerable&lt;TEdge&gt;&gt;(), 
                 edge =&gt; edge != null &amp;&amp; edge.Target.Equals(v)
-                )</ensures>
+                )
+</ensures>
     </member>
     <member name="M:QuickGraph.DelegateBidirectionalIncidenceGraph`2.InEdge(`0,System.Int32)">
       <requires inheritedFrom="M:QuickGraph.IBidirectionalIncidenceGraph`2.InEdge(`0,System.Int32)" inheritedFromTypeName="IBidirectionalIncidenceGraph">v != null</requires>
@@ -7787,7 +7819,8 @@
       <requires inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">v != null</requires>
       <ensures inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">!Contract.Result&lt;bool&gt;() || 
                 (Contract.ValueAtReturn(out edges) != null &amp;&amp; 
-                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))</ensures>
+                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))
+</ensures>
     </member>
     <member name="P:QuickGraph.CompressedSparseRowGraph`1.EdgeCount">
       <getter>
@@ -7837,7 +7870,8 @@
                         edge != null &amp;&amp; 
                         ithis.ContainsEdge(edge.Source, edge.Target) &amp;&amp; 
                         (edge.Source.Equals(v) || edge.Target.Equals(v))
-                    )</ensures>
+                    )
+</ensures>
     </member>
     <member name="M:QuickGraph.IImplicitUndirectedGraph`2.TryGetEdge(`0,`0,`1@)">
       <pure />
@@ -8010,7 +8044,8 @@
                         edge != null &amp;&amp; 
                         ithis.ContainsEdge(edge.Source, edge.Target) &amp;&amp; 
                         (edge.Source.Equals(v) || edge.Target.Equals(v))
-                    )</ensures>
+                    )
+</ensures>
     </member>
     <member name="P:QuickGraph.UndirectedBidirectionalGraph`2.EdgeCount">
       <getter>
@@ -8081,7 +8116,8 @@
       <requires inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">v != null</requires>
       <ensures inheritedFrom="M:QuickGraph.IImplicitGraph`2.TryGetOutEdges(`0,System.Collections.Generic.IEnumerable{`1}@)" inheritedFromTypeName="IImplicitGraph">!Contract.Result&lt;bool&gt;() || 
                 (Contract.ValueAtReturn(out edges) != null &amp;&amp; 
-                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))</ensures>
+                 Enumerable.All(Contract.ValueAtReturn(out edges), e =&gt; e.Source.Equals(v)))
+</ensures>
     </member>
     <member name="P:QuickGraph.ArrayAdjacencyGraph`2.IsVerticesEmpty">
       <getter>

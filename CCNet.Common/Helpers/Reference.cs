@@ -66,7 +66,7 @@
 		public string ExecutableExtension { get; set; }
 
 		/// <summary>
-		/// Gets a value indicating that reference uses specific version.
+		/// Gets a value indicating whether reference uses specific version.
 		/// </summary>
 		public bool IsSpecificVersion
 		{
