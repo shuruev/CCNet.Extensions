@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -6,14 +7,12 @@ using System.Reflection;
 using CCNet.Common.Helpers;
 using CCNet.Common.Test.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 
 namespace CCNet.Common.Test
 {
 	/// <summary>
-	///This is a test class for ServiceHelperTest and is intended
-	///to contain all ServiceHelperTest Unit Tests
-	///</summary>
+	/// Tests ServiceHelper class.
+	/// </summary>
 	[TestClass]
 	public class ServiceHelperTest
 	{
@@ -22,23 +21,35 @@ namespace CCNet.Common.Test
 				Assembly.GetExecutingAssembly().Location);
 
 		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		///</summary>
+		/// Gets or sets the test context which provides
+		/// information about and functionality for the current test run.
+		/// </summary>
 		public TestContext TestContext { get; set; }
 
 		/// <summary>
 		/// Tests ParseServicesOutput method.
-		///</summary>
+		/// </summary>
 		[TestMethod]
 		public void ParseServicesOutputTest()
 		{
 			string output = Resources.ScQueryOutput;
 			HashSet<ServiceItem> expected = new HashSet<ServiceItem>
 			{
-				new ServiceItem {ServiceName = "TermService", DisplayName = "Terminal Services"},
-				new ServiceItem {ServiceName = "Themes", DisplayName = "Themes"},
-				new ServiceItem {ServiceName = "UNS", DisplayName = "Intel(R) Management and Security Application User Notification Service"}
+				new ServiceItem
+				{
+					ServiceName = "TermService",
+					DisplayName = "Terminal Services"
+				},
+				new ServiceItem
+				{
+					ServiceName = "Themes",
+					DisplayName = "Themes"
+				},
+				new ServiceItem
+				{
+					ServiceName = "UNS",
+					DisplayName = "Intel(R) Management and Security Application User Notification Service"
+				}
 			};
 
 			HashSet<ServiceItem> actual = ServiceHelper_Accessor.ParseServicesOutput(output);
@@ -124,7 +135,8 @@ namespace CCNet.Common.Test
 		}
 
 		/// <summary>
-		/// Tests InstallService & UninstallService methods (single service instance, .NET Framework v4.0.30319).
+		/// Tests InstallService and UninstallService methods
+		/// (single service instance, .NET Framework v4.0.30319).
 		/// </summary>
 		[TestMethod]
 		public void InstallUninstallServiceSingle4Test()
@@ -181,7 +193,8 @@ namespace CCNet.Common.Test
 		}
 
 		/// <summary>
-		/// Tests InstallService & UninstallService methods (single service instance, .NET Framework v2.0.50727).
+		/// Tests InstallService and UninstallService methods
+		/// (single service instance, .NET Framework v2.0.50727).
 		/// </summary>
 		[TestMethod]
 		public void InstallUninstallServiceSingle2Test()
@@ -238,7 +251,8 @@ namespace CCNet.Common.Test
 		}
 
 		/// <summary>
-		/// Tests InstallService & UninstallService methods (double service instance, .NET Framework v4.0.30319).
+		/// Tests InstallService and UninstallService methods
+		/// (double service instance, .NET Framework v4.0.30319).
 		/// </summary>
 		[TestMethod]
 		public void InstallUninstallServiceDouble4Test()
@@ -311,7 +325,8 @@ namespace CCNet.Common.Test
 		}
 
 		/// <summary>
-		/// Tests InstallService & UninstallService methods (double service instance, .NET Framework v2.0.50727).
+		/// Tests InstallService and UninstallService methods
+		/// (double service instance, .NET Framework v2.0.50727).
 		/// </summary>
 		[TestMethod]
 		public void InstallUninstallServiceDouble2Test()
@@ -370,41 +385,8 @@ namespace CCNet.Common.Test
 		}
 
 		/// <summary>
-		/// Help method for tests.
+		/// Tests GetServiceItemList method.
 		/// </summary>
-		private static bool CompileDynamic(
-			string codeData,
-			string outputFilePathName,
-			string dotNetVersion)
-		{
-			string systemRoot = Environment.GetEnvironmentVariable("SystemRoot");
-
-			string cscExePathName = string.Format(
-				@"{0}\Microsoft.NET\Framework\{1}\csc.exe",
-				systemRoot,
-				dotNetVersion);
-
-			string tempCsFilePathName = Path.Combine(s_basePath, "code.cs");
-
-			File.WriteAllText(
-				tempCsFilePathName,
-				codeData);
-
-			Process p = ServiceHelper_Accessor.CreateConsoleCall(
-				cscExePathName,
-				string.Format(
-					"/optimize \"/out:{0}\" \"{1}\"",
-					outputFilePathName,
-					tempCsFilePathName));
-
-			p.Start();
-			p.StandardOutput.ReadToEnd();
-
-			File.Delete(tempCsFilePathName);
-
-			return p.ExitCode == 0;
-		}
-
 		[TestMethod]
 		public void GetServiceItemListTest()
 		{
@@ -498,7 +480,6 @@ namespace CCNet.Common.Test
 			Assert.IsTrue(ok);
 
 			// ensure in successfully installation
-
 			string actualBinaryPath =
 				ServiceHelper_Accessor.GetInstalledServiceBinaryPathName("WindowsService1");
 
@@ -507,15 +488,49 @@ namespace CCNet.Common.Test
 				actualBinaryPath);
 
 			// call test method
-
 			ServiceHelper.DeletePreviouslyInstalledServices();
 
 			// ensure in successfully uninstallation
-
 			actualBinaryPath =
 				ServiceHelper_Accessor.GetInstalledServiceBinaryPathName("WindowsService1");
 
 			Assert.IsNull(actualBinaryPath);
+		}
+
+		/// <summary>
+		/// Help method for tests.
+		/// </summary>
+		private static bool CompileDynamic(
+			string codeData,
+			string outputFilePathName,
+			string dotNetVersion)
+		{
+			string systemRoot = Environment.GetEnvironmentVariable("SystemRoot");
+
+			string cscExePathName = string.Format(
+				@"{0}\Microsoft.NET\Framework\{1}\csc.exe",
+				systemRoot,
+				dotNetVersion);
+
+			string tempCsFilePathName = Path.Combine(s_basePath, "code.cs");
+
+			File.WriteAllText(
+				tempCsFilePathName,
+				codeData);
+
+			Process p = ServiceHelper_Accessor.CreateConsoleCall(
+				cscExePathName,
+				string.Format(
+					"/optimize \"/out:{0}\" \"{1}\"",
+					outputFilePathName,
+					tempCsFilePathName));
+
+			p.Start();
+			p.StandardOutput.ReadToEnd();
+
+			File.Delete(tempCsFilePathName);
+
+			return p.ExitCode == 0;
 		}
 	}
 }

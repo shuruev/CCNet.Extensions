@@ -7,7 +7,7 @@ using CCNet.ServiceChecker.Properties;
 
 namespace CCNet.ServiceChecker
 {
-	class Program
+	public class Program
 	{
 		public static int Main(string[] args)
 		{

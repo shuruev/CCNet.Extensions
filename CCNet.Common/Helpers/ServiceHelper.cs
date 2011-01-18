@@ -17,7 +17,6 @@ namespace CCNet.Common.Helpers
 		private static readonly Regex s_binaryPathNameRegex =
 			new Regex(@"BINARY_PATH_NAME\s+: (?<binaryPathName>.+)\r\n");
 
-
 		private static readonly string s_systemRoot = Environment.GetEnvironmentVariable("SystemRoot");
 
 		private static readonly string s_installUtil20Path =
