@@ -214,7 +214,7 @@ namespace CCNet.Common.Helpers
 		}
 
 		/// <summary>
-		/// Uninstall services
+		/// Uninstalls services.
 		/// </summary>
 		private static bool UninstallService(
 			TargetFramework targetFramework,
