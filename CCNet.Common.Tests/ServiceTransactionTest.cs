@@ -30,6 +30,7 @@ namespace CCNet.Common.Tests
 			Cleanup();
 		}
 
+		[TestMethod]
 		public void Success_Begin()
 		{
 			List<ServiceItem> services = new List<ServiceItem>
@@ -76,8 +77,8 @@ namespace CCNet.Common.Tests
 				}
 			};
 
-			TestHelper.Throws(() =>
-				ServiceTransaction.Begin(services),
+			TestHelper.Throws(
+				() => ServiceTransaction.Begin(services),
 				typeof(InvalidOperationException));
 
 			File.Delete(ServiceTransaction.FilePathName);
