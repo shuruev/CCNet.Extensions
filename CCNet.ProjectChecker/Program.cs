@@ -397,6 +397,7 @@ namespace CCNet.ProjectChecker
 			allowed.Add("CodeAnalysisFailOnMissingRules", null);
 			allowed.Add("CodeAnalysisIgnoreBuiltInRules", null);
 			allowed.Add("CodeAnalysisIgnoreBuiltInRuleSets", null);
+			allowed.Add("CodeAnalysisIgnoreGeneratedCode", null);
 			allowed.Add("CodeAnalysisLogFile", null);
 			allowed.Add("CodeAnalysisRuleDirectories", null);
 			allowed.Add("CodeAnalysisRules", null);
@@ -513,6 +514,7 @@ namespace CCNet.ProjectChecker
 			allowed.Add("CodeAnalysisFailOnMissingRules", null);
 			allowed.Add("CodeAnalysisIgnoreBuiltInRules", null);
 			allowed.Add("CodeAnalysisIgnoreBuiltInRuleSets", null);
+			allowed.Add("CodeAnalysisIgnoreGeneratedCode", null);
 			allowed.Add("CodeAnalysisLogFile", null);
 			allowed.Add("CodeAnalysisRuleDirectories", null);
 			allowed.Add("CodeAnalysisRules", null);
