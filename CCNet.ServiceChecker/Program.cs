@@ -11,12 +11,12 @@ namespace CCNet.ServiceChecker
 	{
 		public static int Main(string[] args)
 		{
-			/*xxxargs = new[]F
+			/*xxxargs = new[]
 			{
-				@"ServiceName=RSDN Editor",
-				@"DisplayName=\\rufrt-vxbuild\e$\CCNET",
-				@"TargetFramework=",
-				@BinaryPathName
+				@"ServiceName=AggregatorService",
+				@"DisplayName=[SED] Aggregator Service",
+				@"TargetFramework=Net35",
+				@"BinaryPathName=C:\Users\Public\VSS\SED\TFS\Aggregator\AggregatorService\bin\Debug\AggregatorService.exe"
 			};*/
 
 			if (args == null || args.Length == 0)
@@ -96,7 +96,7 @@ namespace CCNet.ServiceChecker
 			if (displayName != Arguments.DisplayName)
 			{
 				message.AppendLine(
-					Errors.InvalidServiceName
+					Errors.InvalidDisplayName
 					.Display(
 						Arguments.DisplayName,
 						displayName));

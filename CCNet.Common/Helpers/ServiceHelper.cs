@@ -271,7 +271,8 @@ namespace CCNet.Common.Helpers
 			p.StartInfo.RedirectStandardError = !runAsAdministrator;
 			if (runAsAdministrator)
 			{
-				p.StartInfo.Verb = "runas";
+				//xxx discuss the right option
+				//p.StartInfo.Verb = "runas";
 			}
 
 			return p;
