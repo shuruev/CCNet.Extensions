@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="ServiceHelperTest.cs" />
     <Compile Include="ServiceTransactionTest.cs" />
+    <Compile Include="TestHelper.cs" />
     <EmbeddedResource Include="Services\WindowsService1.cs">
       <SubType>Component</SubType>
     </EmbeddedResource>

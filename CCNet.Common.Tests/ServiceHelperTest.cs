@@ -20,35 +20,22 @@ namespace CCNet.Common.Tests
 			Path.GetDirectoryName(
 				Assembly.GetExecutingAssembly().Location);
 
-		/// <summary>
-		/// Initializes test environment.
-		/// </summary>
 		[TestInitialize]
 		public void TestInitialize()
 		{
 			Cleanup();
 		}
 
-		/// <summary>
-		/// Disposes test environment.
-		/// </summary>
 		[TestCleanup]
 		public void TestCleanup()
 		{
 			Cleanup();
 		}
 
-		/// <summary>
-		/// Gets or sets the test context which provides
-		/// information about and functionality for the current test run.
-		/// </summary>
 		public TestContext TestContext { get; set; }
 
-		/// <summary>
-		/// Tests ParseServicesOutput method.
-		/// </summary>
 		[TestMethod]
-		public void ParseServicesOutputTest()
+		public void Parsing_Of_Sc_Query_Output()
 		{
 			string output = Resources.ScQueryOutput;
 			HashSet<ServiceItem> expected = new HashSet<ServiceItem>
@@ -76,11 +63,8 @@ namespace CCNet.Common.Tests
 			Assert.IsTrue(expected.IsSupersetOf(actual));
 		}
 
-		/// <summary>
-		/// Tests ParseServiceBinaryPathName method.
-		/// </summary>
 		[TestMethod]
-		public void ParseServiceBinaryPathNameTest()
+		public void Parsing_Of_Sc_Qc_Output()
 		{
 			string expected = @"C:\Windows\system32\svchost.exe";
 			string actual = ServiceHelper_Accessor.ParseServiceBinaryPathName(Resources.ScQcWudfsvcOutput);
@@ -97,14 +81,11 @@ namespace CCNet.Common.Tests
 				actual);
 		}
 
-		/// <summary>
-		/// Tests CreateConsoleCall method.
-		/// </summary>
 		[TestMethod]
-		public void CreateConsoleCallTest()
+		public void Custom_Process_Creation()
 		{
 			Process p =
-				ServiceHelper_Accessor.CreateConsoleCall(
+				ServiceHelper_Accessor.CreateCustomProcess(
 					"cmd.exe",
 					null);
 
@@ -116,22 +97,16 @@ namespace CCNet.Common.Tests
 			Assert.IsTrue(output.StartsWith("Microsoft Windows"));
 		}
 
-		/// <summary>
-		/// Tests GetInstalledServices method.
-		/// </summary>
 		[TestMethod]
-		public void GetInstalledServicesTest()
+		public void Getting_Installed_Services()
 		{
 			var services = ServiceHelper_Accessor.GetInstalledServices();
 			Assert.IsNotNull(services);
 			Assert.IsTrue(services.Count > 0);
 		}
 
-		/// <summary>
-		/// Tests GetInstalledServiceBinaryPathName method.
-		/// </summary>
 		[TestMethod]
-		public void GetInstalledServiceBinaryPathNameTest()
+		public void Getting_Binary_File_Name_Of_Installed_Service()
 		{
 			string systemRoot = Environment.GetEnvironmentVariable("SystemRoot");
 
@@ -152,12 +127,8 @@ namespace CCNet.Common.Tests
 				actual);
 		}
 
-		/// <summary>
-		/// Tests InstallService and UninstallService methods
-		/// (single service instance, .NET Framework v4.0.30319).
-		/// </summary>
 		[TestMethod]
-		public void InstallUninstallServiceSingle4Test()
+		public void Installing_And_Uninstalling_Single_Service_NET_4()
 		{
 			const TargetFramework targetFramework = TargetFramework.Net40;
 
@@ -206,12 +177,8 @@ namespace CCNet.Common.Tests
 			File.Delete(binaryPathName);
 		}
 
-		/// <summary>
-		/// Tests InstallService and UninstallService methods
-		/// (single service instance, .NET Framework v2.0.50727).
-		/// </summary>
 		[TestMethod]
-		public void InstallUninstallServiceSingle2Test()
+		public void Installing_And_Uninstalling_Single_Service_NET_2()
 		{
 			const TargetFramework targetFramework = TargetFramework.Net20;
 
@@ -260,12 +227,8 @@ namespace CCNet.Common.Tests
 			File.Delete(binaryPathName);
 		}
 
-		/// <summary>
-		/// Tests InstallService and UninstallService methods
-		/// (double service instance, .NET Framework v4.0.30319).
-		/// </summary>
 		[TestMethod]
-		public void InstallUninstallServiceDouble4Test()
+		public void Installing_And_Uninstalling_Multiple_Service_NET_4()
 		{
 			const TargetFramework targetFramework = TargetFramework.Net40;
 
@@ -332,12 +295,8 @@ namespace CCNet.Common.Tests
 			File.Delete(binaryPathName);
 		}
 
-		/// <summary>
-		/// Tests InstallService and UninstallService methods
-		/// (double service instance, .NET Framework v2.0.50727).
-		/// </summary>
 		[TestMethod]
-		public void InstallUninstallServiceDouble2Test()
+		public void Installing_And_Uninstalling_Multiple_Service_NET_2()
 		{
 			const TargetFramework targetFramework = TargetFramework.Net20;
 
@@ -392,7 +351,7 @@ namespace CCNet.Common.Tests
 		/// Tests GetServiceItemList method.
 		/// </summary>
 		[TestMethod]
-		public void GetServiceItemListTest()
+		public void Getting_Services_Info_From_Binary_File()
 		{
 			const TargetFramework targetFramework = TargetFramework.Net40;
 
@@ -455,7 +414,7 @@ namespace CCNet.Common.Tests
 		/// Tests DeletePreviouslyInstalledServices method.
 		/// </summary>
 		[TestMethod]
-		public void DeletePreviouslyInstalledServicesTest()
+		public void Deleting_Service_Using_Uncommited_Transaction_Info()
 		{
 			string binaryPathName = Path.Combine(
 				s_basePath,
@@ -522,12 +481,13 @@ namespace CCNet.Common.Tests
 				tempCsFilePathName,
 				codeData);
 
-			Process p = ServiceHelper_Accessor.CreateConsoleCall(
-				cscExePathName,
-				string.Format(
-					"/optimize \"/out:{0}\" \"{1}\"",
-					outputFilePathName,
-					tempCsFilePathName));
+			Process p =
+				ServiceHelper_Accessor.CreateCustomProcess(
+					cscExePathName,
+					string.Format(
+						"/optimize \"/out:{0}\" \"{1}\"",
+						outputFilePathName,
+						tempCsFilePathName));
 
 			p.Start();
 			p.StandardOutput.ReadToEnd();

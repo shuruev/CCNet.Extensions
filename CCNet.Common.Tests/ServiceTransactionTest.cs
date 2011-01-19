@@ -8,16 +8,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CCNet.Common.Tests
 {
 	/// <summary>
-	/// This is a test class for ServiceTransactionTest and is intended
-	/// to contain all ServiceTransactionTest Unit Tests.
+	/// Tests ServiceTransaction class.
 	/// </summary>
 	[TestClass]
 	public class ServiceTransactionTest
 	{
-		/// <summary>
-		/// Gets or sets the test context which provides
-		/// information about and functionality for the current test run.
-		/// </summary>
 		public TestContext TestContext { get; set; }
 
 		/// <summary>
@@ -29,20 +24,13 @@ namespace CCNet.Common.Tests
 			Cleanup();
 		}
 
-		/// <summary>
-		/// Disposes test environment.
-		/// </summary>
 		[TestCleanup]
 		public void TestCleanup()
 		{
 			Cleanup();
 		}
 
-		/// <summary>
-		/// Tests Begin method (success).
-		/// </summary>
-		[TestMethod]
-		public void BeginSuccessTest()
+		public void Success_Begin()
 		{
 			List<ServiceItem> services = new List<ServiceItem>
 			{
@@ -70,11 +58,8 @@ namespace CCNet.Common.Tests
 				actual);
 		}
 
-		/// <summary>
-		/// Tests Begin method (failed).
-		/// </summary>
 		[TestMethod]
-		public void BeginFailedTest()
+		public void Failed_Begin()
 		{
 			File.WriteAllText(
 				ServiceTransaction.FilePathName,
@@ -91,28 +76,15 @@ namespace CCNet.Common.Tests
 				}
 			};
 
-			bool actual = false;
-			try
-			{
-				ServiceTransaction.Begin(services);
-			}
-			catch (InvalidOperationException)
-			{
-				actual = true;
-			}
-
-			Assert.AreEqual(
-				true,
-				actual);
+			TestHelper.Throws(() =>
+				ServiceTransaction.Begin(services),
+				typeof(InvalidOperationException));
 
 			File.Delete(ServiceTransaction.FilePathName);
 		}
 
-		/// <summary>
-		/// Tests Commit method (success).
-		/// </summary>
 		[TestMethod]
-		public void CommitSuccessTest()
+		public void Success_Commit()
 		{
 			File.WriteAllText(
 				ServiceTransaction.FilePathName,
@@ -127,32 +99,19 @@ namespace CCNet.Common.Tests
 				actual);
 		}
 
-		/// <summary>
-		/// Tests Commit method (failure).
-		/// </summary>
 		[TestMethod]
-		public void CommitFailureTest()
+		public void Failed_Commit()
 		{
-			bool thrown = false;
-			try
-			{
-				ServiceTransaction.Commit();
-			}
-			catch (InvalidOperationException)
-			{
-				thrown = true;
-			}
-
-			Assert.AreEqual(
-				true,
-				thrown);
+			TestHelper.Throws(
+				ServiceTransaction.Commit,
+				typeof(InvalidOperationException));
 		}
 
 		/// <summary>
 		/// Tests GetUncommited method.
 		/// </summary>
 		[TestMethod]
-		public void GetUncommitedTest()
+		public void Getting_Uncommited_Services()
 		{
 			File.WriteAllText(
 				ServiceTransaction.FilePathName,
