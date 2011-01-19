@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CNET Content Solutions")]
-[assembly: AssemblyProduct("CCNet.Common.Test")]
+[assembly: AssemblyProduct("CCNet.Common.Tests")]
 [assembly: AssemblyCopyright("Copyright © CNET Content Solutions 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

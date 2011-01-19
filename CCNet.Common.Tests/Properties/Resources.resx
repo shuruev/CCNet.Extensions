@@ -124,13 +124,9 @@
     &lt;ServiceName&gt;Test&lt;/ServiceName&gt;
     &lt;DisplayName&gt;Test Service&lt;/DisplayName&gt;
     &lt;BinaryPathName&gt;G:\test.exe&lt;/BinaryPathName&gt;
-    &lt;TargetFrameWork&gt;Net35&lt;/TargetFrameWork&gt;
+    &lt;TargetFramework&gt;Net35&lt;/TargetFramework&gt;
   &lt;/ServiceItem&gt;
 &lt;/ArrayOfServiceItem&gt;</value>
-  </data>
-  <data name="CommitInstalledServicesXmlFile" xml:space="preserve">
-    <value>&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;ArrayOfServiceItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" /&gt;</value>
   </data>
   <data name="ScQcWindowsService1Output" xml:space="preserve">
     <value>D:&gt;sc qc WindowsService1
@@ -201,8 +197,8 @@ C:\Program Files\Microsoft SDKs\Windows\v6.1&gt;</value>
   &lt;ServiceItem&gt;
     &lt;ServiceName&gt;WindowsService1&lt;/ServiceName&gt;
     &lt;DisplayName&gt;[Test] Windows Service #1&lt;/DisplayName&gt;
-    &lt;BinaryPathName&gt;D:\Mailbox\CCNet.Extensions\CCNet.Common.Test\bin\Debug\TestWindowsService.exe&lt;/BinaryPathName&gt;
-    &lt;TargetFrameWork&gt;Net20&lt;/TargetFrameWork&gt;
+    &lt;BinaryPathName&gt;{0}&lt;/BinaryPathName&gt;
+    &lt;TargetFramework&gt;Net20&lt;/TargetFramework&gt;
   &lt;/ServiceItem&gt;
 &lt;/ArrayOfServiceItem&gt;</value>
   </data>

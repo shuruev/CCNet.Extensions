@@ -79,7 +79,7 @@ namespace CCNet.ServiceChecker.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Service project should implement only one service instnance. Current number is &quot;{0}&quot;.
+        ///   Looks up a localized string similar to Service project should implement only one service instnance. Currently it implements {0}..
         /// </summary>
         internal static string WrongNumberOfServices {
             get {

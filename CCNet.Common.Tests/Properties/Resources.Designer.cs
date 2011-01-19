@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CCNet.Common.Test.Properties {
+namespace CCNet.Common.Tests.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace CCNet.Common.Test.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CCNet.Common.Test.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CCNet.Common.Tests.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -67,23 +67,13 @@ namespace CCNet.Common.Test.Properties {
         ///    &lt;ServiceName&gt;Test&lt;/ServiceName&gt;
         ///    &lt;DisplayName&gt;Test Service&lt;/DisplayName&gt;
         ///    &lt;BinaryPathName&gt;G:\test.exe&lt;/BinaryPathName&gt;
-        ///    &lt;TargetFrameWork&gt;Net35&lt;/TargetFrameWork&gt;
+        ///    &lt;TargetFramework&gt;Net35&lt;/TargetFramework&gt;
         ///  &lt;/ServiceItem&gt;
         ///&lt;/ArrayOfServiceItem&gt;.
         /// </summary>
         internal static string BeginInstalledServicesXmlFile {
             get {
                 return ResourceManager.GetString("BeginInstalledServicesXmlFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        ///&lt;ArrayOfServiceItem xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; /&gt;.
-        /// </summary>
-        internal static string CommitInstalledServicesXmlFile {
-            get {
-                return ResourceManager.GetString("CommitInstalledServicesXmlFile", resourceCulture);
             }
         }
         
@@ -157,8 +147,8 @@ namespace CCNet.Common.Test.Properties {
         ///  &lt;ServiceItem&gt;
         ///    &lt;ServiceName&gt;WindowsService1&lt;/ServiceName&gt;
         ///    &lt;DisplayName&gt;[Test] Windows Service #1&lt;/DisplayName&gt;
-        ///    &lt;BinaryPathName&gt;D:\Mailbox\CCNet.Extensions\CCNet.Common.Test\bin\Debug\TestWindowsService.exe&lt;/BinaryPathName&gt;
-        ///    &lt;TargetFrameWork&gt;Net20&lt;/TargetFrameWork&gt;
+        ///    &lt;BinaryPathName&gt;{0}&lt;/BinaryPathName&gt;
+        ///    &lt;TargetFramework&gt;Net20&lt;/TargetFramework&gt;
         ///  &lt;/ServiceItem&gt;
         ///&lt;/ArrayOfServiceItem&gt;.
         /// </summary>
@@ -169,31 +159,23 @@ namespace CCNet.Common.Test.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to using System.ComponentModel;
+        ///   Looks up a localized string similar to //------------------------------------------------------------------------------
+        ///// &lt;auto-generated&gt;
+        /////     This code is for run time compilation.
+        ///// &lt;/auto-generated&gt;
+        /////------------------------------------------------------------------------------
+        ///
+        ///using System.ComponentModel;
         ///using System.Configuration.Install;
         ///using System.ServiceProcess;
         ///
-        ///namespace CCNet.Common.Test.Services1
+        ///namespace CCNet.Common.Tests.Services1
         ///{
-        ///	static class Program
+        ///	public static class Program
         ///	{
         ///		/// &lt;summary&gt;
         ///		/// The main entry point for the application.
-        ///		/// &lt;/summary&gt;
-        ///		static void Main()
-        ///		{
-        ///			ServiceBase[] servicesToRun = new ServiceBase[]
-        ///			{ 
-        ///				new WindowsService1() 
-        ///			};
-        ///			ServiceBase.Run(servicesToRun);
-        ///		}
-        ///	}
-        ///
-        ///	/// &lt;summary&gt;
-        ///	/// Installer of single service in one binary assembly.
-        ///	/// &lt;/summary&gt;
-        ///	 [rest of string was truncated]&quot;;.
+        ///		/// &lt;/summar [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string WindowsService1 {
             get {
@@ -202,30 +184,23 @@ namespace CCNet.Common.Test.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to using System.ComponentModel;
+        ///   Looks up a localized string similar to //------------------------------------------------------------------------------
+        ///// &lt;auto-generated&gt;
+        /////     This code is for run time compilation.
+        ///// &lt;/auto-generated&gt;
+        /////------------------------------------------------------------------------------
+        ///
+        ///using System.ComponentModel;
         ///using System.Configuration.Install;
         ///using System.ServiceProcess;
         ///
-        ///namespace CCNet.Common.Test.Services2
+        ///namespace CCNet.Common.Tests.Services2
         ///{
-        ///	static class Program
+        ///	public static class Program
         ///	{
         ///		/// &lt;summary&gt;
         ///		/// The main entry point for the application.
-        ///		/// &lt;/summary&gt;
-        ///		static void Main()
-        ///		{
-        ///			ServiceBase[] servicesToRun = new ServiceBase[] 
-        ///			{
-        ///				new WindowsService2A(),
-        ///				new WindowsService2B()
-        ///			};
-        ///			ServiceBase.Run(servicesToRun);
-        ///		}
-        ///	}
-        ///
-        ///	/// &lt;summary&gt;
-        ///	/// Installer of two services in one binary as [rest of string was truncated]&quot;;.
+        ///		/// &lt;/summar [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string WindowsService2 {
             get {

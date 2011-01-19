@@ -8,7 +8,7 @@ using System.ComponentModel;
 using System.Configuration.Install;
 using System.ServiceProcess;
 
-namespace CCNet.Common.Test.Services1
+namespace CCNet.Common.Tests.Services1
 {
 	public static class Program
 	{

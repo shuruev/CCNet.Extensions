@@ -107,6 +107,42 @@ namespace CCNet.Common.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service install process failed. Binary path: &quot;{0}&quot;..
+        /// </summary>
+        internal static string ServiceInstallError {
+            get {
+                return ResourceManager.GetString("ServiceInstallError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service uninstall process failed. Binary path: &quot;{0}&quot;..
+        /// </summary>
+        internal static string ServiceUninstallError {
+            get {
+                return ResourceManager.GetString("ServiceUninstallError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transaction file was not found..
+        /// </summary>
+        internal static string TransactionFileNotFound {
+            get {
+                return ResourceManager.GetString("TransactionFileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unclosed transaction file was found. You cannot open another transaction before closing current..
+        /// </summary>
+        internal static string UnclosedTransactionFileFound {
+            get {
+                return ResourceManager.GetString("UnclosedTransactionFileFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to - found unexpected entry &quot;{0}&quot;.
         /// </summary>
         internal static string UnexpectedEntry {

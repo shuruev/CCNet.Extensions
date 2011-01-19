@@ -9,8 +9,8 @@
     <ProjectGuid>{4E6AD2C7-7C0B-4B24-9B9D-1CCA5AF7087C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CCNet.Common.Test</RootNamespace>
-    <AssemblyName>CCNet.Common.Test</AssemblyName>
+    <RootNamespace>CCNet.Common.Tests</RootNamespace>
+    <AssemblyName>CCNet.Common.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

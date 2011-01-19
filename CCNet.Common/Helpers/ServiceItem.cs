@@ -26,15 +26,11 @@ namespace CCNet.Common.Helpers
 		/// <summary>
 		/// Gets or sets target framework version.
 		/// </summary>
-		public TargetFramework TargetFrameWork { get; set; }
+		public TargetFramework TargetFramework { get; set; }
 
 		/// <summary>
 		/// Indicates whether the current object is equal to another object of the same type.
 		/// </summary>
-		/// <returns>
-		/// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-		/// </returns>
-		/// <param name="other">An object to compare with this object.</param>
 		public bool Equals(ServiceItem other)
 		{
 			if (ReferenceEquals(null, other))
@@ -44,7 +40,7 @@ namespace CCNet.Common.Helpers
 			return Equals(other.ServiceName, ServiceName)
 				&& Equals(other.DisplayName, DisplayName)
 				&& Equals(other.BinaryPathName, BinaryPathName)
-				&& Equals(other.TargetFrameWork, TargetFrameWork);
+				&& Equals(other.TargetFramework, TargetFramework);
 		}
 
 		/// <summary>
@@ -56,9 +52,8 @@ namespace CCNet.Common.Helpers
 				return false;
 			if (ReferenceEquals(this, obj))
 				return true;
-			if (obj.GetType() != typeof(ServiceItem))
-				return false;
-			return Equals((ServiceItem)obj);
+			return obj.GetType() == typeof(ServiceItem)
+				&& Equals((ServiceItem)obj);
 		}
 
 		/// <summary>
@@ -71,15 +66,21 @@ namespace CCNet.Common.Helpers
 				return (ServiceName != null ? ServiceName.GetHashCode() : 0)
 					^ (DisplayName != null ? DisplayName.GetHashCode() : 0)
 					^ (BinaryPathName != null ? BinaryPathName.GetHashCode() : 0)
-					^ (int)TargetFrameWork;
+					^ (int)TargetFramework;
 			}
 		}
 
+		/// <summary>
+		/// Equal operation.
+		/// </summary>
 		public static bool operator ==(ServiceItem left, ServiceItem right)
 		{
 			return Equals(left, right);
 		}
 
+		/// <summary>
+		/// Non-equal operation.
+		/// </summary>
 		public static bool operator !=(ServiceItem left, ServiceItem right)
 		{
 			return !Equals(left, right);

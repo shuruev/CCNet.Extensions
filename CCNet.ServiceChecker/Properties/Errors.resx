@@ -124,7 +124,7 @@
     <value>- service name is supposed to have value "{0}", but now it is "{1}"</value>
   </data>
   <data name="WrongNumberOfServices" xml:space="preserve">
-    <value>Service project should implement only one service instnance. Current number is "{0}"</value>
+    <value>Service project should implement only one service instnance. Currently it implements {0}.</value>
   </data>
   <data name="WrongServiceItem" xml:space="preserve">
     <value>Some service properties seem not to conform the agreements:

@@ -5,10 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using CCNet.Common.Helpers;
-using CCNet.Common.Test.Properties;
+using CCNet.Common.Tests.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CCNet.Common.Test
+namespace CCNet.Common.Tests
 {
 	/// <summary>
 	/// Tests ServiceHelper class.
@@ -19,6 +19,24 @@ namespace CCNet.Common.Test
 		private static readonly string s_basePath =
 			Path.GetDirectoryName(
 				Assembly.GetExecutingAssembly().Location);
+
+		/// <summary>
+		/// Initializes test environment.
+		/// </summary>
+		[TestInitialize]
+		public void TestInitialize()
+		{
+			Cleanup();
+		}
+
+		/// <summary>
+		/// Disposes test environment.
+		/// </summary>
+		[TestCleanup]
+		public void TestCleanup()
+		{
+			Cleanup();
+		}
 
 		/// <summary>
 		/// Gets or sets the test context which provides
@@ -156,11 +174,9 @@ namespace CCNet.Common.Test
 
 			var services1 = ServiceHelper_Accessor.GetInstalledServices();
 
-			ok = ServiceHelper_Accessor.InstallService(
+			ServiceHelper_Accessor.InstallService(
 				targetFramework,
 				binaryPathName);
-
-			Assert.IsTrue(ok);
 
 			var services2 = ServiceHelper_Accessor.GetInstalledServices();
 			services2.ExceptWith(services1);
@@ -183,11 +199,9 @@ namespace CCNet.Common.Test
 
 			Assert.AreEqual(binaryPathName, actualBinaryPathName);
 
-			ok = ServiceHelper_Accessor.UninstallService(
+			ServiceHelper_Accessor.UninstallService(
 				targetFramework,
 				binaryPathName);
-
-			Assert.IsTrue(ok);
 
 			File.Delete(binaryPathName);
 		}
@@ -214,11 +228,9 @@ namespace CCNet.Common.Test
 
 			var services1 = ServiceHelper_Accessor.GetInstalledServices();
 
-			ok = ServiceHelper_Accessor.InstallService(
+			ServiceHelper_Accessor.InstallService(
 				targetFramework,
 				binaryPathName);
-
-			Assert.IsTrue(ok);
 
 			var services2 = ServiceHelper_Accessor.GetInstalledServices();
 			services2.ExceptWith(services1);
@@ -241,11 +253,9 @@ namespace CCNet.Common.Test
 				binaryPathName,
 				actualBinaryPathName);
 
-			ok = ServiceHelper_Accessor.UninstallService(
+			ServiceHelper_Accessor.UninstallService(
 				targetFramework,
 				binaryPathName);
-
-			Assert.IsTrue(ok);
 
 			File.Delete(binaryPathName);
 		}
@@ -272,7 +282,7 @@ namespace CCNet.Common.Test
 
 			var services1 = ServiceHelper_Accessor.GetInstalledServices();
 
-			ok = ServiceHelper_Accessor.InstallService(
+			ServiceHelper_Accessor.InstallService(
 				targetFramework,
 				binaryPathName);
 
@@ -315,11 +325,9 @@ namespace CCNet.Common.Test
 				binaryPathName,
 				actualBinaryPathNameB);
 
-			ok = ServiceHelper_Accessor.UninstallService(
+			ServiceHelper_Accessor.UninstallService(
 				targetFramework,
 				binaryPathName);
-
-			Assert.IsTrue(ok);
 
 			File.Delete(binaryPathName);
 		}
@@ -346,11 +354,9 @@ namespace CCNet.Common.Test
 
 			var services1 = ServiceHelper_Accessor.GetInstalledServices();
 
-			ok = ServiceHelper_Accessor.InstallService(
+			ServiceHelper_Accessor.InstallService(
 				targetFramework,
 				binaryPathName);
-
-			Assert.IsTrue(ok);
 
 			var services2 = ServiceHelper_Accessor.GetInstalledServices();
 			services2.ExceptWith(services1);
@@ -375,11 +381,9 @@ namespace CCNet.Common.Test
 
 			Assert.AreEqual(binaryPathName, actualBinaryPathNameB);
 
-			ok = ServiceHelper_Accessor.UninstallService(
+			ServiceHelper_Accessor.UninstallService(
 				targetFramework,
 				binaryPathName);
-
-			Assert.IsTrue(ok);
 
 			File.Delete(binaryPathName);
 		}
@@ -425,7 +429,7 @@ namespace CCNet.Common.Test
 
 			Assert.AreEqual(
 				targetFramework,
-				serviceItemA.TargetFrameWork);
+				serviceItemA.TargetFramework);
 
 			ServiceItem serviceItemB = services[1];
 
@@ -442,7 +446,7 @@ namespace CCNet.Common.Test
 
 			Assert.AreEqual(
 				targetFramework,
-				serviceItemB.TargetFrameWork);
+				serviceItemB.TargetFramework);
 
 			File.Delete(binaryPathName);
 		}
@@ -453,18 +457,20 @@ namespace CCNet.Common.Test
 		[TestMethod]
 		public void DeletePreviouslyInstalledServicesTest()
 		{
+			string binaryPathName = Path.Combine(
+				s_basePath,
+				"TestWindowsService.exe");
+
 			// create log file
 			string log = ServiceTransaction.FilePathName;
 			File.WriteAllText(
 				log,
-				Resources.UncommitedInstalledServicesXmlFile);
+				string.Format(
+					Resources.UncommitedInstalledServicesXmlFile,
+					binaryPathName));
 
 			// install service
 			const TargetFramework targetFramework = TargetFramework.Net20;
-
-			string binaryPathName = Path.Combine(
-				s_basePath,
-				"TestWindowsService.exe");
 
 			bool ok = CompileDynamic(
 				Resources.WindowsService1,
@@ -473,11 +479,9 @@ namespace CCNet.Common.Test
 
 			Assert.IsTrue(ok);
 
-			ok = ServiceHelper_Accessor.InstallService(
+			ServiceHelper_Accessor.InstallService(
 				targetFramework,
 				binaryPathName);
-
-			Assert.IsTrue(ok);
 
 			// ensure in successfully installation
 			string actualBinaryPath =
@@ -498,7 +502,7 @@ namespace CCNet.Common.Test
 		}
 
 		/// <summary>
-		/// Help method for tests.
+		/// Compiles C# code in run time.
 		/// </summary>
 		private static bool CompileDynamic(
 			string codeData,
@@ -531,6 +535,73 @@ namespace CCNet.Common.Test
 			File.Delete(tempCsFilePathName);
 
 			return p.ExitCode == 0;
+		}
+
+		/// <summary>
+		/// Performs test cleanup.
+		/// </summary>
+		private static void Cleanup()
+		{
+			if (File.Exists(ServiceTransaction.FilePathName))
+			{
+				File.Delete(ServiceTransaction.FilePathName);
+			}
+
+			var sourceCodes = new Dictionary<string, string>
+			{
+				{ "WindowsService1", Resources.WindowsService1 },
+				{ "WindowsService2a", Resources.WindowsService2 },
+				{ "WindowsService2b", Resources.WindowsService2 }
+			};
+
+			var services =
+				ServiceHelper_Accessor.GetInstalledServices()
+					.Where(p => sourceCodes.Keys.Contains(p.ServiceName));
+
+			foreach (var service in services)
+			{
+				service.TargetFramework =
+					TargetFramework.Net40;
+				service.BinaryPathName =
+					ServiceHelper_Accessor.GetInstalledServiceBinaryPathName(service.ServiceName);
+
+				CleanupServiceInstallation(
+					service,
+					sourceCodes[service.ServiceName]);
+			}
+		}
+
+		/// <summary>
+		/// Uninstalls service.
+		/// </summary>
+		private static void CleanupServiceInstallation(
+			ServiceItem service,
+			string sourceCode)
+		{
+			if (File.Exists(service.BinaryPathName))
+			{
+				File.Delete(service.BinaryPathName);
+			}
+
+			CompileDynamic(
+				sourceCode,
+				service.BinaryPathName,
+				"v4.0.30319");
+
+			try
+			{
+				ServiceHelper_Accessor.UninstallService(
+					service.TargetFramework,
+					service.BinaryPathName);
+			}
+			catch (InvalidOperationException)
+			{
+			}
+
+			if (File.Exists(service.BinaryPathName))
+			{
+				File.Delete(service.BinaryPathName);
+			}
 		}
 	}
 }
