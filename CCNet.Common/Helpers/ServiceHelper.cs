@@ -89,7 +89,7 @@ namespace CCNet.Common.Helpers
 		/// </summary>
 		private static string GetInstalledServiceBinaryPathName(string serviceName)
 		{
-			Process p = CreateConsoleCall(
+			Process p = CreateCustomProcess(
 				"sc",
 				string.Format(
 					"qc {0}",
@@ -114,7 +114,7 @@ namespace CCNet.Common.Helpers
 		/// </summary>
 		private static HashSet<ServiceItem> GetInstalledServices()
 		{
-			Process p = CreateConsoleCall(
+			Process p = CreateCustomProcess(
 				"sc",
 				"query state= all");
 
@@ -189,7 +189,7 @@ namespace CCNet.Common.Helpers
 					break;
 			}
 
-			Process p = CreateConsoleCall(
+			Process p = CreateCustomProcess(
 				installUtilPath,
 				string.Format(
 					"\"{0}\"",
@@ -230,7 +230,7 @@ namespace CCNet.Common.Helpers
 					break;
 			}
 
-			Process p = CreateConsoleCall(
+			Process p = CreateCustomProcess(
 				installUtilPath,
 				string.Format(
 					"/u \"{0}\"",
@@ -253,9 +253,9 @@ namespace CCNet.Common.Helpers
 		}
 
 		/// <summary>
-		/// Creates a process.
+		/// Creates process with custom settings.
 		/// </summary>
-		private static Process CreateConsoleCall(
+		private static Process CreateCustomProcess(
 			string command,
 			string arguments,
 			bool runAsAdministrator = false)
