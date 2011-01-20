@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Coverage2Xml", "CCNet.Coverage2Xml\CCNet.Coverage2Xml.csproj", "{CDECBD1F-94C5-4945-83CC-786AB77ADFBB}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = CCNet.Extensions.vsmdi
@@ -93,6 +95,16 @@ Global
 		{D792F3A8-BDBD-4BEB-B916-A88478AE805E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D792F3A8-BDBD-4BEB-B916-A88478AE805E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D792F3A8-BDBD-4BEB-B916-A88478AE805E}.Release|x86.ActiveCfg = Release|Any CPU
+		{CDECBD1F-94C5-4945-83CC-786AB77ADFBB}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{CDECBD1F-94C5-4945-83CC-786AB77ADFBB}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{CDECBD1F-94C5-4945-83CC-786AB77ADFBB}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{CDECBD1F-94C5-4945-83CC-786AB77ADFBB}.Debug|x86.ActiveCfg = Debug|x86
+		{CDECBD1F-94C5-4945-83CC-786AB77ADFBB}.Debug|x86.Build.0 = Debug|x86
+		{CDECBD1F-94C5-4945-83CC-786AB77ADFBB}.Release|Any CPU.ActiveCfg = Release|x86
+		{CDECBD1F-94C5-4945-83CC-786AB77ADFBB}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{CDECBD1F-94C5-4945-83CC-786AB77ADFBB}.Release|Mixed Platforms.Build.0 = Release|x86
+		{CDECBD1F-94C5-4945-83CC-786AB77ADFBB}.Release|x86.ActiveCfg = Release|x86
+		{CDECBD1F-94C5-4945-83CC-786AB77ADFBB}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
