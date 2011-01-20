@@ -25,7 +25,9 @@ EndProject
 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Common.Tests", "CCNet.Common.Tests\CCNet.Common.Tests.csproj", "{4E6AD2C7-7C0B-4B24-9B9D-1CCA5AF7087C}"
 
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Coverage2Xml", "CCNet.Coverage2Xml\CCNet.Coverage2Xml.csproj", "{CDECBD1F-94C5-4945-83CC-786AB77ADFBB}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = CCNet.Extensions.vsmdi
