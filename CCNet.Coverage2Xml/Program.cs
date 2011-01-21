@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -34,6 +35,7 @@ namespace CCNet.Coverage2Xml
 					string outputXml = Transform(data.GetXml());
 
 					XDocument doc = XDocument.Parse(outputXml);
+					ShortenMethodNames(doc);
 					File.WriteAllText(Arguments.XmlCoverageFile, doc.ToString());
 				}
 			}
@@ -78,6 +80,19 @@ namespace CCNet.Coverage2Xml
 			}
 
 			return resultXml.ToString();
+		}
+
+		/// <summary>
+		/// Shortens arguments in method names.
+		/// </summary>
+		private static void ShortenMethodNames(XDocument doc)
+		{
+			foreach (var methodNameNode in doc.Descendants("MethodName"))
+			{
+				methodNameNode.Value = methodNameNode.Value
+					.RemoveWrongSymbols()
+					.ShortenMethodName();
+			}
 		}
 	}
 }
