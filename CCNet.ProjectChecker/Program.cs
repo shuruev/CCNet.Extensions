@@ -662,6 +662,13 @@ namespace CCNet.ProjectChecker
 			string[] lines = File.ReadAllLines(Paths.AssemblyInfoFile);
 
 			Dictionary<string, string> properties = PropertiesHelper.ParseFromAssemblyInfo(lines);
+			if (properties.ContainsKey("AssemblyCopyright"))
+			{
+				properties["AssemblyCopyright"] = properties["AssemblyCopyright"].Replace(
+						"Copyright © CNET Content Solutions 2010",
+						"Copyright © CNET Content Solutions 2011");
+			}
+
 			Dictionary<string, string> required = new Dictionary<string, string>();
 			Dictionary<string, string> allowed = new Dictionary<string, string>();
 
@@ -682,7 +689,7 @@ namespace CCNet.ProjectChecker
 			required.Add("AssemblyDescription", String.Empty);
 			required.Add("AssemblyConfiguration", String.Empty);
 			required.Add("AssemblyCompany", "CNET Content Solutions");
-			required.Add("AssemblyCopyright", "Copyright © CNET Content Solutions 2010");
+			required.Add("AssemblyCopyright", "Copyright © CNET Content Solutions 2011");
 			required.Add("AssemblyTrademark", String.Empty);
 			required.Add("AssemblyCulture", String.Empty);
 			required.Add("AssemblyVersion", Arguments.ExpectedVersion);
@@ -937,15 +944,20 @@ namespace CCNet.ProjectChecker
 			StringBuilder message = new StringBuilder();
 
 			List<string> forbidden = new List<string>();
+			forbidden.Add("app.config");
 			forbidden.Add("ivy.xml");
+			forbidden.Add("Local.testsettings");
 			forbidden.Add("publish.bat");
 			forbidden.Add("publish.cmd");
-			forbidden.Add("Web.Debug.config");
-			forbidden.Add("Web.Release.config");
-			forbidden.Add("Local.testsettings");
-			forbidden.Add("app.config");
+			forbidden.Add("Restart.bat");
+			forbidden.Add("Register.bat");
+			forbidden.Add("Start.bat");
+			forbidden.Add("Stop.bat");
+			forbidden.Add("UnRegister.bat");
 			forbidden.Add("web.config");
 			forbidden.Add("web.config.default");
+			forbidden.Add("Web.Debug.config");
+			forbidden.Add("Web.Release.config");
 
 			List<string> items = ProjectHelper.GetProjectItems()
 				.Select(item => Path.GetFileName(item.FullName))
