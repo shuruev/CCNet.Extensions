@@ -55,7 +55,7 @@ namespace CCNet.Coverage2Xml
 			Console.WriteLine(Resources.UsageInfo);
 			Console.WriteLine();
 		}
-		
+
 		/// <summary>
 		/// Deletes unnecessary sections.
 		/// </summary>
