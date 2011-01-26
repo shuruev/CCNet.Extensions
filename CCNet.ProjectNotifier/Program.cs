@@ -18,12 +18,12 @@ namespace CCNet.ProjectNotifier
 		/// </summary>
 		public static int Main(string[] args)
 		{
-			/*xxxargs = new[]
+			args = new[]
 			{
-				@"ProjectName=VXStorage",
+				@"ProjectName=RSDN Editor",
 				@"RootPath=\\rufrt-vxbuild\e$\CCNET",
 				@"ReferencesFolderName=References",
-			};*/
+			};
 
 			if (args == null || args.Length == 0)
 			{
@@ -67,11 +67,14 @@ namespace CCNet.ProjectNotifier
 			{
 				string projectName = Path.GetFileName(projectFolder);
 				string referencesDirectory = Path.Combine(projectFolder, Arguments.ReferencesFolderName);
-				List<string> references = ReferenceMark.GetCurrent(ReferenceType.Internal, referencesDirectory);
 
 				graph.AddVerticesAndEdgeRange(
-					references.Select(
-						referenceName => new Edge<string>(referenceName, projectName)));
+					ReferenceMark.GetCurrent(ReferenceType.Internal, referencesDirectory)
+					.Select(referenceName => new Edge<string>(referenceName, projectName)));
+
+				graph.AddVerticesAndEdgeRange(
+					ReferenceMark.GetCurrent(ReferenceType.External, referencesDirectory)
+					.Select(referenceName => new Edge<string>(referenceName, projectName)));
 			}
 
 			GraphHelper.RemoveExplicitEdges(graph);
