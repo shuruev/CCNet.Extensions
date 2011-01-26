@@ -18,12 +18,12 @@ namespace CCNet.ProjectNotifier
 		/// </summary>
 		public static int Main(string[] args)
 		{
-			args = new[]
+			/*xxxargs = new[]
 			{
 				@"ProjectName=RSDN Editor",
 				@"RootPath=\\rufrt-vxbuild\e$\CCNET",
 				@"ReferencesFolderName=References",
-			};
+			};*/
 
 			if (args == null || args.Length == 0)
 			{
