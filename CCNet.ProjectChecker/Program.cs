@@ -807,9 +807,11 @@ namespace CCNet.ProjectChecker
 			allowedGac.Add("System.Web.Entity");
 			allowedGac.Add("System.Web.Extensions");
 			allowedGac.Add("System.Web.Extensions.Design");
+			allowedGac.Add("System.Web.Helpers");
 			allowedGac.Add("System.Web.Mobile");
 			allowedGac.Add("System.Web.Routing");
 			allowedGac.Add("System.Web.Services");
+			allowedGac.Add("System.Web.WebPages");
 			allowedGac.Add("System.Windows.Forms");
 			allowedGac.Add("System.XML");
 			allowedGac.Add("System.Xml");
