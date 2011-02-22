@@ -23,6 +23,9 @@ namespace CCNet.Coverage2Xml
 		private static string ShortenInsideArguments(this string argument, char openBracket)
 		{
 			int bracketIndex = argument.IndexOf(openBracket);
+			if (bracketIndex == -1)
+				return argument;
+
 			string arguments = argument.Substring(bracketIndex + 1, argument.Length - bracketIndex - 2);
 			if (string.IsNullOrEmpty(arguments))
 				return argument;
