@@ -20,7 +20,7 @@ namespace CCNet.ProjectNotifier
 		{
 			/*xxxargs = new[]
 			{
-				@"ProjectName=RSDN Editor",
+				@"ProjectName=DS2VX.DataModel",
 				@"RootPath=\\rufrt-vxbuild\e$\CCNET",
 				@"ReferencesFolderName=References",
 			};*/
@@ -79,9 +79,12 @@ namespace CCNet.ProjectNotifier
 
 			GraphHelper.RemoveExplicitEdges(graph);
 
-			List<string> projectsToNotify = graph.OutEdges(Arguments.ProjectName)
-				.Select(edge => edge.Target)
-				.ToList();
+			List<string> projectsToNotify = new List<string>();
+			IEnumerable<Edge<string>> outEdges;
+			if (graph.TryGetOutEdges(Arguments.ProjectName, out outEdges))
+			{
+				projectsToNotify.AddRange(outEdges.Select(edge => edge.Target));
+			}
 
 			string fileName = ReferenceMark.GetReferenceMarkName(Arguments.ProjectName);
 			foreach (string file in Directory.GetFiles(Arguments.RootPath, fileName, SearchOption.AllDirectories))
