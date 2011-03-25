@@ -357,6 +357,7 @@ namespace CCNet.ProjectChecker
 
 			allowed.Add("TargetZone", null);
 			allowed.Add("UpgradeBackupLocation", null);
+			allowed.Add("UseIISExpress", null);
 			allowed.Add("Win32Resource", String.Empty);
 			allowed.Add("WebReference_EnableLegacyEventingModel", null);
 			allowed.Add("WebReference_EnableProperties", null);
@@ -960,6 +961,7 @@ namespace CCNet.ProjectChecker
 			forbidden.Add("web.config.default");
 			forbidden.Add("Web.Debug.config");
 			forbidden.Add("Web.Release.config");
+			forbidden.Add("DeploymentInstruction.txt");
 
 			List<string> items = ProjectHelper.GetProjectItems()
 				.Select(item => Path.GetFileName(item.FullName))
