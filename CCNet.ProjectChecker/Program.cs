@@ -776,6 +776,7 @@ namespace CCNet.ProjectChecker
 			allowedGac.Add("envdte80");
 			allowedGac.Add("Microsoft.Contracts");
 			allowedGac.Add("Microsoft.CSharp");
+			allowedGac.Add("Microsoft.JScript");
 			allowedGac.Add("Microsoft.mshtml");
 			allowedGac.Add("Microsoft.VisualStudio.QualityTools.UnitTestFramework");
 			allowedGac.Add("PresentationCore");
