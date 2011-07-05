@@ -22,38 +22,22 @@ namespace CCNet.ProjectChecker
 		{
 			/*xxxargs = new[]
 			{
-				@"ProjectName=VortexCommander",
-				@"ReferencesDirectory=\\rufrt-vxbuild\e$\CCNET\VortexCommander\References",
-				@"WorkingDirectorySource=\\rufrt-vxbuild\e$\CCNET\VortexCommander\WorkingDirectory\Source",
+				@"ProjectName=PDMMaintenanceTool",
+				@"ReferencesDirectory=\\rufrt-vxbuild\e$\CCNET\PDMMaintenanceTool\References",
+				@"WorkingDirectorySource=\\rufrt-vxbuild\e$\CCNET\PDMMaintenanceTool\WorkingDirectory\Source",
 				@"ExternalReferencesPath=\\rufrt-vxbuild\ExternalReferences",
 				@"InternalReferencesPath=\\rufrt-vxbuild\InternalReferences",
 				@"ProjectType=ClickOnce",
-				@"AssemblyName=VortexCommander",
-				@"FriendlyName=Vortex Commander",
+				@"AssemblyName=PDMMaintenanceTool",
+				@"FriendlyName=PDM Maintenance Tool",
 				@"DownloadZone=Public",
 				@"VisualStudioVersion=2010",
-				@"TargetFramework=Net20",
-				@"TargetPlatform=AnyCPU",
-				@"RootNamespace=VortexCommander",
+				@"TargetFramework=Net40",
+				@"TargetPlatform=x86",
+				@"RootNamespace=PDMMaintenanceTool",
 				@"SuppressWarnings=",
-				@"ExpectedVersion=1.0.0.0"
-			};*/
-
-			/*xxxargs = new[]
-			{
-				@"ProjectName=UDBClientLib",
-				@"ReferencesDirectory=\\rufrt-vxbuild\e$\CCNET\UDBClientLib\References",
-				@"WorkingDirectorySource=\\rufrt-vxbuild\e$\CCNET\UDBClientLib\WorkingDirectory\Source",
-				@"ExternalReferencesPath=\\rufrt-vxbuild\ExternalReferences",
-				@"InternalReferencesPath=\\rufrt-vxbuild\InternalReferences",
-				@"ProjectType=Library",
-				@"AssemblyName=UDBClientLib",
-				@"VisualStudioVersion=2008",
-				@"TargetFramework=Net20",
-				@"TargetPlatform=AnyCPU",
-				@"RootNamespace=VX.UDB",
-				@"SuppressWarnings=1591",
-				@"ExpectedVersion=1.0.0.0"
+				@"AllowUnsafeBlocks=False",
+				@"ExpectedVersion=1.0.*"
 			};*/
 
 			if (args == null || args.Length == 0)
@@ -342,6 +326,7 @@ namespace CCNet.ProjectChecker
 					break;
 			}
 
+			allowed.Add("SilverlightApplicationList", null);
 			allowed.Add("StartupObject", String.Empty);
 			allowed.Add("TargetFrameworkProfile", null);
 
@@ -791,6 +776,8 @@ namespace CCNet.ProjectChecker
 			allowedGac.Add("System.Data.DataSetExtensions");
 			allowedGac.Add("System.Data.Entity");
 			allowedGac.Add("System.Data.Linq");
+			allowedGac.Add("System.Data.Services");
+			allowedGac.Add("System.Data.Services.Client");
 			allowedGac.Add("System.Deployment");
 			allowedGac.Add("System.Design");
 			allowedGac.Add("System.Drawing");
@@ -803,6 +790,9 @@ namespace CCNet.ProjectChecker
 			allowedGac.Add("System.Security");
 			allowedGac.Add("System.ServiceModel");
 			allowedGac.Add("System.ServiceModel.Web");
+			allowedGac.Add("System.ServiceModel.DomainServices.EntityFramework");
+			allowedGac.Add("System.ServiceModel.DomainServices.Hosting");
+			allowedGac.Add("System.ServiceModel.DomainServices.Server");
 			allowedGac.Add("System.ServiceProcess");
 			allowedGac.Add("System.Transactions");
 			allowedGac.Add("System.Web");
@@ -818,6 +808,7 @@ namespace CCNet.ProjectChecker
 			allowedGac.Add("System.Web.Services");
 			allowedGac.Add("System.Web.WebPages");
 			allowedGac.Add("System.Windows.Forms");
+			allowedGac.Add("System.Xaml");
 			allowedGac.Add("System.XML");
 			allowedGac.Add("System.Xml");
 			allowedGac.Add("System.Xml.Linq");
@@ -846,6 +837,9 @@ namespace CCNet.ProjectChecker
 		{
 			List<string> exceptions = new List<string>();
 			exceptions.Add("Microsoft.VisualStudio.QualityTools.UnitTestFramework");
+			exceptions.Add("System.ServiceModel.DomainServices.EntityFramework");
+			exceptions.Add("System.ServiceModel.DomainServices.Hosting");
+			exceptions.Add("System.ServiceModel.DomainServices.Server");
 			exceptions.Add("System.Web.Mvc");
 
 			foreach (Reference reference in references)

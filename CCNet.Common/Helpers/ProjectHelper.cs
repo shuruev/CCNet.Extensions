@@ -341,6 +341,10 @@ namespace CCNet.Common
 			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:Compile").Cast<XmlNode>());
 			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:Content").Cast<XmlNode>());
 			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:EmbeddedResource").Cast<XmlNode>());
+			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:EntityDeploy").Cast<XmlNode>());
+			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:Resource").Cast<XmlNode>());
+			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:ApplicationDefinition").Cast<XmlNode>());
+			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:Page").Cast<XmlNode>());
 
 			return nodes.Select(GetProjectItem).ToList();
 		}
@@ -364,6 +368,18 @@ namespace CCNet.Common
 					break;
 				case "EmbeddedResource":
 					type = ProjectItemType.EmbeddedResource;
+					break;
+				case "EntityDeploy":
+					type = ProjectItemType.EntityDeploy;
+					break;
+				case "Resource":
+					type = ProjectItemType.Resource;
+					break;
+				case "ApplicationDefinition":
+					type = ProjectItemType.ApplicationDefinition;
+					break;
+				case "Page":
+					type = ProjectItemType.Page;
 					break;
 				default:
 					throw new InvalidOperationException(

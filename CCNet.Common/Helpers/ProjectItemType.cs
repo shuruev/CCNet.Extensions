@@ -23,6 +23,26 @@
 		/// <summary>
 		/// Embedded resource.
 		/// </summary>
-		EmbeddedResource
+		EmbeddedResource,
+
+		/// <summary>
+		/// Entity when using Entity Framework.
+		/// </summary>
+		EntityDeploy,
+
+		/// <summary>
+		/// Resource.
+		/// </summary>
+		Resource,
+
+		/// <summary>
+		/// WPF application definition.
+		/// </summary>
+		ApplicationDefinition,
+
+		/// <summary>
+		/// WPF page.
+		/// </summary>
+		Page
 	}
 }
