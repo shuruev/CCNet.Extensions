@@ -47,6 +47,7 @@ namespace CCNet.ProjectAdapter
 			{
 				Arguments.Default = ArgumentProperties.Parse(args);
 
+				CancelReadonly();
 				UpdateAssemblyInfo();
 				UpdateProjectProperties();
 				UpdateProjectReferences();
@@ -70,6 +71,18 @@ namespace CCNet.ProjectAdapter
 		}
 
 		#region Performing update
+
+		/// <summary>
+		/// Cancels readonly flag for all files working directory.
+		/// </summary>
+		private static void CancelReadonly()
+		{
+			DirectoryInfo dir = new DirectoryInfo(Arguments.WorkingDirectorySource);
+			foreach (FileInfo fi in dir.GetFiles("*", SearchOption.AllDirectories))
+			{
+				fi.Attributes = FileAttributes.Normal;
+			}
+		}
 
 		/// <summary>
 		/// Updates assembly information file.

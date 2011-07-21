@@ -53,18 +53,6 @@ namespace CCNet.ProjectChecker
 		}
 
 		/// <summary>
-		/// Gets source code control file path.
-		/// </summary>
-		public static string SourceCodeControlFile
-		{
-			get
-			{
-				string file = "mssccprj.scc";
-				return Path.Combine(Arguments.WorkingDirectorySource, file);
-			}
-		}
-
-		/// <summary>
 		/// Gets source control project metadata file path.
 		/// </summary>
 		public static string SourceControlProjectMetadataFile

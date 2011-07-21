@@ -22,22 +22,22 @@ namespace CCNet.ProjectChecker
 		{
 			/*xxxargs = new[]
 			{
-				@"ProjectName=PDMMaintenanceTool",
-				@"ReferencesDirectory=\\rufrt-vxbuild\e$\CCNET\PDMMaintenanceTool\References",
-				@"WorkingDirectorySource=\\rufrt-vxbuild\e$\CCNET\PDMMaintenanceTool\WorkingDirectory\Source",
+				@"ProjectName=CC.PresentationEngine.Shared",
+				@"ReferencesDirectory=\\rufrt-vxbuild\e$\CCNET\CC.PresentationEngine.Shared\References",
+				@"WorkingDirectorySource=\\rufrt-vxbuild\e$\CCNET\CC.PresentationEngine.Shared\WorkingDirectory\Source",
 				@"ExternalReferencesPath=\\rufrt-vxbuild\ExternalReferences",
 				@"InternalReferencesPath=\\rufrt-vxbuild\InternalReferences",
-				@"ProjectType=ClickOnce",
-				@"AssemblyName=PDMMaintenanceTool",
-				@"FriendlyName=PDM Maintenance Tool",
-				@"DownloadZone=Public",
+				@"ProjectType=Library",
+				@"AssemblyName=CC.PresentationEngine.Shared",
+				@"FriendlyName=UNSPECIFIED",
+				@"DownloadZone=UNSPECIFIED",
 				@"VisualStudioVersion=2010",
 				@"TargetFramework=Net40",
-				@"TargetPlatform=x86",
-				@"RootNamespace=PDMMaintenanceTool",
+				@"TargetPlatform=AnyCPU",
+				@"RootNamespace=CC.PresentationEngine.Shared",
 				@"SuppressWarnings=",
 				@"AllowUnsafeBlocks=False",
-				@"ExpectedVersion=1.0.*"
+				@"ExpectedVersion=1.0.0.0"
 			};*/
 
 			if (args == null || args.Length == 0)
@@ -906,18 +906,15 @@ namespace CCNet.ProjectChecker
 			StringBuilder message = new StringBuilder();
 
 			List<string> items = Directory.GetFiles(Arguments.WorkingDirectorySource, "*", SearchOption.AllDirectories)
+				.Where(item => item != Paths.SourceControlProjectMetadataFile)
+				.Where(item => Path.GetFileName(item) != "mssccprj.scc")
 				.Where(item => Path.GetFileName(item) != "vssver2.scc")
 				.Select(item => item.Replace(Arguments.WorkingDirectorySource, String.Empty).TrimStart('\\'))
 				.ToList();
 
 			List<string> required = ProjectHelper.GetProjectItems()
 				.Select(item => item.FullName)
-				.Union(new[]
-					{
-						Paths.ProjectFile,
-						Paths.SourceCodeControlFile,
-						Paths.SourceControlProjectMetadataFile
-					})
+				.Union(new[] { Paths.ProjectFile })
 				.Select(item => item.Replace(Arguments.WorkingDirectorySource, String.Empty).TrimStart('\\'))
 				.ToList();
 

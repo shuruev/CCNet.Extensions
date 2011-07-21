@@ -20,7 +20,7 @@ namespace CCNet.ProjectNotifier
 		{
 			/*xxxargs = new[]
 			{
-				@"ProjectName=DS2VX.DataModel",
+				@"ProjectName=AggregatorService",
 				@"RootPath=\\rufrt-vxbuild\e$\CCNET",
 				@"ReferencesFolderName=References",
 			};*/
@@ -87,7 +87,7 @@ namespace CCNet.ProjectNotifier
 			}
 
 			string fileName = ReferenceMark.GetReferenceMarkName(Arguments.ProjectName);
-			foreach (string file in Directory.GetFiles(Arguments.RootPath, fileName, SearchOption.AllDirectories))
+			foreach (string file in FindReferenceMarks(fileName))
 			{
 				string path = Path.GetDirectoryName(file);
 				path = Path.GetDirectoryName(path);
@@ -107,6 +107,18 @@ namespace CCNet.ProjectNotifier
 						projectName);
 				}
 			}
+		}
+
+		/// <summary>
+		/// Finds all reference mark files.
+		/// </summary>
+		private static List<string> FindReferenceMarks(string fileName)
+		{
+			return Directory.GetDirectories(Arguments.RootPath)
+				.Select(dir => Path.Combine(dir, Arguments.ReferencesFolderName))
+				.Where(Directory.Exists)
+				.SelectMany(dir => Directory.GetFiles(dir, fileName, SearchOption.AllDirectories))
+				.ToList();
 		}
 
 		#endregion
