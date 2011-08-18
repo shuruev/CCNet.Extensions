@@ -260,6 +260,7 @@ namespace CCNet.ProjectChecker
 			}
 
 			allowed.Add("Platform", null);
+			allowed.Add("PlatformTarget", Arguments.TargetPlatform);
 			allowed.Add("PostBuildEvent", String.Empty);
 			allowed.Add("PreBuildEvent", String.Empty);
 			allowed.Add("ProductVersion", null);
@@ -267,6 +268,7 @@ namespace CCNet.ProjectChecker
 			allowed.Add("ProjectType", "Local");
 			allowed.Add("ProjectTypeGuids", null);
 			allowed.Add("PublishWizardCompleted", null);
+			allowed.Add("RoleType", null);
 			required.Add("RootNamespace", Arguments.RootNamespace);
 			allowed.Add("RunPostBuildEvent", "OnBuildSuccess");
 			required.Add("SccAuxPath", "SAK");
@@ -782,6 +784,8 @@ namespace CCNet.ProjectChecker
 			allowedGac.Add("System.Design");
 			allowedGac.Add("System.Drawing");
 			allowedGac.Add("System.EnterpriseServices");
+			allowedGac.Add("System.IdentityModel");
+			allowedGac.Add("System.IdentityModel.Selectors");
 			allowedGac.Add("System.Management");
 			allowedGac.Add("System.Messaging");
 			allowedGac.Add("System.Runtime.Remoting");
@@ -913,7 +917,8 @@ namespace CCNet.ProjectChecker
 				.ToList();
 
 			List<string> required = ProjectHelper.GetProjectItems()
-				.Select(item => item.FullName)
+				.Select(item => item.FullName
+					.Replace("%27", "'"))
 				.Union(new[] { Paths.ProjectFile })
 				.Select(item => item.Replace(Arguments.WorkingDirectorySource, String.Empty).TrimStart('\\'))
 				.ToList();
