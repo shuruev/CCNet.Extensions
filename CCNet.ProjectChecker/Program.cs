@@ -239,6 +239,7 @@ namespace CCNet.ProjectChecker
 			allowed.Add("FileUpgradeFlags", null);
 			allowed.Add("GenerateResourceNeverLockTypeAssemblies", "true");
 			allowed.Add("MvcBuildViews", null);
+			allowed.Add("Nonshipping", null);
 			allowed.Add("OldToolsVersion", null);
 
 			switch (Arguments.ProjectType)

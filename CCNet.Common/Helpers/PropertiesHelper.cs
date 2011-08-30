@@ -113,9 +113,11 @@ namespace CCNet.Common
 
 		#region Parsing from assembly information file
 
-		private static readonly Regex s_usingRegex = new Regex(@"^using [\w.]+;$");
+		private static readonly Regex s_usingRegex = new Regex(@"^using [\w\.]+;$");
 		private static readonly Regex s_commentRegex = new Regex(@"^\s*//.*$");
 		private static readonly Regex s_propertyRegex = new Regex(@"^\[assembly: (?<Name>\w+)\((?<Value>.*)\)]$");
+
+		private static readonly Regex s_webResourceRegex = new Regex(@"^\[assembly: WebResource\(.+\)]$");
 
 		private static readonly List<string> s_wpfIgnore = new List<string>
 		{
@@ -156,8 +158,12 @@ namespace CCNet.Common
 			if (s_commentRegex.IsMatch(line))
 				return;
 
-			// temporatily ignoring WPF features
+			// temporarily ignoring WPF features
 			if (s_wpfIgnore.Contains(line))
+				return;
+
+			// temporarily ignoring web resources
+			if (s_webResourceRegex.IsMatch(line))
 				return;
 
 			if (s_propertyRegex.IsMatch(line))
