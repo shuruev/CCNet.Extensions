@@ -36,6 +36,11 @@
 		Resource,
 
 		/// <summary>
+		/// Shadow.
+		/// </summary>
+		Shadow,
+
+		/// <summary>
 		/// WPF application definition.
 		/// </summary>
 		ApplicationDefinition,

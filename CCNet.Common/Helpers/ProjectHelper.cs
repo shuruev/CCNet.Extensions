@@ -343,6 +343,7 @@ namespace CCNet.Common
 			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:EmbeddedResource").Cast<XmlNode>());
 			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:EntityDeploy").Cast<XmlNode>());
 			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:Resource").Cast<XmlNode>());
+			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:Shadow").Cast<XmlNode>());
 			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:ApplicationDefinition").Cast<XmlNode>());
 			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:Page").Cast<XmlNode>());
 
@@ -374,6 +375,9 @@ namespace CCNet.Common
 					break;
 				case "Resource":
 					type = ProjectItemType.Resource;
+					break;
+				case "Shadow":
+					type = ProjectItemType.Shadow;
 					break;
 				case "ApplicationDefinition":
 					type = ProjectItemType.ApplicationDefinition;
