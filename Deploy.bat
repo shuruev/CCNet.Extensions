@@ -1,7 +1,7 @@
 @ECHO OFF
 SETLOCAL
 
-SET ServerPath=\\rufrt-vxbuild\d$\Program Files\CruiseControl.NET-1.5.6804.1\Server
+SET ServerPath=\\rufrt-vxbuild\e$\CruiseControl.NET\Server
 
 XCOPY "CCNet.Extensions.Plugin\bin\Debug\CCNet.Extensions.Plugin.dll" "%ServerPath%\" /Y
 XCOPY "CCNet.ProjectAdapter\bin\Debug\CCNet.ProjectAdapter.exe" "%ServerPath%\CCNet.ProjectAdapter\" /Y
