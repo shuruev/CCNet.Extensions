@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using CCNet.Common;
 using CCNet.ProjectChecker.Properties;
 
@@ -39,7 +40,7 @@ namespace CCNet.ProjectChecker
 		{
 			RaiseInternal(
 				Errors.WrongProjectFileLocation
-				.Display(Arguments.ProjectName));
+				.Display(Path.GetFileName(Paths.ProjectFile)));
 		}
 
 		/// <summary>

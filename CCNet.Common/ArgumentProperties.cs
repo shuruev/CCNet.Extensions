@@ -108,7 +108,7 @@ namespace CCNet.Common
 			string value = GetValue(key);
 			try
 			{
-				return (T)Enum.Parse(typeof(T), value);
+				return (T)Enum.Parse(typeof(T), value, true);
 			}
 			catch
 			{

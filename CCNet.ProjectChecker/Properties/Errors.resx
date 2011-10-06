@@ -164,7 +164,7 @@ Include necessary files into project or remove them from source control.</value>
     <value>Project is supposed to use the only {0} platform, but now it uses {1}.</value>
   </data>
   <data name="WrongProjectFileLocation" xml:space="preserve">
-    <value>Project file should be named as {0}.csproj and should be placed in project root folder.</value>
+    <value>Project file should be named as {0} and should be placed in project root folder.</value>
   </data>
   <data name="WrongReferences" xml:space="preserve">
     <value>Some references seem not to conform the agreements:

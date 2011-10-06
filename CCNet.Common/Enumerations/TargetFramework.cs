@@ -6,9 +6,9 @@
 	public enum TargetFramework
 	{
 		/// <summary>
-		/// Specifies Not defined yet .NET Framework version.
+		/// Specifies that .NET Framework version should not be checked.
 		/// </summary>
-		Unknown,
+		Unspecified,
 
 		/// <summary>
 		/// Specifies .NET Framework 2.0.

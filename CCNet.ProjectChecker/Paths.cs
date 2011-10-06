@@ -17,13 +17,27 @@ namespace CCNet.ProjectChecker
 		}
 
 		/// <summary>
+		/// Gets project file extension.
+		/// </summary>
+		public static string ProjectFileExtension
+		{
+			get
+			{
+				if (Arguments.ProjectType == ProjectType.Azure)
+					return "ccproj";
+
+				return "csproj";
+			}
+		}
+
+		/// <summary>
 		/// Gets project file path.
 		/// </summary>
 		public static string ProjectFile
 		{
 			get
 			{
-				string file = "{0}.csproj".Display(Arguments.ProjectName);
+				string file = "{0}.{1}".Display(Arguments.ProjectName, ProjectFileExtension);
 				return Path.Combine(Arguments.WorkingDirectorySource, file);
 			}
 		}
@@ -59,7 +73,7 @@ namespace CCNet.ProjectChecker
 		{
 			get
 			{
-				string file = "{0}.csproj.vspscc".Display(Arguments.ProjectName);
+				string file = "{0}.{1}.vspscc".Display(Arguments.ProjectName, ProjectFileExtension);
 				return Path.Combine(Arguments.WorkingDirectorySource, file);
 			}
 		}

@@ -47,4 +47,3 @@ namespace CCNet.Common.Tests
 		}
 	}
 }
-

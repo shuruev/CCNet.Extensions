@@ -48,6 +48,16 @@
 		/// <summary>
 		/// WPF page.
 		/// </summary>
-		Page
+		Page,
+
+		/// <summary>
+		/// Azure service definition.
+		/// </summary>
+		ServiceDefinition,
+
+		/// <summary>
+		/// Azure service configuration.
+		/// </summary>
+		ServiceConfiguration
 	}
 }

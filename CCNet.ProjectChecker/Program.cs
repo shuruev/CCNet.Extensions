@@ -22,22 +22,22 @@ namespace CCNet.ProjectChecker
 		{
 			/*xxxargs = new[]
 			{
-				@"ProjectName=CC.PresentationEngine.Shared",
-				@"ReferencesDirectory=\\rufrt-vxbuild\e$\CCNET\CC.PresentationEngine.Shared\References",
-				@"WorkingDirectorySource=\\rufrt-vxbuild\e$\CCNET\CC.PresentationEngine.Shared\WorkingDirectory\Source",
+				@"ProjectName=CC.PE.Cloud",
+				@"ReferencesDirectory=\\rufrt-vxbuild\e$\CCNET\CC.PE.Cloud\References",
+				@"WorkingDirectorySource=\\rufrt-vxbuild\e$\CCNET\CC.PE.Cloud\WorkingDirectory\Source",
 				@"ExternalReferencesPath=\\rufrt-vxbuild\ExternalReferences",
 				@"InternalReferencesPath=\\rufrt-vxbuild\InternalReferences",
-				@"ProjectType=Library",
-				@"AssemblyName=CC.PresentationEngine.Shared",
+				@"ProjectType=Azure",
+				@"AssemblyName=CC.PE.Cloud",
 				@"FriendlyName=UNSPECIFIED",
 				@"DownloadZone=UNSPECIFIED",
 				@"VisualStudioVersion=2010",
-				@"TargetFramework=Net40",
+				@"TargetFramework=UNSPECIFIED",
 				@"TargetPlatform=AnyCPU",
-				@"RootNamespace=CC.PresentationEngine.Shared",
+				@"RootNamespace=CC.PE.Cloud",
 				@"SuppressWarnings=",
 				@"AllowUnsafeBlocks=False",
-				@"ExpectedVersion=1.0.0.0"
+				@"ExpectedVersion=UNSPECIFIED"
 			};*/
 
 			if (args == null || args.Length == 0)
@@ -106,7 +106,11 @@ namespace CCNet.ProjectChecker
 		/// </summary>
 		private static void CheckWrongProjectFileLocation()
 		{
-			string[] files = Directory.GetFiles(Arguments.WorkingDirectorySource, "*.csproj", SearchOption.AllDirectories);
+			string[] files = Directory.GetFiles(
+				Arguments.WorkingDirectorySource,
+				String.Format("*.{0}", Paths.ProjectFileExtension),
+				SearchOption.AllDirectories);
+
 			if (files.Length == 1)
 			{
 				if (files[0] == Paths.ProjectFile)
@@ -139,6 +143,9 @@ namespace CCNet.ProjectChecker
 		/// </summary>
 		private static void CheckWrongAssemblyInfoFileLocation()
 		{
+			if (Arguments.ProjectType == ProjectType.Azure)
+				return;
+
 			string[] files = Directory.GetFiles(Arguments.WorkingDirectorySource, "AssemblyInfo.cs", SearchOption.AllDirectories);
 			if (files.Length == 1)
 			{
@@ -256,6 +263,7 @@ namespace CCNet.ProjectChecker
 				case ProjectType.WebSite:
 				case ProjectType.Library:
 				case ProjectType.Test:
+				case ProjectType.Azure:
 					required.Add("OutputType", "Library");
 					break;
 			}
@@ -327,6 +335,13 @@ namespace CCNet.ProjectChecker
 					allowed.Add("UpdateRequired", "false");
 					allowed.Add("UseApplicationTrust", "false");
 					break;
+			}
+
+			if (Arguments.ProjectType == ProjectType.Azure)
+			{
+				allowed.Add("CloudExtensionsDir", null);
+				required.Add("Name", Arguments.ProjectName);
+				allowed.Add("StartDevelopmentStorage", null);
 			}
 
 			allowed.Add("SilverlightApplicationList", null);
@@ -455,6 +470,7 @@ namespace CCNet.ProjectChecker
 					required.Add("DocumentationFile", @"bin\{0}.xml".Display(Arguments.AssemblyName));
 					break;
 				case ProjectType.Test:
+				case ProjectType.Azure:
 					required.Add("OutputPath", @"bin\Debug\");
 					allowed.Add("DocumentationFile", null);
 					break;
@@ -571,6 +587,7 @@ namespace CCNet.ProjectChecker
 					required.Add("DocumentationFile", @"bin\{0}.xml".Display(Arguments.AssemblyName));
 					break;
 				case ProjectType.Test:
+				case ProjectType.Azure:
 					required.Add("OutputPath", @"bin\Release\");
 					allowed.Add("DocumentationFile", null);
 					break;
@@ -651,6 +668,9 @@ namespace CCNet.ProjectChecker
 		/// </summary>
 		public static void CheckWrongAssemblyInfoContents()
 		{
+			if (Arguments.ProjectType == ProjectType.Azure)
+				return;
+
 			string[] lines = File.ReadAllLines(Paths.AssemblyInfoFile);
 
 			Dictionary<string, string> properties = PropertiesHelper.ParseFromAssemblyInfo(lines);
@@ -713,11 +733,15 @@ namespace CCNet.ProjectChecker
 		{
 			StringBuilder message = new StringBuilder();
 			List<string> projects = ProjectHelper.GetProjectReferences();
-			foreach (string project in projects)
+
+			if (Arguments.ProjectType != ProjectType.Azure)
 			{
-				message.AppendLine(
-					Strings.DontUseProjectReference
-					.Display(project));
+				foreach (string project in projects)
+				{
+					message.AppendLine(
+						Strings.DontUseProjectReference
+						.Display(project));
+				}
 			}
 
 			List<Reference> references = ProjectHelper.GetBinaryReferences();
@@ -1010,6 +1034,7 @@ namespace CCNet.ProjectChecker
 				case ProjectType.ClickOnce:
 				case ProjectType.Library:
 				case ProjectType.Test:
+				case ProjectType.Azure:
 					return;
 				default:
 					throw new InvalidOperationException(
@@ -1046,6 +1071,7 @@ namespace CCNet.ProjectChecker
 				case ProjectType.ClickOnce:
 				case ProjectType.Library:
 				case ProjectType.Test:
+				case ProjectType.Azure:
 					return;
 				default:
 					throw new InvalidOperationException(

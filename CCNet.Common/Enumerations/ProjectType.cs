@@ -43,6 +43,11 @@
 		/// <summary>
 		/// Test project.
 		/// </summary>
-		Test
+		Test,
+
+		/// <summary>
+		/// Azure project.
+		/// </summary>
+		Azure
 	}
 }

@@ -346,6 +346,8 @@ namespace CCNet.Common
 			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:Shadow").Cast<XmlNode>());
 			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:ApplicationDefinition").Cast<XmlNode>());
 			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:Page").Cast<XmlNode>());
+			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:ServiceDefinition").Cast<XmlNode>());
+			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:ServiceConfiguration").Cast<XmlNode>());
 
 			return nodes.Select(GetProjectItem).ToList();
 		}
@@ -384,6 +386,12 @@ namespace CCNet.Common
 					break;
 				case "Page":
 					type = ProjectItemType.Page;
+					break;
+				case "ServiceDefinition":
+					type = ProjectItemType.ServiceDefinition;
+					break;
+				case "ServiceConfiguration":
+					type = ProjectItemType.ServiceConfiguration;
 					break;
 				default:
 					throw new InvalidOperationException(
