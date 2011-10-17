@@ -127,6 +127,15 @@ namespace CCNet.Common
 			return Boolean.Parse(value);
 		}
 
+		/// <summary>
+		/// Gets int property value for specified key.
+		/// </summary>
+		public int GetInt32Value(string key)
+		{
+			string value = GetValue(key);
+			return int.Parse(value);
+		}
+
 		#endregion
 	}
 }

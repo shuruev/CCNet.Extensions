@@ -26,6 +26,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Common.Tests", "CCNet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Coverage2Xml", "CCNet.Coverage2Xml\CCNet.Coverage2Xml.csproj", "{CDECBD1F-94C5-4945-83CC-786AB77ADFBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.ObsoleteCleaner", "CCNet.ObsoleteCleaner\CCNet.ObsoleteCleaner.csproj", "{D81EC1D9-0C37-4633-A919-11D5655AA47D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.ObsoleteCleaner.Tests", "CCNet.ObsoleteCleaner.Tests\CCNet.ObsoleteCleaner.Tests.csproj", "{5E378BD9-09EF-460D-AAC0-56AC0DDF812B}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = CCNet.Extensions.vsmdi
@@ -129,6 +133,26 @@ Global
 		{CDECBD1F-94C5-4945-83CC-786AB77ADFBB}.Release|Mixed Platforms.Build.0 = Release|x86
 		{CDECBD1F-94C5-4945-83CC-786AB77ADFBB}.Release|x86.ActiveCfg = Release|x86
 		{CDECBD1F-94C5-4945-83CC-786AB77ADFBB}.Release|x86.Build.0 = Release|x86
+		{D81EC1D9-0C37-4633-A919-11D5655AA47D}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D81EC1D9-0C37-4633-A919-11D5655AA47D}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{D81EC1D9-0C37-4633-A919-11D5655AA47D}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{D81EC1D9-0C37-4633-A919-11D5655AA47D}.Debug|x86.ActiveCfg = Debug|x86
+		{D81EC1D9-0C37-4633-A919-11D5655AA47D}.Debug|x86.Build.0 = Debug|x86
+		{D81EC1D9-0C37-4633-A919-11D5655AA47D}.Release|Any CPU.ActiveCfg = Release|x86
+		{D81EC1D9-0C37-4633-A919-11D5655AA47D}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{D81EC1D9-0C37-4633-A919-11D5655AA47D}.Release|Mixed Platforms.Build.0 = Release|x86
+		{D81EC1D9-0C37-4633-A919-11D5655AA47D}.Release|x86.ActiveCfg = Release|x86
+		{D81EC1D9-0C37-4633-A919-11D5655AA47D}.Release|x86.Build.0 = Release|x86
+		{5E378BD9-09EF-460D-AAC0-56AC0DDF812B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E378BD9-09EF-460D-AAC0-56AC0DDF812B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E378BD9-09EF-460D-AAC0-56AC0DDF812B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5E378BD9-09EF-460D-AAC0-56AC0DDF812B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5E378BD9-09EF-460D-AAC0-56AC0DDF812B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5E378BD9-09EF-460D-AAC0-56AC0DDF812B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E378BD9-09EF-460D-AAC0-56AC0DDF812B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E378BD9-09EF-460D-AAC0-56AC0DDF812B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5E378BD9-09EF-460D-AAC0-56AC0DDF812B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5E378BD9-09EF-460D-AAC0-56AC0DDF812B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
