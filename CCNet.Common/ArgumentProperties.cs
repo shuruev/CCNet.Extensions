@@ -128,7 +128,7 @@ namespace CCNet.Common
 		}
 
 		/// <summary>
-		/// Gets int property value for specified key.
+		/// Gets integer property value for specified key.
 		/// </summary>
 		public int GetInt32Value(string key)
 		{

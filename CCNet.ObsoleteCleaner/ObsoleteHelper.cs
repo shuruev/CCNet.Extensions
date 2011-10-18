@@ -3,15 +3,12 @@
 namespace CCNet.ObsoleteCleaner
 {
 	/// <summary>
-	/// Utility class with helpful methods to define obsolete files inside "InternalReferences" folder.
+	/// Utility class with helpful methods for obsolescence detection.
 	/// </summary>
-	public static class InternalReferencesHelper
+	public static class ObsoleteHelper
 	{
-		public const string LatestVersionFileName = "LatestLabel.txt";
-		public const string LatestFolderName = "Latest";
-
 		/// <summary>
-		/// Shows the value.
+		/// Gets the value indicating whether <paramref name="date"/> is outdated.
 		/// </summary>
 		public static bool IsObsolete(
 			DateTime date,
@@ -22,7 +19,7 @@ namespace CCNet.ObsoleteCleaner
 		}
 
 		/// <summary>
-		/// Converts version folder name to date.
+		/// Converts <paramref name="version"/> string to the correspond date.
 		/// </summary>
 		public static DateTime? ConvertVersionToDate(string version)
 		{
