@@ -4,17 +4,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CCNet.ObsoleteCleaner.Tests
 {
 	/// <summary>
-	/// Tests for methods of InternalReferencesHelper class.
+	/// Tests for methods of ObsoleteHelper class.
 	/// </summary>
 	[TestClass]
-	public class InternalReferencesHelperTest
+	public class ObsoleteHelperTest
 	{
 		[TestMethod]
 		public void Converts_Version_String_To_DateTime_Success()
 		{
 			DateTime? expected = new DateTime(2010, 12, 9);
 
-			DateTime? actual = InternalReferencesHelper.ConvertVersionToDate("10.12.9.7");
+			DateTime? actual = ObsoleteHelper.ConvertVersionToDate("10.12.9.7");
 
 			Assert.IsNotNull(actual);
 			Assert.AreEqual(expected, actual);
@@ -23,7 +23,7 @@ namespace CCNet.ObsoleteCleaner.Tests
 		[TestMethod]
 		public void Converts_Version_String_To_DateTime_Failed()
 		{
-			DateTime? actual = InternalReferencesHelper.ConvertVersionToDate("0.0.0.0");
+			DateTime? actual = ObsoleteHelper.ConvertVersionToDate("0.0.0.0");
 
 			Assert.IsNull(actual);
 		}
@@ -31,7 +31,7 @@ namespace CCNet.ObsoleteCleaner.Tests
 		[TestMethod]
 		public void Converts_Version_String_To_DateTime_Failed_2()
 		{
-			DateTime? actual = InternalReferencesHelper.ConvertVersionToDate("not-a-version");
+			DateTime? actual = ObsoleteHelper.ConvertVersionToDate("not-a-version");
 
 			Assert.IsNull(actual);
 		}
@@ -42,7 +42,7 @@ namespace CCNet.ObsoleteCleaner.Tests
 			var date = DateTime.Now - TimeSpan.FromDays(2);
 			const int daysToLive = 1;
 
-			var actual = InternalReferencesHelper.IsObsolete(date, daysToLive);
+			var actual = ObsoleteHelper.IsObsolete(date, daysToLive);
 
 			Assert.IsTrue(actual);
 		}
@@ -53,7 +53,7 @@ namespace CCNet.ObsoleteCleaner.Tests
 			var date = DateTime.Now;
 			const int daysToLive = 1;
 
-			var actual = InternalReferencesHelper.IsObsolete(date, daysToLive);
+			var actual = ObsoleteHelper.IsObsolete(date, daysToLive);
 
 			Assert.IsFalse(actual);
 		}
