@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using CCNet.Common;
 
 namespace CCNet.ObsoleteCleaner
 {
@@ -8,62 +9,62 @@ namespace CCNet.ObsoleteCleaner
 	/// </summary>
 	public static class InternalReferences
 	{
-		private const string c_latestVersionFileName = "LatestLabel.txt";
-		private const string c_latestFolderName = "Latest";
-
 		/// <summary>
 		/// Removes folders inside "Arguments.InternalReferencesPath" folder older than "Arguments.DaysToLive" days.
 		/// </summary>
 		public static void Clean()
 		{
-			var projects = Directory.EnumerateDirectories(Arguments.InternalReferencesPath);
-			foreach (var project in projects)
+			var projectPaths = Directory.EnumerateDirectories(Arguments.InternalReferencesPath);
+			foreach (var projectPath in projectPaths)
 			{
-				CleanProjectFolder(project);
+				CleanProjectFolder(projectPath);
 			}
 		}
 
 		/// <summary>
-		/// Removes all folders inside <paramref name="projectFolder"/> folder older than "Arguments.DaysToLive" days.
+		/// Removes subfolders inside specified folder older than "Arguments.DaysToLive" days.
 		/// </summary>
-		private static void CleanProjectFolder(string projectFolder)
+		private static void CleanProjectFolder(string projectPath)
 		{
-			string latestVersion = File.ReadAllText(
-				Path.Combine(
-					projectFolder,
-					c_latestVersionFileName)).TrimEnd();
+			IEnumerable<string> obsoleteSubfolders = GetObsoleteSubfolders(projectPath);
 
-			IEnumerable<string> versionsToDelete = GetFoldersToDelete(
-				projectFolder,
-				latestVersion);
-
-			foreach (var version in versionsToDelete)
+			foreach (var path in obsoleteSubfolders)
 			{
-				Directory.Delete(version, true);
+				Directory.Delete(
+					path,
+					true);
 			}
 		}
 
 		/// <summary>
-		/// Gets list folders to remove.
+		/// Gets list of obsolete subfolders.
 		/// </summary>
-		private static IEnumerable<string> GetFoldersToDelete(
-			string projectFolder,
-			string latestVersion)
+		private static IEnumerable<string> GetObsoleteSubfolders(string projectPath)
 		{
+			string projectFolder = Path.GetFileName(projectPath);
+
+			string latestVersion = ReferenceFolder.GetLatestVersion(
+				Arguments.InternalReferencesPath,
+				projectFolder);
+
+			var latestPath = ReferenceFolder.GetLatestPath(
+				Arguments.InternalReferencesPath,
+				projectFolder);
+
 			var foldersToDelete = new List<string>();
 
-			var versionFolders = Directory.EnumerateDirectories(projectFolder);
-			foreach (var versionFolder in versionFolders)
+			var versionPaths = Directory.EnumerateDirectories(projectPath);
+			foreach (var versionPath in versionPaths)
 			{
-				var versionFolderName = Path.GetFileName(versionFolder);
+				var versionFolder = Path.GetFileName(versionPath);
 
-				if (versionFolderName == latestVersion
-					|| versionFolderName == c_latestFolderName)
+				if (versionFolder == latestVersion
+					|| versionPath == latestPath)
 				{
 					continue;
 				}
 
-				var date = ObsoleteHelper.ConvertVersionToDate(versionFolderName);
+				var date = ObsoleteHelper.ConvertVersionToDate(versionFolder);
 				if (!date.HasValue)
 				{
 					continue;
@@ -76,7 +77,7 @@ namespace CCNet.ObsoleteCleaner
 					continue;
 				}
 
-				foldersToDelete.Add(versionFolder);
+				foldersToDelete.Add(versionPath);
 			}
 
 			return foldersToDelete;

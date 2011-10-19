@@ -12,7 +12,7 @@ namespace CCNet.Common
 		/// <summary>
 		/// Gets latest reference version.
 		/// </summary>
-		private static string GetLatestVersion(string referenceFolder, string referenceProject)
+		public static string GetLatestVersion(string referenceFolder, string referenceProject)
 		{
 			string path = Path.Combine(referenceFolder, referenceProject);
 			path = Path.Combine(path, "LatestLabel.txt");
@@ -22,7 +22,7 @@ namespace CCNet.Common
 		/// <summary>
 		/// Gets path for latest reference version.
 		/// </summary>
-		private static string GetLatestPath(string referenceFolder, string referenceProject)
+		public static string GetLatestPath(string referenceFolder, string referenceProject)
 		{
 			string subPath = Path.Combine(referenceFolder, referenceProject);
 			return Path.Combine(subPath, "Latest");
