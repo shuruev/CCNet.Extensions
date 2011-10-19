@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.ObsoleteCleaner", "CC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.ObsoleteCleaner.Tests", "CCNet.ObsoleteCleaner.Tests\CCNet.ObsoleteCleaner.Tests.csproj", "{5E378BD9-09EF-460D-AAC0-56AC0DDF812B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{25766FB5-EA46-401E-8C7C-D6CD6C32D2B7}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = CCNet.Extensions.vsmdi
@@ -156,5 +158,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4E6AD2C7-7C0B-4B24-9B9D-1CCA5AF7087C} = {25766FB5-EA46-401E-8C7C-D6CD6C32D2B7}
+		{5E378BD9-09EF-460D-AAC0-56AC0DDF812B} = {25766FB5-EA46-401E-8C7C-D6CD6C32D2B7}
+		{D792F3A8-BDBD-4BEB-B916-A88478AE805E} = {25766FB5-EA46-401E-8C7C-D6CD6C32D2B7}
 	EndGlobalSection
 EndGlobal
