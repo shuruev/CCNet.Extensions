@@ -133,7 +133,7 @@ namespace CCNet.Common
 		public int GetInt32Value(string key)
 		{
 			string value = GetValue(key);
-			return int.Parse(value);
+			return Int32.Parse(value);
 		}
 
 		#endregion

@@ -11,11 +11,11 @@ namespace CCNet.ObsoleteCleaner
 		/// </summary>
 		public static int Main(string[] args)
 		{
-			/*xxxargs = new[]
+			args = new[]
 			{
 				@"InternalReferencesPath=D:\InternalReferences",
 				@"DaysToLive=30",
-			};*/
+			};
 
 			if (args == null || args.Length == 0)
 			{
