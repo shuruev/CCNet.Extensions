@@ -12,7 +12,7 @@ XCOPY "CCNet.ProjectNotifier\bin\Debug\CCNet.ProjectNotifier.exe" "%ServerPath%\
 XCOPY "CCNet.ProjectNotifier\bin\Debug\CCNet.Common.dll" "%ServerPath%\CCNet.ProjectNotifier\" /Y
 XCOPY "CCNet.ServiceChecker\bin\Debug\CCNet.ServiceChecker.exe" "%ServerPath%\CCNet.ServiceChecker\" /Y
 XCOPY "CCNet.ServiceChecker\bin\Debug\CCNet.Common.dll" "%ServerPath%\CCNet.ServiceChecker\" /Y
-XCOPY "CCNet.ObsoleteCleaner\bin\Debug\CCNet.ObsoleteCleaner" "%ServerPath%\CCNet.ObsoleteCleaner\" /Y
+XCOPY "CCNet.ObsoleteCleaner\bin\Debug\CCNet.ObsoleteCleaner.exe" "%ServerPath%\CCNet.ObsoleteCleaner\" /Y
 XCOPY "CCNet.ObsoleteCleaner\bin\Debug\CCNet.Common.dll" "%ServerPath%\CCNet.ObsoleteCleaner\" /Y
 
 PAUSE

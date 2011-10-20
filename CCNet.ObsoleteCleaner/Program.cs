@@ -13,7 +13,7 @@ namespace CCNet.ObsoleteCleaner
 		{
 			/*xxxargs = new[]
 			{
-				@"InternalReferencesPath=D:\InternalReferences",
+				@"InternalReferencesPath=\\rufrt-vxbuild\d$\InternalReferences - Copy",
 				@"DaysToLive=30",
 			};*/
 
