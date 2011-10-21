@@ -21,6 +21,14 @@ namespace CCNet.ObsoleteCleaner
 		}
 
 		/// <summary>
+		/// Gets path for publication storage.
+		/// </summary>
+		public static string PublicationStoragePath
+		{
+			get { return Default.GetValue("PublicationStoragePath"); }
+		}
+
+		/// <summary>
 		/// Gets period in days when build is not obsolete yet.
 		/// </summary>
 		public static int DaysToLive
