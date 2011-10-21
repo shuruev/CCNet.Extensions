@@ -28,8 +28,15 @@ namespace CCNet.ObsoleteCleaner
 			{
 				Arguments.Default = ArgumentProperties.Parse(args);
 
-				InternalReferences.Clean();
+				var internalReferences = new CleaningFolder(
+					Arguments.InternalReferencesPath,
+					new InternalReferencesObsoleteDetector());
+				internalReferences.Clean();
 
+				var publicationStorage = new CleaningFolder(
+					Arguments.PublicationStoragePath,
+					new PublicationStorageObsoleteDetector());
+				publicationStorage.Clean();
 			}
 			catch (Exception e)
 			{

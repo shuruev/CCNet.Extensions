@@ -59,7 +59,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arguments.cs" />
-    <Compile Include="InternalReferences.cs" />
+    <Compile Include="CleaningFolder.cs" />
+    <Compile Include="InternalReferencesObsoleteDetector.cs" />
+    <Compile Include="IObsoleteDetector.cs" />
     <Compile Include="ObsoleteHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,7 +70,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="PublicationStorage.cs" />
+    <Compile Include="PublicationStorageObsoleteDetector.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
