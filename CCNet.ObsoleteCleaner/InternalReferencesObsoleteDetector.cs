@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using CCNet.Common;
 
 namespace CCNet.ObsoleteCleaner
@@ -11,9 +10,10 @@ namespace CCNet.ObsoleteCleaner
 	public class InternalReferencesObsoleteDetector : IObsoleteDetector
 	{
 		/// <summary>
-		/// Gets list of obsolete subfolders.
+		/// Gets the list of obsolete subfolders.
+		/// Returns false if project path is unknown.
 		/// </summary>
-		public IEnumerable<string> GetObsoleteSubfolders(string projectPath)
+		public bool GetObsoleteSubfolders(string projectPath, out List<string> obsoleteSubfolders)
 		{
 			string projectFolder = Path.GetFileName(projectPath);
 
@@ -26,7 +26,7 @@ namespace CCNet.ObsoleteCleaner
 					Arguments.InternalReferencesPath,
 					projectFolder));
 
-			var obsoleteSubfolders = ObsoleteHelper.GetObsoletePaths(
+			obsoleteSubfolders = ObsoleteHelper.GetObsoletePaths(
 				Directory.GetDirectories(projectPath),
 				new List<string>
 				{
@@ -35,7 +35,7 @@ namespace CCNet.ObsoleteCleaner
 				},
 				Arguments.DaysToLive);
 
-			return obsoleteSubfolders;
+			return true;
 		}
 	}
 }

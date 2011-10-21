@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using CCNet.ObsoleteCleaner.Properties;
 
 namespace CCNet.ObsoleteCleaner
 {
@@ -39,8 +41,18 @@ namespace CCNet.ObsoleteCleaner
 		/// </summary>
 		private void CleanProjectFolder(string projectPath)
 		{
-			IEnumerable<string> obsoleteSubfolders = m_obsoleteDetector.GetObsoleteSubfolders(
-				projectPath);
+			List<string> obsoleteSubfolders;
+			bool ok = m_obsoleteDetector.GetObsoleteSubfolders(
+				projectPath,
+				out obsoleteSubfolders);
+
+			if (!ok)
+			{
+				Console.WriteLine(
+					Resources.UnknownProjectWarning,
+					Path.GetFileName(projectPath));
+				return;
+			}
 
 			foreach (var path in obsoleteSubfolders)
 			{

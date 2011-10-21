@@ -14,7 +14,7 @@ namespace CCNet.ObsoleteCleaner
 			/*xxxargs = new[]
 			{
 				@"InternalReferencesPath=\\rufrt-vxbuild\d$\InternalReferences - Copy",
-				@"PublicationStoragePath=D:\PublicationStorage",
+				@"PublicationStoragePath=\\rufrt-vxbuild\d$\PublicationStorage - Copy",
 				@"DaysToLive=30",
 			};*/
 

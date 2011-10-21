@@ -20,19 +20,27 @@ namespace CCNet.ObsoleteCleaner
 		}
 
 		/// <summary>
-		/// Gets list of obsolete subfolders.
+		/// Gets the list of obsolete subfolders.
+		/// Returns false if project path is unknown.
 		/// </summary>
-		public IEnumerable<string> GetObsoleteSubfolders(string projectPath)
+		public bool GetObsoleteSubfolders(string projectPath, out List<string> obsoleteSubfolders)
 		{
-			var projectName = Path.GetFileName(projectPath);
-			var releases = m_releaserClient.GetReleases(projectName);
+			obsoleteSubfolders = new List<string>();
 
-			var obsoleteSubfolders = ObsoleteHelper.GetObsoletePaths(
+			var projectName = Path.GetFileName(projectPath);
+
+			List<string> releases;
+			bool ok = m_releaserClient.GetReleases(projectName, out releases);
+
+			if (!ok)
+				return false;
+
+			obsoleteSubfolders = ObsoleteHelper.GetObsoletePaths(
 				Directory.GetDirectories(projectPath),
 				releases,
 				Arguments.DaysToLive);
 
-			return obsoleteSubfolders;
+			return true;
 		}
 	}
 }

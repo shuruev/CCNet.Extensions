@@ -27,8 +27,8 @@ namespace CCNet.Releaser.Client
 
 			m_engine = (IReleaserEngine)Activator.GetObject(typeof(IReleaserEngine), s_url);
 
-			ProjectData projects = m_engine.GetProjects();
-			m_projectIds = projects.Project
+			ProjectData projectData = m_engine.GetProjects();
+			m_projectIds = projectData.Project
 				.Select()
 				.Cast<ProjectData.ProjectRow>()
 				.Where(row => row.StorageCode == "PublicationStorage")
@@ -36,22 +36,26 @@ namespace CCNet.Releaser.Client
 		}
 
 		/// <summary>
-		/// Returns the list of released builds for specified <paramref name="projectName"/>.
+		/// Gets the list of released builds for specified <paramref name="projectName"/>.
+		/// Returns false if project name is unknown.
 		/// </summary>
-		public List<string> GetReleases(string projectName)
+		public bool GetReleases(string projectName, out List<string> releases)
 		{
+			releases = new List<string>();
+
 			if (!m_projectIds.ContainsKey(projectName))
-				throw new InvalidOperationException(
-					String.Format("Unkonwn project {0}.", projectName));
+				return false;
 
 			Guid projectUid = m_projectIds[projectName];
-			ReleaseData releases = m_engine.GetReleases(projectUid);
+			ReleaseData releaseData = m_engine.GetReleases(projectUid);
 
-			return releases.Release
+			releases = releaseData.Release
 					.Select()
 					.Cast<ReleaseData.ReleaseRow>()
 					.Select(row => row.VersionCode)
 					.ToList();
+
+			return true;
 		}
 	}
 }

@@ -61,6 +61,15 @@ namespace CCNet.ObsoleteCleaner.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Project &quot;{0}&quot; is unknown, better not to delete anything..
+        /// </summary>
+        internal static string UnknownProjectWarning {
+            get {
+                return ResourceManager.GetString("UnknownProjectWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clears outdated builds and other obsolete files.
         ///
         ///CCNet.ObsoleteCleaner.exe [Property1=Value1] [Property2=Value2] ....

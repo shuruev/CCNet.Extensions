@@ -8,8 +8,9 @@ namespace CCNet.ObsoleteCleaner
 	public interface IObsoleteDetector
 	{
 		/// <summary>
-		/// Returns the list of obsolete subfolders.
+		/// Gets the list of obsolete subfolders.
+		/// Returns false if project path is unknown.
 		/// </summary>
-		IEnumerable<string> GetObsoleteSubfolders(string projectPath);
+		bool GetObsoleteSubfolders(string projectPath, out List<string> obsoleteSubfolders);
 	}
 }

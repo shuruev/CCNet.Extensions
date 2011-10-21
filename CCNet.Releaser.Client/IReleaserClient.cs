@@ -8,8 +8,9 @@ namespace CCNet.Releaser.Client
 	public interface IReleaserClient
 	{
 		/// <summary>
-		/// Returns the list of released builds for specified <paramref name="projectName"/>.
+		/// Gets the list of released builds for specified <paramref name="projectName"/>.
+		/// Returns false if project name is unknown.
 		/// </summary>
-		List<string> GetReleases(string projectName);
+		bool GetReleases(string projectName, out List<string> releases);
 	}
 }
