@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.ObsoleteCleaner", "CC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.ObsoleteCleaner.Tests", "CCNet.ObsoleteCleaner.Tests\CCNet.ObsoleteCleaner.Tests.csproj", "{5E378BD9-09EF-460D-AAC0-56AC0DDF812B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Releaser.Client", "CCNet.Releaser.Client\CCNet.Releaser.Client.csproj", "{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = CCNet.Extensions.vsmdi
@@ -153,6 +155,16 @@ Global
 		{5E378BD9-09EF-460D-AAC0-56AC0DDF812B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5E378BD9-09EF-460D-AAC0-56AC0DDF812B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5E378BD9-09EF-460D-AAC0-56AC0DDF812B}.Release|x86.ActiveCfg = Release|Any CPU
+		{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

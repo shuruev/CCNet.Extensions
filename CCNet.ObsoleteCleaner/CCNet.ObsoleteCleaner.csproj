@@ -68,6 +68,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="PublicationStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -101,6 +102,10 @@
     <ProjectReference Include="..\CCNet.Common\CCNet.Common.csproj">
       <Project>{FAF27742-776A-4FD8-B58D-6255ECE24BA8}</Project>
       <Name>CCNet.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CCNet.Releaser.Client\CCNet.Releaser.Client.csproj">
+      <Project>{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}</Project>
+      <Name>CCNet.Releaser.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

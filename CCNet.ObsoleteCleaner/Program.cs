@@ -14,6 +14,7 @@ namespace CCNet.ObsoleteCleaner
 			args = new[]
 			{
 				@"InternalReferencesPath=D:\InternalReferences",
+				@"PublicationStoragePath=D:\PublicationStorage",
 				@"DaysToLive=30",
 			};
 
@@ -28,6 +29,7 @@ namespace CCNet.ObsoleteCleaner
 				Arguments.Default = ArgumentProperties.Parse(args);
 
 				InternalReferences.Clean();
+
 			}
 			catch (Exception e)
 			{

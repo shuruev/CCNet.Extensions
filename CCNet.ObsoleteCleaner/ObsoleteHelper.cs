@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace CCNet.ObsoleteCleaner
 {
@@ -41,6 +43,44 @@ namespace CCNet.ObsoleteCleaner
 			{
 				return null;
 			}
+		}
+
+		/// <summary>
+		/// Gets obsolete paths.
+		/// </summary>
+		public static List<string> GetObsoletePaths(
+			IEnumerable<string> sourcePaths,
+			IList<string> excludeVersions,
+			int daysToLive)
+		{
+			var foldersToDelete = new List<string>();
+
+			foreach (var versionPath in sourcePaths)
+			{
+				var versionFolder = Path.GetFileName(versionPath);
+
+				if (excludeVersions.Contains(versionFolder))
+				{
+					continue;
+				}
+
+				var date = ConvertVersionToDate(versionFolder);
+				if (!date.HasValue)
+				{
+					continue;
+				}
+
+				if (!IsObsolete(
+					date.Value,
+					daysToLive))
+				{
+					continue;
+				}
+
+				foldersToDelete.Add(versionPath);
+			}
+
+			return foldersToDelete;
 		}
 	}
 }

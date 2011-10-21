@@ -47,7 +47,7 @@ namespace CCNet.ObsoleteCleaner
 				Arguments.InternalReferencesPath,
 				projectFolder);
 
-			var latestPath = ReferenceFolder.GetLatestPath(
+			var latestFolderName = ReferenceFolder.GetLatestPath(
 				Arguments.InternalReferencesPath,
 				projectFolder);
 
@@ -59,7 +59,7 @@ namespace CCNet.ObsoleteCleaner
 				var versionFolder = Path.GetFileName(versionPath);
 
 				if (versionFolder == latestVersion
-					|| versionPath == latestPath)
+					|| versionPath == latestFolderName)
 				{
 					continue;
 				}
