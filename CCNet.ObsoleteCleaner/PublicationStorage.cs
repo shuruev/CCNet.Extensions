@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using CCNet.Common;
-using CCNet.Releaser.Remoting;
+using CCNet.Releaser.Client;
 
 namespace CCNet.ObsoleteCleaner
 {

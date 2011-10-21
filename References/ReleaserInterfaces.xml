@@ -1,0 +1,783 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ReleaserInterfaces</name>
+    </assembly>
+    <members>
+        <member name="T:Releaser.Interfaces.ResourceData">
+             <summary>
+            Represents a strongly typed in-memory cache of data.
+            </summary>
+            <summary>
+            "ResourceData" data set.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ResourceData.ResourceDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+            <summary>
+            "Resource" table.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ResourceData.ResourceRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ResourceData.ResourceRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.HtmlStyler.InlineCss(System.String)">
+            <summary>
+            Converts HTML document with CSS style into HTML documend with inlined styles.
+            Version 1.0.0.1
+            </summary>
+            <param name="html">Source HTML document.</param>
+            <returns>
+            Inline-styled HTML document.
+            </returns>
+            <remarks>
+            Please ensure that your html compatible with XHTML™ 1.1 <see cref="!:http://www.w3.org/TR/xhtml11/"/>.
+            Be informed that priority of applying CSS is not descendant but simply the order of style declaration.
+            </remarks>
+        </member>
+        <member name="M:Releaser.Interfaces.HtmlStyler.FormatOutXmlDocument(System.Xml.XmlDocument)">
+            <summary>
+            Removes redundant spaces from result html text.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.HtmlStyler.RemoveHiddenElements(System.Xml.XmlNode)">
+            <summary>
+            Removes nodes with style "display: none;" from HTML document.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.HtmlStyler.AppendNewStyleAttribute(System.Xml.XmlDocument,Releaser.Interfaces.HtmlStyler.CssStyle,System.Xml.XmlNode)">
+            <summary>
+            Save CSS style into "".
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.HtmlStyler.MergeStyles(System.Xml.XmlDocument,System.Xml.XmlNode)">
+            <summary>
+            Apply CSS style to HTML node.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.HtmlStyler.GetCssStyleList(System.String)">
+            <summary>
+            Parses CSS style text into separate styles.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.HtmlStyler.LowercaseInlineStylePropertyName(System.Xml.XmlNode)">
+            <summary>
+            Lowercase of inline CSS properties in "style" attributes of HTML document.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.HtmlStyler.ExtractCssFromHtml(System.Xml.XmlDocument@)">
+            <summary>
+            Extracts CSS style from HTML document.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.HtmlStyler.PrepareXml(System.String)">
+            <summary>
+            Prepare valid XML text.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.HtmlStyler.ReplaceEx(System.String,System.String,System.String)">
+            <summary>
+            Fast string replace method.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.HtmlStyler.CssStyle">
+            <summary>
+            CSS Style
+            </summary>
+        </member>
+        <member name="P:Releaser.Interfaces.HtmlStyler.CssStyle.CssSelector">
+            <summary>
+            Gets or sets CSS selector.
+            </summary> 
+        </member>
+        <member name="P:Releaser.Interfaces.HtmlStyler.CssStyle.Properties">
+            <summary>
+            Gets or sets text of style attributes.
+            </summary>
+        </member>
+        <member name="P:Releaser.Interfaces.HtmlStyler.CssStyle.OrderIndex">
+            <summary>
+            Gets or sets order of applying styles
+            </summary>
+        </member>
+        <member name="P:Releaser.Interfaces.HtmlStyler.CssStyle.XPathSelector">
+            <summary>
+            Gets XPath selector translated from CSS selector.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.HtmlStyler.CssStyleProperties">
+            <summary>
+            CSS Style Properties
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.HtmlStyler.CssStyleProperties.op_Addition(Releaser.Interfaces.HtmlStyler.CssStyleProperties,Releaser.Interfaces.HtmlStyler.CssStyleProperties)">
+            <summary>
+            Summ operator overload. 
+            </summary>
+            <remarks>
+            If both operands have the properties with the same name the second operand will override such properties of the first.
+            </remarks>
+        </member>
+        <member name="P:Releaser.Interfaces.HtmlStyler.CssStyleProperties.Text">
+            <summary>
+            Gets or sets content of "style" attribute.
+            </summary>
+        </member>
+        <member name="P:Releaser.Interfaces.HtmlStyler.CssStyleProperties.Dictionary">
+            <summary>
+            Gets or sets dictionary of separate style properties.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.Helpers">
+            <summary>
+            Different helpers both for client and server.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.Resize(System.Drawing.Image,System.Int32,System.Int32)">
+            <summary>
+            Resizes specified image.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.Combine(System.Drawing.Image,System.Drawing.Image)">
+            <summary>
+            Combines specified images.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.TrimAll(System.String)">
+            <summary>
+            Trims all line breaks, spaces and tabs.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.RemoveDoubleSpaces(System.String)">
+            <summary>
+            Removes all double spaces.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.TrimLines(System.String)">
+            <summary>
+            Trims all lines in text.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.ToSingleLine(System.String)">
+            <summary>
+            Prepares text string to single line output.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.ExtractReleaseCodes(System.String)">
+            <summary>
+            Extracts release codes from clipboard.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.ToHtml(System.String)">
+            <summary>
+            Prepares text string to HTML output.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.ConvertJiraIssues(System.String)">
+            <summary>
+            Convers all JIRA issues to links.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.GetJiraSearchUrl(System.String)">
+            <summary>
+            Opens JIRA search by specified release code.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.CreateMailMessage">
+            <summary>
+            Creates mail message.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.AttachImage(System.Net.Mail.AlternateView,System.IO.Stream,System.String)">
+            <summary>
+            Adds image to letter.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.PrepareUserImage(System.String,System.String,System.IO.MemoryStream@)">
+            <summary>
+            Prepares user image and returns converted code.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.PrepareProjectImage(System.String,System.String,System.IO.MemoryStream@)">
+            <summary>
+            Prepares project image and returns converted code.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.SendReleaseLetter(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Sends letter for "Release" action.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.RenderReleaseLetter(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Gets HTML letter for "Release" action.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.RenderReleaseBlock(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Gets HTML block for "Release" action.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.SendRequestProjectLetter(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Sends letter for "Request Project" action.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.RenderRequestProjectLetter(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Gets HTML letter for "Request Project" action.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.Helpers.RenderRequestProjectBlock(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Gets HTML block for "Request Project" action.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.VersionData">
+            <summary>
+            "VersionData" data set.
+            </summary>
+             <summary>
+            Represents a strongly typed in-memory cache of data.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.VersionData.VersionDataTable">
+            <summary>
+            "Version" table.
+            </summary>
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.VersionData.ReleaseDataTable">
+            <summary>
+            "Release" table.
+            </summary>
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.VersionData.VersionRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.VersionData.ReleaseRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.VersionData.VersionRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.VersionData.ReleaseRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.IReleaserEngine">
+            <summary>
+            Releaser engine interface.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.GetLogin">
+            <summary>
+            Gets login for current user.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.GetUser">
+            <summary>
+            Gets current user.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.GetUsers">
+            <summary>
+            Gets all users.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.AddUser(System.Guid,System.String,System.String)">
+            <summary>
+            Adds new user.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.RemoveUser(System.Guid)">
+            <summary>
+            Removes existing user.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.DemandReleaseRights(System.Guid)">
+            <summary>
+            Adds current user to releasers for specified project.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.RefuseReleaseRights(System.Guid)">
+            <summary>
+            Removes current user from releasers for specified project.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.GetResources">
+            <summary>
+            Gets all resources.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.GetConfigurations">
+            <summary>
+            Gets all configurations.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.GetProjects">
+            <summary>
+            Gets all projects.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.AddProject(System.Guid,System.String,System.String,System.String,System.String)">
+            <summary>
+            Adds project.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.RequestProject(System.String,System.String,System.String,System.String)">
+            <summary>
+            Requests adding new project.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.RemoveProject(System.Guid)">
+            <summary>
+            Removes project.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.SetProjectDescription(System.Guid,System.String,System.String)">
+            <summary>
+            Sets project description.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.SetProjectDescriptionCache(System.Guid,System.Byte[],System.Byte[])">
+            <summary>
+            Sets project description cache.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.SetProjectKeywords(System.Guid,System.Collections.Generic.IEnumerable{System.Guid})">
+            <summary>
+            Sets project keywords.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.GetLatestReleases">
+            <summary>
+            Gets latest releases.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.ResolveReleases(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Resolves releases.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.GetReleases(System.Guid)">
+            <summary>
+            Gets releases for specified project.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.GetVersions(System.Guid)">
+            <summary>
+            Gets versions and releases for specified project.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.AddRelease(System.String,System.Guid,System.String)">
+            <summary>
+            Adds release.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.UpdateRelease(System.Guid,System.String)">
+            <summary>
+            Updates specified release.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.RemoveRelease(System.Guid)">
+            <summary>
+            Removes specified release.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.DownloadRelease(System.Guid)">
+            <summary>
+            Downloads specified release.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.DownloadReleases(System.Collections.Generic.IEnumerable{System.Guid})">
+            <summary>
+            Downloads specified releases.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.GetLatestDeployments">
+            <summary>
+            Gets latest deployments.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.DeployRelease(System.Guid,System.Guid)">
+            <summary>
+            Deploys specified release.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.IReleaserEngine.DeployReleases(System.Collections.Generic.IEnumerable{System.Guid},System.Guid)">
+            <summary>
+            Deploys specified releases.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.AccessDeniedException">
+            <summary>
+            Exception that thrown when access is denied.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.AccessDeniedException.#ctor">
+            <summary>
+            Initializes a new instance.
+            </summary>
+        </member>
+        <member name="M:Releaser.Interfaces.AccessDeniedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.UserData">
+            <summary>
+            "UserData" data set.
+            </summary>
+             <summary>
+            Represents a strongly typed in-memory cache of data.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.UserData.ReleaserDataTable">
+            <summary>
+            "Releaser" table.
+            </summary>
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.UserData.DeployerDataTable">
+            <summary>
+            "Deployer" table.
+            </summary>
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.UserData.UserDataTable">
+            <summary>
+            "User" table.
+            </summary>
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.UserData.UserRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.UserData.ReleaserRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.UserData.DeployerRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.UserData.UserRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.UserData.ReleaserRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.UserData.DeployerRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ReleaseData">
+            <summary>
+            "ReleaseData" data set.
+            </summary>
+             <summary>
+            Represents a strongly typed in-memory cache of data.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ReleaseData.ReleaseDataTable">
+            <summary>
+            "Release" table.
+            </summary>
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ReleaseData.ReleaseRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ReleaseData.ReleaseRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ProjectData">
+             <summary>
+            Represents a strongly typed in-memory cache of data.
+            </summary>
+            <summary>
+            "ProjectData" data set.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ProjectData.ProjectDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+            <summary>
+            "Project" table.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ProjectData.KeywordDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+            <summary>
+            "Keyword" table.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ProjectData.ProjectKeywordDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+            <summary>
+            "ProjectKeyword" table.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ProjectData.ProjectRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ProjectData.KeywordRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ProjectData.ProjectKeywordRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ProjectData.ProjectRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ProjectData.KeywordRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ProjectData.ProjectKeywordRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.DeploymentData">
+             <summary>
+            Represents a strongly typed in-memory cache of data.
+            </summary>
+            <summary>
+            "DeploymentData" data set.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.DeploymentData.ReleaseDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+            <summary>
+            "Release" table.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.DeploymentData.DeploymentDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+            <summary>
+            "Deployment" table.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.DeploymentData.ReleaseRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.DeploymentData.DeploymentRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.DeploymentData.ReleaseRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.DeploymentData.DeploymentRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Releaser.Interfaces.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Releaser.Interfaces.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Releaser.Interfaces.Properties.Resources.ReleaseBlock">
+             <summary>
+               Looks up a localized string similar to &lt;div class=&quot;block&quot;&gt;
+            	&lt;img src=&quot;cid:%PROJECT_IMAGE%&quot; /&gt;&amp;nbsp;&lt;span class=&quot;title&quot;&gt;%PROJECT_NAME%&lt;/span&gt;&amp;nbsp;version&amp;nbsp;&lt;span class=&quot;version&quot;&gt;%VERSION_CODE%&lt;/span&gt;&amp;nbsp;&lt;span class=&quot;code&quot;&gt;[%RELEASE_CODE%]&lt;/span&gt;
+            	&lt;div class=&quot;description&quot;&gt;%RELEASE_COMMENT%&lt;/div&gt;
+            &lt;/div&gt;
+            .
+             </summary>
+        </member>
+        <member name="P:Releaser.Interfaces.Properties.Resources.ReleaseLetter">
+             <summary>
+               Looks up a localized string similar to &lt;html&gt;
+            &lt;head&gt;
+            	&lt;title&gt;Releaser Mail Letter&lt;/title&gt;
+            	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+            	&lt;style type=&quot;text/css&quot;&gt;
+            		.block
+            		{
+            			margin-top: 15px;
+            			margin-bottom: 2px;
+            			font-family: Tahoma;
+            			font-size: 10pt;
+            		}
+            		.user
+            		{
+            			font-size: 12pt;
+            			font-weight: bold;
+            			color: #0070C0;
+            		}
+            		.title
+            		{
+            			font-size: 13pt;
+            			font-weight: bold;
+            			color: #000000;
+            		}
+            		.version
+            		{
+            			font-size: 11pt;
+            			font-weight: bold;
+            			color: #002060;
+             [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="P:Releaser.Interfaces.Properties.Resources.ReleaseLetterSubject">
+            <summary>
+              Looks up a localized string similar to {0} version {1} was released.
+            </summary>
+        </member>
+        <member name="P:Releaser.Interfaces.Properties.Resources.RequestProjectBlock">
+             <summary>
+               Looks up a localized string similar to &lt;div class=&quot;block&quot;&gt;
+            	&lt;img src=&quot;cid:%PROJECT_IMAGE%&quot; /&gt;&amp;nbsp;&lt;span class=&quot;title&quot;&gt;%PROJECT_NAME%&lt;/span&gt;
+            	&lt;div&gt;&lt;span class=&quot;property&quot;&gt;Storage Code:&lt;/span&gt;&amp;nbsp;&lt;span class=&quot;value&quot;&gt;%STORAGE_CODE%&lt;/span&gt;&lt;/div&gt;
+            	&lt;div&gt;&lt;span class=&quot;property&quot;&gt;Storage Path:&lt;/span&gt;&amp;nbsp;&lt;span class=&quot;value&quot;&gt;%STORAGE_PATH%&lt;/span&gt;&lt;/div&gt;
+            	&lt;div&gt;&lt;span class=&quot;property&quot;&gt;Image Code:&lt;/span&gt;&amp;nbsp;&lt;span class=&quot;value&quot;&gt;%IMAGE_CODE%&lt;/span&gt;&lt;/div&gt;
+            &lt;/div&gt;
+            .
+             </summary>
+        </member>
+        <member name="P:Releaser.Interfaces.Properties.Resources.RequestProjectLetter">
+             <summary>
+               Looks up a localized string similar to &lt;html&gt;
+            &lt;head&gt;
+            	&lt;title&gt;Releaser Mail Letter&lt;/title&gt;
+            	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+            	&lt;style type=&quot;text/css&quot;&gt;
+            		.block
+            		{
+            			margin-top: 15px;
+            			margin-bottom: 2px;
+            			font-family: Tahoma;
+            			font-size: 10pt;
+            		}
+            		.user
+            		{
+            			font-size: 12pt;
+            			font-weight: bold;
+            			color: #0070C0;
+            		}
+            		.title
+            		{
+            			font-size: 13pt;
+            			font-weight: bold;
+            			color: #000000;
+            		}
+            		.property
+            		{
+            			font-size: 10pt;
+            			font-weight: normal;
+            			color: #808080 [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="P:Releaser.Interfaces.Properties.Resources.RequestProjectLetterSubject">
+            <summary>
+              Looks up a localized string similar to New project {0} was requested.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ConfigurationData">
+             <summary>
+            Represents a strongly typed in-memory cache of data.
+            </summary>
+            <summary>
+            "ConfigurationData" data set.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ConfigurationData.ConfigurationDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+            <summary>
+            "Configuration" table.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ConfigurationData.ConfigurationRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:Releaser.Interfaces.ConfigurationData.ConfigurationRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+    </members>
+</doc>

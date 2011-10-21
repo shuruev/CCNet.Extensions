@@ -11,7 +11,8 @@
     <RootNamespace>CCNet.ObsoleteCleaner</RootNamespace>
     <AssemblyName>CCNet.ObsoleteCleaner</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -107,6 +108,11 @@
       <Project>{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}</Project>
       <Name>CCNet.Releaser.Client</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
