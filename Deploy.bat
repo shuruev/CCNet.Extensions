@@ -14,5 +14,8 @@ XCOPY "CCNet.ServiceChecker\bin\Debug\CCNet.ServiceChecker.exe" "%ServerPath%\CC
 XCOPY "CCNet.ServiceChecker\bin\Debug\CCNet.Common.dll" "%ServerPath%\CCNet.ServiceChecker\" /Y
 XCOPY "CCNet.ObsoleteCleaner\bin\Debug\CCNet.ObsoleteCleaner.exe" "%ServerPath%\CCNet.ObsoleteCleaner\" /Y
 XCOPY "CCNet.ObsoleteCleaner\bin\Debug\CCNet.Common.dll" "%ServerPath%\CCNet.ObsoleteCleaner\" /Y
+XCOPY "CCNet.ObsoleteCleaner\bin\Debug\CCNet.Releaser.Client.dll" "%ServerPath%\CCNet.ObsoleteCleaner\" /Y
+XCOPY "CCNet.ObsoleteCleaner\bin\Debug\ReleaserInterfaces.dll" "%ServerPath%\CCNet.ObsoleteCleaner\" /Y
+XCOPY "CCNet.ObsoleteCleaner\bin\Debug\CCNet.ObsoleteCleaner.exe.config" "%ServerPath%\CCNet.ObsoleteCleaner\" /Y
 
 PAUSE
