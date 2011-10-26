@@ -9,14 +9,28 @@ namespace CCNet.ProjectAdapter
 	public static class Paths
 	{
 		/// <summary>
+		/// Gets project file extension.
+		/// </summary>
+		public static string ProjectFileExtension
+		{
+			get
+			{
+				if (Arguments.ProjectType == ProjectType.Azure)
+					return "ccproj";
+
+				return "csproj";
+			}
+		}
+
+		/// <summary>
 		/// Gets project file path.
 		/// </summary>
 		public static string ProjectFile
 		{
 			get
 			{
-				string projectFile = "{0}.csproj".Display(Arguments.ProjectName);
-				return Path.Combine(Arguments.WorkingDirectorySource, projectFile);
+				string file = "{0}.{1}".Display(Arguments.ProjectName, ProjectFileExtension);
+				return Path.Combine(Arguments.WorkingDirectorySource, file);
 			}
 		}
 

@@ -21,20 +21,13 @@ namespace CCNet.ProjectAdapter
 		{
 			/*xxxargs = new[]
 			{
-				@"ProjectName=VXStudioWindowsControls",
-				@"CurrentVersion=1.2.3",
-				@"WorkingDirectorySource=C:\Users\Public\VSS\SED\TFS\VXStudio\VXStudioWindowsControls",
+				@"ProjectName=CC.PE.Cloud",
+				@"CurrentVersion=1.2.3.4",
+				@"WorkingDirectorySource=\\rufrt-vxbuild\d$\CCNET\CC.PE.Cloud\WorkingDirectory\Source",
+				@"WorkingDirectoryRelated=\\rufrt-vxbuild\d$\CCNET\CC.PE.Cloud\WorkingDirectory\Related",
 				@"ExternalReferencesPath=\\rufrt-vxbuild\ExternalReferences",
 				@"InternalReferencesPath=\\rufrt-vxbuild\InternalReferences",
-			};*/
-
-			/*xxxargs = new[]
-			{
-				@"ProjectName=SkuManagement.Server",
-				@"CurrentVersion=10.12.24.2",
-				@"WorkingDirectorySource=\\rufrt-vxbuild\e$\CCNET\SkuManagement.Server\WorkingDirectory\Source",
-				@"ExternalReferencesPath=\\rufrt-vxbuild\ExternalReferences",
-				@"InternalReferencesPath=\\rufrt-vxbuild\InternalReferences",
+				@"ProjectType=Azure"
 			};*/
 
 			if (args == null || args.Length == 0)
@@ -47,9 +40,12 @@ namespace CCNet.ProjectAdapter
 			{
 				Arguments.Default = ArgumentProperties.Parse(args);
 
-				CancelReadonly();
+				CancelReadonly(Arguments.WorkingDirectorySource);
+				CancelReadonly(Arguments.WorkingDirectoryRelated);
+
 				UpdateAssemblyInfo();
 				UpdateProjectProperties();
+				UpdateBinaryReferences();
 				UpdateProjectReferences();
 			}
 			catch (Exception e)
@@ -73,11 +69,14 @@ namespace CCNet.ProjectAdapter
 		#region Performing update
 
 		/// <summary>
-		/// Cancels readonly flag for all files working directory.
+		/// Cancels readonly flag for all files in specified directory.
 		/// </summary>
-		private static void CancelReadonly()
+		private static void CancelReadonly(string path)
 		{
-			DirectoryInfo dir = new DirectoryInfo(Arguments.WorkingDirectorySource);
+			if (!Directory.Exists(path))
+				return;
+
+			DirectoryInfo dir = new DirectoryInfo(path);
 			foreach (FileInfo fi in dir.GetFiles("*", SearchOption.AllDirectories))
 			{
 				fi.Attributes = FileAttributes.Normal;
@@ -89,6 +88,9 @@ namespace CCNet.ProjectAdapter
 		/// </summary>
 		private static void UpdateAssemblyInfo()
 		{
+			if (Arguments.ProjectType == ProjectType.Azure)
+				return;
+
 			string text = File.ReadAllText(Paths.AssemblyInfoFile);
 
 			text = new Regex("\\[assembly: AssemblyVersion\\(\"[0-9\\.\\*]+\"\\)]")
@@ -113,17 +115,39 @@ namespace CCNet.ProjectAdapter
 			regex = new Regex("<ApplicationVersion>[0-9\\.\\*]+</ApplicationVersion>");
 			text = regex.Replace(text, "<ApplicationVersion>" + Arguments.CurrentVersion + "</ApplicationVersion>");
 
-			text = text.Replace("<GenerateManifests>false</GenerateManifests>", "<GenerateManifests>true</GenerateManifests>");
+			text = text.Replace(
+				"<GenerateManifests>false</GenerateManifests>",
+				"<GenerateManifests>true</GenerateManifests>");
+
+			text = text.Replace(
+				"<Import Project=\"$(CloudExtensionsDir)Microsoft.CloudService.targets\" />",
+				"<Import Project=\"$(CloudExtensionsDir)Microsoft.WindowsAzure.targets\" />");
+
+			text = text.Replace(
+				"<CloudExtensionsDir Condition=\" '$(CloudExtensionsDir)' == '' \">$(MSBuildExtensionsPath)\\Microsoft\\Cloud Service\\1.0\\Visual Studio 10.0\\</CloudExtensionsDir>",
+				"<VisualStudioVersion Condition=\" '$(VisualStudioVersion)' == '' \">10.0</VisualStudioVersion>\r\n<CloudExtensionsDir Condition=\" '$(CloudExtensionsDir)' == '' \">$(MSBuildExtensionsPath)\\Microsoft\\VisualStudio\\v$(VisualStudioVersion)\\Windows Azure Tools\\1.5\\</CloudExtensionsDir>");
 
 			File.WriteAllText(Paths.ProjectFile, text, Encoding.UTF8);
 		}
 
 		/// <summary>
-		/// Updates project references.
+		/// Updates binary references.
 		/// </summary>
-		private static void UpdateProjectReferences()
+		private static void UpdateBinaryReferences()
 		{
-			string text = File.ReadAllText(Paths.ProjectFile);
+			UpdateBinaryReferences(
+				Paths.ProjectFile,
+				true);
+		}
+
+		/// <summary>
+		/// Updates binary references for specified project.
+		/// </summary>
+		private static void UpdateBinaryReferences(
+			string projectPath,
+			bool reportReferences)
+		{
+			string text = File.ReadAllText(projectPath);
 
 			XmlDocument doc = new XmlDocument();
 			doc.LoadXml(text);
@@ -139,10 +163,10 @@ namespace CCNet.ProjectAdapter
 			List<ReferenceFile> allExternals = ReferenceFolder.GetAllFiles(Arguments.ExternalReferencesPath);
 			List<ReferenceFile> allInternals = ReferenceFolder.GetAllFiles(Arguments.InternalReferencesPath);
 
-			UpdateHints(doc, xnm, allExternals);
-			UpdateHints(doc, xnm, allInternals);
+			UpdateHints(doc, xnm, allExternals, reportReferences);
+			UpdateHints(doc, xnm, allInternals, reportReferences);
 
-			using (XmlTextWriter xtw = new XmlTextWriter(Paths.ProjectFile, Encoding.UTF8))
+			using (XmlTextWriter xtw = new XmlTextWriter(projectPath, Encoding.UTF8))
 			{
 				xtw.Formatting = Formatting.Indented;
 				doc.WriteTo(xtw);
@@ -155,7 +179,8 @@ namespace CCNet.ProjectAdapter
 		private static void UpdateHints(
 			XmlDocument doc,
 			XmlNamespaceManager xnm,
-			IEnumerable<ReferenceFile> references)
+			IEnumerable<ReferenceFile> references,
+			bool reportReferences)
 		{
 			foreach (ReferenceFile reference in references)
 			{
@@ -179,11 +204,55 @@ namespace CCNet.ProjectAdapter
 
 				node.AppendChild(hint);
 
+				if (reportReferences)
+				{
+					Console.WriteLine(
+						Resources.LogReferencesTo,
+						reference.FileName,
+						reference.ProjectName,
+						reference.Version);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Updates project references.
+		/// </summary>
+		private static void UpdateProjectReferences()
+		{
+			string text = File.ReadAllText(Paths.ProjectFile);
+
+			XmlDocument doc = new XmlDocument();
+			doc.LoadXml(text);
+
+			XmlNamespaceManager xnm = new XmlNamespaceManager(doc.NameTable);
+			xnm.AddNamespace("ms", "http://schemas.microsoft.com/developer/msbuild/2003");
+
+			foreach (XmlNode node in doc.SelectNodes("/ms:Project/ms:ItemGroup/ms:ProjectReference", xnm))
+			{
+				string include = node.Attributes["Include"].Value;
+				include = include.Replace("..", Arguments.WorkingDirectoryRelated);
+				node.Attributes["Include"].Value = include;
+
+				UpdateBinaryReferences(include, false);
+
+				string relatedProjectFile = Path.GetFileName(include);
+				string relatedProjectName = Path.GetFileNameWithoutExtension(include);
+				string relatedProjectVersion = ReferenceFolder.GetLatestVersion(
+					Arguments.InternalReferencesPath,
+					relatedProjectName);
+
 				Console.WriteLine(
 					Resources.LogReferencesTo,
-					reference.FileName,
-					reference.ProjectName,
-					reference.Version);
+					relatedProjectFile,
+					relatedProjectName,
+					relatedProjectVersion);
+			}
+
+			using (XmlTextWriter xtw = new XmlTextWriter(Paths.ProjectFile, Encoding.UTF8))
+			{
+				xtw.Formatting = Formatting.Indented;
+				doc.WriteTo(xtw);
 			}
 		}
 

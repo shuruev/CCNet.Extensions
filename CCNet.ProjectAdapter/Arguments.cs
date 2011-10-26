@@ -37,6 +37,14 @@ namespace CCNet.ProjectAdapter
 		}
 
 		/// <summary>
+		/// Gets path for related projects.
+		/// </summary>
+		public static string WorkingDirectoryRelated
+		{
+			get { return Default.GetValue("WorkingDirectoryRelated"); }
+		}
+
+		/// <summary>
 		/// Gets path for external references.
 		/// </summary>
 		public static string ExternalReferencesPath
@@ -50,6 +58,14 @@ namespace CCNet.ProjectAdapter
 		public static string InternalReferencesPath
 		{
 			get { return Default.GetValue("InternalReferencesPath"); }
+		}
+
+		/// <summary>
+		/// Gets project type.
+		/// </summary>
+		public static ProjectType ProjectType
+		{
+			get { return Default.GetEnumValue<ProjectType>("ProjectType"); }
 		}
 	}
 }

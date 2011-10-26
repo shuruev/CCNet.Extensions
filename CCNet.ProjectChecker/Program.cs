@@ -23,8 +23,8 @@ namespace CCNet.ProjectChecker
 			/*xxxargs = new[]
 			{
 				@"ProjectName=CC.PE.Cloud",
-				@"ReferencesDirectory=\\rufrt-vxbuild\e$\CCNET\CC.PE.Cloud\References",
-				@"WorkingDirectorySource=\\rufrt-vxbuild\e$\CCNET\CC.PE.Cloud\WorkingDirectory\Source",
+				@"ReferencesDirectory=\\rufrt-vxbuild\d$\CCNET\CC.PE.Cloud\References",
+				@"WorkingDirectorySource=\\rufrt-vxbuild\d$\CCNET\CC.PE.Cloud\WorkingDirectory\Source",
 				@"ExternalReferencesPath=\\rufrt-vxbuild\ExternalReferences",
 				@"InternalReferencesPath=\\rufrt-vxbuild\InternalReferences",
 				@"ProjectType=Azure",
@@ -769,6 +769,18 @@ namespace CCNet.ProjectChecker
 				else
 				{
 					usedGac.Add(reference);
+				}
+			}
+
+			foreach (string project in projects)
+			{
+				ReferenceFile usedInternal = allInternals
+					.Where(file => file.AssemblyName == Path.GetFileNameWithoutExtension(project))
+					.FirstOrDefault();
+
+				if (usedInternal != null)
+				{
+					usedInternals.Add(usedInternal);
 				}
 			}
 
