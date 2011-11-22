@@ -802,6 +802,9 @@ namespace CCNet.ProjectChecker
 			allowedGac.Add("Microsoft.CSharp");
 			allowedGac.Add("Microsoft.JScript");
 			allowedGac.Add("Microsoft.mshtml");
+			allowedGac.Add("Microsoft.ReportViewer.Common");
+			allowedGac.Add("Microsoft.ReportViewer.WebForms");
+			allowedGac.Add("Microsoft.VisualBasic.Compatibility.Data");
 			allowedGac.Add("Microsoft.VisualStudio.QualityTools.UnitTestFramework");
 			allowedGac.Add("PresentationCore");
 			allowedGac.Add("PresentationFramework");
@@ -881,7 +884,9 @@ namespace CCNet.ProjectChecker
 			exceptions.Add("System.ServiceModel.DomainServices.EntityFramework");
 			exceptions.Add("System.ServiceModel.DomainServices.Hosting");
 			exceptions.Add("System.ServiceModel.DomainServices.Server");
+			exceptions.Add("System.Web.Helpers");
 			exceptions.Add("System.Web.Mvc");
+			exceptions.Add("System.Web.WebPages");
 
 			foreach (Reference reference in references)
 			{
