@@ -804,6 +804,9 @@ namespace CCNet.ProjectChecker
 			allowedGac.Add("Microsoft.mshtml");
 			allowedGac.Add("Microsoft.ReportViewer.Common");
 			allowedGac.Add("Microsoft.ReportViewer.WebForms");
+			allowedGac.Add("Microsoft.Synchronization");
+			allowedGac.Add("Microsoft.Synchronization.Data");
+			allowedGac.Add("Microsoft.Synchronization.Data.SqlServer");
 			allowedGac.Add("Microsoft.VisualBasic.Compatibility.Data");
 			allowedGac.Add("Microsoft.VisualStudio.QualityTools.UnitTestFramework");
 			allowedGac.Add("PresentationCore");
