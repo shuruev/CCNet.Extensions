@@ -3,7 +3,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Microsoft.TeamFoundation.VersionControl.Client;
 
-namespace ConsoleApplication1
+namespace CCNet.SourceNotifier
 {
 	/// <summary>
 	/// Incapsulates XML generation.

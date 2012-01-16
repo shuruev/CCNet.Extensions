@@ -5,7 +5,7 @@ using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Framework.Common;
 using Microsoft.TeamFoundation.VersionControl.Client;
 
-namespace ConsoleApplication1
+namespace CCNet.SourceNotifier
 {
 	/// <summary>
 	/// Incapsulates all the TFS-related functionality.

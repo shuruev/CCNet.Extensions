@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Net.Mail;
 
-namespace ConsoleApplication1
+namespace CCNet.SourceNotifier
 {
 	/// <summary>
 	/// Holds all of the application configuration parameters.

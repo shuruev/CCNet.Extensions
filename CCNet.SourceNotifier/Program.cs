@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using System.Xml.Xsl;
 using Microsoft.TeamFoundation.VersionControl.Client;
 
-namespace ConsoleApplication1
+namespace CCNet.SourceNotifier
 {
 	/// <summary>
 	/// The entry point class.

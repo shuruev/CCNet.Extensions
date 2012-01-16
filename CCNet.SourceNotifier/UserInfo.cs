@@ -1,7 +1,7 @@
 ﻿using System;
 using System.DirectoryServices.AccountManagement;
 
-namespace ConsoleApplication1
+namespace CCNet.SourceNotifier
 {
 	/// <summary>
 	/// Information about the TFS user.

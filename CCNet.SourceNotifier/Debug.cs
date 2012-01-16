@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 
-namespace ConsoleApplication1
+namespace CCNet.SourceNotifier
 {
 	/// <summary>
 	/// Holds the debug configuration settings.

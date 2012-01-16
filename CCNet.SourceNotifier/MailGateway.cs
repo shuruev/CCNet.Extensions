@@ -2,7 +2,7 @@
 using System.Net.Mail;
 using VX.Sys;
 
-namespace ConsoleApplication1
+namespace CCNet.SourceNotifier
 {
 	/// <summary>
 	/// Incapsulates all the mail-related functionality.

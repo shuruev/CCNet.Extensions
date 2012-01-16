@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace ConsoleApplication1.Resources
+namespace CCNet.SourceNotifier.Resources
 {
 	/// <summary>
 	/// Incapsulates functions related to embedded resources.

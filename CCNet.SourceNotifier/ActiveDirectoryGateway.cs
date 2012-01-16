@@ -2,7 +2,7 @@
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 
-namespace ConsoleApplication1
+namespace CCNet.SourceNotifier
 {
 	/// <summary>
 	/// Incapsulates all the AD-related functionality.
