@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{25766FB5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Releaser.Client", "CCNet.Releaser.Client\CCNet.Releaser.Client.csproj", "{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.SourceNotifier", "CCNet.SourceNotifier\CCNet.SourceNotifier.csproj", "{66D00271-50E9-40C4-A898-52FEC2931D21}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = CCNet.Extensions.vsmdi
@@ -167,6 +169,16 @@ Global
 		{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}.Release|x86.ActiveCfg = Release|Any CPU
+		{66D00271-50E9-40C4-A898-52FEC2931D21}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{66D00271-50E9-40C4-A898-52FEC2931D21}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{66D00271-50E9-40C4-A898-52FEC2931D21}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{66D00271-50E9-40C4-A898-52FEC2931D21}.Debug|x86.ActiveCfg = Debug|x86
+		{66D00271-50E9-40C4-A898-52FEC2931D21}.Debug|x86.Build.0 = Debug|x86
+		{66D00271-50E9-40C4-A898-52FEC2931D21}.Release|Any CPU.ActiveCfg = Release|x86
+		{66D00271-50E9-40C4-A898-52FEC2931D21}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{66D00271-50E9-40C4-A898-52FEC2931D21}.Release|Mixed Platforms.Build.0 = Release|x86
+		{66D00271-50E9-40C4-A898-52FEC2931D21}.Release|x86.ActiveCfg = Release|x86
+		{66D00271-50E9-40C4-A898-52FEC2931D21}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
