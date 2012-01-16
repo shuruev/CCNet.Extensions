@@ -19,8 +19,8 @@ namespace CCNet.SourceNotifier
 		public readonly bool IsDebugModeEnabled;
 
 		/// <summary>
-		/// If debugMode is enabled, the value is used instead of the recipients email addresses
-		/// I.e. all the emails will be sent to this address).
+		/// If debugMode is enabled, the value is used instead of the recipients email addresses.
+		/// I.e. all the emails will be sent to this address.
 		/// </summary>
 		public readonly string OverrideEmail;
 

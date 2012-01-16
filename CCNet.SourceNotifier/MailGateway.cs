@@ -57,6 +57,9 @@ namespace CCNet.SourceNotifier
 			}
 		}
 
+		/// <summary>
+		/// Used in a debug build.
+		/// </summary>
 		private class DebugGateway : ProductionGateway
 		{
 			/// <summary>

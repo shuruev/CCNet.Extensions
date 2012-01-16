@@ -55,7 +55,7 @@ namespace CCNet.SourceNotifier
 		}
 
 		/// <summary>
-		/// Gets how old the pending changes should be in order to consider them "old"
+		/// Gets how old the pending changes should be in order to consider them "old".
 		/// Note that the value is positive TimeSpan.
 		/// Example: CutoffTImeSpan.TotalDays = 14 means that the search will be performed for pending changes more than 2 weeks old.
 		/// </summary>
