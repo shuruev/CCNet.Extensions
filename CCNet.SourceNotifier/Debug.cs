@@ -37,14 +37,6 @@ namespace CCNet.SourceNotifier
 		/// <summary>
 		/// Logs a line.
 		/// </summary>
-		public void Log(string message)
-		{
-			Console.WriteLine(message);
-		}
-
-		/// <summary>
-		/// Logs a line.
-		/// </summary>
 		public void Log(string format, params object[] arg)
 		{
 			Console.WriteLine(format, arg);
