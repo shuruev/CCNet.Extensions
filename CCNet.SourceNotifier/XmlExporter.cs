@@ -55,6 +55,7 @@ namespace CCNet.SourceNotifier
 					result.Add(new XElement("daysSinceLastLogon", ExportTimeSpanDays(DateTime.Now - registeredInfo.LastLogon.Value)));
 				}
 			}
+
 			return result;
 		}
 

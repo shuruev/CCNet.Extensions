@@ -47,7 +47,7 @@ namespace CCNet.SourceNotifier
 			}
 
 			/// <summary>
-			/// Constructor.
+			/// Initializes a new instance.
 			/// </summary>
 			public NotRegisteredUserInfo(string logonName)
 			{
@@ -71,7 +71,7 @@ namespace CCNet.SourceNotifier
 			}
 
 			/// <summary>
-			/// Serves as a hash function for a particular type. 
+			/// Serves as a hash function for a particular type.
 			/// </summary>
 			public override int GetHashCode()
 			{
@@ -176,7 +176,7 @@ namespace CCNet.SourceNotifier
 			}
 
 			/// <summary>
-			/// Constructor.
+			/// Initializes a new instance.
 			/// </summary>
 			public RegisteredUserInfo(UserPrincipal userPrincipal)
 			{
@@ -200,7 +200,7 @@ namespace CCNet.SourceNotifier
 			}
 
 			/// <summary>
-			/// Serves as a hash function for a particular type. 
+			/// Serves as a hash function for a particular type.
 			/// </summary>
 			public override int GetHashCode()
 			{
@@ -250,6 +250,7 @@ namespace CCNet.SourceNotifier
 		}
 
 		public abstract override bool Equals(object obj);
+
 		public abstract override int GetHashCode();
 
 		/// <summary>

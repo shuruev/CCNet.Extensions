@@ -20,7 +20,7 @@ namespace CCNet.SourceNotifier.Resources
 			public readonly string Name;
 
 			/// <summary>
-			/// Constructor.
+			/// Initializes a new instance.
 			/// </summary>
 			public ResourceNotFoundException(string name)
 				: base(string.Format("Resource {0} could not be found", name))
@@ -59,6 +59,7 @@ namespace CCNet.SourceNotifier.Resources
 			{
 				throw new ResourceNotFoundException(name);
 			}
+
 			return result;
 		}
 	}

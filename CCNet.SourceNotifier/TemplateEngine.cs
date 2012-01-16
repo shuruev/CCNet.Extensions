@@ -36,6 +36,7 @@ namespace CCNet.SourceNotifier
 						}
 					}
 				}
+
 				return s_cache[templateName];
 			}
 		}

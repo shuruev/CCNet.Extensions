@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using CCNet.Common;
-using System.Net.Mail;
 
 namespace CCNet.SourceNotifier
 {
@@ -13,12 +13,12 @@ namespace CCNet.SourceNotifier
 	internal class Arguments
 	{
 		/// <summary>
-		/// Properties instance.
+		/// Gets properties instance.
 		/// </summary>
 		private readonly ArgumentProperties m_properties;
 
 		/// <summary>
-		/// Command name.
+		/// Gets command name.
 		/// </summary>
 		public ConsoleCommandType ConsoleCommandType
 		{
@@ -26,7 +26,7 @@ namespace CCNet.SourceNotifier
 		}
 
 		/// <summary>
-		/// Email we should send master reports to.
+		/// Gets email we should send master reports to.
 		/// </summary>
 		public string MasterEmail
 		{
@@ -34,7 +34,7 @@ namespace CCNet.SourceNotifier
 		}
 
 		/// <summary>
-		/// URI of a TFS server.
+		/// Gets URI of a TFS server.
 		/// </summary>
 		public Uri TfsServerUri
 		{
@@ -42,7 +42,7 @@ namespace CCNet.SourceNotifier
 		}
 
 		/// <summary>
-		/// Name of TFS collection.
+		/// Gets name of TFS collection.
 		/// </summary>
 		public string TfsCollectionName
 		{
@@ -50,7 +50,7 @@ namespace CCNet.SourceNotifier
 		}
 
 		/// <summary>
-		/// Mail address of a robot used to send emails.
+		/// Gets mail address of a robot used to send emails.
 		/// </summary>
 		public MailAddress Sender
 		{
@@ -58,7 +58,7 @@ namespace CCNet.SourceNotifier
 		}
 
 		/// <summary>
-		/// How old the pending changes should be in order to consider them "old"
+		/// Gets how old the pending changes should be in order to consider them "old"
 		/// Note that the value is positive TimeSpan.
 		/// Example: CutoffTImeSpan.TotalDays = 14 means that the search will be performed for pending changes more than 2 weeks old.
 		/// </summary>
@@ -67,6 +67,9 @@ namespace CCNet.SourceNotifier
 			get { return TimeSpan.FromDays(m_properties.GetInt32Value("CutoffDays")); }
 		}
 
+		/// <summary>
+		/// Initializes a new instance.
+		/// </summary>
 		public Arguments(string[] args)
 		{
 			m_properties = ArgumentProperties.Parse(args);

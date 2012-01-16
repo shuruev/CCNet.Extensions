@@ -33,7 +33,7 @@ namespace CCNet.SourceNotifier
 		private readonly VersionControlServer m_versionControlServer;
 
 		/// <summary>
-		/// Constructor.
+		/// Initializes a new instance.
 		/// </summary>
 		public TeamFoundationServerGateway(Uri uri, string collectionName)
 		{
@@ -46,7 +46,8 @@ namespace CCNet.SourceNotifier
 					false,
 					CatalogQueryOptions.None);
 				var collectionNode = collectionsNodes.Single(node => node.Resource.DisplayName == collectionName);
-				m_tfsTeamProjectCollection = m_tfsConfigurationServer.GetTeamProjectCollection(new Guid(collectionNode.Resource.Properties["InstanceId"]));
+				var collectionGuid = new Guid(collectionNode.Resource.Properties["InstanceId"]);
+				m_tfsTeamProjectCollection = m_tfsConfigurationServer.GetTeamProjectCollection(collectionGuid);
 
 				m_versionControlServer = m_tfsTeamProjectCollection.GetService<VersionControlServer>();
 			}

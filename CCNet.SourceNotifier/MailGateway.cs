@@ -25,7 +25,7 @@ namespace CCNet.SourceNotifier
 			private readonly MailAddress m_sender;
 
 			/// <summary>
-			/// Constructor.
+			/// Initializes a new instance.
 			/// </summary>
 			public ProductionGateway(MailAddress sender)
 			{
@@ -65,7 +65,7 @@ namespace CCNet.SourceNotifier
 			private readonly MailAddress m_overrideEmail;
 
 			/// <summary>
-			/// Constructor.
+			/// Initializes a new instance.
 			/// </summary>
 			public DebugGateway(MailAddress sender, MailAddress overrideEmail)
 				: base(sender)

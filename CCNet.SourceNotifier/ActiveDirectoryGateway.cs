@@ -39,6 +39,7 @@ namespace CCNet.SourceNotifier
 				{
 					return UserInfo.CreateUserInfo(result);
 				}
+
 				return UserInfo.CreateUserInfo(userName);
 			}
 		}

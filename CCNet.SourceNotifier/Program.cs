@@ -30,7 +30,7 @@ namespace CCNet.SourceNotifier
 		private readonly MailGateway m_mailGateway;
 
 		/// <summary>
-		/// How old the pending changes should be in order to consider them "old"
+		/// How old the pending changes should be in order to consider them "old".
 		/// </summary>
 		private readonly TimeSpan m_cutoffTimeSpan;
 
@@ -41,7 +41,7 @@ namespace CCNet.SourceNotifier
 		private readonly DateTime m_runTime;
 
 		/// <summary>
-		/// Constructor.
+		/// Initializes a new instance.
 		/// </summary>
 		private Program(TeamFoundationServerGateway tfsGateway, MailGateway mailGateway, TimeSpan cutoffTimeSpan)
 		{
@@ -88,7 +88,9 @@ namespace CCNet.SourceNotifier
 		{
 			get
 			{
-				return XmlExporter.CreateDocument(from changesGroup in OldCheckouts select XmlExporter.ExportPendingChangesGroup(changesGroup));
+				return XmlExporter.CreateDocument(
+					from changesGroup in OldCheckouts
+					select XmlExporter.ExportPendingChangesGroup(changesGroup));
 			}
 		}
 
@@ -124,17 +126,16 @@ namespace CCNet.SourceNotifier
 
 			try
 			{
-
 				Arguments arguments = new Arguments(args);
-				using(TeamFoundationServerGateway tfsGateway = new TeamFoundationServerGateway(arguments.TfsServerUri, arguments.TfsCollectionName))
+				using (var tfsGateway = new TeamFoundationServerGateway(arguments.TfsServerUri, arguments.TfsCollectionName))
 				{
-					using(MailGateway mailGateway = MailGateway.CreateGateway(arguments.Sender))
+					using (var mailGateway = MailGateway.CreateGateway(arguments.Sender))
 					{
 						return (new Program(tfsGateway, mailGateway, arguments.CutoffTimeSpan)).Run(arguments);
 					}
 				}
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				return ErrorHandler.Runtime(e);
 			}
@@ -145,7 +146,7 @@ namespace CCNet.SourceNotifier
 		/// </summary>
 		private int Run(Arguments arguments)
 		{
-			switch(arguments.ConsoleCommandType)
+			switch (arguments.ConsoleCommandType)
 			{
 				case ConsoleCommandType.DisplayText:
 					Display();
