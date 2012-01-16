@@ -5,6 +5,7 @@ using System.Net.Mail;
 using System.Xml.Linq;
 using System.Xml.Xsl;
 using CCNet.Common;
+using CCNet.SourceNotifier.MailGateway;
 using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace CCNet.SourceNotifier
@@ -27,7 +28,7 @@ namespace CCNet.SourceNotifier
 		/// <summary>
 		/// MailGateway instance.
 		/// </summary>
-		private readonly MailGateway m_mailGateway;
+		private readonly IMailGateway m_mailGateway;
 
 		/// <summary>
 		/// How old the pending changes should be in order to consider them "old".
@@ -43,7 +44,7 @@ namespace CCNet.SourceNotifier
 		/// <summary>
 		/// Initializes a new instance.
 		/// </summary>
-		private Program(TeamFoundationServerGateway tfsGateway, MailGateway mailGateway, TimeSpan cutoffTimeSpan)
+		private Program(TeamFoundationServerGateway tfsGateway, IMailGateway mailGateway, TimeSpan cutoffTimeSpan)
 		{
 			m_tfsGateway = tfsGateway;
 			m_adGateway = new ActiveDirectoryGateway();
@@ -129,7 +130,7 @@ namespace CCNet.SourceNotifier
 				Arguments arguments = new Arguments(args);
 				using (var tfsGateway = new TeamFoundationServerGateway(arguments.TfsServerUri, arguments.TfsCollectionName))
 				{
-					using (var mailGateway = MailGateway.CreateGateway(arguments.Sender))
+					using (var mailGateway = MailGatewayFactory.CreateGateway(arguments.Sender))
 					{
 						return (new Program(tfsGateway, mailGateway, arguments.CutoffTimeSpan)).Run(arguments);
 					}
