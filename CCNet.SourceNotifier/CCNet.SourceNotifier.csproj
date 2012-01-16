@@ -73,7 +73,10 @@
     <Compile Include="Resources\ResourcesManager.cs" />
     <Compile Include="TeamFoundationServerGateway.cs" />
     <Compile Include="TemplateEngine.cs" />
-    <Compile Include="UserInfo.cs" />
+    <Compile Include="UserInfo\IUserInfo.cs" />
+    <Compile Include="UserInfo\NotRegisteredUserInfo.cs" />
+    <Compile Include="UserInfo\RegisteredUserInfo.cs" />
+    <Compile Include="UserInfo\UserInfoFactory.cs" />
     <Compile Include="XmlExporter.cs" />
   </ItemGroup>
   <ItemGroup>

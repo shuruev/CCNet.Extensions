@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using System.Xml.Xsl;
 using CCNet.Common;
 using CCNet.SourceNotifier.MailGateway;
+using CCNet.SourceNotifier.UserInfo;
 using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace CCNet.SourceNotifier
@@ -67,7 +68,7 @@ namespace CCNet.SourceNotifier
 		/// <summary>
 		/// Gets the list of old pending changes, grouped by user.
 		/// </summary>
-		private IEnumerable<IGrouping<UserInfo, PendingChange>> OldCheckouts
+		private IEnumerable<IGrouping<IUserInfo, PendingChange>> OldCheckouts
 		{
 			get
 			{
@@ -204,7 +205,7 @@ namespace CCNet.SourceNotifier
 			{
 				XDocument data = XmlExporter.CreateDocument(XmlExporter.ExportPendingChangesGroup(group));
 				m_mailGateway.SendMessage(
-					new MailAddress(((UserInfo.RegisteredUserInfo)group.Key).EmailAddress, group.Key.DisplayName),
+					new MailAddress(((RegisteredUserInfo)group.Key).EmailAddress, group.Key.DisplayName),
 					"You have old checkouts",
 					TemplateEngine.GetProcessedString("UserReport.xslt", XsltArguments, data));
 			}

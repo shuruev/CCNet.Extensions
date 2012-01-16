@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
+using CCNet.SourceNotifier.UserInfo;
 
 namespace CCNet.SourceNotifier
 {
@@ -12,7 +13,7 @@ namespace CCNet.SourceNotifier
 		/// <summary>
 		/// Cache of retrieved UserInfos.
 		/// </summary>
-		private readonly Dictionary<string, UserInfo> m_cache = new Dictionary<string, UserInfo>();
+		private readonly Dictionary<string, IUserInfo> m_cache = new Dictionary<string, IUserInfo>();
 
 		/// <summary>
 		/// Lock object for m_cache.
@@ -30,24 +31,24 @@ namespace CCNet.SourceNotifier
 		/// <summary>
 		/// Retrieves the UserInfo by a specified userName, bypassing the cache.
 		/// </summary>
-		private static UserInfo DoGetUserInfo(string userName)
+		private static IUserInfo DoGetUserInfo(string userName)
 		{
 			using (var principalContext = new PrincipalContext(ContextType.Domain, GetDomain(userName)))
 			{
 				var result = UserPrincipal.FindByIdentity(principalContext, userName);
 				if (result != null)
 				{
-					return UserInfo.CreateUserInfo(result);
+					return UserInfoFactory.CreateUserInfo(result);
 				}
 
-				return UserInfo.CreateUserInfo(userName);
+				return UserInfoFactory.CreateUserInfo(userName);
 			}
 		}
 
 		/// <summary>
 		/// Retrieves the UserInfo by a specified userName, using the results caching.
 		/// </summary>
-		public UserInfo GetUserInfo(string userName)
+		public IUserInfo GetUserInfo(string userName)
 		{
 			if (!m_cache.ContainsKey(userName))
 			{

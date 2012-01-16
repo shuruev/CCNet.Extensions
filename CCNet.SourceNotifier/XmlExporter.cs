@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
+using CCNet.SourceNotifier.UserInfo;
 using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace CCNet.SourceNotifier
@@ -37,14 +38,14 @@ namespace CCNet.SourceNotifier
 		/// <summary>
 		/// Creates XML element containing the information on the specified user.
 		/// </summary>
-		public static XElement ExportUserInfo(UserInfo userInfo)
+		public static XElement ExportUserInfo(IUserInfo userInfo)
 		{
 			var result = new XElement("userInfo");
 			result.Add(new XElement("displayName", userInfo.DisplayName));
 			result.Add(new XElement("isRegistered", userInfo.IsRegistered));
 			if (userInfo.IsRegistered)
 			{
-				var registeredInfo = (UserInfo.RegisteredUserInfo)userInfo;
+				var registeredInfo = (RegisteredUserInfo)userInfo;
 				result.Add(new XElement("firstName", registeredInfo.FirstName));
 				result.Add(new XElement("description", registeredInfo.Description));
 				result.Add(new XElement("email", registeredInfo.EmailAddress));
@@ -74,7 +75,7 @@ namespace CCNet.SourceNotifier
 		/// <summary>
 		/// Creates XML element containing the information on the specified pending changes group.
 		/// </summary>
-		public static XElement ExportPendingChangesGroup(IGrouping<UserInfo, PendingChange> changesGroup)
+		public static XElement ExportPendingChangesGroup(IGrouping<IUserInfo, PendingChange> changesGroup)
 		{
 			return new XElement(
 				"group",
