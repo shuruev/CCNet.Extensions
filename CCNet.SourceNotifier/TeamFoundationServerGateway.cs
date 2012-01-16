@@ -15,7 +15,7 @@ namespace CCNet.SourceNotifier
 		/// <summary>
 		/// The repository root dir.
 		/// </summary>
-		private const string TFS_ROOT_DIR = "$/";
+		private const string c_tfsRootDir = "$/";
 
 		/// <summary>
 		/// TFS configuration server.
@@ -72,7 +72,7 @@ namespace CCNet.SourceNotifier
 		public IEnumerable<Tuple<PendingSet, PendingChange>> GetOldPendingChanges(DateTime olderThan)
 		{
 			return
-				from set in m_versionControlServer.GetPendingSets(new[] { TFS_ROOT_DIR }, RecursionType.Full)
+				from set in m_versionControlServer.GetPendingSets(new[] { c_tfsRootDir }, RecursionType.Full)
 				from change in set.PendingChanges
 				where change.CreationDate < olderThan
 				select new Tuple<PendingSet, PendingChange>(set, change);
