@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Xml.Linq;
 using System.Xml.Xsl;
+using CCNet.Common;
 using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace CCNet.SourceNotifier
@@ -29,6 +30,11 @@ namespace CCNet.SourceNotifier
 		private readonly MailGateway m_mailGateway;
 
 		/// <summary>
+		/// How old the pending changes should be in order to consider them "old"
+		/// </summary>
+		private readonly TimeSpan m_cutoffTimeSpan;
+
+		/// <summary>
 		/// Time when the Program instance has been created.
 		/// Used in places where variable time is unacceptable and leads to the inconsistent behaviour.
 		/// </summary>
@@ -37,12 +43,13 @@ namespace CCNet.SourceNotifier
 		/// <summary>
 		/// Constructor.
 		/// </summary>
-		private Program(TeamFoundationServerGateway tfsGateway, MailGateway mailGateway)
+		private Program(TeamFoundationServerGateway tfsGateway, MailGateway mailGateway, TimeSpan cutoffTimeSpan)
 		{
 			m_tfsGateway = tfsGateway;
 			m_adGateway = new ActiveDirectoryGateway();
 			m_mailGateway = mailGateway;
 			m_runTime = DateTime.Now;
+			m_cutoffTimeSpan = cutoffTimeSpan;
 		}
 
 		/// <summary>
@@ -52,7 +59,7 @@ namespace CCNet.SourceNotifier
 		{
 			get
 			{
-				return m_runTime - Config.Instance.CutoffTimeSpan;
+				return m_runTime - m_cutoffTimeSpan;
 			}
 		}
 
@@ -93,7 +100,7 @@ namespace CCNet.SourceNotifier
 			get
 			{
 				XsltArgumentList result = new XsltArgumentList();
-				result.AddParam("cutoffDays", string.Empty, XmlExporter.ExportTimeSpanDays(Config.Instance.CutoffTimeSpan));
+				result.AddParam("cutoffDays", string.Empty, XmlExporter.ExportTimeSpanDays(m_cutoffTimeSpan));
 				result.AddParam("currentDate", string.Empty, XmlExporter.ExportDateTime(m_runTime));
 				return result;
 			}
@@ -102,39 +109,61 @@ namespace CCNet.SourceNotifier
 		/// <summary>
 		/// Assembly entry point.
 		/// </summary>
-		private static void Main(string[] args)
+		private static int Main(string[] args)
 		{
-			using (TeamFoundationServerGateway tfsGateway = new TeamFoundationServerGateway(Config.Instance.TfsServerUri, Config.Instance.TfsCollectionName))
+			/*xxxargs = new[]
 			{
-				using (MailGateway mailGateway = MailGateway.CreateGateway(Config.Instance.Sender))
+				@"Command=ReportToMaster",
+				@"TfsServerUri=http://rufrt-vxbuild:8080/tfs",
+				@"TfsCollectionName=SED",
+				@"CutoffDays=3",
+				@"SenderEmail=Igor.Prohorov@cbsinteractive.com",
+				@"SenderName=Robot",
+				@"MasterEmail=Igor.Prohorov@cbsinteractive.com",
+			};*/
+
+			try
+			{
+
+				Arguments arguments = new Arguments(args);
+				using(TeamFoundationServerGateway tfsGateway = new TeamFoundationServerGateway(arguments.TfsServerUri, arguments.TfsCollectionName))
 				{
-					(new Program(tfsGateway, mailGateway)).Run(args);
+					using(MailGateway mailGateway = MailGateway.CreateGateway(arguments.Sender))
+					{
+						return (new Program(tfsGateway, mailGateway, arguments.CutoffTimeSpan)).Run(arguments);
+					}
 				}
+			}
+			catch(Exception e)
+			{
+				return ErrorHandler.Runtime(e);
 			}
 		}
 
 		/// <summary>
 		/// Instance entry point.
 		/// </summary>
-		private void Run(string[] args)
+		private int Run(Arguments arguments)
 		{
-			switch (args[0])
+			switch(arguments.ConsoleCommandType)
 			{
-				case "display":
+				case ConsoleCommandType.DisplayText:
 					Display();
 					break;
-				case "displayhtml":
+				case ConsoleCommandType.DisplayHtml:
 					DisplayHtml();
 					break;
-				case "reporttomaster":
-					ReportMaster(args[1]);
+				case ConsoleCommandType.ReportToMaster:
+					ReportMaster(arguments.MasterEmail);
 					break;
-				case "reporttousers":
+				case ConsoleCommandType.ReportToUsers:
 					ReportToUsers();
 					break;
 				default:
 					throw new ApplicationException("Wrong command");
 			}
+
+			return 0;
 		}
 
 		/// <summary>

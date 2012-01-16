@@ -60,7 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActiveDirectoryGateway.cs" />
-    <Compile Include="Config.cs" />
+    <Compile Include="Arguments.cs" />
+    <Compile Include="ConsoleCommandType.cs" />
     <Compile Include="Debug.cs" />
     <Compile Include="MailGateway.cs" />
     <Compile Include="Program.cs" />
@@ -71,11 +72,6 @@
     <Compile Include="ThirdParty\HtmlStyler.cs" />
     <Compile Include="UserInfo.cs" />
     <Compile Include="XmlExporter.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\MasterTextReport.xslt" />
@@ -90,7 +86,15 @@
     <EmbeddedResource Include="Resources\Report_Common.xslt" />
     <EmbeddedResource Include="Resources\Styles.xslt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\CCNet.Common\CCNet.Common.csproj">
+      <Project>{FAF27742-776A-4FD8-B58D-6255ECE24BA8}</Project>
+      <Name>CCNet.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
