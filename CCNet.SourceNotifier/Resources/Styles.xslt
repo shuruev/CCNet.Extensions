@@ -6,7 +6,6 @@
 		<style>
 			* { font-family:Calibri, sans-serif; }
 			body { font-size:11pt; }
-			.user { margin-top:2em; }
 			.user .name { color:rgb(79, 129, 189); font-size:1.6em; margin:0; font-weight:bold; }
 			.user .description { color:rgb(128, 128, 128); margin:0; font-style:italic; }
 			.user.passive .name { color:red; }
@@ -16,6 +15,8 @@
 			.filename, .fileage { margin:0 1em 0 1em; }
 			ul.changelist li { list-style-type:none; }
 			.change { white-space:nowrap; }
+			p { margin:0.2em }
+			.groupcard { margin-top:2em; }
 		</style>
     </xsl:template>
 </xsl:stylesheet>

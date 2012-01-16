@@ -67,21 +67,23 @@
 	</xsl:template>
 
 	<xsl:template match="group" mode="groupCard">
-		<xsl:apply-templates select="userInfo" mode="userCard"/>
-		<p>
-			<xsl:text>There are </xsl:text>
-			<strong>
-				<xsl:value-of select="count(change)"/>
-			</strong>
-			<xsl:text> pending changes made more than </xsl:text>
-			<strong>
-				<xsl:value-of select="$cutoffDays"/>
-			</strong>
-			<xsl:text> days ago:</xsl:text>
-		</p>
-		<p class="changelist">
-			<xsl:apply-templates select="change"/>
-		</p>
+		<div class="groupcard">
+			<xsl:apply-templates select="userInfo" mode="userCard"/>
+			<p>
+				<xsl:text>There are </xsl:text>
+				<strong>
+					<xsl:value-of select="count(change)"/>
+				</strong>
+				<xsl:text> pending changes made more than </xsl:text>
+				<strong>
+					<xsl:value-of select="$cutoffDays"/>
+				</strong>
+				<xsl:text> days ago:</xsl:text>
+			</p>
+			<p class="changelist">
+				<xsl:apply-templates select="change"/>
+			</p>
+		</div>
 	</xsl:template>
 
 </xsl:stylesheet>
