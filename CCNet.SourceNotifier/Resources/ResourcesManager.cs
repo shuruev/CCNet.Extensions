@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Xml;
 
 namespace CCNet.SourceNotifier.Resources
 {
@@ -33,7 +34,7 @@ namespace CCNet.SourceNotifier.Resources
 		/// For usage in XSLT-related classes.
 		/// Allows for &lt;xsl:import/&gt; commands.
 		/// </summary>
-		private class XmlUrlResolver : System.Xml.XmlUrlResolver
+		private class CustomXmlUrlResolver : XmlUrlResolver
 		{
 			/// <summary>
 			/// Maps a URI to an object containing the actual resource.
@@ -47,7 +48,7 @@ namespace CCNet.SourceNotifier.Resources
 		/// <summary>
 		/// Instance of XmlUrlResolver.
 		/// </summary>
-		public static readonly System.Xml.XmlUrlResolver Resolver = new XmlUrlResolver();
+		public static readonly XmlUrlResolver Resolver = new CustomXmlUrlResolver();
 
 		/// <summary>
 		/// Returns the binary stream for given resource name.
