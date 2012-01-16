@@ -69,7 +69,6 @@
     <Compile Include="Resources\ResourcesManager.cs" />
     <Compile Include="TeamFoundationServerGateway.cs" />
     <Compile Include="TemplateEngine.cs" />
-    <Compile Include="ThirdParty\HtmlStyler.cs" />
     <Compile Include="UserInfo.cs" />
     <Compile Include="XmlExporter.cs" />
   </ItemGroup>
