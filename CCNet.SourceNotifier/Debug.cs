@@ -29,9 +29,8 @@ namespace CCNet.SourceNotifier
 		/// </summary>
 		private Debug()
 		{
-			string email = ConfigurationManager.AppSettings["Debug.OverrideEmail"];
-			IsDebugModeEnabled = !String.IsNullOrEmpty(email);
-			OverrideEmail = email;
+			IsDebugModeEnabled = bool.Parse(ConfigurationManager.AppSettings["Debug.IsEnabled"]);
+			OverrideEmail = ConfigurationManager.AppSettings["Debug.OverrideEmail"];
 		}
 
 		/// <summary>
