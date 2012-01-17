@@ -7,6 +7,7 @@ using System.Xml.Xsl;
 using CCNet.Common;
 using CCNet.SourceNotifier.Gateways;
 using CCNet.SourceNotifier.Gateways.MailGateway;
+using CCNet.SourceNotifier.Properties;
 using CCNet.SourceNotifier.UserInfo;
 using CCNet.SourceNotifier.XmlProcessor;
 using Microsoft.TeamFoundation.VersionControl.Client;
@@ -166,7 +167,7 @@ namespace CCNet.SourceNotifier
 					break;
 				default:
 					throw new ApplicationException(
-						string.Format(Properties.Resources.WrongCommandMessageFormat, arguments.ConsoleCommandType));
+						string.Format(Resources.WrongCommandMessageFormat, arguments.ConsoleCommandType));
 			}
 
 			return 0;
@@ -195,7 +196,7 @@ namespace CCNet.SourceNotifier
 		{
 			m_mailGateway.SendMessage(
 				new MailAddress(to),
-				Properties.Resources.ReportToMasterMailSubject,
+				Resources.ReportToMasterMailSubject,
 				TemplateEngine.GetProcessedString("MasterReport.xslt", XsltArguments, OldCheckoutsAsXml));
 		}
 
@@ -209,7 +210,7 @@ namespace CCNet.SourceNotifier
 				XDocument data = XmlExporter.CreateDocument(XmlExporter.ExportPendingChangesGroup(group));
 				m_mailGateway.SendMessage(
 					new MailAddress(((RegisteredUserInfo)group.Key).EmailAddress, group.Key.DisplayName),
-					Properties.Resources.ReportToUsersMailSubject,
+					Resources.ReportToUsersMailSubject,
 					TemplateEngine.GetProcessedString("UserReport.xslt", XsltArguments, data));
 			}
 		}

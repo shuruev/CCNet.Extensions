@@ -1,4 +1,5 @@
 ﻿using System.Net.Mail;
+using CCNet.SourceNotifier.Properties;
 
 namespace CCNet.SourceNotifier.Gateways.MailGateway
 {
@@ -26,7 +27,7 @@ namespace CCNet.SourceNotifier.Gateways.MailGateway
 		/// </summary>
 		public override void SendMessage(MailAddress to, string subject, string bodyHtml)
 		{
-			base.SendMessage(m_overrideEmail, string.Format(Properties.Resources.DebugModeMessageSubjectFormat, subject, to), bodyHtml);
+			base.SendMessage(m_overrideEmail, string.Format(Resources.DebugModeMessageSubjectFormat, subject, to), bodyHtml);
 		}
 	}
 }
