@@ -30,7 +30,6 @@ namespace CCNet.SourceNotifier
 					if (!m_data.ContainsKey(key))
 					{
 						m_data[key] = creator();
-						System.Threading.Thread.MemoryBarrier();
 					}
 				}
 			}
