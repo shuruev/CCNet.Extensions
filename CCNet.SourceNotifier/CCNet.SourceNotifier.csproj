@@ -89,7 +89,7 @@
     <EmbeddedResource Include="Resources\UserReport.xslt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Report_Common.xslt" />
+    <EmbeddedResource Include="Resources\ReportCommon.xslt" />
     <EmbeddedResource Include="Resources\Styles.xslt" />
   </ItemGroup>
   <ItemGroup>

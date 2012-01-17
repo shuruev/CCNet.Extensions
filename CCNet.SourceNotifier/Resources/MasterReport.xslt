@@ -4,7 +4,7 @@
 >
 	<xsl:output method="xml"/>
 
-	<xsl:include href="Report_Common.xslt"/>
+	<xsl:include href="ReportCommon.xslt"/>
 
 	<xsl:template match="/root" mode="body">
 		<xsl:apply-templates select="group" mode="groupCard"/>
