@@ -11,11 +11,11 @@
 			.user.passive .description { color:red; }
 			.filename { font-family:monospace; font-size:0.9em; }
 			.fileage { color:rgb(128, 128, 128); font-size:0.9em; }
-			.filename, .fileage { margin:0 1em 0 1em; }
 			ul.changelist li { list-style-type:none; }
 			.change { white-space:nowrap; }
-			p { margin:0.2em }
-			hr.groupseparator { margin:1em; }
+			p { margin:0.2em 0 0.2em 0; }
+			.user { margin-bottom:0.5em; }
+			hr.groupseparator { margin:1em 0 1em 0; }
 		</style>
     </xsl:template>
 </xsl:stylesheet>

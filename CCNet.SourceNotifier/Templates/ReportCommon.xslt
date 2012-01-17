@@ -13,6 +13,7 @@
 					<span class="filename">
 						<xsl:value-of select="path"/>
 					</span>
+					<xsl:text>&#160;</xsl:text>
 					<span class="fileage">
 						<xsl:text>(</xsl:text>
 						<xsl:value-of select="daysSinceCheckout"/>
@@ -39,10 +40,11 @@
 				<xsl:text> </xsl:text>
 				<xsl:apply-templates select="current()" mode="userActivityClass"/>
 			</xsl:attribute>
-			<p class="name">
+			<!-- <p> would not work here as HtmlStyler doesn't support _cascading_ stylesheets. -->
+			<div class="name">
 				<xsl:value-of select="displayName"/>
-			</p>
-			<p class="description">
+			</div>
+			<div class="description">
 				<xsl:choose>
 					<xsl:when test="isRegistered = 'true'">
 						<xsl:value-of select="description"/>
@@ -51,7 +53,7 @@
 						<font color="red">Not registered</font>
 					</xsl:otherwise>
 				</xsl:choose>
-			</p>
+			</div>
 		</div>
 	</xsl:template>
 
