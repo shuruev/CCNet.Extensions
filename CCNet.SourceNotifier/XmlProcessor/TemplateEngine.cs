@@ -10,6 +10,9 @@ namespace CCNet.SourceNotifier.XmlProcessor
 	/// </summary>
 	public static class TemplateEngine
 	{
+		/// <summary>
+		/// Cache of compiled templates.
+		/// </summary>
 		private static readonly Cache<string, XslCompiledTransform> s_cache = new Cache<string, XslCompiledTransform>();
 
 		/// <summary>
