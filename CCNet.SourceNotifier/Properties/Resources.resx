@@ -120,6 +120,12 @@
   <data name="DebugModeMessageSubjectFormat" xml:space="preserve">
     <value>{0} (originally to {1})</value>
   </data>
+  <data name="MailSenderAddress" xml:space="preserve">
+    <value>tfs@cbsinteractive.com</value>
+  </data>
+  <data name="MailSenderName" xml:space="preserve">
+    <value>Team Foundation Server</value>
+  </data>
   <data name="ReportToMasterMailSubject" xml:space="preserve">
     <value>Team Foundation pending changes summary</value>
   </data>

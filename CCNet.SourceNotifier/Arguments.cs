@@ -47,14 +47,6 @@ namespace CCNet.SourceNotifier
 		}
 
 		/// <summary>
-		/// Gets mail address of a robot used to send emails.
-		/// </summary>
-		public MailAddress Sender
-		{
-			get { return new MailAddress(m_properties.GetValue("SenderEmail")); }
-		}
-
-		/// <summary>
 		/// Gets how old the pending changes should be in order to consider them "old".
 		/// Note that the value is positive TimeSpan.
 		/// Example: CutoffTImeSpan.TotalDays = 14 means that the search will be performed for pending changes more than 2 weeks old.

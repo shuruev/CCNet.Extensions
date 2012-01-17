@@ -70,6 +70,24 @@ namespace CCNet.SourceNotifier.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to tfs@cbsinteractive.com.
+        /// </summary>
+        internal static string MailSenderAddress {
+            get {
+                return ResourceManager.GetString("MailSenderAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Team Foundation Server.
+        /// </summary>
+        internal static string MailSenderName {
+            get {
+                return ResourceManager.GetString("MailSenderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Team Foundation pending changes summary.
         /// </summary>
         internal static string ReportToMasterMailSubject {

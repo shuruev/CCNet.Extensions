@@ -124,8 +124,6 @@ namespace CCNet.SourceNotifier
 				@"TfsServerUri=http://rufrt-vxbuild:8080/tfs",
 				@"TfsCollectionName=SED",
 				@"CutoffDays=3",
-				@"SenderEmail=Igor.Prohorov@cbsinteractive.com",
-				@"SenderName=Robot",
 				@"MasterEmail=Igor.Prohorov@cbsinteractive.com",
 			};*/
 
@@ -134,7 +132,7 @@ namespace CCNet.SourceNotifier
 				Arguments arguments = new Arguments(args);
 				using (var tfsGateway = new TeamFoundationServerGateway(arguments.TfsServerUri, arguments.TfsCollectionName))
 				{
-					using (var mailGateway = MailGatewayFactory.CreateGateway(arguments.Sender))
+					using (var mailGateway = MailGatewayFactory.CreateGateway(new MailAddress(Resources.MailSenderAddress, Resources.MailSenderName)))
 					{
 						return (new Program(tfsGateway, mailGateway, arguments.CutoffTimeSpan)).Run(arguments);
 					}
