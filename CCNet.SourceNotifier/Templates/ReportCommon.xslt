@@ -7,19 +7,20 @@
 	<xsl:param name="cutoffDays"/>
 
 	<xsl:template match="change">
-		<span class="change">
-			<nobr>
-				<span class="filename">
-					<xsl:value-of select="path"/>
-				</span>
-				<span class="fileage">
-					<xsl:text>(</xsl:text>
-					<xsl:value-of select="daysSinceCheckout"/>
-					<xsl:text> days ago)</xsl:text>
-				</span>
-			</nobr>
-		</span>
-		<br/>
+		<tr>
+			<td class="change">
+				<nobr>
+					<span class="filename">
+						<xsl:value-of select="path"/>
+					</span>
+					<span class="fileage">
+						<xsl:text>(</xsl:text>
+						<xsl:value-of select="daysSinceCheckout"/>
+						<xsl:text> days ago)</xsl:text>
+					</span>
+				</nobr>
+			</td>
+		</tr>
 	</xsl:template>
 
 	<xsl:template match="userInfo" mode="userActivityClass">
@@ -82,9 +83,9 @@
 				</strong>
 				<xsl:text> days ago:</xsl:text>
 			</p>
-			<p class="changelist">
+			<table class="changelist">
 				<xsl:apply-templates select="change"/>
-			</p>
+			</table>
 		</div>
 	</xsl:template>
 
