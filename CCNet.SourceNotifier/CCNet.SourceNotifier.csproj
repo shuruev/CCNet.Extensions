@@ -71,7 +71,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourcesManager.cs" />
-    <Compile Include="TeamFoundationServerGateway.cs" />
+    <Compile Include="Gateways\TeamFoundationServerGateway.cs" />
     <Compile Include="TemplateEngine.cs" />
     <Compile Include="UserInfo\IUserInfo.cs" />
     <Compile Include="UserInfo\NotRegisteredUserInfo.cs" />
