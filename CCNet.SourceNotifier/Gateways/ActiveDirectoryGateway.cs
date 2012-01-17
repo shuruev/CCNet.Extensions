@@ -3,7 +3,7 @@ using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using CCNet.SourceNotifier.UserInfo;
 
-namespace CCNet.SourceNotifier
+namespace CCNet.SourceNotifier.Gateways
 {
 	/// <summary>
 	/// Incapsulates all the AD-related functionality.

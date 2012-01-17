@@ -60,7 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActiveDirectoryGateway.cs" />
+    <Compile Include="Gateways\ActiveDirectoryGateway.cs" />
     <Compile Include="Arguments.cs" />
     <Compile Include="ConsoleCommandType.cs" />
     <Compile Include="Debug.cs" />
