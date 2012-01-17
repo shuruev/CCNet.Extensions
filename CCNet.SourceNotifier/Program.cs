@@ -157,7 +157,7 @@ namespace CCNet.SourceNotifier
 					DisplayHtml();
 					break;
 				case ConsoleCommandType.ReportToMaster:
-					ReportMaster(arguments.MasterEmail);
+					ReportToMaster(arguments.MasterEmail);
 					break;
 				case ConsoleCommandType.ReportToUsers:
 					ReportToUsers();
@@ -188,7 +188,7 @@ namespace CCNet.SourceNotifier
 		/// <summary>
 		/// Sends the report on all old pending changes to the master.
 		/// </summary>
-		private void ReportMaster(string to)
+		private void ReportToMaster(string to)
 		{
 			m_mailGateway.SendMessage(
 				new MailAddress(to),
