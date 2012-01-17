@@ -10,7 +10,7 @@ namespace CCNet.SourceNotifier.Gateways
 	/// <summary>
 	/// Incapsulates all the TFS-related functionality.
 	/// </summary>
-	internal class TeamFoundationServerGateway : IDisposable
+	public class TeamFoundationServerGateway : IDisposable
 	{
 		/// <summary>
 		/// The repository root dir.

@@ -8,7 +8,7 @@ namespace CCNet.SourceNotifier.Gateways
 	/// <summary>
 	/// Incapsulates all the AD-related functionality.
 	/// </summary>
-	internal class ActiveDirectoryGateway
+	public class ActiveDirectoryGateway
 	{
 		/// <summary>
 		/// Cache of retrieved UserInfos.
