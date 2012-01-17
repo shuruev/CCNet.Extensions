@@ -67,6 +67,9 @@
 	</xsl:template>
 
 	<xsl:template match="group" mode="groupCard">
+		<xsl:if test="position() &gt; 1">
+			<hr class="groupseparator"/>
+		</xsl:if>
 		<div class="groupcard">
 			<xsl:apply-templates select="userInfo" mode="userCard"/>
 			<p>

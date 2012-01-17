@@ -16,7 +16,7 @@
 			ul.changelist li { list-style-type:none; }
 			.change { white-space:nowrap; }
 			p { margin:0.2em }
-			.groupcard { margin-top:2em; }
+			hr.groupseparator { margin:1em; }
 		</style>
     </xsl:template>
 </xsl:stylesheet>
