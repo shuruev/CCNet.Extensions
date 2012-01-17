@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 
-namespace CCNet.SourceNotifier.Resources
+namespace CCNet.SourceNotifier.Templates
 {
 	/// <summary>
 	/// Incapsulates functions related to embedded resources.

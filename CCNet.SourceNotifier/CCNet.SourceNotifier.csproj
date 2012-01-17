@@ -75,7 +75,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\ResourcesManager.cs" />
+    <Compile Include="Templates\ResourcesManager.cs" />
     <Compile Include="Gateways\TeamFoundationServerGateway.cs" />
     <Compile Include="XmlProcessor\TemplateEngine.cs" />
     <Compile Include="UserInfo\IUserInfo.cs" />
@@ -90,17 +90,17 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\MasterTextReport.xslt" />
+    <EmbeddedResource Include="Templates\MasterTextReport.xslt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\MasterReport.xslt" />
+    <EmbeddedResource Include="Templates\MasterReport.xslt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\UserReport.xslt" />
+    <EmbeddedResource Include="Templates\UserReport.xslt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\ReportCommon.xslt" />
-    <EmbeddedResource Include="Resources\Styles.xslt" />
+    <EmbeddedResource Include="Templates\ReportCommon.xslt" />
+    <EmbeddedResource Include="Templates\Styles.xslt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CCNet.Common\CCNet.Common.csproj">

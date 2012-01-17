@@ -31,7 +31,7 @@ namespace CCNet.SourceNotifier.XmlProcessor
 						if (!s_cache.ContainsKey(templateName))
 						{
 							XslCompiledTransform xslt = new XslCompiledTransform();
-							xslt.Load(templateName, XsltSettings.Default, Resources.ResourcesManager.Resolver);
+							xslt.Load(templateName, XsltSettings.Default, Templates.ResourcesManager.Resolver);
 							s_cache[templateName] = xslt;
 						}
 					}
