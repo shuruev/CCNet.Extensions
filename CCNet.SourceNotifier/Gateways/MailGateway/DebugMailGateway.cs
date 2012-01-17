@@ -26,7 +26,7 @@ namespace CCNet.SourceNotifier.Gateways.MailGateway
 		/// </summary>
 		public override void SendMessage(MailAddress to, string subject, string bodyHtml)
 		{
-			base.SendMessage(m_overrideEmail, string.Format("{0} (originally to {1})", subject, to), bodyHtml);
+			base.SendMessage(m_overrideEmail, string.Format(Properties.Resources.DebugModeMessageSubjectFormat, subject, to), bodyHtml);
 		}
 	}
 }

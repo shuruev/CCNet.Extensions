@@ -165,7 +165,8 @@ namespace CCNet.SourceNotifier
 					ReportToUsers();
 					break;
 				default:
-					throw new ApplicationException("Wrong command");
+					throw new ApplicationException(
+						string.Format(Properties.Resources.WrongCommandMessageFormat, arguments.ConsoleCommandType));
 			}
 
 			return 0;
@@ -194,7 +195,7 @@ namespace CCNet.SourceNotifier
 		{
 			m_mailGateway.SendMessage(
 				new MailAddress(to),
-				"Team Foundation pending changes summary",
+				Properties.Resources.ReportToMasterMailSubject,
 				TemplateEngine.GetProcessedString("MasterReport.xslt", XsltArguments, OldCheckoutsAsXml));
 		}
 
@@ -208,7 +209,7 @@ namespace CCNet.SourceNotifier
 				XDocument data = XmlExporter.CreateDocument(XmlExporter.ExportPendingChangesGroup(group));
 				m_mailGateway.SendMessage(
 					new MailAddress(((RegisteredUserInfo)group.Key).EmailAddress, group.Key.DisplayName),
-					"Team Foundation pending changes",
+					Properties.Resources.ReportToUsersMailSubject,
 					TemplateEngine.GetProcessedString("UserReport.xslt", XsltArguments, data));
 			}
 		}
