@@ -7,7 +7,7 @@ namespace CCNet.SourceNotifier.Gateways.MailGateway
 	/// <summary>
 	/// Used in a production build.
 	/// </summary>
-	public class ProductionGateway : IMailGateway
+	public class ProductionMailGateway : IMailGateway
 	{
 		/// <summary>
 		/// SmtpClient instance.
@@ -22,7 +22,7 @@ namespace CCNet.SourceNotifier.Gateways.MailGateway
 		/// <summary>
 		/// Initializes a new instance.
 		/// </summary>
-		public ProductionGateway(MailAddress sender)
+		public ProductionMailGateway(MailAddress sender)
 		{
 			m_smtpClient = new SmtpClient();
 			m_sender = sender;

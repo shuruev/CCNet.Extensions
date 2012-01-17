@@ -64,10 +64,10 @@
     <Compile Include="Arguments.cs" />
     <Compile Include="ConsoleCommandType.cs" />
     <Compile Include="Debug.cs" />
-    <Compile Include="Gateways\MailGateway\DebugGateway.cs" />
+    <Compile Include="Gateways\MailGateway\DebugMailGateway.cs" />
     <Compile Include="Gateways\MailGateway\IMailGateway.cs" />
     <Compile Include="Gateways\MailGateway\MailGatewayFactory.cs" />
-    <Compile Include="Gateways\MailGateway\ProductionGateway.cs" />
+    <Compile Include="Gateways\MailGateway\ProductionMailGateway.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourcesManager.cs" />

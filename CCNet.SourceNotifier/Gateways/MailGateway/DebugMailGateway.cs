@@ -5,7 +5,7 @@ namespace CCNet.SourceNotifier.Gateways.MailGateway
 	/// <summary>
 	/// Used in a debug build.
 	/// </summary>
-	public class DebugGateway : ProductionGateway
+	public class DebugMailGateway : ProductionMailGateway
 	{
 		/// <summary>
 		/// All mails will be sent to this address instead of their original destination.
@@ -15,7 +15,7 @@ namespace CCNet.SourceNotifier.Gateways.MailGateway
 		/// <summary>
 		/// Initializes a new instance.
 		/// </summary>
-		public DebugGateway(MailAddress sender, MailAddress overrideEmail)
+		public DebugMailGateway(MailAddress sender, MailAddress overrideEmail)
 			: base(sender)
 		{
 			m_overrideEmail = overrideEmail;

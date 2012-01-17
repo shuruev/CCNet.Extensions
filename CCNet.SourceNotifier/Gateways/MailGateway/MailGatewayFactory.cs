@@ -14,10 +14,10 @@ namespace CCNet.SourceNotifier.Gateways.MailGateway
 		{
 			if (Debug.Instance.IsDebugModeEnabled)
 			{
-				return new DebugGateway(sender, new MailAddress(Debug.Instance.OverrideEmail));
+				return new DebugMailGateway(sender, new MailAddress(Debug.Instance.OverrideEmail));
 			}
 
-			return new ProductionGateway(sender);
+			return new ProductionMailGateway(sender);
 		}
 	}
 }
