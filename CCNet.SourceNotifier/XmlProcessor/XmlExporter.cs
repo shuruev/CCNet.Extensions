@@ -4,12 +4,12 @@ using System.Xml.Linq;
 using CCNet.SourceNotifier.UserInfo;
 using Microsoft.TeamFoundation.VersionControl.Client;
 
-namespace CCNet.SourceNotifier
+namespace CCNet.SourceNotifier.XmlProcessor
 {
 	/// <summary>
 	/// Incapsulates XML generation.
 	/// </summary>
-	internal static class XmlExporter
+	public static class XmlExporter
 	{
 		/// <summary>
 		/// Converts TimeSpan to string.

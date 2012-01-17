@@ -72,12 +72,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourcesManager.cs" />
     <Compile Include="Gateways\TeamFoundationServerGateway.cs" />
-    <Compile Include="TemplateEngine.cs" />
+    <Compile Include="XmlProcessor\TemplateEngine.cs" />
     <Compile Include="UserInfo\IUserInfo.cs" />
     <Compile Include="UserInfo\NotRegisteredUserInfo.cs" />
     <Compile Include="UserInfo\RegisteredUserInfo.cs" />
     <Compile Include="UserInfo\UserInfoFactory.cs" />
-    <Compile Include="XmlExporter.cs" />
+    <Compile Include="XmlProcessor\XmlExporter.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\MasterTextReport.xslt" />

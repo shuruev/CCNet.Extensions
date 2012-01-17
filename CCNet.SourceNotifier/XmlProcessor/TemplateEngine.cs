@@ -4,12 +4,12 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
 
-namespace CCNet.SourceNotifier
+namespace CCNet.SourceNotifier.XmlProcessor
 {
 	/// <summary>
 	/// Incapsulates XSLT transformations.
 	/// </summary>
-	internal static class TemplateEngine
+	public static class TemplateEngine
 	{
 		/// <summary>
 		/// Caches compiled XSLTs.

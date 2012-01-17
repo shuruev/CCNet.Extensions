@@ -8,6 +8,7 @@ using CCNet.Common;
 using CCNet.SourceNotifier.Gateways;
 using CCNet.SourceNotifier.Gateways.MailGateway;
 using CCNet.SourceNotifier.UserInfo;
+using CCNet.SourceNotifier.XmlProcessor;
 using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace CCNet.SourceNotifier
