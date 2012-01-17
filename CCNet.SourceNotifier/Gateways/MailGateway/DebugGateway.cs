@@ -1,6 +1,6 @@
 ﻿using System.Net.Mail;
 
-namespace CCNet.SourceNotifier.MailGateway
+namespace CCNet.SourceNotifier.Gateways.MailGateway
 {
 	/// <summary>
 	/// Used in a debug build.

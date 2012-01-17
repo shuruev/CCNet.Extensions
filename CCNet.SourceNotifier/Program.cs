@@ -5,7 +5,7 @@ using System.Net.Mail;
 using System.Xml.Linq;
 using System.Xml.Xsl;
 using CCNet.Common;
-using CCNet.SourceNotifier.MailGateway;
+using CCNet.SourceNotifier.Gateways.MailGateway;
 using CCNet.SourceNotifier.UserInfo;
 using Microsoft.TeamFoundation.VersionControl.Client;
 

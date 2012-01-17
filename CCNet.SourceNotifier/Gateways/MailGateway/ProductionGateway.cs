@@ -2,7 +2,7 @@
 using System.Net.Mail;
 using VX.Sys;
 
-namespace CCNet.SourceNotifier.MailGateway
+namespace CCNet.SourceNotifier.Gateways.MailGateway
 {
 	/// <summary>
 	/// Used in a production build.
