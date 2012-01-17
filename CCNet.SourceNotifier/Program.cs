@@ -192,7 +192,7 @@ namespace CCNet.SourceNotifier
 		{
 			m_mailGateway.SendMessage(
 				new MailAddress(to),
-				"Old checkouts stats",
+				"Team Foundation pending changes summary",
 				TemplateEngine.GetProcessedString("MasterReport.xslt", XsltArguments, OldCheckoutsAsXml));
 		}
 
@@ -206,7 +206,7 @@ namespace CCNet.SourceNotifier
 				XDocument data = XmlExporter.CreateDocument(XmlExporter.ExportPendingChangesGroup(group));
 				m_mailGateway.SendMessage(
 					new MailAddress(((RegisteredUserInfo)group.Key).EmailAddress, group.Key.DisplayName),
-					"You have old checkouts",
+					"Team Foundation pending changes",
 					TemplateEngine.GetProcessedString("UserReport.xslt", XsltArguments, data));
 			}
 		}
