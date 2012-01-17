@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Mail;
+using CCNet.SourceNotifier.Properties;
 using VX.Sys;
 
 namespace CCNet.SourceNotifier.Gateways.MailGateway
@@ -39,7 +40,7 @@ namespace CCNet.SourceNotifier.Gateways.MailGateway
 				message.IsBodyHtml = true;
 				message.Body = HtmlStyler.InlineCss(bodyHtml);
 				m_smtpClient.Send(message);
-				Debug.Instance.Log("Mail sent to {0}", message.To);
+				Debug.Instance.Log(Resources.MailSentLogMessage, message.Subject, message.To);
 			}
 		}
 

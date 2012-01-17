@@ -126,6 +126,9 @@
   <data name="MailSenderName" xml:space="preserve">
     <value>Team Foundation Server</value>
   </data>
+  <data name="MailSentLogMessage" xml:space="preserve">
+    <value>Mail message '{0}' sent to {1}</value>
+  </data>
   <data name="ReportToMasterMailSubject" xml:space="preserve">
     <value>Team Foundation pending changes summary</value>
   </data>

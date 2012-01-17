@@ -88,6 +88,15 @@ namespace CCNet.SourceNotifier.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mail message &apos;{0}&apos; sent to {1}.
+        /// </summary>
+        internal static string MailSentLogMessage {
+            get {
+                return ResourceManager.GetString("MailSentLogMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Team Foundation pending changes summary.
         /// </summary>
         internal static string ReportToMasterMailSubject {
