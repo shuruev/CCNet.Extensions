@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
@@ -12,33 +11,18 @@ namespace CCNet.SourceNotifier.XmlProcessor
 	public static class TemplateEngine
 	{
 		/// <summary>
-		/// Caches compiled XSLTs.
+		/// Retrieves the XslCompiledTransform for the specified template name, using the results caching.
 		/// </summary>
-		private static class TemplateCacher
+		public static XslCompiledTransform GetCompiledTransform(string templateName)
 		{
-			private static readonly Dictionary<string, XslCompiledTransform> s_cache = new Dictionary<string, XslCompiledTransform>();
-			private static readonly object s_locker = new object();
-
-			/// <summary>
-			/// Retrieves the XslCompiledTransform for the specified template name, using the results caching.
-			/// </summary>
-			public static XslCompiledTransform GetCompiledTransform(string templateName)
-			{
-				if (!s_cache.ContainsKey(templateName))
+			return Cache<string, XslCompiledTransform>.Instance.Get(
+				templateName,
+				() =>
 				{
-					lock (s_locker)
-					{
-						if (!s_cache.ContainsKey(templateName))
-						{
-							XslCompiledTransform xslt = new XslCompiledTransform();
-							xslt.Load(templateName, XsltSettings.Default, Templates.ResourcesManager.Resolver);
-							s_cache[templateName] = xslt;
-						}
-					}
-				}
-
-				return s_cache[templateName];
-			}
+					XslCompiledTransform xslt = new XslCompiledTransform();
+					xslt.Load(templateName, XsltSettings.Default, Templates.ResourcesManager.Resolver);
+					return xslt;
+				});
 		}
 
 		/// <summary>
@@ -48,7 +32,7 @@ namespace CCNet.SourceNotifier.XmlProcessor
 		{
 			using (XmlReader reader = data.CreateReader())
 			{
-				TemplateCacher.GetCompiledTransform(templateName).Transform(reader, argumentList, outStream);
+				GetCompiledTransform(templateName).Transform(reader, argumentList, outStream);
 			}
 		}
 
