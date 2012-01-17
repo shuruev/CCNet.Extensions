@@ -9,11 +9,6 @@ namespace CCNet.SourceNotifier
 	public class Cache<TKey, TValue> where TKey : IEquatable<TKey>
 	{
 		/// <summary>
-		/// Singleton instance.
-		/// </summary>
-		public static readonly Cache<TKey, TValue> Instance = new Cache<TKey, TValue>();
-
-		/// <summary>
 		/// Private data holder.
 		/// </summary>
 		private readonly ConcurrentDictionary<TKey, TValue> m_data = new ConcurrentDictionary<TKey, TValue>();
@@ -22,13 +17,6 @@ namespace CCNet.SourceNotifier
 		/// Private lock object.
 		/// </summary>
 		private readonly object m_locker = new object();
-
-		/// <summary>
-		/// Initializes a new instance.
-		/// </summary>
-		private Cache()
-		{
-		}
 
 		/// <summary>
 		/// Gets a value for a given key, calling the creator() when needed.

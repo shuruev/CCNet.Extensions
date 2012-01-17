@@ -10,12 +10,14 @@ namespace CCNet.SourceNotifier.XmlProcessor
 	/// </summary>
 	public static class TemplateEngine
 	{
+		private static readonly Cache<string, XslCompiledTransform> s_cache = new Cache<string, XslCompiledTransform>();
+
 		/// <summary>
 		/// Retrieves the XslCompiledTransform for the specified template name, using the results caching.
 		/// </summary>
 		public static XslCompiledTransform GetCompiledTransform(string templateName)
 		{
-			return Cache<string, XslCompiledTransform>.Instance.Get(
+			return s_cache.Get(
 				templateName,
 				() =>
 				{
