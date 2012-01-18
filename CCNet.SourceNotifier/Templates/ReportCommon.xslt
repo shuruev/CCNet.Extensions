@@ -71,7 +71,9 @@
 
 	<xsl:template match="group" mode="groupCard">
 		<xsl:if test="position() &gt; 1">
-			<p class="spacer" style="font-size:41pt">&#160;</p>
+			<p class="spacer" style="font-size:15pt">&#160;</p>
+			<hr/>
+			<p class="spacer" style="font-size:15pt">&#160;</p>
 		</xsl:if>
 		<div class="groupcard">
 			<xsl:apply-templates select="userInfo" mode="userCard"/>

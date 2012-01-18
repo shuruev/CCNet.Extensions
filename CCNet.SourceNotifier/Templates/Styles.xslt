@@ -9,6 +9,7 @@
 			table { width:100%;border-collapse:collapse; }
 			table, table tr, table td { margin:0; padding:0; border:none; font-size:10pt }
 			table td, .change { white-space:nowrap; }
+			hr { margin:0; }
 			.user .name { font-size:18pt; font-weight:bold; }
 			.user .description { font-style:italic; }
 			.user.active .name { color:rgb(54, 95, 145); }
