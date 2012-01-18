@@ -11,12 +11,11 @@
 			<xsl:value-of select="userInfo/firstName"/>
 			<xsl:text>,</xsl:text>
 		</p>
-		<p>
-			<xsl:text>Please be informed that some files are still marked as "checked-out" in Team Foundation Server.</xsl:text>
-			<br/>
-			<xsl:text>You might want to "check-in" them, if you do not need them anymore.</xsl:text>
-		</p>
-
+		<p class="spacer" style="font-size:10pt">&#160;</p>
+		<p>Please be informed that some files are still marked as "checked-out" in Team Foundation Server.</p>
+		<p class="spacer" style="font-size:1pt">&#160;</p>
+		<xsl:text>You might want to "check-in" them, if you do not need them anymore.</xsl:text>
+		<p class="spacer" style="font-size:22pt">&#160;</p>
 		<xsl:apply-templates select="current()" mode="groupCard"/>
 	</xsl:template>
 
