@@ -6,6 +6,7 @@
 			* { font-family:Calibri, sans-serif; }
 			body { font-size:11pt; }
 			p { margin:0.2em 0 0.2em 0; }
+			table { width:100%; }
 			.user .name { font-size:1.6em; font-weight:bold; }
 			.user .description { font-style:italic; }
 			.user .name, .user .description { margin:0 }
