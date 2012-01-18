@@ -94,10 +94,14 @@
     <EmbeddedResource Include="Templates\MasterTextReport.xslt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Templates\MasterReport.xslt" />
+    <EmbeddedResource Include="Templates\MasterReport.xslt">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Templates\UserReport.xslt" />
+    <EmbeddedResource Include="Templates\UserReport.xslt">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\ReportCommon.xslt">

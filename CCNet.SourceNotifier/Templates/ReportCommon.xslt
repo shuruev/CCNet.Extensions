@@ -7,8 +7,10 @@
 	<xsl:param name="cutoffDays"/>
 
 	<xsl:template match="change">
-		<tr>
-			<td class="change">
+		<xsl:if test="position() &gt; 1">
+			<br/>
+		</xsl:if>
+			<span class="change">
 				<nobr>
 					<span class="filename">
 						<xsl:value-of select="path"/>
@@ -20,8 +22,7 @@
 						<xsl:text> days ago)</xsl:text>
 					</span>
 				</nobr>
-			</td>
-		</tr>
+			</span>
 	</xsl:template>
 
 	<xsl:template match="userInfo" mode="userActivityClass">
@@ -70,7 +71,7 @@
 
 	<xsl:template match="group" mode="groupCard">
 		<xsl:if test="position() &gt; 1">
-			<hr class="groupseparator"/>
+			<p class="groupseparator">&#160;</p>
 		</xsl:if>
 		<div class="groupcard">
 			<xsl:apply-templates select="userInfo" mode="userCard"/>
@@ -86,7 +87,13 @@
 				<xsl:text> days ago:</xsl:text>
 			</p>
 			<table class="changelist">
-				<xsl:apply-templates select="change"/>
+				<tr>
+					<td>
+						<p>
+							<xsl:apply-templates select="change"/>
+						</p>
+					</td>
+				</tr>
 			</table>
 		</div>
 	</xsl:template>
