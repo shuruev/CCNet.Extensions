@@ -70,6 +70,7 @@
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Helpers\CopyToOutputDirectory.cs" />
+    <Compile Include="Helpers\HtmlStyler.cs" />
     <Compile Include="Helpers\ProjectItemType.cs" />
     <Compile Include="Helpers\ProjectItem.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
