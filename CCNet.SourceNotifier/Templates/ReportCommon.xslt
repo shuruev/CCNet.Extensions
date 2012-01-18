@@ -8,21 +8,21 @@
 
 	<xsl:template match="change">
 		<xsl:if test="position() &gt; 1">
-			<br/>
+			<p class="spacer" style="font-size:0.5pt">&#160;</p>
 		</xsl:if>
-			<span class="change">
-				<nobr>
-					<span class="filename">
-						<xsl:value-of select="path"/>
-					</span>
-					<xsl:text>&#160;</xsl:text>
-					<span class="fileage">
-						<xsl:text>(</xsl:text>
-						<xsl:value-of select="daysSinceCheckout"/>
-						<xsl:text> days ago)</xsl:text>
-					</span>
-				</nobr>
-			</span>
+		<p class="change">
+			<nobr>
+				<span class="filename">
+					<xsl:value-of select="path"/>
+				</span>
+				<xsl:text>&#160;</xsl:text>
+				<span class="fileage">
+					<xsl:text>(</xsl:text>
+					<xsl:value-of select="daysSinceCheckout"/>
+					<xsl:text> days ago)</xsl:text>
+				</span>
+			</nobr>
+		</p>
 	</xsl:template>
 
 	<xsl:template match="userInfo" mode="userActivityClass">
@@ -41,10 +41,10 @@
 				<xsl:text> </xsl:text>
 				<xsl:apply-templates select="current()" mode="userActivityClass"/>
 			</xsl:attribute>
-			<!-- <p> would not work here as HtmlStyler doesn't support _cascading_ stylesheets. -->
 			<p class="name">
 				<xsl:value-of select="displayName"/>
 			</p>
+			<p class="spacer" style="font-size:2.7pt;">&#160;</p>
 			<p class="description">
 				<xsl:choose>
 					<xsl:when test="isRegistered = 'true'">
@@ -71,10 +71,11 @@
 
 	<xsl:template match="group" mode="groupCard">
 		<xsl:if test="position() &gt; 1">
-			<p class="groupseparator">&#160;</p>
+			<p class="spacer" style="font-size:41pt">&#160;</p>
 		</xsl:if>
 		<div class="groupcard">
 			<xsl:apply-templates select="userInfo" mode="userCard"/>
+			<p class="spacer" style="font-size:10pt;">&#160;</p>
 			<p>
 				<xsl:text>There are </xsl:text>
 				<strong>
@@ -86,12 +87,11 @@
 				</strong>
 				<xsl:text> days ago:</xsl:text>
 			</p>
+			<p class="spacer" style="font-size:10pt;">&#160;</p>
 			<table class="changelist">
 				<tr>
 					<td>
-						<p>
-							<xsl:apply-templates select="change"/>
-						</p>
+						<xsl:apply-templates select="change"/>
 					</td>
 				</tr>
 			</table>
