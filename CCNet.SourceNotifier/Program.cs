@@ -80,7 +80,7 @@ namespace CCNet.SourceNotifier
 					let userName = tuple.Item1.OwnerName
 					let userInfo = m_adGateway.GetUserInfo(userName)
 					let change = tuple.Item2
-					orderby change.CreationDate
+					orderby change.CreationDate 
 					group change by userInfo into g
 					select g;
 			}

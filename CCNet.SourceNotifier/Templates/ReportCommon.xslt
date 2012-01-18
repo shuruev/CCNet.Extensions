@@ -41,10 +41,10 @@
 				<xsl:apply-templates select="current()" mode="userActivityClass"/>
 			</xsl:attribute>
 			<!-- <p> would not work here as HtmlStyler doesn't support _cascading_ stylesheets. -->
-			<div class="name">
+			<p class="name">
 				<xsl:value-of select="displayName"/>
-			</div>
-			<div class="description">
+			</p>
+			<p class="description">
 				<xsl:choose>
 					<xsl:when test="isRegistered = 'true'">
 						<xsl:value-of select="description"/>
@@ -53,7 +53,7 @@
 						<font color="red">Not registered</font>
 					</xsl:otherwise>
 				</xsl:choose>
-			</div>
+			</p>
 		</div>
 	</xsl:template>
 

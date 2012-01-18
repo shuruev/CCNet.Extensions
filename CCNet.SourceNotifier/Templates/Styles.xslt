@@ -5,15 +5,18 @@
 		<style>
 			* { font-family:Calibri, sans-serif; }
 			body { font-size:11pt; }
-			.user .name { color:rgb(79, 129, 189); font-size:1.6em; margin:0; font-weight:bold; }
-			.user .description { color:rgb(128, 128, 128); margin:0; font-style:italic; }
+			p { margin:0.2em 0 0.2em 0; }
+			.user .name { font-size:1.6em; font-weight:bold; }
+			.user .description { font-style:italic; }
+			.user .name, .user .description { margin:0 }
+			.user.active .name { color:rgb(79, 129, 189); }
+			.user.active .description { color:rgb(128, 128, 128); }
 			.user.passive .name { color:red; }
 			.user.passive .description { color:red; }
 			.filename { font-family:monospace; font-size:0.9em; }
 			.fileage { color:rgb(128, 128, 128); font-size:0.9em; }
 			ul.changelist li { list-style-type:none; }
 			.change { white-space:nowrap; }
-			p { margin:0.2em 0 0.2em 0; }
 			.user { margin-bottom:0.5em; }
 			hr.groupseparator { margin:1em 0 1em 0; }
 		</style>

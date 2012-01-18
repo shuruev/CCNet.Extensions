@@ -100,8 +100,12 @@
     <EmbeddedResource Include="Templates\UserReport.xslt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Templates\ReportCommon.xslt" />
-    <EmbeddedResource Include="Templates\Styles.xslt" />
+    <EmbeddedResource Include="Templates\ReportCommon.xslt">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\Styles.xslt">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CCNet.Common\CCNet.Common.csproj">
