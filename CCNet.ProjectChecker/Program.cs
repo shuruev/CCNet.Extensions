@@ -676,9 +676,13 @@ namespace CCNet.ProjectChecker
 			Dictionary<string, string> properties = PropertiesHelper.ParseFromAssemblyInfo(lines);
 			if (properties.ContainsKey("AssemblyCopyright"))
 			{
-				properties["AssemblyCopyright"] = properties["AssemblyCopyright"].Replace(
+				properties["AssemblyCopyright"] = properties["AssemblyCopyright"]
+					.Replace(
 						"Copyright © CNET Content Solutions 2010",
-						"Copyright © CNET Content Solutions 2011");
+						"Copyright © CNET Content Solutions 2011")
+					.Replace(
+						"Copyright © CNET Content Solutions 2011",
+						"Copyright © CNET Content Solutions 2012");
 			}
 
 			Dictionary<string, string> required = new Dictionary<string, string>();
@@ -701,7 +705,7 @@ namespace CCNet.ProjectChecker
 			required.Add("AssemblyDescription", String.Empty);
 			required.Add("AssemblyConfiguration", String.Empty);
 			required.Add("AssemblyCompany", "CNET Content Solutions");
-			required.Add("AssemblyCopyright", "Copyright © CNET Content Solutions 2011");
+			required.Add("AssemblyCopyright", "Copyright © CNET Content Solutions 2012");
 			required.Add("AssemblyTrademark", String.Empty);
 			required.Add("AssemblyCulture", String.Empty);
 			required.Add("AssemblyVersion", Arguments.ExpectedVersion);
