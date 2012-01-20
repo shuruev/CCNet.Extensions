@@ -17,5 +17,7 @@ XCOPY "CCNet.ObsoleteCleaner\bin\Debug\CCNet.Common.dll" "%ServerPath%\CCNet.Obs
 XCOPY "CCNet.ObsoleteCleaner\bin\Debug\CCNet.Releaser.Client.dll" "%ServerPath%\CCNet.ObsoleteCleaner\" /Y
 XCOPY "CCNet.ObsoleteCleaner\bin\Debug\ReleaserInterfaces.dll" "%ServerPath%\CCNet.ObsoleteCleaner\" /Y
 XCOPY "CCNet.ObsoleteCleaner\bin\Debug\CCNet.ObsoleteCleaner.exe.config" "%ServerPath%\CCNet.ObsoleteCleaner\" /Y
+XCOPY "CCNet.SourceNotifier\bin\Debug\CCNet.SourceNotifier.exe" "%ServerPath%\CCNet.SourceNotifier\" /Y
+XCOPY "CCNet.SourceNotifier\bin\Debug\CCNet.Common.dll" "%ServerPath%\CCNet.SourceNotifier\" /Y
 
 PAUSE
