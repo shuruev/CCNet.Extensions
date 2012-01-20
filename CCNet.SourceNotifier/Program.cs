@@ -120,11 +120,11 @@ namespace CCNet.SourceNotifier
 		{
 			/*xxxargs = new[]
 			{
-				@"Command=ReportToMaster",
+				@"Command=ReportToUsers",
 				@"TfsServerUri=http://rufrt-vxbuild:8080/tfs",
 				@"TfsCollectionName=SED",
-				@"CutoffDays=3",
-				@"MasterEmail=Igor.Prohorov@cbsinteractive.com",
+				@"CutoffDays=0",
+				@"MasterEmail=oleg.shuruev@cbsinteractive.com",
 			};*/
 
 			try
