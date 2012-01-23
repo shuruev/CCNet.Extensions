@@ -21,13 +21,15 @@ namespace CCNet.ProjectAdapter
 		{
 			/*xxxargs = new[]
 			{
-				@"ProjectName=CC.PE.Cloud",
+				@"ProjectName=CustomerExtranet",
 				@"CurrentVersion=1.2.3.4",
-				@"WorkingDirectorySource=\\rufrt-vxbuild\d$\CCNET\CC.PE.Cloud\WorkingDirectory\Source",
-				@"WorkingDirectoryRelated=\\rufrt-vxbuild\d$\CCNET\CC.PE.Cloud\WorkingDirectory\Related",
+				@"WorkingDirectorySource=\\rufrt-vxbuild\d$\CCNET\CustomerExtranet\WorkingDirectory\Source",
+				@"WorkingDirectoryRelated=\\rufrt-vxbuild\d$\CCNET\CustomerExtranet\WorkingDirectory\Related",
 				@"ExternalReferencesPath=\\rufrt-vxbuild\ExternalReferences",
 				@"InternalReferencesPath=\\rufrt-vxbuild\InternalReferences",
-				@"ProjectType=Azure"
+				@"PinnedReferencesPath=\\rufrt-vxbuild\PinnedReferences",
+				@"ProjectType=WebSite",
+				@"UsePinned=Extranet 2012-01"
 			};*/
 
 			if (args == null || args.Length == 0)
@@ -199,8 +201,24 @@ namespace CCNet.ProjectAdapter
 				if (hint != null)
 					node.RemoveChild(hint);
 
+				// use pinned reference if needed
+				bool pinned = false;
+				string referencePath = reference.FilePath;
+				if (!String.IsNullOrEmpty(Arguments.UsePinned))
+				{
+					string pinnedPath = Path.Combine(
+						Paths.PinnedReferencesFolder,
+						Path.GetFileName(referencePath));
+
+					if (File.Exists(pinnedPath))
+					{
+						pinned = true;
+						referencePath = pinnedPath;
+					}
+				}
+
 				hint = doc.CreateElement("HintPath", xnm.LookupNamespace("ms"));
-				hint.InnerXml = reference.FilePath;
+				hint.InnerXml = referencePath;
 
 				node.AppendChild(hint);
 
@@ -210,7 +228,9 @@ namespace CCNet.ProjectAdapter
 						Resources.LogReferencesTo,
 						reference.FileName,
 						reference.ProjectName,
-						reference.Version);
+						pinned
+							? String.Format("Pinned as {0}", Arguments.UsePinned)
+							: reference.Version);
 				}
 			}
 		}

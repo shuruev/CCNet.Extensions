@@ -61,11 +61,27 @@ namespace CCNet.ProjectAdapter
 		}
 
 		/// <summary>
+		/// Gets path for pinned references.
+		/// </summary>
+		public static string PinnedReferencesPath
+		{
+			get { return Default.GetValue("PinnedReferencesPath"); }
+		}
+
+		/// <summary>
 		/// Gets project type.
 		/// </summary>
 		public static ProjectType ProjectType
 		{
 			get { return Default.GetEnumValue<ProjectType>("ProjectType"); }
+		}
+
+		/// <summary>
+		/// Gets pinned references pack name to be used.
+		/// </summary>
+		public static string UsePinned
+		{
+			get { return Default.GetValue("UsePinned"); }
 		}
 	}
 }

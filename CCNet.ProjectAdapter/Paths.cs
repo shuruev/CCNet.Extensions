@@ -45,5 +45,16 @@ namespace CCNet.ProjectAdapter
 				return Path.Combine(propertiesPath, "AssemblyInfo.cs");
 			}
 		}
+
+		/// <summary>
+		/// Gets folder path from which references should be taken at first.
+		/// </summary>
+		public static string PinnedReferencesFolder
+		{
+			get
+			{
+				return Path.Combine(Arguments.PinnedReferencesPath, Arguments.UsePinned);
+			}
+		}
 	}
 }
