@@ -364,6 +364,7 @@ namespace CCNet.ProjectChecker
 			allowed.Add("TargetZone", null);
 			allowed.Add("UpgradeBackupLocation", null);
 			allowed.Add("UseIISExpress", null);
+			allowed.Add("VisualStudioVersion", "10.0");
 			allowed.Add("Win32Resource", String.Empty);
 			allowed.Add("WebReference_EnableLegacyEventingModel", null);
 			allowed.Add("WebReference_EnableProperties", null);
@@ -829,6 +830,7 @@ namespace CCNet.ProjectChecker
 			allowedGac.Add("System.Data.Services.Client");
 			allowedGac.Add("System.Deployment");
 			allowedGac.Add("System.Design");
+			allowedGac.Add("System.DirectoryServices");
 			allowedGac.Add("System.Drawing");
 			allowedGac.Add("System.EnterpriseServices");
 			allowedGac.Add("System.IdentityModel");
