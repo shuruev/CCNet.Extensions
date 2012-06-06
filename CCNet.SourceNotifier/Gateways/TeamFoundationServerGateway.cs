@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.TeamFoundation.Client;
-using Microsoft.TeamFoundation.Framework.Common;
 using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace CCNet.SourceNotifier.Gateways
@@ -18,11 +17,6 @@ namespace CCNet.SourceNotifier.Gateways
 		private const string c_tfsRootDir = "$/";
 
 		/// <summary>
-		/// TFS configuration server.
-		/// </summary>
-		private readonly TfsConfigurationServer m_tfsConfigurationServer;
-
-		/// <summary>
 		/// TFS projects collection.
 		/// </summary>
 		private readonly TfsTeamProjectCollection m_tfsTeamProjectCollection;
@@ -35,27 +29,10 @@ namespace CCNet.SourceNotifier.Gateways
 		/// <summary>
 		/// Initializes a new instance.
 		/// </summary>
-		public TeamFoundationServerGateway(Uri uri, string collectionName)
+		public TeamFoundationServerGateway(Uri uri)
 		{
-			m_tfsConfigurationServer = TfsConfigurationServerFactory.GetConfigurationServer(uri);
-
-			try
-			{
-				var collectionsNodes = m_tfsConfigurationServer.CatalogNode.QueryChildren(
-					new[] { CatalogResourceTypes.ProjectCollection },
-					false,
-					CatalogQueryOptions.None);
-				var collectionNode = collectionsNodes.Single(node => node.Resource.DisplayName == collectionName);
-				var collectionGuid = new Guid(collectionNode.Resource.Properties["InstanceId"]);
-				m_tfsTeamProjectCollection = m_tfsConfigurationServer.GetTeamProjectCollection(collectionGuid);
-
-				m_versionControlServer = m_tfsTeamProjectCollection.GetService<VersionControlServer>();
-			}
-			catch (Exception)
-			{
-				m_tfsConfigurationServer.Dispose();
-				throw;
-			}
+			m_tfsTeamProjectCollection = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(uri);
+			m_versionControlServer = (VersionControlServer)m_tfsTeamProjectCollection.GetService(typeof(VersionControlServer));
 		}
 
 		/// <summary>
@@ -63,7 +40,7 @@ namespace CCNet.SourceNotifier.Gateways
 		/// </summary>
 		void IDisposable.Dispose()
 		{
-			m_tfsConfigurationServer.Dispose();
+			m_tfsTeamProjectCollection.Dispose();
 		}
 
 		/// <summary>

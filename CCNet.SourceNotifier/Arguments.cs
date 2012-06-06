@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Mail;
 using CCNet.Common;
 
 namespace CCNet.SourceNotifier
@@ -31,19 +30,11 @@ namespace CCNet.SourceNotifier
 		}
 
 		/// <summary>
-		/// Gets URI of a TFS server.
+		/// Gets URI of a TFS server (may include collection).
 		/// </summary>
 		public Uri TfsServerUri
 		{
 			get { return new Uri(m_properties.GetValue("TfsServerUri")); }
-		}
-
-		/// <summary>
-		/// Gets name of TFS collection.
-		/// </summary>
-		public string TfsCollectionName
-		{
-			get { return m_properties.GetValue("TfsCollectionName"); }
 		}
 
 		/// <summary>
