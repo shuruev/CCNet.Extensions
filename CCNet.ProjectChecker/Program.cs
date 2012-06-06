@@ -927,6 +927,15 @@ namespace CCNet.ProjectChecker
 		/// </summary>
 		private static void CheckDirectlySpecifiedProperties(Reference reference, StringBuilder message)
 		{
+			HashSet<string> allowCopyLocal = new HashSet<string>();
+			allowCopyLocal.Add("Microsoft.Web.Infrastructure");
+			allowCopyLocal.Add("System.Web.Helpers");
+			allowCopyLocal.Add("System.Web.Mvc");
+			allowCopyLocal.Add("System.Web.Razor");
+			allowCopyLocal.Add("System.Web.WebPages.Deployment");
+			allowCopyLocal.Add("System.Web.WebPages");
+			allowCopyLocal.Add("System.Web.WebPages.Razor");
+
 			if (reference.Aliases != null)
 			{
 				message.AppendLine(
@@ -936,9 +945,16 @@ namespace CCNet.ProjectChecker
 
 			if (reference.Private != null)
 			{
-				message.AppendLine(
-					Strings.DontSpecifyPropertyDirectly
-					.Display(reference.Name, "Copy Local"));
+				if (reference.Private == "True" && allowCopyLocal.Contains(reference.Name))
+				{
+					// this is allowed exception
+				}
+				else
+				{
+					message.AppendLine(
+						Strings.DontSpecifyPropertyDirectly
+						.Display(reference.Name, "Copy Local"));
+				}
 			}
 
 			if (reference.EmbedInteropTypes != null)
