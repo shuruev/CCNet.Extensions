@@ -22,19 +22,19 @@ namespace CCNet.ProjectChecker
 		{
 			/*xxxargs = new[]
 			{
-				@"ProjectName=CC.PE.Cloud",
-				@"ReferencesDirectory=\\rufrt-vxbuild\d$\CCNET\CC.PE.Cloud\References",
-				@"WorkingDirectorySource=\\rufrt-vxbuild\d$\CCNET\CC.PE.Cloud\WorkingDirectory\Source",
+				@"ProjectName=CC.Portal.Cloud",
+				@"ReferencesDirectory=\\rufrt-vxbuild\d$\CCNET\CC.Portal.Cloud\References",
+				@"WorkingDirectorySource=\\rufrt-vxbuild\d$\CCNET\CC.Portal.Cloud\WorkingDirectory\Source",
 				@"ExternalReferencesPath=\\rufrt-vxbuild\ExternalReferences",
 				@"InternalReferencesPath=\\rufrt-vxbuild\InternalReferences",
 				@"ProjectType=Azure",
-				@"AssemblyName=CC.PE.Cloud",
+				@"AssemblyName=CC.Portal.Cloud",
 				@"FriendlyName=UNSPECIFIED",
 				@"DownloadZone=UNSPECIFIED",
 				@"VisualStudioVersion=2010",
 				@"TargetFramework=UNSPECIFIED",
 				@"TargetPlatform=AnyCPU",
-				@"RootNamespace=CC.PE.Cloud",
+				@"RootNamespace=CC.Portal.Cloud",
 				@"SuppressWarnings=",
 				@"AllowUnsafeBlocks=False",
 				@"ExpectedVersion=UNSPECIFIED"
@@ -364,6 +364,7 @@ namespace CCNet.ProjectChecker
 			allowed.Add("TargetZone", null);
 			allowed.Add("UpgradeBackupLocation", null);
 			allowed.Add("UseIISExpress", null);
+			allowed.Add("UseIISExpressByDefault", null);
 			allowed.Add("VisualStudioVersion", "10.0");
 			allowed.Add("Win32Resource", String.Empty);
 			allowed.Add("WebReference_EnableLegacyEventingModel", null);

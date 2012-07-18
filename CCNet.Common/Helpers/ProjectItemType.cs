@@ -58,6 +58,11 @@
 		/// <summary>
 		/// Azure service configuration.
 		/// </summary>
-		ServiceConfiguration
+		ServiceConfiguration,
+
+		/// <summary>
+		/// Azure publish profile.
+		/// </summary>
+		PublishProfile
 	}
 }

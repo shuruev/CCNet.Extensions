@@ -47,6 +47,17 @@ namespace CCNet.ProjectAdapter
 		}
 
 		/// <summary>
+		/// Gets service definition file path.
+		/// </summary>
+		public static string ServiceDefinitionFile
+		{
+			get
+			{
+				return Path.Combine(Arguments.WorkingDirectorySource, "ServiceDefinition.csdef");
+			}
+		}
+
+		/// <summary>
 		/// Gets folder path from which references should be taken at first.
 		/// </summary>
 		public static string PinnedReferencesFolder

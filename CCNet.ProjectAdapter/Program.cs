@@ -21,15 +21,15 @@ namespace CCNet.ProjectAdapter
 		{
 			/*xxxargs = new[]
 			{
-				@"ProjectName=CustomerExtranet",
+				@"ProjectName=CC.Portal.Cloud",
 				@"CurrentVersion=1.2.3.4",
-				@"WorkingDirectorySource=\\rufrt-vxbuild\d$\CCNET\CustomerExtranet\WorkingDirectory\Source",
-				@"WorkingDirectoryRelated=\\rufrt-vxbuild\d$\CCNET\CustomerExtranet\WorkingDirectory\Related",
+				@"WorkingDirectorySource=\\rufrt-vxbuild\d$\CCNET\CC.Portal.Cloud\WorkingDirectory\Source",
+				@"WorkingDirectoryRelated=\\rufrt-vxbuild\d$\CCNET\CC.Portal.Cloud\WorkingDirectory\Related",
 				@"ExternalReferencesPath=\\rufrt-vxbuild\ExternalReferences",
 				@"InternalReferencesPath=\\rufrt-vxbuild\InternalReferences",
 				@"PinnedReferencesPath=\\rufrt-vxbuild\PinnedReferences",
-				@"ProjectType=WebSite",
-				@"UsePinned=Extranet 2012-01"
+				@"ProjectType=Azure",
+				@"UsePinned="
 			};*/
 
 			if (args == null || args.Length == 0)
@@ -49,6 +49,7 @@ namespace CCNet.ProjectAdapter
 				UpdateProjectProperties();
 				UpdateBinaryReferences();
 				UpdateProjectReferences();
+				UpdateServiceDefinition();
 			}
 			catch (Exception e)
 			{
@@ -120,14 +121,6 @@ namespace CCNet.ProjectAdapter
 			text = text.Replace(
 				"<GenerateManifests>false</GenerateManifests>",
 				"<GenerateManifests>true</GenerateManifests>");
-
-			text = text.Replace(
-				"<Import Project=\"$(CloudExtensionsDir)Microsoft.CloudService.targets\" />",
-				"<Import Project=\"$(CloudExtensionsDir)Microsoft.WindowsAzure.targets\" />");
-
-			text = text.Replace(
-				"<CloudExtensionsDir Condition=\" '$(CloudExtensionsDir)' == '' \">$(MSBuildExtensionsPath)\\Microsoft\\Cloud Service\\1.0\\Visual Studio 10.0\\</CloudExtensionsDir>",
-				"<VisualStudioVersion Condition=\" '$(VisualStudioVersion)' == '' \">10.0</VisualStudioVersion>\r\n<CloudExtensionsDir Condition=\" '$(CloudExtensionsDir)' == '' \">$(MSBuildExtensionsPath)\\Microsoft\\VisualStudio\\v$(VisualStudioVersion)\\Windows Azure Tools\\1.5\\</CloudExtensionsDir>");
 
 			File.WriteAllText(Paths.ProjectFile, text, Encoding.UTF8);
 		}
@@ -251,16 +244,17 @@ namespace CCNet.ProjectAdapter
 			foreach (XmlNode node in doc.SelectNodes("/ms:Project/ms:ItemGroup/ms:ProjectReference", xnm))
 			{
 				string include = node.Attributes["Include"].Value;
-				include = include.Replace("..", Arguments.WorkingDirectoryRelated);
-				node.Attributes["Include"].Value = include;
-
-				UpdateBinaryReferences(include, false);
 
 				string relatedProjectFile = Path.GetFileName(include);
 				string relatedProjectName = Path.GetFileNameWithoutExtension(include);
 				string relatedProjectVersion = ReferenceFolder.GetLatestVersion(
 					Arguments.InternalReferencesPath,
 					relatedProjectName);
+
+				include = Path.Combine(Arguments.WorkingDirectoryRelated, relatedProjectName, relatedProjectFile);
+				node.Attributes["Include"].Value = include;
+
+				UpdateBinaryReferences(include, false);
 
 				Console.WriteLine(
 					Resources.LogReferencesTo,
@@ -270,6 +264,56 @@ namespace CCNet.ProjectAdapter
 			}
 
 			using (XmlTextWriter xtw = new XmlTextWriter(Paths.ProjectFile, Encoding.UTF8))
+			{
+				xtw.Formatting = Formatting.Indented;
+				doc.WriteTo(xtw);
+			}
+		}
+
+		/// <summary>
+		/// Updates service definition file.
+		/// </summary>
+		private static void UpdateServiceDefinition()
+		{
+			if (Arguments.ProjectType != ProjectType.Azure)
+				return;
+
+			string text = File.ReadAllText(Paths.ServiceDefinitionFile);
+
+			XmlDocument doc = new XmlDocument();
+			doc.LoadXml(text);
+
+			XmlNamespaceManager xnm = new XmlNamespaceManager(doc.NameTable);
+			xnm.AddNamespace("sd", "http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition");
+
+			foreach (XmlNode node in doc.SelectNodes("/sd:ServiceDefinition/sd:WebRole/sd:Sites/sd:Site", xnm))
+			{
+				if (node.Attributes["physicalDirectory"] == null)
+					continue;
+
+				string physicalDirectory = node.Attributes["physicalDirectory"].Value;
+
+				string relatedProjectName = Path.GetFileName(physicalDirectory);
+				string relatedProjectFile = relatedProjectName + ".csproj";
+				string relatedProjectVersion = ReferenceFolder.GetLatestVersion(
+					Arguments.InternalReferencesPath,
+					relatedProjectName);
+
+				string projectPath = Path.Combine(Arguments.WorkingDirectoryRelated, relatedProjectName, relatedProjectFile);
+				physicalDirectory = Path.Combine(Arguments.WorkingDirectoryRelated, relatedProjectName);
+
+				node.Attributes["physicalDirectory"].Value = physicalDirectory;
+
+				UpdateBinaryReferences(projectPath, false);
+
+				Console.WriteLine(
+					Resources.LogReferencesTo,
+					relatedProjectFile,
+					relatedProjectName,
+					relatedProjectVersion);
+			}
+
+			using (XmlTextWriter xtw = new XmlTextWriter(Paths.ServiceDefinitionFile, Encoding.UTF8))
 			{
 				xtw.Formatting = Formatting.Indented;
 				doc.WriteTo(xtw);
