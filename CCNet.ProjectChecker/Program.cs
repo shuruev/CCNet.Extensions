@@ -866,6 +866,10 @@ namespace CCNet.ProjectChecker
 			allowedGac.Add("System.XML");
 			allowedGac.Add("System.Xml");
 			allowedGac.Add("System.Xml.Linq");
+			allowedGac.Add("UIAutomationClient");
+			allowedGac.Add("UIAutomationClientsideProviders");
+			allowedGac.Add("UIAutomationProvider");
+			allowedGac.Add("UIAutomationTypes");
 			allowedGac.Add("WindowsBase");
 
 			string description;
