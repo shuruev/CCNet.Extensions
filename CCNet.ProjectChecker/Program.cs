@@ -932,14 +932,15 @@ namespace CCNet.ProjectChecker
 		/// </summary>
 		private static void CheckDirectlySpecifiedProperties(Reference reference, StringBuilder message)
 		{
-			HashSet<string> allowCopyLocal = new HashSet<string>();
-			allowCopyLocal.Add("Microsoft.Web.Infrastructure");
-			allowCopyLocal.Add("System.Web.Helpers");
-			allowCopyLocal.Add("System.Web.Mvc");
-			allowCopyLocal.Add("System.Web.Razor");
-			allowCopyLocal.Add("System.Web.WebPages.Deployment");
-			allowCopyLocal.Add("System.Web.WebPages");
-			allowCopyLocal.Add("System.Web.WebPages.Razor");
+			Dictionary<string, bool> allowCopyLocal = new Dictionary<string, bool>();
+			allowCopyLocal.Add("Microsoft.Web.Infrastructure", true);
+			allowCopyLocal.Add("System.Web.Helpers", true);
+			allowCopyLocal.Add("System.Web.Mvc", true);
+			allowCopyLocal.Add("System.Web.Razor", true);
+			allowCopyLocal.Add("System.Web.WebPages.Deployment", true);
+			allowCopyLocal.Add("System.Web.WebPages", true);
+			allowCopyLocal.Add("System.Web.WebPages.Razor", true);
+			allowCopyLocal.Add("ImageMagick.Net", false);
 
 			if (reference.Aliases != null)
 			{
@@ -950,9 +951,19 @@ namespace CCNet.ProjectChecker
 
 			if (reference.Private != null)
 			{
-				if (reference.Private == "True" && allowCopyLocal.Contains(reference.Name))
+				if (allowCopyLocal.ContainsKey(reference.Name))
 				{
-					// this is allowed exception
+					if ((allowCopyLocal[reference.Name] && reference.Private == "True")
+						|| (!allowCopyLocal[reference.Name] && reference.Private == "False"))
+					{
+						// this is allowed exception
+					}
+					else
+					{
+						message.AppendLine(
+							Strings.DontSpecifyPropertyDirectly
+							.Display(reference.Name, "Copy Local"));
+					}
 				}
 				else
 				{
