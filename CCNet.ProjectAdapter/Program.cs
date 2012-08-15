@@ -19,7 +19,8 @@ namespace CCNet.ProjectAdapter
 		/// </summary>
 		public static int Main(string[] args)
 		{
-			/*xxxargs = new[]
+			/*xxx
+			args = new[]
 			{
 				@"ProjectName=CC.Portal.Cloud",
 				@"CurrentVersion=1.2.3.4",
@@ -285,6 +286,12 @@ namespace CCNet.ProjectAdapter
 
 			XmlNamespaceManager xnm = new XmlNamespaceManager(doc.NameTable);
 			xnm.AddNamespace("sd", "http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition");
+
+			if (Arguments.VmSize != null)
+			{
+				XmlNode node = doc.SelectSingleNode("/sd:ServiceDefinition/sd:WebRole", xnm);
+				node.Attributes["vmsize"].Value = Arguments.VmSize;
+			}
 
 			foreach (XmlNode node in doc.SelectNodes("/sd:ServiceDefinition/sd:WebRole/sd:Sites/sd:Site", xnm))
 			{

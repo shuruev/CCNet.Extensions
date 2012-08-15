@@ -83,5 +83,14 @@ namespace CCNet.ProjectAdapter
 		{
 			get { return Default.GetValue("UsePinned"); }
 		}
+
+		/// <summary>
+		/// Gets pinned references pack name to be used.
+		/// </summary>
+		public static string VmSize
+		{
+			get { return Default.GetValue("VmSize", null); }
+		}
+
 	}
 }
