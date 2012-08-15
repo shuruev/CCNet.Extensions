@@ -85,7 +85,7 @@ namespace CCNet.ProjectAdapter
 		}
 
 		/// <summary>
-		/// Gets pinned references pack name to be used.
+		/// Gets size of virtual machine for Azure role.
 		/// </summary>
 		public static string VmSize
 		{
