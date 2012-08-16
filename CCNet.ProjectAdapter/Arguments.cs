@@ -87,9 +87,9 @@ namespace CCNet.ProjectAdapter
 		/// <summary>
 		/// Gets size of virtual machine for Azure role.
 		/// </summary>
-		public static string VmSize
+		public static VmSize VmSize
 		{
-			get { return Default.GetValue("VmSize", null); }
+			get { return Default.GetEnumValue<VmSize>("VmSize"); }
 		}
 
 	}

@@ -101,17 +101,6 @@ namespace CCNet.Common
 		}
 
 		/// <summary>
-		/// Gets property value for specified key.
-		/// </summary>
-		public string GetValue(string key, string defaultValue)
-		{
-			if (!Contains(key))
-				return defaultValue;
-
-			return m_values[key];
-		}
-
-		/// <summary>
 		/// Reads enumeration value.
 		/// </summary>
 		public T GetEnumValue<T>(string key)

@@ -287,10 +287,10 @@ namespace CCNet.ProjectAdapter
 			XmlNamespaceManager xnm = new XmlNamespaceManager(doc.NameTable);
 			xnm.AddNamespace("sd", "http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition");
 
-			if (!string.IsNullOrEmpty(Arguments.VmSize))
+			if (Arguments.VmSize != VmSize.Unspecified)
 			{
 				XmlNode node = doc.SelectSingleNode("/sd:ServiceDefinition/sd:WebRole", xnm);
-				node.Attributes["vmsize"].Value = Arguments.VmSize;
+				node.Attributes["vmsize"].Value = Arguments.VmSize.ToString();
 			}
 
 			foreach (XmlNode node in doc.SelectNodes("/sd:ServiceDefinition/sd:WebRole/sd:Sites/sd:Site", xnm))
