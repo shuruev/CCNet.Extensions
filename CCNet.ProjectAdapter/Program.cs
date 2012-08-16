@@ -289,8 +289,14 @@ namespace CCNet.ProjectAdapter
 
 			if (Arguments.VmSize != VmSize.Unspecified)
 			{
-				XmlNode node = doc.SelectSingleNode("/sd:ServiceDefinition/sd:WebRole", xnm);
-				node.Attributes["vmsize"].Value = Arguments.VmSize.ToString();
+				foreach (XmlNode node in doc.SelectNodes("/sd:ServiceDefinition/sd:WebRole", xnm))
+				{
+					node.Attributes["vmsize"].Value = Arguments.VmSize.ToString();
+				}
+				foreach (XmlNode node in doc.SelectNodes("/sd:ServiceDefinition/sd:WorkerRole", xnm))
+				{
+					node.Attributes["vmsize"].Value = Arguments.VmSize.ToString();
+				}
 			}
 
 			foreach (XmlNode node in doc.SelectNodes("/sd:ServiceDefinition/sd:WebRole/sd:Sites/sd:Site", xnm))
