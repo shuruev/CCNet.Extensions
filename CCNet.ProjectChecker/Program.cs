@@ -22,19 +22,19 @@ namespace CCNet.ProjectChecker
 		{
 			/*xxxargs = new[]
 			{
-				@"ProjectName=CC.Portal.Cloud",
-				@"ReferencesDirectory=\\rufrt-vxbuild\d$\CCNET\CC.Portal.Cloud\References",
-				@"WorkingDirectorySource=\\rufrt-vxbuild\d$\CCNET\CC.Portal.Cloud\WorkingDirectory\Source",
+				@"ProjectName=GuidedSellingAdmin",
+				@"ReferencesDirectory=\\rufrt-vxbuild\d$\CCNET\GuidedSellingAdmin\References",
+				@"WorkingDirectorySource=\\rufrt-vxbuild\d$\CCNET\GuidedSellingAdmin\WorkingDirectory\Source",
 				@"ExternalReferencesPath=\\rufrt-vxbuild\ExternalReferences",
 				@"InternalReferencesPath=\\rufrt-vxbuild\InternalReferences",
-				@"ProjectType=Azure",
-				@"AssemblyName=CC.Portal.Cloud",
+				@"ProjectType=WebSite",
+				@"AssemblyName=GuidedSellingAdmin",
 				@"FriendlyName=UNSPECIFIED",
 				@"DownloadZone=UNSPECIFIED",
 				@"VisualStudioVersion=2010",
 				@"TargetFramework=UNSPECIFIED",
 				@"TargetPlatform=AnyCPU",
-				@"RootNamespace=CC.Portal.Cloud",
+				@"RootNamespace=GuidedSellingAdmin",
 				@"SuppressWarnings=",
 				@"AllowUnsafeBlocks=False",
 				@"ExpectedVersion=UNSPECIFIED"
@@ -334,6 +334,7 @@ namespace CCNet.ProjectChecker
 					allowed.Add("UpdatePeriodically", "false");
 					allowed.Add("UpdateRequired", "false");
 					allowed.Add("UseApplicationTrust", "false");
+					allowed.Add("JSLintSkip", null);
 					break;
 			}
 
