@@ -22,19 +22,19 @@ namespace CCNet.ProjectChecker
 		{
 			/*xxxargs = new[]
 			{
-				@"ProjectName=CC.Portal.Cloud",
-				@"ReferencesDirectory=\\rufrt-vxbuild\d$\CCNET\CC.Portal.Cloud\References",
-				@"WorkingDirectorySource=\\rufrt-vxbuild\d$\CCNET\CC.Portal.Cloud\WorkingDirectory\Source",
+				@"ProjectName=GuidedSellingAdmin",
+				@"ReferencesDirectory=\\rufrt-vxbuild\d$\CCNET\GuidedSellingAdmin\References",
+				@"WorkingDirectorySource=\\rufrt-vxbuild\d$\CCNET\GuidedSellingAdmin\WorkingDirectory\Source",
 				@"ExternalReferencesPath=\\rufrt-vxbuild\ExternalReferences",
 				@"InternalReferencesPath=\\rufrt-vxbuild\InternalReferences",
-				@"ProjectType=Azure",
-				@"AssemblyName=CC.Portal.Cloud",
+				@"ProjectType=WebSite",
+				@"AssemblyName=GuidedSellingAdmin",
 				@"FriendlyName=UNSPECIFIED",
 				@"DownloadZone=UNSPECIFIED",
 				@"VisualStudioVersion=2010",
 				@"TargetFramework=UNSPECIFIED",
 				@"TargetPlatform=AnyCPU",
-				@"RootNamespace=CC.Portal.Cloud",
+				@"RootNamespace=GuidedSellingAdmin",
 				@"SuppressWarnings=",
 				@"AllowUnsafeBlocks=False",
 				@"ExpectedVersion=UNSPECIFIED"
@@ -334,6 +334,7 @@ namespace CCNet.ProjectChecker
 					allowed.Add("UpdatePeriodically", "false");
 					allowed.Add("UpdateRequired", "false");
 					allowed.Add("UseApplicationTrust", "false");
+					allowed.Add("JSLintSkip", null);
 					break;
 			}
 
@@ -414,14 +415,21 @@ namespace CCNet.ProjectChecker
 			allowed.Add("CodeAnalysisRuleSetDirectories", null);
 			allowed.Add("CodeAnalysisUseTypeNameInSuppression", null);
 			allowed.Add("CodeContractsArithmeticObligations", null);
+			allowed.Add("CodeContractsAnalysisWarningLevel", null);
 			allowed.Add("CodeContractsBaseLineFile", null);
 			allowed.Add("CodeContractsBoundsObligations", null);
+			allowed.Add("CodeContractsCacheAnalysisResults", null);
 			allowed.Add("CodeContractsCustomRewriterAssembly", null);
 			allowed.Add("CodeContractsCustomRewriterClass", null);
+			allowed.Add("CodeContractsDisjunctiveRequires", null);
 			allowed.Add("CodeContractsEmitXMLDocs", null);
 			allowed.Add("CodeContractsEnableRuntimeChecking", null);
+			allowed.Add("CodeContractsEnumObligations", null);
 			allowed.Add("CodeContractsExtraAnalysisOptions", null);
 			allowed.Add("CodeContractsExtraRewriteOptions", null);
+			allowed.Add("CodeContractsInferEnsures", null);
+			allowed.Add("CodeContractsInferObjectInvariants", null);
+			allowed.Add("CodeContractsInferRequires", null);
 			allowed.Add("CodeContractsLibPaths", null);
 			allowed.Add("CodeContractsNonNullObligations", null);
 			allowed.Add("CodeContractsRedundantAssumptions", null);
@@ -431,6 +439,11 @@ namespace CCNet.ProjectChecker
 			allowed.Add("CodeContractsRuntimeCallSiteRequires", null);
 			allowed.Add("CodeContractsRuntimeCheckingLevel", null);
 			allowed.Add("CodeContractsRuntimeOnlyPublicSurface", null);
+			allowed.Add("CodeContractsRuntimeSkipQuantifiers", null);
+			allowed.Add("CodeContractsSuggestAssumptions", null);
+			allowed.Add("CodeContractsSuggestEnsures", null);
+			allowed.Add("CodeContractsSuggestObjectInvariants", null);
+			allowed.Add("CodeContractsSuggestRequires", null);
 			allowed.Add("CodeContractsRuntimeThrowOnFailure", null);
 			allowed.Add("CodeContractsShowSquigglies", null);
 			allowed.Add("CodeContractsUseBaseLine", null);
@@ -532,14 +545,21 @@ namespace CCNet.ProjectChecker
 			allowed.Add("CodeAnalysisRuleSetDirectories", null);
 			allowed.Add("CodeAnalysisUseTypeNameInSuppression", null);
 			allowed.Add("CodeContractsArithmeticObligations", null);
+			allowed.Add("CodeContractsAnalysisWarningLevel", null);
 			allowed.Add("CodeContractsBaseLineFile", null);
 			allowed.Add("CodeContractsBoundsObligations", null);
+			allowed.Add("CodeContractsCacheAnalysisResults", null);
 			allowed.Add("CodeContractsCustomRewriterAssembly", null);
 			allowed.Add("CodeContractsCustomRewriterClass", null);
+			allowed.Add("CodeContractsDisjunctiveRequires", null);
 			allowed.Add("CodeContractsEmitXMLDocs", null);
 			allowed.Add("CodeContractsEnableRuntimeChecking", null);
+			allowed.Add("CodeContractsEnumObligations", null);
 			allowed.Add("CodeContractsExtraAnalysisOptions", null);
 			allowed.Add("CodeContractsExtraRewriteOptions", null);
+			allowed.Add("CodeContractsInferEnsures", null);
+			allowed.Add("CodeContractsInferObjectInvariants", null);
+			allowed.Add("CodeContractsInferRequires", null);
 			allowed.Add("CodeContractsLibPaths", null);
 			allowed.Add("CodeContractsNonNullObligations", null);
 			allowed.Add("CodeContractsRedundantAssumptions", null);
@@ -549,6 +569,11 @@ namespace CCNet.ProjectChecker
 			allowed.Add("CodeContractsRuntimeCallSiteRequires", null);
 			allowed.Add("CodeContractsRuntimeCheckingLevel", null);
 			allowed.Add("CodeContractsRuntimeOnlyPublicSurface", null);
+			allowed.Add("CodeContractsRuntimeSkipQuantifiers", null);
+			allowed.Add("CodeContractsSuggestAssumptions", null);
+			allowed.Add("CodeContractsSuggestEnsures", null);
+			allowed.Add("CodeContractsSuggestObjectInvariants", null);
+			allowed.Add("CodeContractsSuggestRequires", null);
 			allowed.Add("CodeContractsRuntimeThrowOnFailure", null);
 			allowed.Add("CodeContractsShowSquigglies", null);
 			allowed.Add("CodeContractsUseBaseLine", null);

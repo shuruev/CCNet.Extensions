@@ -83,5 +83,14 @@ namespace CCNet.ProjectAdapter
 		{
 			get { return Default.GetValue("UsePinned"); }
 		}
+
+		/// <summary>
+		/// Gets size of virtual machine for Azure role.
+		/// </summary>
+		public static VmSize VmSize
+		{
+			get { return Default.GetEnumValue<VmSize>("VmSize"); }
+		}
+
 	}
 }
