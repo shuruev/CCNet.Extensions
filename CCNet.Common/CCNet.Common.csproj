@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentProperties.cs" />
+    <Compile Include="Enumerations\VmSize.cs" />
     <Compile Include="Enumerations\ProjectType.cs" />
     <Compile Include="Enumerations\TargetFramework.cs" />
     <Compile Include="ErrorHandler.cs" />
