@@ -367,6 +367,7 @@ namespace CCNet.ProjectChecker
 			allowed.Add("UseIISExpress", null);
 			allowed.Add("UseIISExpressByDefault", null);
 			allowed.Add("VisualStudioVersion", "10.0");
+			allowed.Add("VSToolsPath", null);
 			allowed.Add("Win32Resource", String.Empty);
 			allowed.Add("WebReference_EnableLegacyEventingModel", null);
 			allowed.Add("WebReference_EnableProperties", null);
@@ -709,7 +710,10 @@ namespace CCNet.ProjectChecker
 						"Copyright © CNET Content Solutions 2011")
 					.Replace(
 						"Copyright © CNET Content Solutions 2011",
-						"Copyright © CNET Content Solutions 2012");
+						"Copyright © CNET Content Solutions 2012")
+					.Replace(
+						"Copyright © CNET Content Solutions 2012",
+						"Copyright © CNET Content Solutions 2013");
 			}
 
 			Dictionary<string, string> required = new Dictionary<string, string>();
@@ -732,7 +736,7 @@ namespace CCNet.ProjectChecker
 			required.Add("AssemblyDescription", String.Empty);
 			required.Add("AssemblyConfiguration", String.Empty);
 			required.Add("AssemblyCompany", "CNET Content Solutions");
-			required.Add("AssemblyCopyright", "Copyright © CNET Content Solutions 2012");
+			required.Add("AssemblyCopyright", "Copyright © CNET Content Solutions 2013");
 			required.Add("AssemblyTrademark", String.Empty);
 			required.Add("AssemblyCulture", String.Empty);
 			required.Add("AssemblyVersion", Arguments.ExpectedVersion);
