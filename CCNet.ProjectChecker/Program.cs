@@ -244,6 +244,10 @@ namespace CCNet.ProjectChecker
 			allowed.Add("DelaySign", "false");
 			allowed.Add("FileAlignment", "512");
 			allowed.Add("FileUpgradeFlags", null);
+			allowed.Add("IISExpressSSLPort", null);
+			allowed.Add("IISExpressAnonymousAuthentication", null);
+			allowed.Add("IISExpressWindowsAuthentication", null);
+			allowed.Add("IISExpressUseClassicPipelineMode", null);
 			allowed.Add("GenerateResourceNeverLockTypeAssemblies", "true");
 			allowed.Add("MvcBuildViews", null);
 			allowed.Add("Nonshipping", null);
