@@ -304,19 +304,44 @@ namespace CCNet.ProjectAdapter
 				if (node.Attributes["physicalDirectory"] == null)
 					continue;
 
-				string physicalDirectory = node.Attributes["physicalDirectory"].Value;
+				UpdatePhysicalDirectory(node, true);
+			}
 
-				string relatedProjectName = Path.GetFileName(physicalDirectory);
-				string relatedProjectFile = relatedProjectName + ".csproj";
-				string relatedProjectVersion = ReferenceFolder.GetLatestVersion(
-					Arguments.InternalReferencesPath,
-					relatedProjectName);
+			foreach (XmlNode node in doc.SelectNodes("/sd:ServiceDefinition/sd:WebRole/sd:Sites/sd:Site/sd:VirtualApplication", xnm))
+			{
+				if (node.Attributes["physicalDirectory"] == null)
+					continue;
 
-				string projectPath = Path.Combine(Arguments.WorkingDirectoryRelated, relatedProjectName, relatedProjectFile);
-				physicalDirectory = Path.Combine(Arguments.WorkingDirectoryRelated, relatedProjectName);
+				UpdatePhysicalDirectory(node, false);
+			}
 
-				node.Attributes["physicalDirectory"].Value = physicalDirectory;
+			using (XmlTextWriter xtw = new XmlTextWriter(Paths.ServiceDefinitionFile, Encoding.UTF8))
+			{
+				xtw.Formatting = Formatting.Indented;
+				doc.WriteTo(xtw);
+			}
+		}
 
+		/// <summary>
+		/// Updates physical directory attribute value to the absolute path of the related project.
+		/// </summary>
+		private static void UpdatePhysicalDirectory(XmlNode node, bool updateBinaryReferences)
+		{
+			string physicalDirectory = node.Attributes["physicalDirectory"].Value;
+
+			string relatedProjectName = Path.GetFileName(physicalDirectory);
+			string relatedProjectFile = relatedProjectName + ".csproj";
+			string relatedProjectVersion = ReferenceFolder.GetLatestVersion(
+				Arguments.InternalReferencesPath,
+				relatedProjectName);
+
+			string projectPath = Path.Combine(Arguments.WorkingDirectoryRelated, relatedProjectName, relatedProjectFile);
+			physicalDirectory = Path.Combine(Arguments.WorkingDirectoryRelated, relatedProjectName);
+
+			node.Attributes["physicalDirectory"].Value = physicalDirectory;
+
+			if (updateBinaryReferences)
+			{
 				UpdateBinaryReferences(projectPath, false);
 
 				Console.WriteLine(
@@ -324,12 +349,6 @@ namespace CCNet.ProjectAdapter
 					relatedProjectFile,
 					relatedProjectName,
 					relatedProjectVersion);
-			}
-
-			using (XmlTextWriter xtw = new XmlTextWriter(Paths.ServiceDefinitionFile, Encoding.UTF8))
-			{
-				xtw.Formatting = Formatting.Indented;
-				doc.WriteTo(xtw);
 			}
 		}
 

@@ -846,6 +846,7 @@ namespace CCNet.ProjectChecker
 			allowedGac.Add("Microsoft.Synchronization");
 			allowedGac.Add("Microsoft.Synchronization.Data");
 			allowedGac.Add("Microsoft.Synchronization.Data.SqlServer");
+			allowedGac.Add("Microsoft.VisualBasic");
 			allowedGac.Add("Microsoft.VisualBasic.Compatibility.Data");
 			allowedGac.Add("Microsoft.VisualStudio.QualityTools.UnitTestFramework");
 			allowedGac.Add("PresentationCore");
@@ -933,7 +934,10 @@ namespace CCNet.ProjectChecker
 			exceptions.Add("System.ServiceModel.DomainServices.Server");
 			exceptions.Add("System.Web.Helpers");
 			exceptions.Add("System.Web.Mvc");
+			exceptions.Add("System.Web.Razor");
 			exceptions.Add("System.Web.WebPages");
+			exceptions.Add("System.Web.WebPages.Deployment");
+			exceptions.Add("System.Web.WebPages.Razor");
 
 			foreach (Reference reference in references)
 			{
