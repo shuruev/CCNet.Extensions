@@ -185,6 +185,7 @@ namespace CCNet.Common.Helpers
 					installUtilPath = s_installUtil20Path;
 					break;
 				case TargetFramework.Net40:
+				case TargetFramework.Net45:
 					installUtilPath = s_installUtil40Path;
 					break;
 			}
@@ -226,6 +227,7 @@ namespace CCNet.Common.Helpers
 					installUtilPath = s_installUtil20Path;
 					break;
 				case TargetFramework.Net40:
+				case TargetFramework.Net45:
 					installUtilPath = s_installUtil40Path;
 					break;
 			}

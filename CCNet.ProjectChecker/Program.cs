@@ -364,6 +364,9 @@ namespace CCNet.ProjectChecker
 				case TargetFramework.Net40:
 					required.Add("TargetFrameworkVersion", "v4.0");
 					break;
+				case TargetFramework.Net45:
+					required.Add("TargetFrameworkVersion", "v4.5");
+					break;
 			}
 
 			allowed.Add("TargetZone", null);
