@@ -23,6 +23,11 @@
 		/// <summary>
 		/// Specifies .NET Framework 4.0.
 		/// </summary>
-		Net40
+		Net40,
+
+		/// <summary>
+		/// Specifies .NET Framework 4.5.
+		/// </summary>
+		Net45
 	}
 }
