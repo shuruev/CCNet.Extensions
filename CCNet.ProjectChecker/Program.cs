@@ -455,6 +455,9 @@ namespace CCNet.ProjectChecker
 			allowed.Add("CodeContractsRuntimeThrowOnFailure", null);
 			allowed.Add("CodeContractsShowSquigglies", null);
 			allowed.Add("CodeContractsUseBaseLine", null);
+			allowed.Add("CodeContractsMissingPublicRequiresAsWarnings", null);
+			allowed.Add("CodeContractsSQLServerOption", null);
+			allowed.Add("CodeContractsFailBuildOnWarnings", null);
 			allowed.Add("ConfigurationOverrideFile", String.Empty);
 			required.Add("DebugSymbols", "true");
 			required.Add("DebugType", "full");
@@ -585,6 +588,9 @@ namespace CCNet.ProjectChecker
 			allowed.Add("CodeContractsRuntimeThrowOnFailure", null);
 			allowed.Add("CodeContractsShowSquigglies", null);
 			allowed.Add("CodeContractsUseBaseLine", null);
+			allowed.Add("CodeContractsMissingPublicRequiresAsWarnings", null);
+			allowed.Add("CodeContractsSQLServerOption", null);
+			allowed.Add("CodeContractsFailBuildOnWarnings", null);
 			allowed.Add("ConfigurationOverrideFile", String.Empty);
 			allowed.Add("DebugSymbols", "true");
 			required.Add("DebugType", "pdbonly");
