@@ -63,6 +63,11 @@
 		/// <summary>
 		/// Azure publish profile.
 		/// </summary>
-		PublishProfile
+		PublishProfile,
+
+		/// <summary>
+		/// Splash screen.
+		/// </summary>
+		SplashScreen
 	}
 }

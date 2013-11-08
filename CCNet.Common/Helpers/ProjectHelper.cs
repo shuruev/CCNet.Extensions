@@ -349,6 +349,7 @@ namespace CCNet.Common
 			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:ServiceDefinition").Cast<XmlNode>());
 			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:ServiceConfiguration").Cast<XmlNode>());
 			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:PublishProfile").Cast<XmlNode>());
+			nodes.AddRange(SelectNodes("/ms:Project/ms:ItemGroup/ms:SplashScreen").Cast<XmlNode>());
 
 			return nodes.Select(GetProjectItem).ToList();
 		}
@@ -396,6 +397,9 @@ namespace CCNet.Common
 					break;
 				case "PublishProfile":
 					type = ProjectItemType.PublishProfile;
+					break;
+				case "SplashScreen":
+					type = ProjectItemType.SplashScreen;
 					break;
 				default:
 					throw new InvalidOperationException(
