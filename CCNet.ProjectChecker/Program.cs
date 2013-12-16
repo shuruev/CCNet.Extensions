@@ -645,6 +645,8 @@ namespace CCNet.ProjectChecker
 			required.Add("WarningLevel", "4");
 			allowed.Add("UseVSHostingProcess", null);
 
+			allowed.Add("ExcludeGeneratedDebugSymbol", null);
+
 			string description;
 			if (ValidationHelper.CheckProperties(
 				properties,
