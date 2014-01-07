@@ -274,7 +274,16 @@ namespace CCNet.ProjectChecker
 
 			allowed.Add("Platform", null);
 			allowed.Add("PlatformTarget", Arguments.TargetPlatform);
-			allowed.Add("PostBuildEvent", String.Empty);
+
+			if (Arguments.ProjectName == "CC.PresentationEngine")
+			{
+				allowed.Add("PostBuildEvent", null);
+			}
+			else
+			{
+				allowed.Add("PostBuildEvent", String.Empty);
+			}
+
 			allowed.Add("PreBuildEvent", String.Empty);
 			allowed.Add("ProductVersion", null);
 			allowed.Add("ProjectGuid", null);
@@ -460,6 +469,7 @@ namespace CCNet.ProjectChecker
 			required.Add("DebugType", "full");
 			required.Add("DefineConstants", "DEBUG;TRACE");
 			required.Add("ErrorReport", "prompt");
+			allowed.Add("ExcludeGeneratedDebugSymbol", null);
 			allowed.Add("FileAlignment", "512");
 			allowed.Add("FxCopRules", null);
 			allowed.Add("NoStdLib", "false");
@@ -590,6 +600,7 @@ namespace CCNet.ProjectChecker
 			required.Add("DebugType", "pdbonly");
 			required.Add("DefineConstants", "TRACE");
 			required.Add("ErrorReport", "prompt");
+			allowed.Add("ExcludeGeneratedDebugSymbol", null);
 			allowed.Add("FileAlignment", "512");
 			allowed.Add("FxCopRules", null);
 			allowed.Add("NoStdLib", "false");
