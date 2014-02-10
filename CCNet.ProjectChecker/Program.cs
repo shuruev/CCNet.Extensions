@@ -388,6 +388,7 @@ namespace CCNet.ProjectChecker
 			allowed.Add("WebReference_EnableLegacyEventingModel", null);
 			allowed.Add("WebReference_EnableProperties", null);
 			allowed.Add("WebReference_EnableSQLTypes", null);
+			allowed.Add("MvcProjectUpgradeChecked", null);
 
 			string description;
 			if (ValidationHelper.CheckProperties(
