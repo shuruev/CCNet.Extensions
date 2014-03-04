@@ -738,7 +738,10 @@ namespace CCNet.ProjectChecker
 						"Copyright © CNET Content Solutions 2012")
 					.Replace(
 						"Copyright © CNET Content Solutions 2012",
-						"Copyright © CNET Content Solutions 2013");
+						"Copyright © CNET Content Solutions 2013")
+					.Replace(
+						"Copyright © CNET Content Solutions 2013",
+						"Copyright © CNET Content Solutions 2014");
 			}
 
 			Dictionary<string, string> required = new Dictionary<string, string>();
@@ -761,7 +764,7 @@ namespace CCNet.ProjectChecker
 			required.Add("AssemblyDescription", String.Empty);
 			required.Add("AssemblyConfiguration", String.Empty);
 			required.Add("AssemblyCompany", "CNET Content Solutions");
-			required.Add("AssemblyCopyright", "Copyright © CNET Content Solutions 2013");
+			required.Add("AssemblyCopyright", "Copyright © CNET Content Solutions 2014");
 			required.Add("AssemblyTrademark", String.Empty);
 			required.Add("AssemblyCulture", String.Empty);
 			required.Add("AssemblyVersion", Arguments.ExpectedVersion);
