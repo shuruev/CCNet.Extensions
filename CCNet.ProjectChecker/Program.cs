@@ -1022,6 +1022,8 @@ namespace CCNet.ProjectChecker
 			allowCopyLocal.Add("System.Web.WebPages", true);
 			allowCopyLocal.Add("System.Web.WebPages.Razor", true);
 			allowCopyLocal.Add("ImageMagick.Net", false);
+			allowCopyLocal.Add("Microsoft.ReportViewer.Common", true);
+			allowCopyLocal.Add("Microsoft.ReportViewer.WebForms", false);
 
 			if (reference.Aliases != null)
 			{
