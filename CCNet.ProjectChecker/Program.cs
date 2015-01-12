@@ -312,8 +312,8 @@ namespace CCNet.ProjectChecker
 					required.Add("InstallFrom", "Web");
 					required.Add("InstallUrl", "http://download.cnetcontentsolutions.com/{0}/{1}/".Display(Arguments.DownloadZone, Arguments.AssemblyName));
 					required.Add("IsWebBootstrapper", "true");
-					required.Add("ManifestCertificateThumbprint", "2D5370C222834CBC2CE6F6FE388A29CF75B598D4");
-					required.Add("ManifestKeyFile", "SignCode2014.pfx");
+					required.Add("ManifestCertificateThumbprint", "909985E98496E68FB99801301BDF4D03F6670FDF");
+					required.Add("ManifestKeyFile", "channel-codesigncrt.p12");
 					required.Add("ManifestTimestampUrl", "http://timestamp.comodoca.com/authenticode");
 					required.Add("MapFileExtensions", "true");
 					required.Add("MinimumRequiredVersion", "1.0.0.0");
