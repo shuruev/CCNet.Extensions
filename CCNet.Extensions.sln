@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Extensions.Plugin", "ccnet.extensions.plugin\CCNet.Extensions.Plugin.csproj", "{53DB7203-BDF9-4711-A4C6-28EAD1C8524F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.ProjectAdapter", "CCNet.ProjectAdapter\CCNet.ProjectAdapter.csproj", "{E8CDB0BD-9DE3-4C4E-9DA8-44287F564151}"
@@ -35,6 +35,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Releaser.Client", "CCNet.Releaser.Client\CCNet.Releaser.Client.csproj", "{D5B5148B-8E1B-4E6A-83C9-8E6D451EF0B7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.SourceNotifier", "CCNet.SourceNotifier\CCNet.SourceNotifier.csproj", "{66D00271-50E9-40C4-A898-52FEC2931D21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.HttpStatusChecker", "CCNet.HttpStatusChecker\CCNet.HttpStatusChecker.csproj", "{78750E35-E734-4006-BFBF-53814902896A}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -179,6 +181,16 @@ Global
 		{66D00271-50E9-40C4-A898-52FEC2931D21}.Release|Mixed Platforms.Build.0 = Release|x86
 		{66D00271-50E9-40C4-A898-52FEC2931D21}.Release|x86.ActiveCfg = Release|x86
 		{66D00271-50E9-40C4-A898-52FEC2931D21}.Release|x86.Build.0 = Release|x86
+		{78750E35-E734-4006-BFBF-53814902896A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{78750E35-E734-4006-BFBF-53814902896A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{78750E35-E734-4006-BFBF-53814902896A}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{78750E35-E734-4006-BFBF-53814902896A}.Debug|x86.ActiveCfg = Debug|x86
+		{78750E35-E734-4006-BFBF-53814902896A}.Debug|x86.Build.0 = Debug|x86
+		{78750E35-E734-4006-BFBF-53814902896A}.Release|Any CPU.ActiveCfg = Release|x86
+		{78750E35-E734-4006-BFBF-53814902896A}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{78750E35-E734-4006-BFBF-53814902896A}.Release|Mixed Platforms.Build.0 = Release|x86
+		{78750E35-E734-4006-BFBF-53814902896A}.Release|x86.ActiveCfg = Release|x86
+		{78750E35-E734-4006-BFBF-53814902896A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
