@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using Newtonsoft.Json;
 
 namespace CCNet.Common
 {
@@ -59,7 +60,7 @@ namespace CCNet.Common
 			ArgumentProperties result = new ArgumentProperties();
 			foreach (string arg in args)
 			{
-				string[] parts = arg.Split('=');
+				string[] parts = arg.Split(new[] { '=' }, 2);
 				if (parts.Length != 2)
 					throw new InvalidOperationException(
 						"Argument {0} doesn't define a property."
@@ -134,6 +135,23 @@ namespace CCNet.Common
 		{
 			string value = GetValue(key);
 			return Int32.Parse(value);
+		}
+
+		/// <summary>
+		/// Gets TimeSpan property value for specified key.
+		/// </summary>
+		public TimeSpan GetTimeSpanValue(string key)
+		{
+			string value = GetValue(key);
+			return TimeSpan.Parse(value);
+		}
+
+		public T GetObjectFromJson<T>(string key) where T : class
+		{
+			string value = GetValue(key);
+			return value == null
+				? null
+				: JsonConvert.DeserializeObject<T>(value);
 		}
 
 		#endregion
