@@ -53,9 +53,6 @@
     <Compile Include="RaiseError.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\CCNet.Common\CCNet.Common.csproj">
       <Project>{FAF27742-776A-4FD8-B58D-6255ECE24BA8}</Project>
       <Name>CCNet.Common</Name>
