@@ -1024,6 +1024,7 @@ namespace CCNet.ProjectChecker
 			allowCopyLocal.Add("ImageMagick.Net", false);
 			allowCopyLocal.Add("Microsoft.ReportViewer.Common", true);
 			allowCopyLocal.Add("Microsoft.ReportViewer.WebForms", true);
+			allowCopyLocal.Add("Microsoft.SqlServer.Types", true);
 
 			if (reference.Aliases != null)
 			{
