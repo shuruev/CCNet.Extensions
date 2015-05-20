@@ -17,7 +17,7 @@ namespace CCNet.HttpStatusChecker
 				@"Headers={""Authorization"":""Bearer l0dAqgEbQh0xJhP4DAj6wxmboziUdKt423HyvjoX"",""Content-Type"":""application/json""}",
 				@"Content={""color"":""red"",""message_format"":""html"",""message"":""<b>CCS.Portal.Trunk</b> build failed."",""notify"":""true""}",
 				@"Timeout=00:00:20",
-				@"SuccessStatusCodes=[200,204]"
+				@"SuccessStatusCodes=[204]"
 			};*/
 
 			if (args == null || args.Length == 0)
@@ -26,15 +26,8 @@ namespace CCNet.HttpStatusChecker
 				return 0;
 			}
 
-			//try
-			//{
-				Arguments.Default = ArgumentProperties.Parse(args);
-				SendRequest();
-			//}
-			//catch (Exception e)
-			//{
-			//	return ErrorHandler.Runtime(e);
-			//}
+			Arguments.Default = ArgumentProperties.Parse(args);
+			SendRequest();
 
 			return RaiseError.ExitCode;
 		}
