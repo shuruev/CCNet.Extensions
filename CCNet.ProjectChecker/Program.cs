@@ -901,6 +901,7 @@ namespace CCNet.ProjectChecker
 			allowedGac.Add("System.Runtime.Serialization.Formatters.Soap");
 			allowedGac.Add("System.Security");
 			allowedGac.Add("System.ServiceModel");
+			allowedGac.Add("System.ServiceModel.Activation");
 			allowedGac.Add("System.ServiceModel.Web");
 			allowedGac.Add("System.ServiceModel.DomainServices.EntityFramework");
 			allowedGac.Add("System.ServiceModel.DomainServices.Hosting");
