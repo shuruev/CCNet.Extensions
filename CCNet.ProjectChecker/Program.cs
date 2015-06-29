@@ -359,7 +359,7 @@ namespace CCNet.ProjectChecker
 			}
 
 			allowed.Add("SilverlightApplicationList", null);
-			allowed.Add("StartupObject", String.Empty);
+			allowed.Add("StartupObject", null);
 			allowed.Add("TargetFrameworkProfile", null);
 
 			switch (Arguments.TargetFramework)
