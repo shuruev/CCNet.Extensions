@@ -218,6 +218,13 @@ namespace CCNet.ProjectChecker
 			Dictionary<string, string> required = new Dictionary<string, string>();
 			Dictionary<string, string> allowed = new Dictionary<string, string>();
 
+			switch (Arguments.ProjectType)
+			{
+				case ProjectType.WebSite:
+					allowed.Add("AppConfig", "$(ProjectConfigFileName)");
+					break;
+			}
+
 			allowed.Add("AppDesignerFolder", "Properties");
 
 			switch (Arguments.ProjectType)
@@ -236,6 +243,16 @@ namespace CCNet.ProjectChecker
 			required.Add("AssemblyName", Arguments.AssemblyName);
 			allowed.Add("AssemblyKeyContainerName", String.Empty);
 			allowed.Add("AssemblyOriginatorKeyFile", String.Empty);
+
+			switch (Arguments.ProjectType)
+			{
+				case ProjectType.Library:
+				case ProjectType.WebSite:
+				case ProjectType.Test:
+					allowed.Add("AutoUnifyAssemblyReferences", null);
+					break;
+			}
+
 			allowed.Add("CodeContractsAssemblyMode", null);
 			allowed.Add("Configuration", null);
 			allowed.Add("DefaultClientScript", null);
@@ -972,6 +989,13 @@ namespace CCNet.ProjectChecker
 			exceptionsSpecific.Add("System.Web.WebPages.Razor");
 			
 			List<string> exceptionsMayVary = new List<string>();
+			exceptionsMayVary.Add("StackExchange.Redis");
+			exceptionsMayVary.Add("System.IO");
+			exceptionsMayVary.Add("System.Runtime");
+			exceptionsMayVary.Add("System.Threading.Tasks");
+			exceptionsMayVary.Add("Microsoft.Threading.Tasks");
+			exceptionsMayVary.Add("Microsoft.Threading.Tasks.Extensions");
+			exceptionsMayVary.Add("Microsoft.Threading.Tasks.Extensions.Desktop");
 			exceptionsMayVary.Add("Microsoft.WindowsAzure.Configuration");
 			exceptionsMayVary.Add("Microsoft.WindowsAzure.Diagnostics");
 			exceptionsMayVary.Add("Microsoft.WindowsAzure.ServiceRuntime");
