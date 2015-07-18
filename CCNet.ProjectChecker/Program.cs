@@ -218,6 +218,13 @@ namespace CCNet.ProjectChecker
 			Dictionary<string, string> required = new Dictionary<string, string>();
 			Dictionary<string, string> allowed = new Dictionary<string, string>();
 
+			switch (Arguments.ProjectType)
+			{
+				case ProjectType.WebSite:
+					allowed.Add("AppConfig", "$(ProjectConfigFileName)");
+					break;
+			}
+
 			allowed.Add("AppDesignerFolder", "Properties");
 
 			switch (Arguments.ProjectType)
@@ -236,6 +243,16 @@ namespace CCNet.ProjectChecker
 			required.Add("AssemblyName", Arguments.AssemblyName);
 			allowed.Add("AssemblyKeyContainerName", String.Empty);
 			allowed.Add("AssemblyOriginatorKeyFile", String.Empty);
+
+			switch (Arguments.ProjectType)
+			{
+				case ProjectType.Library:
+				case ProjectType.WebSite:
+				case ProjectType.Test:
+					allowed.Add("AutoUnifyAssemblyReferences", null);
+					break;
+			}
+
 			allowed.Add("CodeContractsAssemblyMode", null);
 			allowed.Add("Configuration", null);
 			allowed.Add("DefaultClientScript", null);
@@ -312,8 +329,8 @@ namespace CCNet.ProjectChecker
 					required.Add("InstallFrom", "Web");
 					required.Add("InstallUrl", "http://download.cnetcontentsolutions.com/{0}/{1}/".Display(Arguments.DownloadZone, Arguments.AssemblyName));
 					required.Add("IsWebBootstrapper", "true");
-					required.Add("ManifestCertificateThumbprint", "2D5370C222834CBC2CE6F6FE388A29CF75B598D4");
-					required.Add("ManifestKeyFile", "SignCode2014.pfx");
+					required.Add("ManifestCertificateThumbprint", "909985E98496E68FB99801301BDF4D03F6670FDF");
+					required.Add("ManifestKeyFile", "channel-codesigncrt.p12");
 					required.Add("ManifestTimestampUrl", "http://timestamp.comodoca.com/authenticode");
 					required.Add("MapFileExtensions", "true");
 					required.Add("MinimumRequiredVersion", "1.0.0.0");
@@ -359,7 +376,7 @@ namespace CCNet.ProjectChecker
 			}
 
 			allowed.Add("SilverlightApplicationList", null);
-			allowed.Add("StartupObject", String.Empty);
+			allowed.Add("StartupObject", null);
 			allowed.Add("TargetFrameworkProfile", null);
 
 			switch (Arguments.TargetFramework)
@@ -901,6 +918,7 @@ namespace CCNet.ProjectChecker
 			allowedGac.Add("System.Runtime.Serialization.Formatters.Soap");
 			allowedGac.Add("System.Security");
 			allowedGac.Add("System.ServiceModel");
+			allowedGac.Add("System.ServiceModel.Activation");
 			allowedGac.Add("System.ServiceModel.Web");
 			allowedGac.Add("System.ServiceModel.DomainServices.EntityFramework");
 			allowedGac.Add("System.ServiceModel.DomainServices.Hosting");
@@ -951,23 +969,49 @@ namespace CCNet.ProjectChecker
 		/// </summary>
 		private static void CheckReferenceProperties(IEnumerable<Reference> references, StringBuilder message)
 		{
-			List<string> exceptions = new List<string>();
-			exceptions.Add("Microsoft.VisualStudio.QualityTools.UnitTestFramework");
-			exceptions.Add("System.ServiceModel.DomainServices.EntityFramework");
-			exceptions.Add("System.ServiceModel.DomainServices.Hosting");
-			exceptions.Add("System.ServiceModel.DomainServices.Server");
-			exceptions.Add("System.Web.Helpers");
-			exceptions.Add("System.Web.Mvc");
-			exceptions.Add("System.Web.Razor");
-			exceptions.Add("System.Web.WebPages");
-			exceptions.Add("System.Web.WebPages.Deployment");
-			exceptions.Add("System.Web.WebPages.Razor");
+			List<string> exceptionsSpecific = new List<string>();
+			exceptionsSpecific.Add("Microsoft.ApplicationServer.Caching.AzureClientHelper");
+			exceptionsSpecific.Add("Microsoft.ApplicationServer.Caching.AzureCommon");
+			exceptionsSpecific.Add("Microsoft.ApplicationServer.Caching.Client");
+			exceptionsSpecific.Add("Microsoft.ApplicationServer.Caching.Core");
+			exceptionsSpecific.Add("Microsoft.VisualStudio.QualityTools.UnitTestFramework");
+			exceptionsSpecific.Add("Microsoft.Web.DistributedCache");
+			exceptionsSpecific.Add("Microsoft.WindowsFabric.Common");
+			exceptionsSpecific.Add("Microsoft.WindowsFabric.Data.Common");
+			exceptionsSpecific.Add("System.ServiceModel.DomainServices.EntityFramework");
+			exceptionsSpecific.Add("System.ServiceModel.DomainServices.Hosting");
+			exceptionsSpecific.Add("System.ServiceModel.DomainServices.Server");
+			exceptionsSpecific.Add("System.Web.Helpers");
+			exceptionsSpecific.Add("System.Web.Mvc");
+			exceptionsSpecific.Add("System.Web.Razor");
+			exceptionsSpecific.Add("System.Web.WebPages");
+			exceptionsSpecific.Add("System.Web.WebPages.Deployment");
+			exceptionsSpecific.Add("System.Web.WebPages.Razor");
+			
+			List<string> exceptionsMayVary = new List<string>();
+			exceptionsMayVary.Add("StackExchange.Redis");
+			exceptionsMayVary.Add("System.IO");
+			exceptionsMayVary.Add("System.Runtime");
+			exceptionsMayVary.Add("System.Threading.Tasks");
+			exceptionsMayVary.Add("Microsoft.Threading.Tasks");
+			exceptionsMayVary.Add("Microsoft.Threading.Tasks.Extensions");
+			exceptionsMayVary.Add("Microsoft.Threading.Tasks.Extensions.Desktop");
+			exceptionsMayVary.Add("Microsoft.WindowsAzure.Configuration");
+			exceptionsMayVary.Add("Microsoft.WindowsAzure.Diagnostics");
+			exceptionsMayVary.Add("Microsoft.WindowsAzure.ServiceRuntime");
+			exceptionsMayVary.Add("Microsoft.WindowsAzure.Storage");
+			exceptionsMayVary.Add("Microsoft.WindowsAzure.StorageClient");
 
 			foreach (Reference reference in references)
 			{
 				CheckDirectlySpecifiedProperties(reference, message);
 
-				if (exceptions.Contains(reference.Name))
+				if (exceptionsMayVary.Contains(reference.Name))
+				{
+					continue;
+				}
+
+				if (exceptionsSpecific.Contains(reference.Name))
 				{
 					if (!reference.IsSpecificVersion)
 					{
@@ -995,6 +1039,7 @@ namespace CCNet.ProjectChecker
 		{
 			Dictionary<string, bool> allowCopyLocal = new Dictionary<string, bool>();
 			allowCopyLocal.Add("Microsoft.Web.Infrastructure", true);
+			allowCopyLocal.Add("Microsoft.WindowsAzure.ServiceRuntime", true);
 			allowCopyLocal.Add("System.Web.Helpers", true);
 			allowCopyLocal.Add("System.Web.Mvc", true);
 			allowCopyLocal.Add("System.Web.Razor", true);
@@ -1002,6 +1047,8 @@ namespace CCNet.ProjectChecker
 			allowCopyLocal.Add("System.Web.WebPages", true);
 			allowCopyLocal.Add("System.Web.WebPages.Razor", true);
 			allowCopyLocal.Add("ImageMagick.Net", false);
+			allowCopyLocal.Add("Microsoft.ReportViewer.Common", true);
+			allowCopyLocal.Add("Microsoft.ReportViewer.WebForms", true);
 
 			if (reference.Aliases != null)
 			{
