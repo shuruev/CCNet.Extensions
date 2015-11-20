@@ -907,6 +907,7 @@ namespace CCNet.ProjectChecker
 			allowedGac.Add("System.Deployment");
 			allowedGac.Add("System.Design");
 			allowedGac.Add("System.DirectoryServices");
+			allowedGac.Add("System.DirectoryServices.AccountManagement");
 			allowedGac.Add("System.Drawing");
 			allowedGac.Add("System.EnterpriseServices");
 			allowedGac.Add("System.IdentityModel");
