@@ -35,7 +35,7 @@ namespace CCNet.Extensions.Plugin
 			int currentDay = now.Day;
 
 			// get current build number
-			int currentBuild = 1;
+			int currentBuild = 0;
 			if (currentYear == oldVersion.Major
 				&& currentMonth == oldVersion.Minor
 				&& currentDay == oldVersion.Build)
