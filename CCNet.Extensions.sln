@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.Common", "CCNet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.GenerateNuspec", "CCNet.Build.GenerateNuspec\CCNet.Build.GenerateNuspec.csproj", "{8A4C0F34-F43A-49F9-8261-C8602B105F66}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.Reconfigure", "CCNet.Build.Reconfigure\CCNet.Build.Reconfigure.csproj", "{EC5F9DBD-C984-4516-B4CF-C42149F21CED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{8A4C0F34-F43A-49F9-8261-C8602B105F66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A4C0F34-F43A-49F9-8261-C8602B105F66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A4C0F34-F43A-49F9-8261-C8602B105F66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC5F9DBD-C984-4516-B4CF-C42149F21CED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC5F9DBD-C984-4516-B4CF-C42149F21CED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC5F9DBD-C984-4516-B4CF-C42149F21CED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC5F9DBD-C984-4516-B4CF-C42149F21CED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -49,7 +49,6 @@
     <Compile Include="Args.cs" />
     <Compile Include="Paths.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="TargetFramework.cs" />
     <Compile Include="ProjectType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
