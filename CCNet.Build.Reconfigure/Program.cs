@@ -65,7 +65,7 @@ namespace CCNet.Build.Reconfigure
 					new LibraryProjectConfiguration
 					{
 						Name = "V3.Storage",
-						Description = "Client library and value templates for V3 storage.",
+						Description = "Client library and value templates for V3 storage",
 						Category = "ContentCast",
 						TfsPath = "$/Main/ContentCast/V3/V3.Storage",
 						Framework = TargetFramework.Net45
@@ -77,7 +77,7 @@ namespace CCNet.Build.Reconfigure
 					{
 						Branch = "Test",
 						Name = "V3.Storage",
-						Description = "Client library and value templates for V3 storage.",
+						Description = "Client library and value templates for V3 storage",
 						Category = "ContentCast",
 						TfsPath = "$/Main/ContentCast/V3/V3.Storage",
 						Framework = TargetFramework.Net45
@@ -88,9 +88,20 @@ namespace CCNet.Build.Reconfigure
 					new LibraryProjectConfiguration
 					{
 						Name = "CC.Showcase",
-						Description = "Client library for Showcase DB.",
+						Description = "Client library for Showcase DB",
 						Category = "ContentCast",
 						TfsPath = "$/Main/ContentCast/Showcase/CC.Showcase",
+						Framework = TargetFramework.Net45
+					});
+
+				WriteLibraryProject(
+					writer,
+					new LibraryProjectConfiguration
+					{
+						Name = "Lean.Serialization",
+						Description = "Some library from Sergey",
+						Category = "Sandbox",
+						TfsPath = "$/Sandbox/skolemasov/Lean/Lean.Serialization",
 						Framework = TargetFramework.Net45
 					});
 
