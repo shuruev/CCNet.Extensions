@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using CCNet.Build.Common;
+using Lean.Configuration;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 
@@ -33,7 +34,11 @@ namespace CCNet.Build.AzureUpload
 
 		private static void AzureUpload()
 		{
-			var credentials = new StorageCredentials(Args.AccountName, Args.AccountKey);
+			var config = new AppConfigReader();
+			var accountName = config.Get<string>(String.Format("Storage.{0}.AccountName", Args.Storage));
+			var accountKey = config.Get<string>(String.Format("Storage.{0}.AccountKey", Args.Storage));
+
+			var credentials = new StorageCredentials(accountName, accountKey);
 			var account = new CloudStorageAccount(credentials, false);
 			var client = account.CreateCloudBlobClient();
 			var container = client.GetContainerReference(Args.Container);

@@ -7,14 +7,9 @@ namespace CCNet.Build.AzureUpload
 	{
 		public static ArgumentProperties Current { get; set; }
 
-		public static string AccountName
+		public static string Storage
 		{
-			get { return Current.Get<string>("AccountName"); }
-		}
-
-		public static string AccountKey
-		{
-			get { return Current.Get<string>("AccountKey"); }
+			get { return Current.Get<string>("Storage"); }
 		}
 
 		public static string Container
