@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.Reconfigure", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.AzureUpload", "CCNet.Build.AzureUpload\CCNet.Build.AzureUpload.csproj", "{2F543D3B-D685-44D5-9B92-505010AC1ACC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugin", "Plugin", "{F0723BCA-221F-43D5-A412-393A7C074A5E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{6A649645-61E7-4BE0-8EB3-04603D14B803}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.Confluence", "CCNet.Build.Confluence\CCNet.Build.Confluence.csproj", "{F358AC40-46C8-4521-B3CA-1E39C27D509C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,9 +45,18 @@ Global
 		{2F543D3B-D685-44D5-9B92-505010AC1ACC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F543D3B-D685-44D5-9B92-505010AC1ACC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F543D3B-D685-44D5-9B92-505010AC1ACC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F358AC40-46C8-4521-B3CA-1E39C27D509C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F358AC40-46C8-4521-B3CA-1E39C27D509C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F358AC40-46C8-4521-B3CA-1E39C27D509C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F358AC40-46C8-4521-B3CA-1E39C27D509C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{53DB7203-BDF9-4711-A4C6-28EAD1C8524F} = {F0723BCA-221F-43D5-A412-393A7C074A5E}
+		{439EFE6A-A065-4346-8793-8540452B0924} = {6A649645-61E7-4BE0-8EB3-04603D14B803}
+		{F358AC40-46C8-4521-B3CA-1E39C27D509C} = {6A649645-61E7-4BE0-8EB3-04603D14B803}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = CCNet.Extensions.vsmdi

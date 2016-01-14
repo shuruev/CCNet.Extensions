@@ -6,7 +6,7 @@ using System.Reflection;
 namespace CCNet.Build.Common
 {
 	/// <summary>
-	/// Helper meothods for executing command line tools.
+	/// Helper methods for executing command line tools.
 	/// </summary>
 	public static class Execute
 	{
