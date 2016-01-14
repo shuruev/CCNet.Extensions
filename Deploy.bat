@@ -9,5 +9,7 @@ XCOPY "CCNet.Extensions.Plugin\bin\Debug\CCNet.Extensions.Plugin.dll" "%ccnetPat
 XCOPY "CCNet.Build.Common\bin\Debug\Lean.Configuration.dll" "%ccnetPath%\CCNet.Build" /D /Y
 XCOPY "CCNet.Build.Common\bin\Debug\CCNet.Build.Common.dll" "%ccnetPath%\CCNet.Build" /D /Y
 XCOPY "CCNet.Build.GenerateNuspec\bin\Debug\CCNet.Build.GenerateNuspec.exe" "%ccnetPath%\CCNet.Build" /D /Y
+XCOPY "CCNet.Build.Reconfigure\bin\Debug\CCNet.Build.Reconfigure.exe" "%ccnetPath%\CCNet.Build" /D /Y
+XCOPY "CCNet.Build.AzureUpload\bin\Debug\CCNet.Build.AzureUpload.exe" "%ccnetPath%\CCNet.Build" /D /Y
 
 PAUSE

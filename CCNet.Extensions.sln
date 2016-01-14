@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.GenerateNuspec"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.Reconfigure", "CCNet.Build.Reconfigure\CCNet.Build.Reconfigure.csproj", "{EC5F9DBD-C984-4516-B4CF-C42149F21CED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.AzureUpload", "CCNet.Build.AzureUpload\CCNet.Build.AzureUpload.csproj", "{2F543D3B-D685-44D5-9B92-505010AC1ACC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{EC5F9DBD-C984-4516-B4CF-C42149F21CED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC5F9DBD-C984-4516-B4CF-C42149F21CED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC5F9DBD-C984-4516-B4CF-C42149F21CED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F543D3B-D685-44D5-9B92-505010AC1ACC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F543D3B-D685-44D5-9B92-505010AC1ACC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F543D3B-D685-44D5-9B92-505010AC1ACC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F543D3B-D685-44D5-9B92-505010AC1ACC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

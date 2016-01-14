@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CCNet.Build.Reconfigure")]
+[assembly: AssemblyTitle("CCNet.Build.AzureUpload")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Oleg Shuruev")]
-[assembly: AssemblyProduct("CCNet.Build.Reconfigure")]
+[assembly: AssemblyProduct("CCNet.Build.AzureUpload")]
 [assembly: AssemblyCopyright("Copyright © Oleg Shuruev 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("dd12c6a4-9603-4f77-8f14-62d432e9b473")]
+[assembly: Guid("28eefe8d-b4ac-418a-8536-17b6e9d08aac")]
 
 // Version information for an assembly consists of the following four values:
 //
