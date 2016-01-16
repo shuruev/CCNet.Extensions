@@ -98,6 +98,17 @@ namespace CCNet.Build.Reconfigure
 					writer,
 					new LibraryProjectConfiguration
 					{
+						Name = "Lean.ResourceLocators",
+						Description = "Some library from Sergey",
+						Category = "Sandbox",
+						TfsPath = "$/Sandbox/skolemasov/Lean/Lean.ResourceLocators",
+						Framework = TargetFramework.Net45
+					});
+
+				WriteLibraryProject(
+					writer,
+					new LibraryProjectConfiguration
+					{
 						Name = "Lean.Serialization",
 						Description = "Some library from Sergey",
 						Category = "Sandbox",
@@ -172,6 +183,18 @@ namespace CCNet.Build.Reconfigure
 				{
 					using (writer.OpenTag("exec"))
 					{
+						writer.WriteElementString("executable", "$(cmdExecutable)");
+						writer.WriteElementString(
+							"buildArgs",
+							String.Format(
+								@"/C IF NOT EXIST ""{0}\packages.config"" ECHO ^<packages /^> > ""{0}\packages.config""",
+								project.WorkingDirectorySource));
+
+						writer.WriteElementString("description", "Generate empty 'packages.config' file if it doesn't exist");
+					}
+
+					using (writer.OpenTag("exec"))
+					{
 						writer.WriteElementString("executable", "$(nugetExecutable)");
 						writer.WriteElementString(
 							"buildArgs",
@@ -200,18 +223,20 @@ namespace CCNet.Build.Reconfigure
 							"buildArgs",
 							String.Format(
 								@"
-					""ProjectType=Library""
+					""PackageType=Library""
 					""ProjectName={0}""
 					""ProjectDescription={1}""
 					""CompanyName=CNET Content Solutions""
 					""CurrentVersion=$[$CCNetLabel]""
 					""TargetFramework={2}""
 					""OutputDirectory={3}""
+					""IncludeXmlDocumentation={4}""
 				",
 								project.Name,
 								project.Description,
 								project.Framework,
-								project.WorkingDirectoryNuget));
+								project.WorkingDirectoryNuget,
+								project.IncludeXmlDocumentation));
 
 						writer.WriteElementString("description", "Generate nuspec file");
 					}
