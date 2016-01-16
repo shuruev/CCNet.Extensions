@@ -7,9 +7,9 @@ namespace CCNet.Build.GenerateNuspec
 	{
 		public static ArgumentProperties Current { get; set; }
 
-		public static ProjectType ProjectType
+		public static PackageType PackageType
 		{
-			get { return Current.Get<ProjectType>("ProjectType"); }
+			get { return Current.Get<PackageType>("PackageType"); }
 		}
 
 		public static string ProjectName
@@ -40,6 +40,11 @@ namespace CCNet.Build.GenerateNuspec
 		public static string OutputDirectory
 		{
 			get { return Current.Get<string>("OutputDirectory"); }
+		}
+
+		public static bool IncludeXmlDocumentation
+		{
+			get { return Current.Get<bool>("IncludeXmlDocumentation"); }
 		}
 	}
 }

@@ -33,15 +33,15 @@ namespace CCNet.Build.GenerateNuspec
 
 		private static void GenerateNuspec()
 		{
-			switch (Args.ProjectType)
+			switch (Args.PackageType)
 			{
-				case ProjectType.Library:
+				case PackageType.Library:
 					GenerateNuspecLibrary();
 					break;
 
 				default:
 					throw new InvalidOperationException(
-						String.Format("Unknown project type '{0}'.", Args.ProjectType));
+						String.Format("Unknown package type '{0}'.", Args.PackageType));
 			}
 		}
 
@@ -51,6 +51,8 @@ namespace CCNet.Build.GenerateNuspec
 			using (var xtw = new XmlTextWriter(Paths.NuspecFile, Encoding.UTF8))
 			{
 				xtw.Formatting = Formatting.Indented;
+				xtw.IndentChar = '\t';
+				xtw.Indentation = 1;
 
 				xtw.WriteStartDocument();
 				xtw.WriteStartElement("package", "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd");
@@ -64,9 +66,13 @@ namespace CCNet.Build.GenerateNuspec
 				xtw.WriteEndElement();
 
 				xtw.WriteStartElement("files");
+
 				AddNuspecLibraryCoreFile(xtw, "dll");
 				AddNuspecLibraryCoreFile(xtw, "pdb");
-				AddNuspecLibraryCoreFile(xtw, "xml");
+
+				if (Args.IncludeXmlDocumentation)
+					AddNuspecLibraryCoreFile(xtw, "xml");
+
 				xtw.WriteEndElement();
 
 				xtw.WriteEndElement();

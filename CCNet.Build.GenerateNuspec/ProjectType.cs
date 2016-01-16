@@ -1,6 +1,6 @@
 ﻿namespace CCNet.Build.GenerateNuspec
 {
-	public enum ProjectType
+	public enum PackageType
 	{
 		Library
 	}
