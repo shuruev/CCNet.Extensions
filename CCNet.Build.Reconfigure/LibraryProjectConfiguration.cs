@@ -7,10 +7,13 @@ namespace CCNet.Build.Reconfigure
 	{
 		public TargetFramework Framework { get; set; }
 
+		public DocumentationType Documentation { get; set; }
+
 		public string MsbuildExecutable
 		{
 			get
 			{
+				return @"C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe";
 				switch (Framework)
 				{
 					case TargetFramework.Net40:
@@ -43,6 +46,11 @@ namespace CCNet.Build.Reconfigure
 
 				return String.Format("$(nugetUrl)/private/{0}/api/v2/package", Branch);
 			}
+		}
+
+		public bool IncludeXmlDocumentation
+		{
+			get { return Documentation != DocumentationType.None; }
 		}
 	}
 }
