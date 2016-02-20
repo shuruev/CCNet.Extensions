@@ -178,7 +178,7 @@ namespace CCNet.Build.SetupPackages
 			Console.WriteLine("Restoring packages...");
 
 			RunNuGet(
-				@"restore ""{0}"" -PackagesDirectory ""{1}"" -Source ""{2}/api/v2"" -NonInteractive -Verbosity Detailed",
+				@"restore ""{0}"" -PackagesDirectory ""{1}"" -Source ""{2}"" -NonInteractive -Verbosity Detailed",
 				Paths.PackagesConfig,
 				Args.PackagesPath,
 				Args.NuGetUrl);
