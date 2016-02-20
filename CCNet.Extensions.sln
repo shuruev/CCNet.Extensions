@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.Confluence", "CCNet.Build.Confluence\CCNet.Build.Confluence.csproj", "{F358AC40-46C8-4521-B3CA-1E39C27D509C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.SetupPackages", "CCNet.Build.SetupPackages\CCNet.Build.SetupPackages.csproj", "{C67DBCF5-20A4-4471-8994-6B536F4ED4D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{F358AC40-46C8-4521-B3CA-1E39C27D509C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F358AC40-46C8-4521-B3CA-1E39C27D509C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F358AC40-46C8-4521-B3CA-1E39C27D509C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C67DBCF5-20A4-4471-8994-6B536F4ED4D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C67DBCF5-20A4-4471-8994-6B536F4ED4D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C67DBCF5-20A4-4471-8994-6B536F4ED4D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C67DBCF5-20A4-4471-8994-6B536F4ED4D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

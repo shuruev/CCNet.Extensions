@@ -183,28 +183,23 @@ namespace CCNet.Build.Reconfigure
 				{
 					using (writer.OpenTag("exec"))
 					{
-						writer.WriteElementString("executable", "$(cmdExecutable)");
+						writer.WriteElementString("executable", "$(ccnetBuildSetupPackages)");
 						writer.WriteElementString(
 							"buildArgs",
 							String.Format(
-								@"/C IF NOT EXIST ""{0}\packages.config"" ECHO ^<packages /^> > ""{0}\packages.config""",
-								project.WorkingDirectorySource));
-
-						writer.WriteElementString("description", "Generate empty 'packages.config' file if it doesn't exist");
-					}
-
-					using (writer.OpenTag("exec"))
-					{
-						writer.WriteElementString("executable", "$(nugetExecutable)");
-						writer.WriteElementString(
-							"buildArgs",
-							String.Format(
-								@"restore ""{0}\packages.config"" -PackagesDirectory ""{1}"" -Source ""{2}"" -NonInteractive -Verbosity Detailed",
+								@"
+					""ProjectName={0}""
+					""ProjectPath={1}""
+					""PackagesPath={2}""
+					""NuGetExecutable=$(nugetExecutable)""
+					""NuGetUrl={3}""
+				",
+								project.Name,
 								project.WorkingDirectorySource,
 								project.WorkingDirectoryPackages,
 								project.NugetRestoreUrl));
 
-						writer.WriteElementString("description", "Restore packages");
+						writer.WriteElementString("description", "Setup packages");
 					}
 
 					using (writer.OpenTag("msbuild"))
@@ -260,7 +255,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString(
 							"buildArgs",
 							String.Format(
-								@"push ""{0}\{1}.$[$CCNetLabel].nupkg"" $(nugetKey) -Source ""{2}"" -NonInteractive -Verbosity Detailed",
+								@"push ""{0}\{1}.$[$CCNetLabel].nupkg"" -Source ""{2}"" -NonInteractive -Verbosity Detailed",
 								project.WorkingDirectoryNuget,
 								project.Name,
 								project.NugetPushUrl));
