@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
-namespace CCNet.Common
+namespace CCNet.Build.Common
 {
 	/// <summary>
 	/// Binary reference item.
@@ -45,11 +45,26 @@ namespace CCNet.Common
 		}
 
 		/// <summary>
+		/// Gets hint path.
+		/// </summary>
+		public string HintPath
+		{
+			get
+			{
+				var hint = m_element.Element(m_ns + "HintPath");
+				if (hint == null)
+					return null;
+
+				return hint.Value;
+			}
+		}
+
+		/// <summary>
 		/// Gets a value indicating whether the assembly is taken from global collection.
 		/// </summary>
 		public bool IsGlobal
 		{
-			get { return Version == null; }
+			get { return Version == null && HintPath == null; }
 		}
 
 		/// <summary>
@@ -69,13 +84,20 @@ namespace CCNet.Common
 		}
 
 		/// <summary>
+		/// Makes sure current reference is not taken from global collection.
+		/// </summary>
+		private void EnsureNotGlobal()
+		{
+			if (IsGlobal)
+				throw new InvalidOperationException("Global reference cannot be updated.");
+		}
+
+		/// <summary>
 		/// Marks assembly as not required to use specific version.
 		/// </summary>
 		public void ResetSpecificVersion()
 		{
-			var hint = m_element.Element(m_ns + "HintPath");
-			if (hint == null)
-				return;
+			EnsureNotGlobal();
 
 			var specific = m_element.Element(m_ns + "SpecificVersion");
 			if (specific == null)
@@ -94,8 +116,7 @@ namespace CCNet.Common
 		/// </summary>
 		public void UpdateVersion(Version newVersion)
 		{
-			if (IsGlobal)
-				throw new InvalidOperationException("Global references cannot be updated.");
+			EnsureNotGlobal();
 
 			var oldValue = String.Format(", Version={0},", Version);
 			var newValue = String.Format(", Version={0},", newVersion);
@@ -113,6 +134,26 @@ namespace CCNet.Common
 			}
 
 			Reload();
+		}
+
+		/// <summary>
+		/// Tries to get assembly version not only from version attribute, but also from hint path.
+		/// </summary>
+		public Version GetVersion()
+		{
+			if (Version != null)
+				return Version;
+
+			if (HintPath == null)
+				return null;
+
+			var regex = new Regex(String.Format(@"\\{0}\.([0-9\.?]+)\\", Name));
+			if (!regex.IsMatch(HintPath))
+				return null;
+
+			var match = regex.Match(HintPath);
+			var value = match.Groups[1].Value;
+			return new Version(value);
 		}
 	}
 }

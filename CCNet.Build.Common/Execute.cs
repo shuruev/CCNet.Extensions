@@ -8,7 +8,7 @@ namespace CCNet.Build.Common
 	/// <summary>
 	/// Helper methods for executing command line tools.
 	/// </summary>
-	public static class Execute
+	public static partial class Execute
 	{
 		/// <summary>
 		/// Displays usage text.

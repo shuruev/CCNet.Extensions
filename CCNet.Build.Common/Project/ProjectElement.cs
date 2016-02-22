@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 
-namespace CCNet.Common
+namespace CCNet.Build.Common
 {
 	/// <summary>
 	/// Represents element from project XML document.

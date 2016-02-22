@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Xml.Linq;
+using System.Linq;
 using CCNet.Build.Common;
 
 namespace CCNet.Build.SetupPackages
@@ -35,196 +33,43 @@ namespace CCNet.Build.SetupPackages
 		{
 			var checker = new PackageChecker(Config.NuGetDbConnection, Args.CustomVersions);
 
-			Console.Write("Loading local packages... ");
-			checker.Load();
-			Console.WriteLine("{0} found.", checker.PackageCount);
-
-			AdjustReferences(checker);
-			AdjustPackages(checker);
-
-			RestorePackages();
-			UpdatePackages(checker);
-
-			AdjustProperties(checker);
-		}
-
-		private static void AdjustReferences(PackageChecker checker)
-		{
-			Console.Write("Loading project... ");
-			var project = new ProjectDocument(Paths.ProjectFile);
-			project.Load();
-			Console.WriteLine("OK");
-
-			AdjustBinaryReferences(checker, project);
-
-			Console.Write("Saving project... ");
-			project.Save();
-			Console.WriteLine("OK");
-		}
-
-		private static void AdjustBinaryReferences(PackageChecker checker, ProjectDocument project)
-		{
-			Console.Write("Adjusting binary references... ");
-
-			foreach (var reference in project.GetBinaryReferences())
+			using (Execute.Step("INIT"))
 			{
-				// skip assemblies from GAC
-				if (reference.IsGlobal)
-					continue;
-
-				// skip remote packages
-				if (!checker.IsLocal(reference.Name))
-					continue;
-
-				// package should be pinned to its current version
-				if (checker.IsPinnedToCurrentVersion(reference.Name))
-					continue;
-
-				// get version to use for local package
-				var versionToUse = checker.VersionToUse(reference.Name);
-
-				// update is not required
-				if (versionToUse == reference.Version)
-					continue;
-
-				// update package version within project file
-				reference.UpdateVersion(versionToUse);
+				Console.Write("Loading local packages... ");
+				checker.Load();
+				Console.WriteLine("{0} found.", checker.PackageCount);
 			}
 
-			Console.WriteLine("OK");
-		}
+			var log = new LogPackages();
+			var references = new ReferencesHelper(checker);
+			var packages = new PackagesHelper(checker, log);
+			var nuget = new NuGetHelper(checker);
 
-		private static void AdjustProperties(PackageChecker checker)
-		{
-			Console.Write("Adjusting reference properties... ");
-
-			var project = new ProjectDocument(Paths.ProjectFile);
-			project.Load();
-
-			foreach (var reference in project.GetBinaryReferences())
+			using (Execute.Step("PRE ADJUST"))
 			{
-				// adjust reference properties
-				reference.ResetSpecificVersion();
+				references.PreAdjust();
+				packages.PreAdjust();
 			}
 
-			project.Save();
-			Console.WriteLine("OK");
-		}
-
-		private static void AdjustPackages(PackageChecker checker)
-		{
-			Console.Write("Adjusting packages configuration... ");
-
-			string xml = File.ReadAllText(Paths.PackagesConfig);
-			var doc = XDocument.Parse(xml);
-
-			foreach (var element in doc.Root.Elements("package"))
+			using (Execute.Step("RESTORE & UPDATE"))
 			{
-				var id = element.Attribute("id").Value;
-				var version = element.Attribute("version").Value;
-				var package = new NuGetPackage(id, version);
-
-				// skip remote packages
-				if (!checker.IsLocal(package.Name))
-					continue;
-
-				// package should be pinned to its current version
-				if (checker.IsPinnedToCurrentVersion(package.Name))
-					continue;
-
-				// get version to use for local package
-				var versionToUse = checker.VersionToUse(package.Name);
-
-				// update is not required
-				if (versionToUse == package.Version)
-					continue;
-
-				// update package version within packages configuration
-				element.Attribute("version").Value = versionToUse.ToString();
+				nuget.RestoreAll();
+				nuget.UpdateAll();
 			}
 
-			doc.Save(Paths.PackagesConfig);
-			Console.WriteLine("OK");
-		}
-
-		private static void UpdatePackages(PackageChecker checker)
-		{
-			Console.WriteLine("Update remote packages...");
-
-			string xml = File.ReadAllText(Paths.PackagesConfig);
-			var doc = XDocument.Parse(xml);
-
-			foreach (var element in doc.Root.Elements("package"))
+			using (Execute.Step("POST ADJUST"))
 			{
-				var id = element.Attribute("id").Value;
-				var version = element.Attribute("version").Value;
-				var package = new NuGetPackage(id, version);
-
-				// skip local packages
-				if (checker.IsLocal(package.Name))
-					continue;
-
-				// package should be pinned to its current version
-				if (checker.IsPinnedToCurrentVersion(package.Name))
-					continue;
-
-				// try to update remote package
-				UpdatePackage(id);
+				references.PostAdjust();
+				packages.PostAdjust();
 			}
-		}
 
-		private static void RestorePackages()
-		{
-			Console.WriteLine("Restoring packages...");
-
-			RunNuGet(
-				@"restore ""{0}"" -PackagesDirectory ""{1}"" -Source ""{2}"" -NonInteractive -Verbosity Detailed",
-				Paths.PackagesConfig,
-				Args.PackagesPath,
-				Args.NuGetUrl);
-		}
-
-		private static void UpdatePackage(string id)
-		{
-			Console.WriteLine("Updating {0}...", id);
-
-			RunNuGet(
-				@"update ""{0}"" -RepositoryPath ""{1}"" -Id ""{2}"" -NonInteractive -Verbosity Detailed",
-				Paths.PackagesConfig,
-				Args.PackagesPath,
-				id);
-		}
-
-		private static void RunNuGet(string format, params object[] args)
-		{
-			var runArguments = String.Format(format, args);
-			Run(Args.NuGetExecutable, runArguments);
-		}
-
-		private static void Run(string fileName, string arguments)
-		{
-			var process = new Process
+			using (Execute.Step("REPORT USAGE"))
 			{
-				StartInfo = new ProcessStartInfo
+				foreach (var reference in log.Values.OrderBy(i => i.Location).ThenBy(i => i.Name))
 				{
-					FileName = fileName,
-					Arguments = arguments,
-					CreateNoWindow = true,
-					UseShellExecute = false,
-					RedirectStandardOutput = true,
-					RedirectStandardError = true
+					reference.Report();
 				}
-			};
-
-			process.Start();
-			process.WaitForExit();
-
-			var output = process.StandardOutput.ReadToEnd();
-			Console.WriteLine(output);
-
-			var error = process.StandardError.ReadToEnd();
-			if (!String.IsNullOrEmpty(error))
-				throw new ApplicationException(error);
+			}
 		}
 	}
 }

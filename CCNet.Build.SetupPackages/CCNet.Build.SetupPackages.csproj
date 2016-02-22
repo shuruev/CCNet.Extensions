@@ -57,12 +57,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Args.cs" />
-    <Compile Include="ProjectElement.cs" />
-    <Compile Include="BinaryReference.cs" />
+    <Compile Include="Run\NuGetHelper.cs" />
+    <Compile Include="Run\PackagesHelper.cs" />
+    <Compile Include="Run\ReferencesHelper.cs" />
+    <Compile Include="Run\LogPackages.cs" />
+    <Compile Include="Run\LogPackage.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="NuGetDb.cs" />
-    <Compile Include="ProjectDocument.cs" />
-    <Compile Include="NuGetPackage.cs" />
+    <Compile Include="NuGet\NuGetDb.cs" />
+    <Compile Include="NuGet\NuGetPackage.cs" />
     <Compile Include="PackageChecker.cs" />
     <Compile Include="Paths.cs" />
     <Compile Include="Program.cs" />

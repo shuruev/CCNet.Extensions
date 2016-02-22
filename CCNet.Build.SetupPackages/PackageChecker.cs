@@ -76,6 +76,21 @@ namespace CCNet.Build.SetupPackages
 			return false;
 		}
 
+		public Version IsPinnedToSpecificVersion(string name)
+		{
+			if (!m_customVersions.ContainsKey(name))
+				return null;
+
+			var version = m_customVersions[name].Version;
+			if (version == null)
+				return null;
+
+			if (!IsLocal(name))
+				throw new InvalidOperationException("Only local packages can be pinned to specific version.");
+
+			return version;
+		}
+
 		public Version VersionToUse(string name)
 		{
 			if (!IsLocal(name))
@@ -84,11 +99,9 @@ namespace CCNet.Build.SetupPackages
 			if (IsPinnedToCurrentVersion(name))
 				throw new InvalidOperationException("This package is pinned to its current version.");
 
-			if (m_customVersions.ContainsKey(name))
-			{
-				var custom = m_customVersions[name];
-				return custom.Version;
-			}
+			var custom = IsPinnedToSpecificVersion(name);
+			if (custom != null)
+				return custom;
 
 			return m_localPackages[name].Version;
 		}

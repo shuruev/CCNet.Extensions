@@ -5,9 +5,8 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using CCNet.Common;
 
-namespace CCNet.Build.SetupPackages
+namespace CCNet.Build.Common
 {
 	/// <summary>
 	/// Represents project file as XML document.
@@ -78,6 +77,9 @@ namespace CCNet.Build.SetupPackages
 			return m_document.XPathSelectElements(xpath, m_namespaces);
 		}
 
+		/// <summary>
+		/// Returns all binary references from current project.
+		/// </summary>
 		public List<BinaryReference> GetBinaryReferences()
 		{
 			return SelectElements("/ms:Project/ms:ItemGroup/ms:Reference")
