@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using CCNet.Build.Common;
 
@@ -63,13 +65,65 @@ namespace CCNet.Build.SetupPackages
 				packages.PostAdjust();
 			}
 
-			using (Execute.Step("REPORT USAGE"))
+			using (Execute.Step("REPORT & SAVE"))
 			{
 				foreach (var reference in log.Values.OrderBy(i => i.Location).ThenBy(i => i.Name))
 				{
 					reference.Report();
 				}
+
+				SaveReferences(log);
 			}
+		}
+
+		private static void SaveReferences(LogPackages log)
+		{
+			Console.Write("Saving local references... ");
+
+			if (!Directory.Exists(Args.ReferencesPath))
+			{
+				Directory.CreateDirectory(Args.ReferencesPath);
+			}
+
+			var after = log.Values.Where(i => i.IsLocal).ToDictionary(i => i.Name);
+			var before = GetReferences().ToDictionary(Path.GetFileNameWithoutExtension);
+
+			var toAdd = new List<string>();
+			foreach (var reference in after)
+			{
+				if (before.ContainsKey(reference.Key))
+					continue;
+
+				var name = String.Format("{0}.txt", reference.Key);
+				var path = Path.Combine(Args.ReferencesPath, name);
+				toAdd.Add(path);
+			}
+
+			var toRemove = new List<string>();
+			foreach (var reference in before)
+			{
+				if (after.ContainsKey(reference.Key))
+					continue;
+
+				toRemove.Add(reference.Value);
+			}
+
+			foreach (var file in toRemove)
+			{
+				File.Delete(file);
+			}
+
+			foreach (var file in toAdd)
+			{
+				File.WriteAllText(file, DateTime.Now.ToDetailedString());
+			}
+
+			Console.WriteLine("OK");
+		}
+
+		private static List<string> GetReferences()
+		{
+			return Directory.GetFiles(Args.ReferencesPath).ToList();
 		}
 	}
 }

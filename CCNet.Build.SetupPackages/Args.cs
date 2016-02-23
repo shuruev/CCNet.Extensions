@@ -23,6 +23,11 @@ namespace CCNet.Build.SetupPackages
 			get { return Current.Get<string>("PackagesPath"); }
 		}
 
+		public static string ReferencesPath
+		{
+			get { return Current.Get<string>("ReferencesPath"); }
+		}
+
 		public static string CustomVersions
 		{
 			get { return Current.Get("CustomVersions", String.Empty); }
