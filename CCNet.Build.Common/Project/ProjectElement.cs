@@ -8,7 +8,14 @@ namespace CCNet.Build.Common
 	/// </summary>
 	public abstract class ProjectElement
 	{
+		/// <summary>
+		/// Standard namespace for a project XML document.
+		/// </summary>
 		protected readonly XNamespace m_ns;
+
+		/// <summary>
+		/// Curent XML element.
+		/// </summary>
 		protected readonly XElement m_element;
 
 		/// <summary>

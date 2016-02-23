@@ -16,7 +16,7 @@ namespace CCNet.Build.SetupPackages
 		{
 			get
 			{
-				return IsLocal ? "local" : "remote";
+				return IsLocal ? "Local" : "Remote";
 			}
 		}
 
@@ -47,7 +47,7 @@ namespace CCNet.Build.SetupPackages
 		public void Report()
 		{
 			Console.WriteLine(
-				"[LOG] {0} | {1} | {2} | {3}",
+				"[PACKAGE] {0} | {1} | {2} | {3}",
 				Name,
 				SourceVersion.Normalize(),
 				BuildVersion.Normalize(),
