@@ -14,7 +14,7 @@ namespace CCNet.Build.Common
 		protected readonly XNamespace m_ns;
 
 		/// <summary>
-		/// Curent XML element.
+		/// Current XML element.
 		/// </summary>
 		protected readonly XElement m_element;
 
