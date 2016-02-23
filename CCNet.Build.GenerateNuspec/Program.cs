@@ -62,6 +62,7 @@ namespace CCNet.Build.GenerateNuspec
 				xtw.WriteElementString("version", Args.CurrentVersion);
 				xtw.WriteElementString("authors", Args.CompanyName);
 				xtw.WriteElementString("description", Args.ProjectDescription);
+				AddReleaseNotes(xtw);
 				xtw.WriteElementString("requireLicenseAcceptance", "false");
 				xtw.WriteEndElement();
 
@@ -78,6 +79,15 @@ namespace CCNet.Build.GenerateNuspec
 				xtw.WriteEndElement();
 				xtw.WriteEndDocument();
 			}
+		}
+
+		private static void AddReleaseNotes(XmlTextWriter xtw)
+		{
+			if (!File.Exists(Args.SummaryFile))
+				return;
+
+			var summary = File.ReadAllText(Args.SummaryFile);
+			xtw.WriteElementString("releaseNotes", summary);
 		}
 
 		private static void AddNuspecLibraryCoreFile(XmlTextWriter xtw, string extension)

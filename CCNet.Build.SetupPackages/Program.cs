@@ -67,12 +67,9 @@ namespace CCNet.Build.SetupPackages
 
 			using (Execute.Step("REPORT & SAVE"))
 			{
-				foreach (var reference in log.Values.OrderBy(i => i.Location).ThenBy(i => i.Name))
-				{
-					reference.Report();
-				}
-
+				log.Report();
 				SaveReferences(log);
+				SaveSummary(log);
 			}
 		}
 
@@ -85,8 +82,13 @@ namespace CCNet.Build.SetupPackages
 				Directory.CreateDirectory(Args.ReferencesPath);
 			}
 
-			var after = log.Values.Where(i => i.IsLocal).ToDictionary(i => i.Name);
-			var before = GetReferences().ToDictionary(Path.GetFileNameWithoutExtension);
+			var after = log.Values
+				.Where(i => i.IsLocal)
+				.ToDictionary(i => i.Name);
+
+			var before = Directory
+				.GetFiles(Args.ReferencesPath)
+				.ToDictionary(Path.GetFileNameWithoutExtension);
 
 			var toAdd = new List<string>();
 			foreach (var reference in after)
@@ -121,9 +123,14 @@ namespace CCNet.Build.SetupPackages
 			Console.WriteLine("OK");
 		}
 
-		private static List<string> GetReferences()
+		private static void SaveSummary(LogPackages log)
 		{
-			return Directory.GetFiles(Args.ReferencesPath).ToList();
+			Console.Write("Saving build summary... ");
+
+			var file = Path.Combine(Args.PackagesPath, "summary.txt");
+			File.WriteAllText(file, log.Summary());
+
+			Console.WriteLine("OK");
 		}
 	}
 }

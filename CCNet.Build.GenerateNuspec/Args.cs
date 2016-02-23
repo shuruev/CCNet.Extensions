@@ -37,6 +37,11 @@ namespace CCNet.Build.GenerateNuspec
 			get { return Current.Get<TargetFramework>("TargetFramework"); }
 		}
 
+		public static string SummaryFile
+		{
+			get { return Current.Get<string>("SummaryFile"); }
+		}
+
 		public static string OutputDirectory
 		{
 			get { return Current.Get<string>("OutputDirectory"); }
