@@ -16,11 +16,6 @@ namespace CCNet.Build.Common
 		public AssemblyName AssemblyName { get; private set; }
 
 		/// <summary>
-		/// Gets a value indicating whether assembly can be used with specific version only.
-		/// </summary>
-		public bool SpecificVersion { get; private set; }
-
-		/// <summary>
 		/// Initializes a new instance.
 		/// </summary>
 		public BinaryReference(XElement element)
@@ -74,13 +69,6 @@ namespace CCNet.Build.Common
 		{
 			var include = m_element.Attribute("Include").Value;
 			AssemblyName = new AssemblyName(include);
-
-			SpecificVersion = true;
-			var specific = m_element.Element(m_ns + "SpecificVersion");
-			if (specific != null)
-			{
-				SpecificVersion = Boolean.Parse(specific.Value);
-			}
 		}
 
 		/// <summary>
@@ -90,25 +78,6 @@ namespace CCNet.Build.Common
 		{
 			if (IsGlobal)
 				throw new InvalidOperationException("Global reference cannot be updated.");
-		}
-
-		/// <summary>
-		/// Marks assembly as not required to use specific version.
-		/// </summary>
-		public void ResetSpecificVersion()
-		{
-			EnsureNotGlobal();
-
-			var specific = m_element.Element(m_ns + "SpecificVersion");
-			if (specific == null)
-			{
-				specific = new XElement(m_ns + "SpecificVersion");
-				m_element.Add(specific);
-			}
-
-			specific.Value = "False";
-
-			Reload();
 		}
 
 		/// <summary>

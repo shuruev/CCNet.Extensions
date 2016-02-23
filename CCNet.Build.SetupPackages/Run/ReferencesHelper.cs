@@ -89,15 +89,8 @@ namespace CCNet.Build.SetupPackages
 		{
 			Console.Write("Update reference properties... ");
 
-			foreach (var reference in project.GetBinaryReferences())
-			{
-				// skip assemblies from GAC
-				if (reference.IsGlobal)
-					continue;
+			// xxx nothing here
 
-				// adjust reference properties
-				reference.ResetSpecificVersion();
-			}
 			Console.WriteLine("OK");
 		}
 	}
