@@ -31,6 +31,9 @@ namespace CCNet.Build.SetupPackages
 
 		public void PreAdjust()
 		{
+			if (!File.Exists(Paths.PackagesConfig))
+				return;
+
 			string xml = File.ReadAllText(Paths.PackagesConfig);
 			var config = XDocument.Parse(xml);
 
@@ -109,6 +112,9 @@ namespace CCNet.Build.SetupPackages
 
 		public void PostAdjust()
 		{
+			if (!File.Exists(Paths.PackagesConfig))
+				return;
+
 			string xml = File.ReadAllText(Paths.PackagesConfig);
 			var config = XDocument.Parse(xml);
 

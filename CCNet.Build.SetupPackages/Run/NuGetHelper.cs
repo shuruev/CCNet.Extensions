@@ -19,6 +19,9 @@ namespace CCNet.Build.SetupPackages
 
 		public void UpdateAll()
 		{
+			if (!File.Exists(Paths.PackagesConfig))
+				return;
+
 			Console.WriteLine("Update remote packages...");
 
 			string xml = File.ReadAllText(Paths.PackagesConfig);
@@ -45,6 +48,9 @@ namespace CCNet.Build.SetupPackages
 
 		public void RestoreAll()
 		{
+			if (!File.Exists(Paths.PackagesConfig))
+				return;
+
 			RestorePackages();
 		}
 
