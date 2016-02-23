@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.Confluence", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.SetupPackages", "CCNet.Build.SetupPackages\CCNet.Build.SetupPackages.csproj", "{C67DBCF5-20A4-4471-8994-6B536F4ED4D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.SetupProject", "CCNet.Build.SetupProject\CCNet.Build.SetupProject.csproj", "{75ED2EA4-1453-4952-B0C9-A6A750BD69A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{C67DBCF5-20A4-4471-8994-6B536F4ED4D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C67DBCF5-20A4-4471-8994-6B536F4ED4D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C67DBCF5-20A4-4471-8994-6B536F4ED4D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75ED2EA4-1453-4952-B0C9-A6A750BD69A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75ED2EA4-1453-4952-B0C9-A6A750BD69A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75ED2EA4-1453-4952-B0C9-A6A750BD69A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75ED2EA4-1453-4952-B0C9-A6A750BD69A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

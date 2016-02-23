@@ -183,6 +183,21 @@ namespace CCNet.Build.Reconfigure
 				{
 					using (writer.OpenTag("exec"))
 					{
+						writer.WriteElementString("executable", "$(ccnetBuildSetupProject)");
+						writer.WriteElementString(
+							"buildArgs",
+							String.Format(
+								@"
+					""ProjectPath={0}""
+					""CurrentVersion=$[$CCNetLabel]""
+				",
+								project.WorkingDirectorySource));
+
+						writer.WriteElementString("description", "Setup project");
+					}
+
+					using (writer.OpenTag("exec"))
+					{
 						writer.WriteElementString("executable", "$(ccnetBuildSetupPackages)");
 						writer.WriteElementString(
 							"buildArgs",
