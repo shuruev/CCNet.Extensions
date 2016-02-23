@@ -206,12 +206,14 @@ namespace CCNet.Build.Reconfigure
 					""ProjectName={0}""
 					""ProjectPath={1}""
 					""PackagesPath={2}""
+					""ReferencesPath={3}""
 					""NuGetExecutable=$(nugetExecutable)""
-					""NuGetUrl={3}""
+					""NuGetUrl={4}""
 				",
 								project.Name,
 								project.WorkingDirectorySource,
 								project.WorkingDirectoryPackages,
+								project.WorkingDirectoryReferences,
 								project.NugetRestoreUrl));
 
 						writer.WriteElementString("description", "Setup packages");
@@ -276,6 +278,26 @@ namespace CCNet.Build.Reconfigure
 								project.NugetPushUrl));
 
 						writer.WriteElementString("description", "Publish package");
+					}
+
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildNotifyProjects)");
+						writer.WriteElementString(
+							"buildArgs",
+							String.Format(
+								@"
+					""ProjectName={0}""
+					""ServerName={1}""
+					""ProjectsPath=$(buildPath)\Projects-{1}""
+					""ReferencesFolder=references""
+				",
+								project.Name,
+								"Library"));
+
+						writer.WriteElementString(
+							"description",
+							String.Format("Notify other projects (from {0} server)", "Library"));
 					}
 				}
 
