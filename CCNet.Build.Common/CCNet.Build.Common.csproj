@@ -55,7 +55,7 @@
     <Compile Include="Project\ProjectElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TargetFramework.cs" />
-    <Compile Include="VersionExtensions.cs" />
+    <Compile Include="Extensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
