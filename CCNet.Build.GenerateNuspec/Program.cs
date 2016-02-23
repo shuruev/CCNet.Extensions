@@ -47,7 +47,8 @@ namespace CCNet.Build.GenerateNuspec
 
 		private static void GenerateNuspecLibrary()
 		{
-			PrepareDirectory(Paths.NuspecFile);
+			Args.OutputDirectory.CreateDirectoryIfNotExists();
+
 			using (var xtw = new XmlTextWriter(Paths.NuspecFile, Encoding.UTF8))
 			{
 				xtw.Formatting = Formatting.Indented;
@@ -58,12 +59,18 @@ namespace CCNet.Build.GenerateNuspec
 				xtw.WriteStartElement("package", "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd");
 
 				xtw.WriteStartElement("metadata");
+
 				xtw.WriteElementString("id", Args.ProjectName);
 				xtw.WriteElementString("version", Args.CurrentVersion);
 				xtw.WriteElementString("authors", Args.CompanyName);
 				xtw.WriteElementString("description", Args.ProjectDescription);
-				AddReleaseNotes(xtw);
 				xtw.WriteElementString("requireLicenseAcceptance", "false");
+
+				AddReleaseNotes(xtw);
+
+				xtw.WriteElementString("projectUrl", String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+library", Args.ProjectName));
+				xtw.WriteElementString("iconUrl", "https://owl.cbsi.com/confluence/download/attachments/12795231/CCSSEDRU");
+
 				xtw.WriteEndElement();
 
 				xtw.WriteStartElement("files");
@@ -96,15 +103,6 @@ namespace CCNet.Build.GenerateNuspec
 			xtw.WriteAttributeString("src", String.Format(@"..\release\{0}.{1}", Args.ProjectName, extension.ToLowerInvariant()));
 			xtw.WriteAttributeString("target", String.Format(@"lib\{0}", Args.TargetFramework.ToString().ToLowerInvariant()));
 			xtw.WriteEndElement();
-		}
-
-		private static void PrepareDirectory(string filePath)
-		{
-			var dir = Path.GetDirectoryName(filePath);
-			if (Directory.Exists(dir))
-				return;
-
-			Directory.CreateDirectory(dir);
 		}
 	}
 }

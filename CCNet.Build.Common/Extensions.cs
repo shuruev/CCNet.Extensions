@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 
 namespace CCNet.Build.Common
 {
@@ -37,6 +38,17 @@ namespace CCNet.Build.Common
 				version.Minor,
 				Math.Max(version.Build, 0),
 				Math.Max(version.Revision, 0));
+		}
+
+		/// <summary>
+		/// Creates directory if it does not exist.
+		/// </summary>
+		public static void CreateDirectoryIfNotExists(this string path)
+		{
+			if (Directory.Exists(path))
+				return;
+
+			Directory.CreateDirectory(path);
 		}
 	}
 }

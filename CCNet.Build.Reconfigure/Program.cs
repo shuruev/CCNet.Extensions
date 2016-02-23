@@ -241,12 +241,14 @@ namespace CCNet.Build.Reconfigure
 					""CompanyName=CNET Content Solutions""
 					""CurrentVersion=$[$CCNetLabel]""
 					""TargetFramework={2}""
-					""OutputDirectory={3}""
-					""IncludeXmlDocumentation={4}""
+					""SummaryFile={3}\summary.txt""
+					""OutputDirectory={4}""
+					""IncludeXmlDocumentation={5}""
 				",
 								project.Name,
 								project.Description,
 								project.Framework,
+								project.WorkingDirectoryPackages,
 								project.WorkingDirectoryNuget,
 								project.IncludeXmlDocumentation));
 

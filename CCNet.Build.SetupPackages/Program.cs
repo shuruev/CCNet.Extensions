@@ -77,10 +77,7 @@ namespace CCNet.Build.SetupPackages
 		{
 			Console.Write("Saving local references... ");
 
-			if (!Directory.Exists(Args.ReferencesPath))
-			{
-				Directory.CreateDirectory(Args.ReferencesPath);
-			}
+			Args.ReferencesPath.CreateDirectoryIfNotExists();
 
 			var after = log.Values
 				.Where(i => i.IsLocal)
@@ -126,6 +123,8 @@ namespace CCNet.Build.SetupPackages
 		private static void SaveSummary(LogPackages log)
 		{
 			Console.Write("Saving build summary... ");
+
+			Args.PackagesPath.CreateDirectoryIfNotExists();
 
 			var file = Path.Combine(Args.PackagesPath, "summary.txt");
 			File.WriteAllText(file, log.Summary());
