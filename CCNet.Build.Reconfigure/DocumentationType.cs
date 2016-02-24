@@ -16,7 +16,7 @@
 		Partial,
 
 		/// <summary>
-		/// Project generates XML documentation file, and there will warnings for missing documentation.
+		/// Project generates XML documentation file, and there will be warnings for missing documentation.
 		/// </summary>
 		Full,
 	}

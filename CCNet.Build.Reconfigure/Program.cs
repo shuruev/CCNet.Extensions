@@ -116,6 +116,85 @@ namespace CCNet.Build.Reconfigure
 						Framework = TargetFramework.Net45
 					});
 
+				WriteLibraryProject(
+					writer,
+					new LibraryProjectConfiguration
+					{
+						Name = "AlarmInterface",
+						Description = "Interface library for legacy A.L.A.R.M. system created in 2002 by Nenad Buncic",
+						Category = "Internal",
+						TfsPath = "$/Main/Internal/Monitor/TaskManagement/AlarmInterface",
+						Framework = TargetFramework.Net20,
+						Documentation = DocumentationType.Full
+					});
+
+				WriteLibraryProject(
+					writer,
+					new LibraryProjectConfiguration
+					{
+						Name = "AlarmClient",
+						Description = "Client library for legacy A.L.A.R.M. system created in 2002 by Nenad Buncic",
+						Category = "Internal",
+						TfsPath = "$/Main/Internal/Monitor/TaskManagement/AlarmClient",
+						Framework = TargetFramework.Net20,
+						Documentation = DocumentationType.Full
+					});
+
+				WriteLibraryProject(
+					writer,
+					new LibraryProjectConfiguration
+					{
+						Name = "TaskManagement",
+						Description = "Base library for TPD Monitor compatible tasks",
+						Category = "Internal",
+						TfsPath = "$/Main/Internal/Monitor/TaskManagement/TaskManagement",
+						Framework = TargetFramework.Net20
+					});
+
+				WriteLibraryProject(
+					writer,
+					new LibraryProjectConfiguration
+					{
+						Name = "TaskManagementService",
+						Description = "Base library for TPD Monitor compatible services",
+						Category = "Internal",
+						TfsPath = "$/Main/Internal/Monitor/TaskManagement/TaskManagementService",
+						Framework = TargetFramework.Net20
+					});
+
+				WriteLibraryProject(
+					writer,
+					new LibraryProjectConfiguration
+					{
+						Name = "VXMonitoring",
+						Description = "...",
+						Category = "Internal",
+						TfsPath = "$/Main/Internal/Monitor/VXMonitoring/VXMonitoring",
+						Framework = TargetFramework.Net35
+					});
+
+				WriteLibraryProject(
+					writer,
+					new LibraryProjectConfiguration
+					{
+						Name = "VXMonitoringDataAccess",
+						Description = "...",
+						Category = "Internal",
+						TfsPath = "$/Main/Internal/Monitor/VXMonitoring/VXMonitoringDataAccess",
+						Framework = TargetFramework.Net40
+					});
+
+				WriteLibraryProject(
+					writer,
+					new LibraryProjectConfiguration
+					{
+						Name = "VXWebControls",
+						Description = "...",
+						Category = "Vortex",
+						TfsPath = "$/Main/Vortex/Common/VXWebControls",
+						Framework = TargetFramework.Net35
+					});
+
 				writer.End();
 			}
 		}

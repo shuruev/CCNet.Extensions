@@ -6,6 +6,16 @@
 	public enum TargetFramework
 	{
 		/// <summary>
+		/// Represents ".NET Framework 2.0" target.
+		/// </summary>
+		Net20,
+
+		/// <summary>
+		/// Represents ".NET Framework 3.5" target.
+		/// </summary>
+		Net35,
+
+		/// <summary>
 		/// Represents ".NET Framework 4" target.
 		/// </summary>
 		Net40,
