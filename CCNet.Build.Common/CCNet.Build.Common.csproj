@@ -54,6 +54,8 @@
     <Compile Include="Project\ProjectDocument.cs" />
     <Compile Include="Project\ProjectElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\CertificateEncryptor.cs" />
+    <Compile Include="Security\SecureConfig.cs" />
     <Compile Include="TargetFramework.cs" />
     <Compile Include="Extensions.cs" />
   </ItemGroup>
