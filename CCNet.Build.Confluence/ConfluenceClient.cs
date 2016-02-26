@@ -25,5 +25,15 @@ namespace CCNet.Build.Confluence
 			var page = m_client.getPage(m_token, spaceCode, pageName);
 			return page.content;
 		}
+
+		public void UpdatePageContent(string spaceCode, string pageName, string updatedContent)
+		{
+			var page = m_client.getPage(m_token, spaceCode, pageName);
+			if (page.content == updatedContent)
+				return;
+
+			page.content = updatedContent;
+			m_client.updatePage(m_token, page, new RemotePageUpdateOptions());
+		}
 	}
 }
