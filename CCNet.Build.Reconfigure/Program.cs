@@ -1,7 +1,13 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
+using System.Net;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
 using CCNet.Build.Common;
+using CCNet.Build.Confluence;
 
 namespace CCNet.Build.Reconfigure
 {
@@ -32,7 +38,11 @@ namespace CCNet.Build.Reconfigure
 
 		private static void Reconfigure()
 		{
-			BuildLibraryConfig();
+			var client = new ConfluenceClient(Config.ConfluenceUsername, Config.ConfluencePassword);
+			var builder = new PageBuilder(client);
+			builder.Rebuild("CCSSEDRU", "Projects");
+
+			//BuildLibraryConfig();
 		}
 
 		private static XmlWriter WriteConfig(string filePath)
@@ -191,7 +201,7 @@ namespace CCNet.Build.Reconfigure
 						Name = "VXWebControls",
 						Description = "...",
 						Category = "Vortex",
-						TfsPath = "$/Main/Vortex/Common/VXWebControls",
+						TfsPath = "$/Main/Vortex/Common/VXWebControls/VXWebControls",
 						Framework = TargetFramework.Net35
 					});
 
