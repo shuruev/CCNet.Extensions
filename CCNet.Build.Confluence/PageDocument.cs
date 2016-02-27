@@ -46,6 +46,7 @@ namespace CCNet.Build.Confluence
 			m_entities = new HashSet<string>
 			{
 				"nbsp",
+				"ndash",
 				"middot"
 			};
 

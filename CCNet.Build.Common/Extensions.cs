@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -74,6 +75,34 @@ namespace CCNet.Build.Common
 				whitespace = true;
 				sb.Append(' ');
 			}
+
+			return sb.ToString();
+		}
+
+		/// <summary>
+		/// Filters out ASCII characters only, including some other specified characters.
+		/// </summary>
+		public static string AsciiOnly(this string text, params char[] includeAlso)
+		{
+			if (text == null)
+				return null;
+
+			var map = new HashSet<char>(includeAlso);
+
+			var sb = new StringBuilder();
+			foreach (var c in text)
+			{
+				if ((c >= '0' && c <= '9')
+					|| (c >= 'A' && c <= 'Z')
+					|| (c >= 'a' && c <= 'z')
+					|| map.Contains(c))
+				{
+					sb.Append(c);
+				}
+			}
+
+			if (sb.Length == 0)
+				return null;
 
 			return sb.ToString();
 		}
