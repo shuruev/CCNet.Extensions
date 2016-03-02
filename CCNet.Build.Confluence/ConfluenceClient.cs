@@ -46,14 +46,10 @@ namespace CCNet.Build.Confluence
 			return children.Select(ToPageSummary).ToList();
 		}
 
-		public void UpdatePage(long pageId, string content)
+		public void UpdatePage(Page page)
 		{
-			var page = m_client.getPage(m_token, pageId);
-			if (page.content == content)
-				return;
-
-			page.content = content;
-			m_client.updatePage(m_token, page, new RemotePageUpdateOptions());
+			var options = new RemotePageUpdateOptions { minorEdit = true };
+			m_client.updatePage(m_token, ToRemotePage(page), options);
 		}
 
 		private static PageSummary ToPageSummary(RemotePageSummary remotePageSummary)
@@ -62,7 +58,9 @@ namespace CCNet.Build.Confluence
 			{
 				Id = remotePageSummary.id,
 				ParentId = remotePageSummary.parentId,
-				Name = remotePageSummary.title
+				Name = remotePageSummary.title,
+				Space = remotePageSummary.space,
+				Version = remotePageSummary.version
 			};
 		}
 
@@ -73,7 +71,22 @@ namespace CCNet.Build.Confluence
 				Id = remotePage.id,
 				ParentId = remotePage.parentId,
 				Name = remotePage.title,
+				Space = remotePage.space,
+				Version = remotePage.version,
 				Content = remotePage.content
+			};
+		}
+
+		private static RemotePage ToRemotePage(Page page)
+		{
+			return new RemotePage
+			{
+				id = page.Id,
+				parentId = page.ParentId,
+				title = page.Name,
+				space = page.Space,
+				version = page.Version,
+				content = page.Content
 			};
 		}
 	}

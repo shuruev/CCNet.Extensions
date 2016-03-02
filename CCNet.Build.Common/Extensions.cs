@@ -84,9 +84,6 @@ namespace CCNet.Build.Common
 		/// </summary>
 		public static string AsciiOnly(this string text, params char[] includeAlso)
 		{
-			if (text == null)
-				return null;
-
 			var map = new HashSet<char>(includeAlso);
 
 			var sb = new StringBuilder();
@@ -100,9 +97,6 @@ namespace CCNet.Build.Common
 					sb.Append(c);
 				}
 			}
-
-			if (sb.Length == 0)
-				return null;
 
 			return sb.ToString();
 		}

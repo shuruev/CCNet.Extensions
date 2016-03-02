@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
 namespace CCNet.Build.Confluence
 {
@@ -22,6 +21,16 @@ namespace CCNet.Build.Confluence
 		/// Gets or sets page name.
 		/// </summary>
 		public string Name { get; set; }
+
+		/// <summary>
+		/// Gets or sets space code.
+		/// </summary>
+		public string Space { get; set; }
+
+		/// <summary>
+		/// Gets or sets page version.
+		/// </summary>
+		public int Version { get; set; }
 
 		/// <summary>
 		/// Returns a string that represents the current object.

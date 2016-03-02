@@ -53,13 +53,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Args.cs" />
-    <Compile Include="PageBuilder.cs" />
+    <Compile Include="Confluence\IPageBuilder.cs" />
+    <Compile Include="Confluence\PageBuilder.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Confluence\LibraryProjectProperties.cs" />
+    <Compile Include="Confluence\ProjectProperties.cs" />
+    <Compile Include="Confluence\ProjectPage.cs" />
+    <Compile Include="ProjectStatus.cs" />
     <Compile Include="Paths.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="LibraryProjectConfiguration.cs" />
     <Compile Include="ProjectConfiguration.cs" />
-    <Compile Include="PageType.cs" />
+    <Compile Include="Confluence\PageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CCNetConfigExtensions.cs" />
     <Compile Include="DocumentationType.cs" />
@@ -75,6 +80,7 @@
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
+      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\SlowCheetah\SlowCheetah.Transforms.targets" />
