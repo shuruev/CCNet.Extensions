@@ -60,6 +60,10 @@ namespace CCNet.Build.Reconfigure
 				if (status != null)
 					value = status.XValue();
 
+				var user = td.XElements("ac:link/ri:user").Select(e => e.XAttribute("ri:userkey").Value).FirstOrDefault();
+				if (user != null)
+					value = user;
+
 				map[key] = value;
 			}
 
@@ -204,25 +208,27 @@ namespace CCNet.Build.Reconfigure
 						"p",
 						"Знаешь об этом компоненте что-то еще? Пожалуйста напиши! (в произвольной форме, после заголовка About)",
 						new XElement("br"),
-						"Например цели создания, какие функции выполняет, может быть какие-то неочевидные особенности или решения по дизайну или структуре классов, и т.$thinsp$п.")));
+						"Например цели создания, какие функции выполняет, может быть какие-то неочевидные особенности или решения по дизайну или структуре классов, и$nbsp$т.$nbsp$п.")));
 		}
 
 		public PageDocument BuildPage()
 		{
 			var page = new PageDocument();
 
-			var toc = new XElement("p", PageDocument.BuildToc());
+			//var toc = new XElement("p", PageDocument.BuildToc());
 			var properties = Properties.Build();
 			var details = BuildDetails();
 			var h2 = new XElement("h2", "About");
 			var about = BuildAbout();
+			var h4 = new XElement("h4", "Please contribute...");
 			var more = BuildMore();
 
-			page.Root.Add(toc);
+			//page.Root.Add(toc);
 			page.Root.Add(properties);
 			page.Root.Add(details);
 			page.Root.Add(h2);
 			page.Root.Add(about);
+			page.Root.Add(h4);
 			page.Root.Add(more);
 
 			return page;

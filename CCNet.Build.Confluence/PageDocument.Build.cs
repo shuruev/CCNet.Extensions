@@ -112,13 +112,27 @@ namespace CCNet.Build.Confluence
 		/// <summary>
 		/// Builds "User link" block.
 		/// </summary>
-		public static XElement BuildUser(string userKey)
+		public static XElement BuildUserLink(string userKey)
 		{
 			return new XElement(
 				Name("ac:link"),
 				new XElement(
 					Name("ri:user"),
 					new XAttribute(Name("ri:userkey"), userKey)));
+		}
+
+		/// <summary>
+		/// Builds "Page link" block.
+		/// </summary>
+		public static XElement BuildPageLink(string pageTitle, string anchor, string linkText)
+		{
+			return new XElement(
+				Name("ac:link"),
+				new XAttribute(Name("ac:anchor"), anchor),
+				new XElement(
+					Name("ri:page"),
+					new XAttribute(Name("ri:content-title"), pageTitle)),
+				new XElement(Name("ac:plain-text-link-body"), new XCData(linkText)));
 		}
 
 		/// <summary>

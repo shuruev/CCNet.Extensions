@@ -60,6 +60,17 @@ namespace CCNet.Build.Reconfigure
 				byDefault);
 		}
 
+		protected object[] Explain(string anchor)
+		{
+			return new object[]
+			{
+				"$nbsp$",
+				new XElement(
+					"sup",
+					PageDocument.BuildPageLink("Projects FAQ", anchor, "explain?"))
+			};
+		}
+
 		private static string ExtractDescription(Dictionary<string, string> properties)
 		{
 			var desc = FindByKey(properties, key => key.Contains("desc"));
@@ -99,6 +110,16 @@ namespace CCNet.Build.Reconfigure
 			return ExtractEnum(properties, "status", ProjectStatus.Temporary);
 		}
 
+		private XElement BuildDescription()
+		{
+			return new XElement("td").XValue(Description);
+		}
+
+		private XElement BuildTfsPath()
+		{
+			return new XElement("td", new XElement("code").XValue(TfsPath));
+		}
+
 		private XElement BuildStatus()
 		{
 			PageDocument.StatusColor color;
@@ -122,35 +143,58 @@ namespace CCNet.Build.Reconfigure
 					break;
 			}
 
-			return PageDocument.BuildStatus(Status.ToString(), color, false);
+			return new XElement(
+				"td",
+				new[] { PageDocument.BuildStatus(Status.ToString(), color, false) }
+					.Union(Explain("Статуспроекта(Status)")));
 		}
 
 		private XElement BuildOwner()
 		{
-			if (Owner.ToLowerInvariant() == "na"
-				|| Owner.ToLowerInvariant() == "none")
+			XElement link;
+
+			switch (Owner.ToLowerInvariant())
 			{
-				return PageDocument.BuildStatus("none", PageDocument.StatusColor.Grey, false);
+				case "na":
+				case "none":
+					link = PageDocument.BuildStatus("none", PageDocument.StatusColor.Grey, false);
+					break;
+
+				case "shuruev":
+				case "oshuruev":
+				case "olshuruev":
+				case "8a99855552936a300152936cadf74b66":
+					link = PageDocument.BuildUserLink("8a99855552936a300152936cadf74b66");
+					break;
+
+				case "kolemasov":
+				case "skolemasov":
+				case "kolemasovs":
+				case "8a99855552936a300152936cb4a77e8a":
+					link = PageDocument.BuildUserLink("8a99855552936a300152936cb4a77e8a");
+					break;
+
+				default:
+					throw new InvalidOperationException(
+						String.Format("Unknown user '{0}'.", Owner));
 			}
 
-			return PageDocument.BuildUser("8a99855552936a300152936cadf74b66");
+			return new XElement(
+				"td",
+				new[] { link }
+					.Union(Explain("Владелецпроекта(Owner)")));
 		}
 
 		public virtual XElement Build()
 		{
-			var desc = new XElement("td").XValue(Description);
-			var path = new XElement("td", new XElement("code").XValue(TfsPath));
-			var owner = new XElement("td", BuildOwner());
-			var status = new XElement("td", BuildStatus());
-
 			return new XElement(
 				"table",
 				new XElement(
 					"tbody",
-					new XElement("tr", new XElement("th", "Description"), desc),
-					new XElement("tr", new XElement("th", "TFS path"), path),
-					new XElement("tr", new XElement("th", "Owner"), owner),
-					new XElement("tr", new XElement("th", "Status"), status)));
+					new XElement("tr", new XElement("th", "Description"), BuildDescription()),
+					new XElement("tr", new XElement("th", "TFS path"), BuildTfsPath()),
+					new XElement("tr", new XElement("th", "Owner"), BuildOwner()),
+					new XElement("tr", new XElement("th", "Status"), BuildStatus())));
 		}
 	}
 }

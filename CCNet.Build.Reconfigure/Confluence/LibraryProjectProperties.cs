@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using CCNet.Build.Common;
 using CCNet.Build.Confluence;
@@ -60,7 +61,9 @@ namespace CCNet.Build.Reconfigure
 						String.Format("Unknown target framework '{0}'.", Framework));
 			}
 
-			return PageDocument.BuildStatus(text, PageDocument.StatusColor.Blue, true);
+			return new XElement(
+				"td",
+				PageDocument.BuildStatus(text, PageDocument.StatusColor.Blue, true));
 		}
 
 		private XElement BuildDocumentation()
@@ -82,19 +85,19 @@ namespace CCNet.Build.Reconfigure
 					break;
 			}
 
-			return PageDocument.BuildStatus(Documentation.ToString(), color, true);
+			return new XElement(
+				"td",
+				new[] { PageDocument.BuildStatus(Documentation.ToString(), color, true) }
+					.Union(Explain("Документацияпроекта(Documentation)")));
 		}
 
 		public override XElement Build()
 		{
 			var table = base.Build();
 
-			var framework = new XElement("td", BuildFramework());
-			var documentation = new XElement("td", BuildDocumentation());
-
 			var addBefore = table.XElement("tbody/tr/th[text()='Owner']").Parent;
-			addBefore.AddBeforeSelf(new XElement("tr", new XElement("th", ".NET framework"), framework));
-			addBefore.AddBeforeSelf(new XElement("tr", new XElement("th", "Documentation"), documentation));
+			addBefore.AddBeforeSelf(new XElement("tr", new XElement("th", ".NET framework"), BuildFramework()));
+			addBefore.AddBeforeSelf(new XElement("tr", new XElement("th", "Documentation"), BuildDocumentation()));
 
 			return table;
 		}
