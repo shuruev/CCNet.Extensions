@@ -7,6 +7,16 @@ namespace CCNet.Build.SetupProject
 	{
 		public static ArgumentProperties Current { get; set; }
 
+		public static ProjectType ProjectType
+		{
+			get { return Current.Get<ProjectType>("ProjectType"); }
+		}
+
+		public static string ProjectName
+		{
+			get { return Current.Get<string>("ProjectName"); }
+		}
+
 		public static string ProjectPath
 		{
 			get { return Current.Get<string>("ProjectPath"); }

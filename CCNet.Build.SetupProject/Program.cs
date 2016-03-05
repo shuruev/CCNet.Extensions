@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -33,7 +34,46 @@ namespace CCNet.Build.SetupProject
 
 		private static void SetupProject()
 		{
+			RenderLinks();
 			UpdateAssemblyInfo();
+		}
+
+		private static void RenderLinks()
+		{
+			List<dynamic> links;
+
+			switch (Args.ProjectType)
+			{
+				case ProjectType.Library:
+					links = BuildLinksLibrary();
+					break;
+
+				default:
+					throw new InvalidOperationException(
+						String.Format("Unknown project type '{0}'.", Args.ProjectType));
+			}
+
+			foreach (var link in links)
+			{
+				Console.WriteLine("[LINK] {0} | {1}", link.Url, link.Image);
+			}
+		}
+
+		private static List<dynamic> BuildLinksLibrary()
+		{
+			return new List<dynamic>
+			{
+				new
+				{
+					Url = String.Format("http://rufc-devbuild.cneu.cnwk/nuget/packages/{0}/", Args.ProjectName),
+					Image = "http://rufc-devbuild.cneu.cnwk/nuget/Content/Logos/nugetlogo.png"
+				},
+				new
+				{
+					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+library", Args.ProjectName),
+					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
+				}
+			};
 		}
 
 		private static void UpdateAssemblyInfo()
