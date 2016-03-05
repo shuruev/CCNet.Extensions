@@ -77,6 +77,13 @@ namespace CCNet.Build.SetupPackages
 				m_log[package.Name].BuildVersion = package.Version;
 			}
 
+			foreach (var item in m_log.Values)
+			{
+				if (item.BuildVersion == null)
+					throw new InvalidOperationException(
+						String.Format("Build version is missing for package '{0}'.", item.Name));
+			}
+
 			Console.WriteLine("OK");
 		}
 

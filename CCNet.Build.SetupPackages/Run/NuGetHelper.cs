@@ -70,7 +70,7 @@ namespace CCNet.Build.SetupPackages
 			Console.WriteLine("Restoring packages...");
 
 			Run(
-				@"restore ""{0}"" -PackagesDirectory ""{1}"" -Source ""{2}"" -NonInteractive -Verbosity Detailed",
+				@"restore ""{0}"" -PackagesDirectory ""{1}"" -Source ""{2};http://www.nuget.org/api/v2"" -NonInteractive -Verbosity Detailed",
 				Paths.PackagesConfig,
 				Args.PackagesPath,
 				Args.NuGetUrl);

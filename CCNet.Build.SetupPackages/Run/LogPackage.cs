@@ -46,6 +46,14 @@ namespace CCNet.Build.SetupPackages
 
 		public void Report()
 		{
+			if (SourceVersion == null)
+				throw new InvalidOperationException(
+					String.Format("Source version is missing for package '{0}'.", Name));
+
+			if (BuildVersion == null)
+				throw new InvalidOperationException(
+					String.Format("Build version is missing for package '{0}'.", Name));
+
 			Console.WriteLine(
 				"[PACKAGE] {0} | {1} | {2} | {3}",
 				Name,
