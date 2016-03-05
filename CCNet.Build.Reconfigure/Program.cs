@@ -82,7 +82,8 @@ namespace CCNet.Build.Reconfigure
 						Category = "ContentCast",
 						TfsPath = "$/Main/ContentCast/V3/V3.Storage",
 						Framework = TargetFramework.Net40,
-						CustomVersions = "mongocsharpdriver"
+						CustomVersions = "mongocsharpdriver",
+						OwnerEmail = "oleg.shuruev@cbsinteractive.com"
 					});
 
 				WriteLibraryProject(
@@ -278,6 +279,8 @@ namespace CCNet.Build.Reconfigure
 					{
 						writer.WriteElementString("executable", "$(ccnetBuildSetupProject)");
 						writer.WriteBuildArgs(
+							new Arg("ProjectName", project.Name),
+							new Arg("ProjectType", project.Type),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("CurrentVersion", "$[$CCNetLabel]"));
 
@@ -368,6 +371,17 @@ namespace CCNet.Build.Reconfigure
 								String.Format("Notify other projects (from {0} server)", server));
 						}
 					}
+
+					// xxx temporarily copy release back to RUFRT-VXBUILD
+					if (project.Name == "V3.Storage")
+					{
+						writer.CbTag(
+							"CopyFiles",
+							"from",
+							String.Format(@"$(projectsPath)\{0}\release\{0}.*", project.Name),
+							"to",
+							String.Format(@"\\rufrt-vxbuild.cneu.cnwk\InternalReferences\{0}\Latest\", project.Name));
+					}
 				}
 
 				using (writer.OpenTag("publishers"))
@@ -378,7 +392,12 @@ namespace CCNet.Build.Reconfigure
 					writer.Tag("artifactcleanup", "cleanUpMethod", "KeepLastXBuilds", "cleanUpValue", "100");
 					writer.Tag("artifactcleanup", "cleanUpMethod", "KeepMaximumXHistoryDataEntries", "cleanUpValue", "100");
 
-					//xxxCleanupLibraryProject(writer, project);
+					if (!String.IsNullOrEmpty(project.OwnerEmail))
+					{
+						writer.CbTag("EmailPublisher", "mailto", project.OwnerEmail);
+					}
+
+					CleanupLibraryProject(writer, project);
 				}
 			}
 		}

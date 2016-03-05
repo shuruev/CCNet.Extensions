@@ -9,6 +9,7 @@ namespace CCNet.Build.Reconfigure
 		public string Description { get; set; }
 		public string Category { get; set; }
 		public string TfsPath { get; set; }
+		public string OwnerEmail { get; set; }
 
 		public string UniqueName
 		{
