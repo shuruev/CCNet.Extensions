@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Policy;
 using CCNet.Build.Common;
 
 namespace CCNet.Build.Reconfigure
@@ -6,8 +7,8 @@ namespace CCNet.Build.Reconfigure
 	public class LibraryProjectConfiguration : ProjectConfiguration
 	{
 		public TargetFramework Framework { get; set; }
-
 		public DocumentationType Documentation { get; set; }
+		public string CustomVersions { get; set; }
 
 		public string MsbuildExecutable
 		{
@@ -24,6 +25,11 @@ namespace CCNet.Build.Reconfigure
 						throw new InvalidOperationException(String.Format("Unknown target framework '{0}'.", Framework));
 				}
 			}
+		}
+
+		public ProjectType Type
+		{
+			get { return ProjectType.Library; }
 		}
 
 		public string NugetRestoreUrl

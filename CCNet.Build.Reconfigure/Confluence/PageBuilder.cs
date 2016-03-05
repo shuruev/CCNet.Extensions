@@ -34,9 +34,6 @@ namespace CCNet.Build.Reconfigure
 			{
 				RebuildArea(area);
 			}
-
-			Console.WriteLine("Done.");
-			Console.ReadKey();
 		}
 
 		private void RebuildArea(PageSummary area)

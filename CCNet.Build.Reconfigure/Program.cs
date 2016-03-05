@@ -1,13 +1,9 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Text;
 using System.Xml;
-using System.Xml.Linq;
-using System.Xml.XPath;
 using CCNet.Build.Common;
 using CCNet.Build.Confluence;
+using Arg = System.Tuple<string, object>;
 
 namespace CCNet.Build.Reconfigure
 {
@@ -40,9 +36,16 @@ namespace CCNet.Build.Reconfigure
 		{
 			var client = new ConfluenceClient(Config.ConfluenceUsername, Config.ConfluencePassword);
 			var builder = new PageBuilder(client);
-			builder.Rebuild("CCSSEDRU", "Projects");
 
-			//BuildLibraryConfig();
+			using (Execute.Step("REBUILD PAGES"))
+			{
+				builder.Rebuild("CCSSEDRU", "Projects");
+			}
+
+			using (Execute.Step("UPDATE CONFIG"))
+			{
+				BuildLibraryConfig();
+			}
 		}
 
 		private static XmlWriter WriteConfig(string filePath)
@@ -78,7 +81,8 @@ namespace CCNet.Build.Reconfigure
 						Description = "Client library and value templates for V3 storage",
 						Category = "ContentCast",
 						TfsPath = "$/Main/ContentCast/V3/V3.Storage",
-						Framework = TargetFramework.Net45
+						Framework = TargetFramework.Net40,
+						CustomVersions = "mongocsharpdriver"
 					});
 
 				WriteLibraryProject(
@@ -273,14 +277,9 @@ namespace CCNet.Build.Reconfigure
 					using (writer.OpenTag("exec"))
 					{
 						writer.WriteElementString("executable", "$(ccnetBuildSetupProject)");
-						writer.WriteElementString(
-							"buildArgs",
-							String.Format(
-								@"
-					""ProjectPath={0}""
-					""CurrentVersion=$[$CCNetLabel]""
-				",
-								project.WorkingDirectorySource));
+						writer.WriteBuildArgs(
+							new Arg("ProjectPath", project.WorkingDirectorySource),
+							new Arg("CurrentVersion", "$[$CCNetLabel]"));
 
 						writer.WriteElementString("description", "Setup project");
 					}
@@ -288,22 +287,14 @@ namespace CCNet.Build.Reconfigure
 					using (writer.OpenTag("exec"))
 					{
 						writer.WriteElementString("executable", "$(ccnetBuildSetupPackages)");
-						writer.WriteElementString(
-							"buildArgs",
-							String.Format(
-								@"
-					""ProjectName={0}""
-					""ProjectPath={1}""
-					""PackagesPath={2}""
-					""ReferencesPath={3}""
-					""NuGetExecutable=$(nugetExecutable)""
-					""NuGetUrl={4}""
-				",
-								project.Name,
-								project.WorkingDirectorySource,
-								project.WorkingDirectoryPackages,
-								project.WorkingDirectoryReferences,
-								project.NugetRestoreUrl));
+						writer.WriteBuildArgs(
+							new Arg("ProjectName", project.Name),
+							new Arg("ProjectPath", project.WorkingDirectorySource),
+							new Arg("PackagesPath", project.WorkingDirectoryPackages),
+							new Arg("ReferencesPath", project.WorkingDirectoryReferences),
+							new Arg(project.CustomVersions == null ? null : "CustomVersions", project.CustomVersions),
+							new Arg("NuGetExecutable", "$(nugetExecutable)"),
+							new Arg("NuGetUrl", project.NugetRestoreUrl));
 
 						writer.WriteElementString("description", "Setup packages");
 					}
@@ -320,26 +311,16 @@ namespace CCNet.Build.Reconfigure
 					using (writer.OpenTag("exec"))
 					{
 						writer.WriteElementString("executable", "$(ccnetBuildGenerateNuspec)");
-						writer.WriteElementString(
-							"buildArgs",
-							String.Format(
-								@"
-					""PackageType=Library""
-					""ProjectName={0}""
-					""ProjectDescription={1}""
-					""CompanyName=CNET Content Solutions""
-					""CurrentVersion=$[$CCNetLabel]""
-					""TargetFramework={2}""
-					""SummaryFile={3}\summary.txt""
-					""OutputDirectory={4}""
-					""IncludeXmlDocumentation={5}""
-				",
-								project.Name,
-								project.Description,
-								project.Framework,
-								project.WorkingDirectoryPackages,
-								project.WorkingDirectoryNuget,
-								project.IncludeXmlDocumentation));
+						writer.WriteBuildArgs(
+							new Arg("ProjectType", project.Type),
+							new Arg("ProjectName", project.Name),
+							new Arg("ProjectDescription", project.Description),
+							new Arg("CompanyName", "CNET Content Solutions"),
+							new Arg("CurrentVersion", "$[$CCNetLabel]"),
+							new Arg("TargetFramework", project.Framework),
+							new Arg("SummaryFile", project.WorkingFileSummary),
+							new Arg("OutputDirectory", project.WorkingDirectoryNuget),
+							new Arg("IncludeXmlDocumentation", project.IncludeXmlDocumentation));
 
 						writer.WriteElementString("description", "Generate nuspec file");
 					}
@@ -371,24 +352,21 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString("description", "Publish package");
 					}
 
-					using (writer.OpenTag("exec"))
+					foreach (var server in new[] { "Library" })
 					{
-						writer.WriteElementString("executable", "$(ccnetBuildNotifyProjects)");
-						writer.WriteElementString(
-							"buildArgs",
-							String.Format(
-								@"
-					""ProjectName={0}""
-					""ServerName={1}""
-					""ProjectsPath=$(buildPath)\Projects-{1}""
-					""ReferencesFolder=references""
-				",
-								project.Name,
-								"Library"));
+						using (writer.OpenTag("exec"))
+						{
+							writer.WriteElementString("executable", "$(ccnetBuildNotifyProjects)");
+							writer.WriteBuildArgs(
+								new Arg("ProjectName", project.Name),
+								new Arg("ServerName", server),
+								new Arg("ProjectsPath", String.Format(@"$(buildPath)\Projects-{0}",server)),
+								new Arg("ReferencesFolder", "references"));
 
-						writer.WriteElementString(
-							"description",
-							String.Format("Notify other projects (from {0} server)", "Library"));
+							writer.WriteElementString(
+								"description",
+								String.Format("Notify other projects (from {0} server)", server));
+						}
 					}
 				}
 
@@ -400,7 +378,7 @@ namespace CCNet.Build.Reconfigure
 					writer.Tag("artifactcleanup", "cleanUpMethod", "KeepLastXBuilds", "cleanUpValue", "100");
 					writer.Tag("artifactcleanup", "cleanUpMethod", "KeepMaximumXHistoryDataEntries", "cleanUpValue", "100");
 
-					CleanupLibraryProject(writer, project);
+					//xxxCleanupLibraryProject(writer, project);
 				}
 			}
 		}

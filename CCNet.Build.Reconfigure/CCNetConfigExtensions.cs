@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Text;
 using System.Xml;
 
 namespace CCNet.Build.Reconfigure
@@ -66,6 +68,34 @@ namespace CCNet.Build.Reconfigure
 		{
 			writer.StartTag(null, tagName, attributesAndValues);
 			writer.WriteEndElement();
+		}
+
+		public static void WriteBuildArgs(this XmlWriter writer, params Tuple<string, object>[] arguments)
+		{
+			if (arguments.Length == 0)
+				throw new ArgumentException("Arguments are missing.");
+
+			var sb = new StringBuilder();
+
+			for (int i = 0; i < arguments.Length; i++)
+			{
+				var arg = arguments[i];
+				if (arg.Item1 == null)
+					continue;
+
+				if (arg.Item1.Length == 0)
+					throw new ArgumentException("Empty argument name.");
+
+				sb.AppendFormat("\r\n\t\t\t\t\t\"{0}={{{1}}}\"", arg.Item1, i);
+			}
+
+			if (sb.Length == 0)
+				throw new ArgumentException("Arguments are missing.");
+
+			sb.Append("\r\n\t\t\t\t");
+
+			var value = String.Format(sb.ToString(), arguments.Select(a => a.Item2).ToArray());
+			writer.WriteElementString("buildArgs", value);
 		}
 	}
 }
