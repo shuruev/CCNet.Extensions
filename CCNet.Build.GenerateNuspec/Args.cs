@@ -7,9 +7,9 @@ namespace CCNet.Build.GenerateNuspec
 	{
 		public static ArgumentProperties Current { get; set; }
 
-		public static PackageType PackageType
+		public static ProjectType ProjectType
 		{
-			get { return Current.Get<PackageType>("PackageType"); }
+			get { return Current.Get<ProjectType>("ProjectType"); }
 		}
 
 		public static string ProjectName

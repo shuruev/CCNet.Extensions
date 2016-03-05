@@ -33,15 +33,15 @@ namespace CCNet.Build.GenerateNuspec
 
 		private static void GenerateNuspec()
 		{
-			switch (Args.PackageType)
+			switch (Args.ProjectType)
 			{
-				case PackageType.Library:
+				case ProjectType.Library:
 					GenerateNuspecLibrary();
 					break;
 
 				default:
 					throw new InvalidOperationException(
-						String.Format("Unknown package type '{0}'.", Args.PackageType));
+						String.Format("Unknown project type '{0}'.", Args.ProjectType));
 			}
 		}
 
