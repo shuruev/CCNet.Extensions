@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 using CCNet.Build.Common;
 using CCNet.Build.Confluence;
 using CCNet.Build.Tfs;
@@ -13,6 +16,7 @@ namespace CCNet.Build.Reconfigure
 		private readonly TfsClient m_tfs;
 
 		private Dictionary<long, List<PageSummary>> m_children;
+		private List<IProjectPage> m_pages;
 
 		public PageBuilder(ConfluenceClient confluence, TfsClient tfs)
 		{
@@ -35,14 +39,69 @@ namespace CCNet.Build.Reconfigure
 
 			m_children = tree.GroupBy(p => p.ParentId).ToDictionary(g => g.Key, g => g.ToList());
 
+			var result = new ConcurrentBag<IProjectPage>();
+
 			var areas = m_children[root.Id];
-			foreach (var area in areas.AsParallel())
+			Parallel.ForEach(areas, area =>
 			{
-				RebuildArea(area);
+				var pages = RebuildArea(area);
+				foreach (var page in pages)
+				{
+					result.Add(page);
+				}
+			});
+
+			var updated = UpdateSummaryPage(result, root);
+			if (updated)
+			{
+				Console.WriteLine("Rebuild projects summary ... UPDATED");
 			}
+			else
+			{
+				Console.WriteLine("Rebuild projects summary ... not changed");
+			}
+
+			m_pages = result.ToList();
 		}
 
-		private void RebuildArea(PageSummary area)
+		private bool UpdateSummaryPage(IEnumerable<IProjectPage> pages, Page existing)
+		{
+			var updated = new PageDocument();
+
+			var tbody = new XElement(
+				"tbody",
+				new XElement(
+					"tr",
+					new XElement("th", "Area"),
+					new XElement("th", "Project"),
+					new XElement("th", ".NET"),
+					new XElement("th", "Owner"),
+					new XElement("th", "Status")));
+
+			foreach (var page in pages)
+			{
+				tbody.Add(page.RenderSummaryRow(false));
+			}
+
+			updated.Root.Add(
+				new XElement(
+					"table",
+					tbody));
+
+			var content = updated.Render();
+
+			var before = NormalizeForComparison(existing.Content);
+			var after = NormalizeForComparison(content);
+
+			if (after == before)
+				return false;
+
+			existing.Content = content;
+			m_confluence.UpdatePage(existing);
+			return true;
+		}
+
+		private List<IProjectPage> RebuildArea(PageSummary area)
 		{
 			var areaName = ResolveAreaName(area.Name);
 
@@ -61,11 +120,63 @@ namespace CCNet.Build.Reconfigure
 					String.Format("Unknown area name '{0}'.", area.Name));
 			}
 
+			var result = new ConcurrentBag<IProjectPage>();
+
 			var projects = m_children[area.Id];
-			foreach (var project in projects.AsParallel())
+			Parallel.ForEach(projects, project =>
 			{
-				RebuildProject(areaName, project);
+				var page = RebuildProject(areaName, project);
+				result.Add(page);
+			});
+
+			var updated = UpdateAreaPage(result, area.Id);
+			if (updated)
+			{
+				Console.WriteLine("Rebuild [{0}] area summary ... UPDATED", areaName);
 			}
+			else
+			{
+				Console.WriteLine("Rebuild [{0}] area summary ... not changed", areaName);
+			}
+
+			return result.ToList();
+		}
+
+		private bool UpdateAreaPage(IEnumerable<IProjectPage> pages, long pageId)
+		{
+			var updated = new PageDocument();
+
+			var tbody = new XElement(
+				"tbody",
+				new XElement(
+					"tr",
+					new XElement("th", "Project"),
+					new XElement("th", ".NET"),
+					new XElement("th", "Owner"),
+					new XElement("th", "Status")));
+
+			foreach (var page in pages.OrderBy(p => p.OrderKey))
+			{
+				tbody.Add(page.RenderSummaryRow(true));
+			}
+
+			updated.Root.Add(
+				new XElement(
+					"table",
+					tbody));
+
+			var content = updated.Render();
+			var existing = m_confluence.GetPage(pageId);
+
+			var before = NormalizeForComparison(existing.Content);
+			var after = NormalizeForComparison(content);
+
+			if (after == before)
+				return false;
+
+			existing.Content = content;
+			m_confluence.UpdatePage(existing);
+			return true;
 		}
 
 		private static string ResolveAreaName(string pageName)
@@ -89,31 +200,31 @@ namespace CCNet.Build.Reconfigure
 			return name;
 		}
 
-		private void RebuildProject(string areaName, PageSummary project)
+		private IProjectPage RebuildProject(string areaName, PageSummary project)
 		{
 			Console.WriteLine("Processing page '{0} / {1}'...", areaName, project.Name);
 
-			PageType pageType;
-			var projectName = ResolveProjectName(project.Name, out pageType);
+			ProjectType projectType;
+			var projectName = ResolveProjectName(project.Name, out projectType);
 
-			var page = m_confluence.GetPage(project.Id);
-			var document = new PageDocument(page.Content);
+			var existing = m_confluence.GetPage(project.Id);
+			var document = new PageDocument(existing.Content);
 
-			IPageBuilder builder;
+			IProjectPage page;
 			try
 			{
-				switch (pageType)
+				switch (projectType)
 				{
-					case PageType.Library:
-						builder = new ProjectPage<LibraryProjectProperties>(projectName, document);
+					case ProjectType.Library:
+						page = new LibraryProjectPage(areaName, projectName, project.Name, document);
 						break;
 
 					default:
 						throw new InvalidOperationException(
-							String.Format("Unknown how to process pages of type '{0}'.", pageType));
+							String.Format("Unknown how to process project type '{0}'.", projectType));
 				}
 
-				builder.CheckPage(areaName, m_tfs);
+				page.CheckPage(m_tfs);
 			}
 			catch (Exception e)
 			{
@@ -122,25 +233,36 @@ namespace CCNet.Build.Reconfigure
 					e);
 			}
 
-			var updated = builder.BuildPage();
-			var content = updated.Render();
-
-			var before = NormalizeForComparison(page.Content);
-			var after = NormalizeForComparison(content);
-
-			if (after == before)
+			var updated = UpdateProjectPage(page, existing);
+			if (updated)
 			{
-				Console.WriteLine("[{0}] {1} #{2}... not changed", areaName, projectName, pageType.ToString().ToLowerInvariant());
+				Console.WriteLine("[{0}] {1} #{2}... UPDATED", areaName, projectName, projectType.ToString().ToLowerInvariant());
 			}
 			else
 			{
-				page.Content = content;
-				m_confluence.UpdatePage(page);
-				Console.WriteLine("[{0}] {1} #{2}... UPDATED", areaName, projectName, pageType.ToString().ToLowerInvariant());
+				Console.WriteLine("[{0}] {1} #{2}... not changed", areaName, projectName, projectType.ToString().ToLowerInvariant());
 			}
+
+			return page;
 		}
 
-		private static string ResolveProjectName(string pageName, out PageType pageType)
+		private bool UpdateProjectPage(IProjectPage page, Page existing)
+		{
+			var updated = page.RenderPage();
+			var content = updated.Render();
+
+			var before = NormalizeForComparison(existing.Content);
+			var after = NormalizeForComparison(content);
+
+			if (after == before)
+				return false;
+
+			existing.Content = content;
+			m_confluence.UpdatePage(existing);
+			return true;
+		}
+
+		private static string ResolveProjectName(string pageName, out ProjectType projectType)
 		{
 			if (pageName != pageName.AsciiOnly('.', ' ').CleanWhitespaces())
 				throw new ArgumentException(
@@ -157,12 +279,12 @@ namespace CCNet.Build.Reconfigure
 			switch (type)
 			{
 				case "library":
-					pageType = PageType.Library;
+					projectType = ProjectType.Library;
 					break;
 
 				default:
 					throw new InvalidOperationException(
-						String.Format("Unknown page type '{0}'.", type));
+						String.Format("Unknown project type '{0}'.", type));
 			}
 
 			return name;

@@ -57,18 +57,18 @@
   <ItemGroup>
     <Compile Include="Args.cs" />
     <Compile Include="Configuration\AssemblyProjectConfiguration.cs" />
-    <Compile Include="Confluence\IPageBuilder.cs" />
-    <Compile Include="Confluence\AssemblyProjectProperties.cs" />
+    <Compile Include="Confluence\IProjectPage.cs" />
+    <Compile Include="Confluence\Pages\LibraryProjectPage.cs" />
     <Compile Include="Confluence\PageBuilder.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Confluence\LibraryProjectProperties.cs" />
-    <Compile Include="Confluence\ProjectProperties.cs" />
+    <Compile Include="Confluence\Pages\BasicProjectPage.cs" />
+    <Compile Include="Confluence\ProjectPage.Build.cs" />
+    <Compile Include="Confluence\ProjectPage.Parse.cs" />
     <Compile Include="Confluence\ProjectPage.cs" />
     <Compile Include="Paths.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Configuration\LibraryProjectConfiguration.cs" />
     <Compile Include="Configuration\ProjectConfiguration.cs" />
-    <Compile Include="Confluence\PageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configuration\CCNetConfigExtensions.cs" />
   </ItemGroup>
@@ -101,6 +101,9 @@
       <Project>{9671226B-2538-4E31-8929-BDA21D63E649}</Project>
       <Name>CCNet.Build.Tfs</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Configuration\Settings\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />

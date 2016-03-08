@@ -140,15 +140,15 @@ namespace CCNet.Build.Confluence
 		/// <summary>
 		/// Builds "Page link" block.
 		/// </summary>
-		public static XElement BuildPageLink(string pageTitle, string anchor, string linkText)
+		public static XElement BuildPageLink(string pageTitle, string linkText = null, string anchor = null)
 		{
 			return Element(
 				"ac:link",
-				Attribute("ac:anchor", anchor),
+				String.IsNullOrEmpty(anchor) ? null : Attribute("ac:anchor", anchor),
 				Element(
 					"ri:page",
 					Attribute("ri:content-title", pageTitle)),
-				Element("ac:plain-text-link-body", new XCData(linkText)));
+					String.IsNullOrEmpty(linkText) ? null : Element("ac:plain-text-link-body", new XCData(linkText)));
 		}
 
 		/// <summary>

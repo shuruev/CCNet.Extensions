@@ -7,7 +7,7 @@ namespace CCNet.Build.SetupProject
 		static Config()
 		{
 			var config = new AppConfigReader();
-			NuGetUrl = config.Get<string>("NuGetDb.Url");
+			NuGetUrl = config.Get<string>("NuGet.Url");
 		}
 
 		public static string NuGetUrl { get; private set; }
