@@ -11,6 +11,7 @@
     <AssemblyName>CCNet.Build.Reconfigure</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -42,6 +43,8 @@
       <HintPath>..\packages\Lean.Configuration.1.3.0\lib\net40\Lean.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Client, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.TeamFoundation.VersionControl.Client, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -53,21 +56,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Args.cs" />
+    <Compile Include="Configuration\AssemblyProjectConfiguration.cs" />
     <Compile Include="Confluence\IPageBuilder.cs" />
+    <Compile Include="Confluence\AssemblyProjectProperties.cs" />
     <Compile Include="Confluence\PageBuilder.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Confluence\LibraryProjectProperties.cs" />
     <Compile Include="Confluence\ProjectProperties.cs" />
     <Compile Include="Confluence\ProjectPage.cs" />
-    <Compile Include="ProjectStatus.cs" />
     <Compile Include="Paths.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="LibraryProjectConfiguration.cs" />
-    <Compile Include="ProjectConfiguration.cs" />
+    <Compile Include="Configuration\LibraryProjectConfiguration.cs" />
+    <Compile Include="Configuration\ProjectConfiguration.cs" />
     <Compile Include="Confluence\PageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CCNetConfigExtensions.cs" />
-    <Compile Include="DocumentationType.cs" />
+    <Compile Include="Configuration\CCNetConfigExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -93,6 +96,10 @@
     <ProjectReference Include="..\CCNet.Build.Confluence\CCNet.Build.Confluence.csproj">
       <Project>{F358AC40-46C8-4521-B3CA-1E39C27D509C}</Project>
       <Name>CCNet.Build.Confluence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CCNet.Build.Tfs\CCNet.Build.Tfs.csproj">
+      <Project>{9671226B-2538-4E31-8929-BDA21D63E649}</Project>
+      <Name>CCNet.Build.Tfs</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

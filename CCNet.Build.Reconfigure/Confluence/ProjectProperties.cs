@@ -7,12 +7,16 @@ using CCNet.Build.Confluence;
 
 namespace CCNet.Build.Reconfigure
 {
-	public class ProjectProperties
+	public abstract class ProjectProperties
 	{
+		public abstract ProjectType Type { get; }
+
 		public string Description { get; set; }
 		public string TfsPath { get; set; }
 		public string Owner { get; set; }
 		public ProjectStatus Status { get; set; }
+
+		public Guid ProjectUid { get; set; }
 
 		public virtual void ParseTable(Dictionary<string, string> properties)
 		{
@@ -92,7 +96,7 @@ namespace CCNet.Build.Reconfigure
 				throw new ArgumentException(
 					String.Format("TFS path '{0}' does not look well-formed.", path));
 
-			return path;
+			return path.TrimEnd('/');
 		}
 
 		private static string ExtractOwner(Dictionary<string, string> properties)
@@ -117,7 +121,23 @@ namespace CCNet.Build.Reconfigure
 
 		private XElement BuildTfsPath()
 		{
-			return new XElement("td", new XElement("code").XValue(TfsPath));
+			if (ProjectUid == Guid.Empty)
+				return new XElement("td", new XElement("code").XValue(TfsPath));
+
+			return new XElement(
+				"td",
+				new XElement("code").XValue(TfsPath),
+				new XElement("br"),
+				new XElement(
+					"sup",
+					new XElement(
+						"sub",
+						new XElement(
+							"code",
+							new XElement(
+								"span",
+								new XAttribute("style", "color: rgb(153,153,153);"),
+								ProjectUid.ToString().ToUpperInvariant())))));
 		}
 
 		private XElement BuildStatus()

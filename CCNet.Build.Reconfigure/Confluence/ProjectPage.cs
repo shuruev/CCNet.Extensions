@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using CCNet.Build.Common;
 using CCNet.Build.Confluence;
+using CCNet.Build.Tfs;
 
 namespace CCNet.Build.Reconfigure
 {
@@ -37,6 +39,15 @@ namespace CCNet.Build.Reconfigure
 			About = ExtractAbout(page);
 		}
 
+		public virtual string ProjectFile
+		{
+			get
+			{
+				var fileName = String.Format("{0}.csproj", ProjectName);
+				return String.Format("{0}/{1}", Properties.TfsPath, fileName);
+			}
+		}
+
 		private static Dictionary<string, string> ExtractProperties(XElement page)
 		{
 			var table = page.XElement("table");
@@ -55,6 +66,10 @@ namespace CCNet.Build.Reconfigure
 
 				var key = th.XValue();
 				var value = td.XValue();
+
+				var code = td.XElement("code");
+				if (code != null)
+					value = code.XValue();
 
 				var status = td.XElement("ac:structured-macro[@ac:name='status']/ac:parameter[@ac:name='title']");
 				if (status != null)
@@ -134,15 +149,15 @@ namespace CCNet.Build.Reconfigure
 					"p",
 					new XElement(
 						"a",
-						new XAttribute("href", String.Format("http://rufc-devbuild.cneu.cnwk/nuget/packages/{0}/", ProjectName)),
-						PageDocument.BuildImage("http://rufc-devbuild.cneu.cnwk/nuget/favicon.ico"),
+						new XAttribute("href", String.Format("{0}/packages/{1}/", Config.NuGetUrl, ProjectName)),
+						PageDocument.BuildImage(String.Format("{0}/favicon.ico", Config.NuGetUrl)),
 						"$nbsp$NuGet package")),
 				new XElement(
 					"p",
 					new XElement(
 						"a",
-						new XAttribute("href", String.Format("http://rufc-devbuild.cneu.cnwk/ccnet/server/Library/project/{0}/ViewProjectReport.aspx", ProjectName)),
-						PageDocument.BuildImage("http://rufc-devbuild.cneu.cnwk/ccnet/favicon.ico"),
+						new XAttribute("href", String.Format("{0}/server/{1}/project/{2}/ViewProjectReport.aspx", Config.CCNetUrl, Properties.Type, ProjectName)),
+						PageDocument.BuildImage(String.Format("{0}/favicon.ico", Config.CCNetUrl)),
 						String.Empty,
 						"$nbsp$Build project")));
 		}
@@ -232,6 +247,25 @@ namespace CCNet.Build.Reconfigure
 			page.Root.Add(more);
 
 			return page;
+		}
+
+		public void CheckPage(string areaName, TfsClient client)
+		{
+			var path = Properties.TfsPath;
+
+			if (!path.Contains(String.Format("/{0}/", areaName)))
+				throw new InvalidOperationException(
+					String.Format("TFS path '{0}' seems not conforming with area name '{1}'.", path, areaName));
+
+			if (!path.EndsWith(String.Format("/{0}", ProjectName)))
+				throw new InvalidOperationException(
+					String.Format("TFS path '{0}' seems not conforming with project name '{1}'.", path, ProjectName));
+
+			var xml = client.ReadFile(ProjectFile);
+			var project = new ProjectDocument();
+			project.Load(xml);
+
+			Properties.ProjectUid = project.GetProjectGuid();
 		}
 	}
 }

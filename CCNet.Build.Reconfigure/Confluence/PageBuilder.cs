@@ -3,28 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using CCNet.Build.Common;
 using CCNet.Build.Confluence;
+using CCNet.Build.Tfs;
 
 namespace CCNet.Build.Reconfigure
 {
 	public class PageBuilder
 	{
-		private readonly ConfluenceClient m_client;
+		private readonly ConfluenceClient m_confluence;
+		private readonly TfsClient m_tfs;
 
 		private Dictionary<long, List<PageSummary>> m_children;
 
-		public PageBuilder(ConfluenceClient client)
+		public PageBuilder(ConfluenceClient confluence, TfsClient tfs)
 		{
-			if (client == null)
-				throw new ArgumentNullException("client");
+			if (confluence == null)
+				throw new ArgumentNullException("confluence");
 
-			m_client = client;
+			if (tfs == null)
+				throw new ArgumentNullException("tfs");
+
+			m_confluence = confluence;
+			m_tfs = tfs;
 		}
 
 		public void Rebuild(string spaceCode, string pageName)
 		{
 			Console.Write("Reading projects page and subtree... ");
-			var root = m_client.GetPage(spaceCode, pageName);
-			var tree = m_client.GetSubtree(root.Id);
+			var root = m_confluence.GetPage(spaceCode, pageName);
+			var tree = m_confluence.GetSubtree(root.Id);
 			Console.WriteLine("OK");
 
 			m_children = tree.GroupBy(p => p.ParentId).ToDictionary(g => g.Key, g => g.ToList());
@@ -90,7 +96,7 @@ namespace CCNet.Build.Reconfigure
 			PageType pageType;
 			var projectName = ResolveProjectName(project.Name, out pageType);
 
-			var page = m_client.GetPage(project.Id);
+			var page = m_confluence.GetPage(project.Id);
 			var document = new PageDocument(page.Content);
 
 			IPageBuilder builder;
@@ -106,6 +112,8 @@ namespace CCNet.Build.Reconfigure
 						throw new InvalidOperationException(
 							String.Format("Unknown how to process pages of type '{0}'.", pageType));
 				}
+
+				builder.CheckPage(areaName, m_tfs);
 			}
 			catch (Exception e)
 			{
@@ -127,7 +135,7 @@ namespace CCNet.Build.Reconfigure
 			else
 			{
 				page.Content = content;
-				m_client.UpdatePage(page);
+				m_confluence.UpdatePage(page);
 				Console.WriteLine("[{0}] {1} #{2}... UPDATED", areaName, projectName, pageType.ToString().ToLowerInvariant());
 			}
 		}

@@ -3,6 +3,7 @@ using System.Text;
 using System.Xml;
 using CCNet.Build.Common;
 using CCNet.Build.Confluence;
+using CCNet.Build.Tfs;
 using Arg = System.Tuple<string, object>;
 
 namespace CCNet.Build.Reconfigure
@@ -34,8 +35,9 @@ namespace CCNet.Build.Reconfigure
 
 		private static void Reconfigure()
 		{
-			var client = new ConfluenceClient(Config.ConfluenceUsername, Config.ConfluencePassword);
-			var builder = new PageBuilder(client);
+			var confluence = new ConfluenceClient(Config.ConfluenceUsername, Config.ConfluencePassword);
+			var tfs = new TfsClient(Config.TfsUrl);
+			var builder = new PageBuilder(confluence, tfs);
 
 			using (Execute.Step("REBUILD PAGES"))
 			{
@@ -363,7 +365,7 @@ namespace CCNet.Build.Reconfigure
 							writer.WriteBuildArgs(
 								new Arg("ProjectName", project.Name),
 								new Arg("ServerName", server),
-								new Arg("ProjectsPath", String.Format(@"$(buildPath)\Projects-{0}",server)),
+								new Arg("ProjectsPath", String.Format(@"$(buildPath)\Projects-{0}", server)),
 								new Arg("ReferencesFolder", "references"));
 
 							writer.WriteElementString(
