@@ -65,8 +65,8 @@ namespace CCNet.Build.SetupProject
 			{
 				new
 				{
-					Url = String.Format("http://rufc-devbuild.cneu.cnwk/nuget/packages/{0}/", Args.ProjectName),
-					Image = "http://rufc-devbuild.cneu.cnwk/nuget/Content/Logos/nugetlogo.png"
+					Url = String.Format("{0}/packages/{1}/", Config.NuGetUrl, Args.ProjectName),
+					Image = String.Format("{0}/Content/Logos/nugetlogo.png", Config.NuGetUrl)
 				},
 				new
 				{
