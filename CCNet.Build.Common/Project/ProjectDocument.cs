@@ -13,23 +13,53 @@ namespace CCNet.Build.Common
 	/// </summary>
 	public class ProjectDocument
 	{
-		private readonly string m_projectFile;
-		private readonly XmlNamespaceManager m_namespaces;
+		private static readonly XNamespace s_ns;
+		private static readonly XmlNamespaceManager s_namespaces;
 
+		private readonly string m_projectFile;
 		private XDocument m_document;
+
+		static ProjectDocument()
+		{
+			s_ns = "http://schemas.microsoft.com/developer/msbuild/2003";
+			s_namespaces = new XmlNamespaceManager(new NameTable());
+			s_namespaces.AddNamespace("ms", s_ns.NamespaceName);
+		}
+
+		/// <summary>
+		/// Initializes a new instance.
+		/// </summary>
+		public ProjectDocument()
+		{
+		}
 
 		/// <summary>
 		/// Initializes a new instance.
 		/// </summary>
 		public ProjectDocument(string projectFile)
+			: this()
 		{
 			if (String.IsNullOrEmpty(projectFile))
 				throw new ArgumentNullException("projectFile");
 
 			m_projectFile = projectFile;
+		}
 
-			m_namespaces = new XmlNamespaceManager(new NameTable());
-			m_namespaces.AddNamespace("ms", "http://schemas.microsoft.com/developer/msbuild/2003");
+		/// <summary>
+		/// Gets standard namespace for a project XML document.
+		/// </summary>
+		public static XNamespace Ns
+		{
+			get { return s_ns; }
+		}
+
+		/// <summary>
+		/// Ensures project is associated with local file.
+		/// </summary>
+		private void EnsureLocal()
+		{
+			if (String.IsNullOrEmpty(m_projectFile))
+				throw new InvalidOperationException("Project is not associated with local file.");
 		}
 
 		/// <summary>
@@ -46,7 +76,17 @@ namespace CCNet.Build.Common
 		/// </summary>
 		public void Load()
 		{
+			EnsureLocal();
+
 			string xml = File.ReadAllText(m_projectFile);
+			Load(xml);
+		}
+
+		/// <summary>
+		/// Loads project file from external XML data.
+		/// </summary>
+		public void Load(string xml)
+		{
 			m_document = XDocument.Parse(xml);
 		}
 
@@ -55,7 +95,9 @@ namespace CCNet.Build.Common
 		/// </summary>
 		public void Save()
 		{
+			EnsureLocal();
 			EnsureLoaded();
+
 			m_document.Save(m_projectFile);
 		}
 
@@ -65,7 +107,7 @@ namespace CCNet.Build.Common
 		private XElement SelectElement(string xpath)
 		{
 			EnsureLoaded();
-			return m_document.XPathSelectElement(xpath, m_namespaces);
+			return m_document.XPathSelectElement(xpath, s_namespaces);
 		}
 
 		/// <summary>
@@ -74,7 +116,7 @@ namespace CCNet.Build.Common
 		private IEnumerable<XElement> SelectElements(string xpath)
 		{
 			EnsureLoaded();
-			return m_document.XPathSelectElements(xpath, m_namespaces);
+			return m_document.XPathSelectElements(xpath, s_namespaces);
 		}
 
 		/// <summary>
@@ -85,6 +127,15 @@ namespace CCNet.Build.Common
 			return SelectElements("/ms:Project/ms:ItemGroup/ms:Reference")
 				.Select(e => new BinaryReference(e))
 				.ToList();
+		}
+
+		/// <summary>
+		/// Gets unique project ID.
+		/// </summary>
+		public Guid GetProjectGuid()
+		{
+			var guid = SelectElement("/ms:Project/ms:PropertyGroup/ms:ProjectGuid");
+			return new Guid(guid.Value);
 		}
 	}
 }

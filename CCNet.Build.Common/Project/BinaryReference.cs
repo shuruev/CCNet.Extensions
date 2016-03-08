@@ -46,7 +46,7 @@ namespace CCNet.Build.Common
 		{
 			get
 			{
-				var hint = m_element.Element(m_ns + "HintPath");
+				var hint = m_element.Element(Ns + "HintPath");
 				if (hint == null)
 					return null;
 
@@ -93,7 +93,7 @@ namespace CCNet.Build.Common
 			var include = m_element.Attribute("Include");
 			include.Value = include.Value.Replace(oldValue, newValue);
 
-			var hint = m_element.Element(m_ns + "HintPath");
+			var hint = m_element.Element(Ns + "HintPath");
 			if (hint != null)
 			{
 				oldValue = String.Format(@"\\{0}\.[0-9\.?]+\\", Name);
@@ -103,26 +103,6 @@ namespace CCNet.Build.Common
 			}
 
 			Reload();
-		}
-
-		/// <summary>
-		/// Tries to get assembly version not only from version attribute, but also from hint path.
-		/// </summary>
-		public Version GetVersion()
-		{
-			if (Version != null)
-				return Version;
-
-			if (HintPath == null)
-				return null;
-
-			var regex = new Regex(String.Format(@"\\{0}\.([0-9\.?]+)\\", Name));
-			if (!regex.IsMatch(HintPath))
-				return null;
-
-			var match = regex.Match(HintPath);
-			var value = match.Groups[1].Value;
-			return new Version(value);
 		}
 	}
 }

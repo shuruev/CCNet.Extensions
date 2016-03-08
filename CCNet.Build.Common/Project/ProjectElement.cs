@@ -9,11 +9,6 @@ namespace CCNet.Build.Common
 	public abstract class ProjectElement
 	{
 		/// <summary>
-		/// Standard namespace for a project XML document.
-		/// </summary>
-		protected readonly XNamespace m_ns;
-
-		/// <summary>
 		/// Current XML element.
 		/// </summary>
 		protected readonly XElement m_element;
@@ -23,14 +18,20 @@ namespace CCNet.Build.Common
 		/// </summary>
 		protected ProjectElement(XElement element)
 		{
-			m_ns = "http://schemas.microsoft.com/developer/msbuild/2003";
-
 			if (element == null)
 				throw new ArgumentNullException("element");
 
 			m_element = element;
 
 			Reload();
+		}
+
+		/// <summary>
+		/// Gets standard namespace for a project XML document.
+		/// </summary>
+		public static XNamespace Ns
+		{
+			get { return ProjectDocument.Ns; }
 		}
 
 		/// <summary>

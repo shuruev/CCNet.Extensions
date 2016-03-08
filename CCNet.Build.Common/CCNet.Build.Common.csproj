@@ -47,17 +47,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentProperties.cs" />
+    <Compile Include="Enums\DocumentationType.cs" />
+    <Compile Include="Enums\ProjectStatus.cs" />
     <Compile Include="Execute.Run.cs" />
     <Compile Include="Execute.Step.cs" />
     <Compile Include="Execute.cs" />
-    <Compile Include="ProjectType.cs" />
+    <Compile Include="Enums\ProjectType.cs" />
     <Compile Include="Project\BinaryReference.cs" />
     <Compile Include="Project\ProjectDocument.cs" />
     <Compile Include="Project\ProjectElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\CertificateEncryptor.cs" />
     <Compile Include="Security\SecureConfig.cs" />
-    <Compile Include="TargetFramework.cs" />
+    <Compile Include="Enums\TargetFramework.cs" />
     <Compile Include="Extensions.cs" />
   </ItemGroup>
   <ItemGroup>
