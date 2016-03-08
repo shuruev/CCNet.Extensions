@@ -4,7 +4,7 @@ using System.Xml.Linq;
 namespace CCNet.Build.Confluence
 {
 	/// <summary>
-	/// Builds specified blocks withing confluence XML document.
+	/// Builds specified blocks within confluence XML document.
 	/// </summary>
 	public partial class PageDocument
 	{
@@ -21,24 +21,40 @@ namespace CCNet.Build.Confluence
 		}
 
 		/// <summary>
+		/// Builds new element, using internal namespace prefixes.
+		/// </summary>
+		private static XElement Element(string name, params object[] content)
+		{
+			return new XElement(Nm(name), content);
+		}
+
+		/// <summary>
+		/// Builds new attribute, using internal namespace prefixes.
+		/// </summary>
+		private static XAttribute Attribute(string name, object value)
+		{
+			return new XAttribute(Nm(name), value);
+		}
+
+		/// <summary>
 		/// Builds "Status" macro block.
 		/// </summary>
 		public static XElement BuildStatus(string title, StatusColor color, bool outline)
 		{
-			return new XElement(
-				Name("ac:structured-macro"),
-				new XAttribute(Name("ac:name"), "status"),
-				new XElement(
-					Name("ac:parameter"),
-					new XAttribute(Name("ac:name"), "subtle"),
+			return Element(
+				"ac:structured-macro",
+				Attribute("ac:name", "status"),
+				Element(
+					"ac:parameter",
+					Attribute("ac:name", "subtle"),
 					outline.ToString().ToLowerInvariant()),
-				new XElement(
-					Name("ac:parameter"),
-					new XAttribute(Name("ac:name"), "colour"),
+				Element(
+					"ac:parameter",
+					Attribute("ac:name", "colour"),
 					color.ToString()),
-				new XElement(
-					Name("ac:parameter"),
-					new XAttribute(Name("ac:name"), "title"),
+				Element(
+					"ac:parameter",
+					Attribute("ac:name", "title"),
 					title));
 		}
 
@@ -47,9 +63,9 @@ namespace CCNet.Build.Confluence
 		/// </summary>
 		public static XElement BuildToc()
 		{
-			return new XElement(
-				Name("ac:structured-macro"),
-				new XAttribute(Name("ac:name"), "toc"));
+			return Element(
+				"ac:structured-macro",
+				Attribute("ac:name", "toc"));
 		}
 
 		/// <summary>
@@ -59,9 +75,9 @@ namespace CCNet.Build.Confluence
 		{
 			CheckBody(body);
 
-			return new XElement(
-				Name("ac:structured-macro"),
-				new XAttribute(Name("ac:name"), "info"),
+			return Element(
+				"ac:structured-macro",
+				Attribute("ac:name", "info"),
 				body);
 		}
 
@@ -72,9 +88,9 @@ namespace CCNet.Build.Confluence
 		{
 			CheckBody(body);
 
-			return new XElement(
-				Name("ac:structured-macro"),
-				new XAttribute(Name("ac:name"), "section"),
+			return Element(
+				"ac:structured-macro",
+				Attribute("ac:name", "section"),
 				body);
 		}
 
@@ -85,14 +101,14 @@ namespace CCNet.Build.Confluence
 		{
 			CheckBody(body);
 
-			return new XElement(
-				Name("ac:structured-macro"),
-				new XAttribute(Name("ac:name"), "column"),
+			return Element(
+				"ac:structured-macro",
+				Attribute("ac:name", "column"),
 				width == null
 					? null
-					: new XElement(
-						Name("ac:parameter"),
-						new XAttribute(Name("ac:name"), "width"),
+					: Element(
+						"ac:parameter",
+						Attribute("ac:name", "width"),
 						width),
 				body);
 		}
@@ -102,11 +118,11 @@ namespace CCNet.Build.Confluence
 		/// </summary>
 		public static XElement BuildImage(string imageUrl)
 		{
-			return new XElement(
-				Name("ac:image"),
-				new XElement(
-					Name("ri:url"),
-					new XAttribute(Name("ri:value"), imageUrl)));
+			return Element(
+				"ac:image",
+				Element(
+					"ri:url",
+					Attribute("ri:value", imageUrl)));
 		}
 
 		/// <summary>
@@ -114,11 +130,11 @@ namespace CCNet.Build.Confluence
 		/// </summary>
 		public static XElement BuildUserLink(string userKey)
 		{
-			return new XElement(
-				Name("ac:link"),
-				new XElement(
-					Name("ri:user"),
-					new XAttribute(Name("ri:userkey"), userKey)));
+			return Element(
+				"ac:link",
+				Element(
+					"ri:user",
+					Attribute("ri:userkey", userKey)));
 		}
 
 		/// <summary>
@@ -126,13 +142,13 @@ namespace CCNet.Build.Confluence
 		/// </summary>
 		public static XElement BuildPageLink(string pageTitle, string anchor, string linkText)
 		{
-			return new XElement(
-				Name("ac:link"),
-				new XAttribute(Name("ac:anchor"), anchor),
-				new XElement(
-					Name("ri:page"),
-					new XAttribute(Name("ri:content-title"), pageTitle)),
-				new XElement(Name("ac:plain-text-link-body"), new XCData(linkText)));
+			return Element(
+				"ac:link",
+				Attribute("ac:anchor", anchor),
+				Element(
+					"ri:page",
+					Attribute("ri:content-title", pageTitle)),
+				Element("ac:plain-text-link-body", new XCData(linkText)));
 		}
 
 		/// <summary>
@@ -140,7 +156,7 @@ namespace CCNet.Build.Confluence
 		/// </summary>
 		private static void CheckBody(XElement body)
 		{
-			if (body.Name != Name("ac:rich-text-body"))
+			if (body.Name != Nm("ac:rich-text-body"))
 				throw new InvalidOperationException("Rich text body expected.");
 		}
 
@@ -149,8 +165,8 @@ namespace CCNet.Build.Confluence
 		/// </summary>
 		public static XElement BuildBody(params object[] content)
 		{
-			return new XElement(
-				Name("ac:rich-text-body"),
+			return Element(
+				"ac:rich-text-body",
 				content);
 		}
 	}

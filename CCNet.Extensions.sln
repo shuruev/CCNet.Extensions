@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.SetupProject", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.NotifyProjects", "CCNet.Build.NotifyProjects\CCNet.Build.NotifyProjects.csproj", "{FF6DD536-C50C-445C-A7A6-DEC0A2FEBF7F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.Tfs", "CCNet.Build.Tfs\CCNet.Build.Tfs.csproj", "{9671226B-2538-4E31-8929-BDA21D63E649}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{FF6DD536-C50C-445C-A7A6-DEC0A2FEBF7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF6DD536-C50C-445C-A7A6-DEC0A2FEBF7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF6DD536-C50C-445C-A7A6-DEC0A2FEBF7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9671226B-2538-4E31-8929-BDA21D63E649}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9671226B-2538-4E31-8929-BDA21D63E649}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9671226B-2538-4E31-8929-BDA21D63E649}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9671226B-2538-4E31-8929-BDA21D63E649}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +81,7 @@ Global
 		{53DB7203-BDF9-4711-A4C6-28EAD1C8524F} = {F0723BCA-221F-43D5-A412-393A7C074A5E}
 		{439EFE6A-A065-4346-8793-8540452B0924} = {6A649645-61E7-4BE0-8EB3-04603D14B803}
 		{F358AC40-46C8-4521-B3CA-1E39C27D509C} = {6A649645-61E7-4BE0-8EB3-04603D14B803}
+		{9671226B-2538-4E31-8929-BDA21D63E649} = {6A649645-61E7-4BE0-8EB3-04603D14B803}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = CCNet.Extensions.vsmdi

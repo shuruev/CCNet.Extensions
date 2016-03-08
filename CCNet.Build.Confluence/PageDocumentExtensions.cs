@@ -31,7 +31,7 @@ namespace CCNet.Build.Confluence
 		/// </summary>
 		public static XAttribute XAttribute(this XElement element, string name)
 		{
-			return element.Attribute(PageDocument.Name(name));
+			return element.Attribute(PageDocument.Nm(name));
 		}
 
 		/// <summary>

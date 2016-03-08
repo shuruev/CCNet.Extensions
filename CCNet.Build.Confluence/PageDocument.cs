@@ -82,7 +82,7 @@ namespace CCNet.Build.Confluence
 		/// <summary>
 		/// Builds XML name using internal namespace prefixes.
 		/// </summary>
-		public static XName Name(string name)
+		public static XName Nm(string name)
 		{
 			if (!name.Contains(':'))
 				return name;
