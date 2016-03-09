@@ -8,8 +8,10 @@ namespace CCNet.Build.SetupProject
 		{
 			var config = new AppConfigReader();
 			NuGetUrl = config.Get<string>("NuGet.Url");
+			TfsUrl = config.Get<string>("Tfs.Url");
 		}
 
 		public static string NuGetUrl { get; private set; }
+		public static string TfsUrl { get; private set; }
 	}
 }

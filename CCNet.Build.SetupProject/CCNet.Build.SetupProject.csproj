@@ -61,6 +61,10 @@
       <Project>{439EFE6A-A065-4346-8793-8540452B0924}</Project>
       <Name>CCNet.Build.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CCNet.Build.Tfs\CCNet.Build.Tfs.csproj">
+      <Project>{9671226B-2538-4E31-8929-BDA21D63E649}</Project>
+      <Name>CCNet.Build.Tfs</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

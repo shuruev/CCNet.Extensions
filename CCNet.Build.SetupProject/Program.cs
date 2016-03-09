@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using CCNet.Build.Common;
+using CCNet.Build.Tfs;
 
 namespace CCNet.Build.SetupProject
 {
@@ -34,8 +35,31 @@ namespace CCNet.Build.SetupProject
 
 		private static void SetupProject()
 		{
+			SaveSource();
 			RenderLinks();
 			UpdateAssemblyInfo();
+		}
+
+		private static void SaveSource()
+		{
+			Console.Write("Saving TFS location... ");
+
+			Args.TempPath.CreateDirectoryIfNotExists();
+
+			var client = new TfsClient(Config.TfsUrl);
+			var changeset = client.GetLatestChangeset(Args.TfsPath);
+
+			var sb = new StringBuilder();
+			sb.AppendLine("Source:");
+			sb.AppendLine(Args.TfsPath);
+			sb.AppendFormat("Changeset #{0}", changeset.Id).AppendLine();
+			sb.AppendFormat("User: {0}", changeset.UserDisplay).AppendLine();
+			sb.AppendFormat("Date: {0}", changeset.Date.ToDetailedString()).AppendLine();
+
+			var file = Path.Combine(Args.TempPath, "source.txt");
+			File.WriteAllText(file, sb.ToString());
+
+			Console.WriteLine("OK");
 		}
 
 		private static void RenderLinks()

@@ -22,6 +22,16 @@ namespace CCNet.Build.SetupProject
 			get { return Current.Get<string>("ProjectPath"); }
 		}
 
+		public static string TempPath
+		{
+			get { return Current.Get<string>("TempPath"); }
+		}
+
+		public static string TfsPath
+		{
+			get { return Current.Get<string>("TfsPath"); }
+		}
+
 		public static string CurrentVersion
 		{
 			get { return Current.Get<string>("CurrentVersion"); }
