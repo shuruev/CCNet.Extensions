@@ -52,9 +52,19 @@ namespace CCNet.Build.Reconfigure
 			get { return String.Format(@"$(projectsPath)\{0}\packages", UniqueName); }
 		}
 
-		public string WorkingFileSummary
+		public string WorkingDirectoryTemp
 		{
-			get { return String.Format(@"{0}\summary.txt", WorkingDirectoryPackages); }
+			get { return String.Format(@"$(projectsPath)\{0}\temp", UniqueName); }
+		}
+
+		public string TempFileSource
+		{
+			get { return String.Format(@"{0}\source.txt", WorkingDirectoryTemp); }
+		}
+
+		public string TempFilePackages
+		{
+			get { return String.Format(@"{0}\packages.txt", WorkingDirectoryTemp); }
 		}
 	}
 }

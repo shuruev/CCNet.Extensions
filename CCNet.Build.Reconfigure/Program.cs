@@ -298,7 +298,7 @@ namespace CCNet.Build.Reconfigure
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("PackagesPath", project.WorkingDirectoryPackages),
 							new Arg("ReferencesPath", project.WorkingDirectoryReferences),
-							new Arg(project.CustomVersions == null ? null : "CustomVersions", project.CustomVersions),
+							new Arg(project.CustomVersions != null ? "CustomVersions" : null, project.CustomVersions),
 							new Arg("NuGetExecutable", "$(nugetExecutable)"),
 							new Arg("NuGetUrl", project.NugetRestoreUrl));
 
@@ -324,9 +324,9 @@ namespace CCNet.Build.Reconfigure
 							new Arg("CompanyName", "CNET Content Solutions"),
 							new Arg("CurrentVersion", "$[$CCNetLabel]"),
 							new Arg("TargetFramework", project.Framework),
-							new Arg("SummaryFile", project.WorkingFileSummary),
+							new Arg("ReleaseNotes", project.TempFileSource + "|" + project.TempFilePackages),
 							new Arg("OutputDirectory", project.WorkingDirectoryNuget),
-							new Arg("IncludeXmlDocumentation", project.IncludeXmlDocumentation));
+							new Arg(project.IncludeXmlDocumentation ? "IncludeXmlDocumentation" : null, project.IncludeXmlDocumentation));
 
 						writer.WriteElementString("description", "Generate nuspec file");
 					}
@@ -403,14 +403,6 @@ namespace CCNet.Build.Reconfigure
 					CleanupLibraryProject(writer, project);
 				}
 			}
-		}
-
-		private static void CleanupLibraryProject(XmlWriter writer, LibraryProjectConfiguration project)
-		{
-			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectorySource);
-			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryRelease);
-			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryPackages);
-			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryNuget);
 		}
 
 		private static void BuildWebsiteConfig()
@@ -561,11 +553,24 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
-		private static void CleanupWebsiteProject(XmlWriter writer, WebsiteProjectConfiguration project)
+		private static void CleanupProject(XmlWriter writer, ProjectConfiguration project)
 		{
 			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectorySource);
 			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryRelease);
 			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryPackages);
+			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryTemp);
+		}
+
+		private static void CleanupLibraryProject(XmlWriter writer, LibraryProjectConfiguration project)
+		{
+			CleanupProject(writer, project);
+			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryNuget);
+		}
+
+		private static void CleanupWebsiteProject(XmlWriter writer, WebsiteProjectConfiguration project)
+		{
+			CleanupProject(writer, project);
+			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryPublish);
 		}
 	}
 }
