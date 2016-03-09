@@ -114,7 +114,7 @@ namespace CCNet.Build.SetupPackages
 
 			foreach (var file in toAdd)
 			{
-				File.WriteAllText(file, DateTime.Now.ToDetailedString());
+				File.WriteAllText(file, String.Format("Created on {0}", DateTime.Now.ToDetailedString()));
 			}
 
 			Console.WriteLine("OK");
@@ -122,11 +122,11 @@ namespace CCNet.Build.SetupPackages
 
 		private static void SaveSummary(LogPackages log)
 		{
-			Console.Write("Saving build summary... ");
+			Console.Write("Saving packages summary... ");
 
-			Args.PackagesPath.CreateDirectoryIfNotExists();
+			Args.TempPath.CreateDirectoryIfNotExists();
 
-			var file = Path.Combine(Args.PackagesPath, "summary.txt");
+			var file = Path.Combine(Args.TempPath, "packages.txt");
 			File.WriteAllText(file, log.Summary());
 
 			Console.WriteLine("OK");

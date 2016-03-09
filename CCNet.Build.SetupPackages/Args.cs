@@ -28,6 +28,11 @@ namespace CCNet.Build.SetupPackages
 			get { return Current.Get<string>("ReferencesPath"); }
 		}
 
+		public static string TempPath
+		{
+			get { return Current.Get<string>("TempPath"); }
+		}
+
 		public static string CustomVersions
 		{
 			get { return Current.Get("CustomVersions", String.Empty); }
