@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
@@ -28,6 +29,32 @@ namespace CCNet.Build.Tfs
 			{
 				return sr.ReadToEnd();
 			}
+		}
+
+		public ChangesetSummary GetLatestChangeset(string path)
+		{
+			var history = m_server.QueryHistory(
+				path + "/",
+				VersionSpec.Latest,
+				0,
+				RecursionType.Full,
+				null,
+				null,
+				null,
+				1,
+				false,
+				false,
+				false,
+				false);
+
+			var changeset = history.Cast<Changeset>().First();
+			return new ChangesetSummary
+			{
+				Id = changeset.ChangesetId,
+				User = changeset.Committer,
+				UserDisplay = changeset.CommitterDisplayName,
+				Date = changeset.CreationDate.ToUniversalTime()
+			};
 		}
 	}
 }

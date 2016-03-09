@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangesetSummary.cs" />
     <Compile Include="TfsClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
