@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using CCNet.Build.Common;
@@ -90,11 +91,25 @@ namespace CCNet.Build.GenerateNuspec
 
 		private static void AddReleaseNotes(XmlTextWriter xtw)
 		{
-			if (!File.Exists(Args.SummaryFile))
+			var sb = new StringBuilder();
+
+			var files = Args.ReleaseNotes.Split('|').ToList();
+			foreach (var file in files)
+			{
+				if (!File.Exists(file))
+					continue;
+
+				if (sb.Length > 0)
+					sb.AppendLine();
+
+				var text = File.ReadAllText(file);
+				sb.AppendLine(text);
+			}
+
+			if (sb.Length == 0)
 				return;
 
-			var summary = File.ReadAllText(Args.SummaryFile);
-			xtw.WriteElementString("releaseNotes", summary);
+			xtw.WriteElementString("releaseNotes", sb.ToString());
 		}
 
 		private static void AddNuspecLibraryCoreFile(XmlTextWriter xtw, string extension)
