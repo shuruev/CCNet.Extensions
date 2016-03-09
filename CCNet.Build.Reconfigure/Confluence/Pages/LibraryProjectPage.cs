@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using CCNet.Build.Common;
@@ -10,12 +11,14 @@ namespace CCNet.Build.Reconfigure
 	{
 		public TargetFramework Framework { get; set; }
 		public DocumentationType Documentation { get; set; }
+		public string Namespace { get; set; }
 
 		public LibraryProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument)
 			: base(areaName, projectName, pageName, pageDocument)
 		{
 			Framework = ParseFramework(m_properties);
 			Documentation = ParseDocumentation(m_properties);
+			Namespace = ParseNamespace(m_properties);
 		}
 
 		public override ProjectType Type
@@ -23,7 +26,7 @@ namespace CCNet.Build.Reconfigure
 			get { return ProjectType.Library; }
 		}
 
-		private static TargetFramework ParseFramework(Dictionary<string, string> properties)
+		private TargetFramework ParseFramework(Dictionary<string, string> properties)
 		{
 			return ParseEnum(
 				properties,
@@ -32,9 +35,23 @@ namespace CCNet.Build.Reconfigure
 				TargetFramework.Net45);
 		}
 
-		private static DocumentationType ParseDocumentation(Dictionary<string, string> properties)
+		private DocumentationType ParseDocumentation(Dictionary<string, string> properties)
 		{
 			return ParseEnum(properties, "doc", DocumentationType.None);
+		}
+
+		private string ParseNamespace(Dictionary<string, string> properties)
+		{
+			var ns = FindByKey(properties, key => key.Contains("namespace"));
+
+			if (ns == null)
+				return null;
+
+			ns = ns.AsciiOnly('.');
+			if (String.Compare(ns, ProjectName, StringComparison.OrdinalIgnoreCase) == 0)
+				return null;
+
+			return ns;
 		}
 
 		private XElement RenderFramework()
@@ -51,11 +68,26 @@ namespace CCNet.Build.Reconfigure
 					BuildDocumentation(Documentation)));
 		}
 
+		private XElement RenderNamespace()
+		{
+			return new XElement(
+				"td",
+				BuildExplain(
+					"Свойствадлябиблиотек(Library)",
+					new XElement("code", Namespace)));
+		}
+
 		public override PageDocument RenderPage()
 		{
 			var page = base.RenderPage();
 
 			var addBefore = page.Root.XElement("table/tbody/tr/th[text()='Owner']").Parent;
+
+			if (!String.IsNullOrEmpty(Namespace))
+			{
+				addBefore.AddBeforeSelf(new XElement("tr", new XElement("th", "Namespace"), RenderNamespace()));
+			}
+
 			addBefore.AddBeforeSelf(new XElement("tr", new XElement("th", ".NET framework"), RenderFramework()));
 			addBefore.AddBeforeSelf(new XElement("tr", new XElement("th", "Documentation"), RenderDocumentation()));
 

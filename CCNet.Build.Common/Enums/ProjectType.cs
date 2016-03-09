@@ -8,6 +8,11 @@
 		/// <summary>
 		/// Class library.
 		/// </summary>
-		Library
+		Library,
+
+		/// <summary>
+		/// Web site.
+		/// </summary>
+		Website
 	}
 }

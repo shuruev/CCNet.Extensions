@@ -56,8 +56,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Args.cs" />
-    <Compile Include="Configuration\AssemblyProjectConfiguration.cs" />
+    <Compile Include="Configuration\BasicProjectConfiguration.cs" />
+    <Compile Include="Configuration\WebsiteProjectConfiguration.cs" />
     <Compile Include="Confluence\IProjectPage.cs" />
+    <Compile Include="Confluence\Pages\WebsiteProjectPage.cs" />
     <Compile Include="Confluence\Pages\LibraryProjectPage.cs" />
     <Compile Include="Confluence\PageBuilder.cs" />
     <Compile Include="Config.cs" />

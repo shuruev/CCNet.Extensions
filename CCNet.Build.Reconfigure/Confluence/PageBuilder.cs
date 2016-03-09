@@ -78,7 +78,7 @@ namespace CCNet.Build.Reconfigure
 					new XElement("th", "Owner"),
 					new XElement("th", "Status")));
 
-			foreach (var page in pages)
+			foreach (var page in pages.OrderBy(p => p.OrderKey))
 			{
 				tbody.Add(page.RenderSummaryRow(false));
 			}
@@ -219,9 +219,13 @@ namespace CCNet.Build.Reconfigure
 						page = new LibraryProjectPage(areaName, projectName, project.Name, document);
 						break;
 
+					case ProjectType.Website:
+						page = new WebsiteProjectPage(areaName, projectName, project.Name, document);
+						break;
+
 					default:
 						throw new InvalidOperationException(
-							String.Format("Unknown how to process project type '{0}'.", projectType));
+							String.Format("Unknown how to process project of type '{0}'.", projectType.ToString().ToLowerInvariant()));
 				}
 
 				page.CheckPage(m_tfs);
@@ -280,6 +284,10 @@ namespace CCNet.Build.Reconfigure
 			{
 				case "library":
 					projectType = ProjectType.Library;
+					break;
+
+				case "web site":
+					projectType = ProjectType.Website;
 					break;
 
 				default:

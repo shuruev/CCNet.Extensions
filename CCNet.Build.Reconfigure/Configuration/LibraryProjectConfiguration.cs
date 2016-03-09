@@ -3,11 +3,16 @@ using CCNet.Build.Common;
 
 namespace CCNet.Build.Reconfigure
 {
-	public class LibraryProjectConfiguration : AssemblyProjectConfiguration
+	public class LibraryProjectConfiguration : BasicProjectConfiguration
 	{
 		public ProjectType Type
 		{
 			get { return ProjectType.Library; }
+		}
+
+		public string WorkingDirectoryNuget
+		{
+			get { return String.Format(@"$(projectsPath)\{0}\nuget", UniqueName); }
 		}
 
 		public string NugetPushUrl

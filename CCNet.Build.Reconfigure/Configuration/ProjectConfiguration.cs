@@ -56,10 +56,5 @@ namespace CCNet.Build.Reconfigure
 		{
 			get { return String.Format(@"{0}\summary.txt", WorkingDirectoryPackages); }
 		}
-
-		public string WorkingDirectoryNuget
-		{
-			get { return String.Format(@"$(projectsPath)\{0}\nuget", UniqueName); }
-		}
 	}
 }

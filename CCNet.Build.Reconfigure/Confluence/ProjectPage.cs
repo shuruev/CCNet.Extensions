@@ -51,7 +51,7 @@ namespace CCNet.Build.Reconfigure
 			get { return AreaName + ":" + ProjectName; }
 		}
 
-		private static Dictionary<string, string> ParseProperties(XElement page)
+		private Dictionary<string, string> ParseProperties(XElement page)
 		{
 			var table = page.XElement("table");
 			if (table == null)
@@ -91,7 +91,7 @@ namespace CCNet.Build.Reconfigure
 			return map;
 		}
 
-		private static string ParseDescription(Dictionary<string, string> properties)
+		private string ParseDescription(Dictionary<string, string> properties)
 		{
 			var desc = FindByKey(properties, key => key.Contains("desc"));
 
@@ -101,7 +101,7 @@ namespace CCNet.Build.Reconfigure
 			return desc.CleanWhitespaces();
 		}
 
-		private static string ParseOwner(Dictionary<string, string> properties)
+		private string ParseOwner(Dictionary<string, string> properties)
 		{
 			var owner = FindByKey(properties, key => key.Contains("owner"));
 
@@ -111,7 +111,7 @@ namespace CCNet.Build.Reconfigure
 			return NormalizeOwner(owner);
 		}
 
-		private static string NormalizeOwner(string owner)
+		private string NormalizeOwner(string owner)
 		{
 			switch (owner.AsciiOnly().ToLowerInvariant())
 			{
@@ -137,7 +137,7 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
-		private static ProjectStatus ParseStatus(Dictionary<string, string> properties)
+		private ProjectStatus ParseStatus(Dictionary<string, string> properties)
 		{
 			return ParseEnum(properties, "status", ProjectStatus.Temporary);
 		}

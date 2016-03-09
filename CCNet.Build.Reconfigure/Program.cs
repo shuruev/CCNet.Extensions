@@ -47,6 +47,7 @@ namespace CCNet.Build.Reconfigure
 			using (Execute.Step("UPDATE CONFIG"))
 			{
 				BuildLibraryConfig();
+				BuildWebsiteConfig();
 			}
 		}
 
@@ -357,7 +358,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString("description", "Publish package");
 					}
 
-					foreach (var server in new[] { "Library" })
+					foreach (var server in new[] { "Library", "Website" })
 					{
 						using (writer.OpenTag("exec"))
 						{
@@ -410,6 +411,161 @@ namespace CCNet.Build.Reconfigure
 			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryRelease);
 			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryPackages);
 			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryNuget);
+		}
+
+		private static void BuildWebsiteConfig()
+		{
+			Console.WriteLine("Generate website config...");
+			Console.WriteLine("Output file: {0}", Paths.WebsiteConfig);
+
+			using (var writer = WriteConfig(Paths.WebsiteConfig))
+			{
+				writer.Begin();
+
+				writer.Comment("SERVER NAME");
+				writer.CbTag("define", "serverName", "Website");
+
+				writer.Comment("IMPORT GLOBAL");
+				writer.CbTag("include", "href", "Global.config");
+
+				WriteWebsiteProject(
+					writer,
+					new WebsiteProjectConfiguration
+					{
+						Name = "VXMonitoringSite",
+						Description = "Admin web site for VXMonitoring system",
+						Category = "Internal",
+						TfsPath = "$/Main/Internal/Monitor/VXMonitoring/VXMonitoringSite",
+						RootNamespace = "VXMonitoringSite",
+						Framework = TargetFramework.Net40,
+						OwnerEmail = "oleg.shuruev@cbsinteractive.com"
+					});
+
+				writer.End();
+			}
+		}
+
+		private static void WriteWebsiteProject(XmlWriter writer, WebsiteProjectConfiguration project)
+		{
+			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
+
+			using (writer.OpenTag("project"))
+			{
+				writer.WriteElementString("name", project.UniqueName);
+				writer.WriteElementString("description", project.Description);
+				writer.WriteElementString("queue", project.Category);
+				writer.WriteElementString("category", project.Category);
+
+				writer.WriteElementString("workingDirectory", project.WorkingDirectory);
+				writer.WriteElementString("artifactDirectory", project.WorkingDirectory);
+				using (writer.OpenTag("state"))
+				{
+					writer.WriteAttributeString("type", "state");
+					writer.WriteAttributeString("directory", project.WorkingDirectory);
+				}
+
+				writer.WriteElementString("webURL", project.WebUrl);
+
+				using (writer.OpenTag("sourcecontrol"))
+				{
+					writer.WriteAttributeString("type", "multi");
+					using (writer.OpenTag("sourceControls"))
+					{
+						using (writer.OpenTag("filesystem"))
+						{
+							writer.WriteElementString("repositoryRoot", project.WorkingDirectoryReferences);
+							writer.WriteElementString("autoGetSource", "false");
+							writer.WriteElementString("ignoreMissingRoot", "true");
+						}
+
+						using (writer.OpenTag("vsts"))
+						{
+							writer.WriteElementString("executable", "$(tfsExecutable)");
+							writer.WriteElementString("server", "$(tfsUrl)");
+							writer.WriteElementString("project", project.TfsPath);
+							writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
+							writer.WriteElementString("applyLabel", "false");
+							writer.WriteElementString("autoGetSource", "true");
+							writer.WriteElementString("cleanCopy", "true");
+							writer.WriteElementString("deleteWorkspace", "true");
+						}
+					}
+				}
+
+				writer.Tag("labeller", "type", "shortDateLabeller");
+
+				using (writer.OpenTag("triggers"))
+				{
+					writer.Tag("intervalTrigger", "name", "source or references", "seconds", "30", "buildCondition", "IfModificationExists", "initialSeconds", "5");
+				}
+
+				using (writer.OpenTag("prebuild"))
+				{
+					CleanupWebsiteProject(writer, project);
+				}
+
+				using (writer.OpenTag("tasks"))
+				{
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildSetupProject)");
+						writer.WriteBuildArgs(
+							new Arg("ProjectName", project.Name),
+							new Arg("ProjectType", project.Type),
+							new Arg("ProjectPath", project.WorkingDirectorySource),
+							new Arg("CurrentVersion", "$[$CCNetLabel]"));
+
+						writer.WriteElementString("description", "Setup project");
+					}
+
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildSetupPackages)");
+						writer.WriteBuildArgs(
+							new Arg("ProjectName", project.Name),
+							new Arg("ProjectPath", project.WorkingDirectorySource),
+							new Arg("PackagesPath", project.WorkingDirectoryPackages),
+							new Arg("ReferencesPath", project.WorkingDirectoryReferences),
+							new Arg(project.CustomVersions == null ? null : "CustomVersions", project.CustomVersions),
+							new Arg("NuGetExecutable", "$(nugetExecutable)"),
+							new Arg("NuGetUrl", project.NugetRestoreUrl));
+
+						writer.WriteElementString("description", "Setup packages");
+					}
+
+					using (writer.OpenTag("msbuild"))
+					{
+						writer.WriteElementString("executable", project.MsbuildExecutable);
+						writer.WriteElementString("targets", "Build;_CopyWebApplication");
+						writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
+						writer.WriteElementString("buildArgs", String.Format(@"/noconsolelogger /p:Configuration=Release;OutDir={0}\", project.WorkingDirectoryRelease));
+						writer.WriteElementString("description", "Build web site");
+					}
+				}
+
+				using (writer.OpenTag("publishers"))
+				{
+					writer.Tag("modificationHistory", "onlyLogWhenChangesFound", "true");
+					writer.Tag("xmllogger");
+					writer.Tag("statistics");
+					writer.Tag("artifactcleanup", "cleanUpMethod", "KeepLastXBuilds", "cleanUpValue", "100");
+					writer.Tag("artifactcleanup", "cleanUpMethod", "KeepMaximumXHistoryDataEntries", "cleanUpValue", "100");
+
+					if (!String.IsNullOrEmpty(project.OwnerEmail))
+					{
+						writer.CbTag("EmailPublisher", "mailto", project.OwnerEmail);
+					}
+
+					//xxxCleanupWebsiteProject(writer, project);
+				}
+			}
+		}
+
+		private static void CleanupWebsiteProject(XmlWriter writer, WebsiteProjectConfiguration project)
+		{
+			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectorySource);
+			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryRelease);
+			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryPackages);
 		}
 	}
 }

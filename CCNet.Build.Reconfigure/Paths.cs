@@ -8,5 +8,10 @@ namespace CCNet.Build.Reconfigure
 		{
 			get { return Path.Combine(Args.OutputDirectory, "CCNetLibrary.config"); }
 		}
+
+		public static string WebsiteConfig
+		{
+			get { return Path.Combine(Args.OutputDirectory, "CCNetWebsite.config"); }
+		}
 	}
 }

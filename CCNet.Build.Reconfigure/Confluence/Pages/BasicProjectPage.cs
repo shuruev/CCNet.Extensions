@@ -38,7 +38,7 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
-		private static string ParseTfsPath(Dictionary<string, string> properties)
+		private string ParseTfsPath(Dictionary<string, string> properties)
 		{
 			var path = FindByKey(properties, key => key.Contains("tfs") || key.Contains("path"));
 
@@ -52,17 +52,17 @@ namespace CCNet.Build.Reconfigure
 			return path.TrimEnd('/');
 		}
 
-		private static List<XElement> ParseSections(XElement page)
+		private List<XElement> ParseSections(XElement page)
 		{
 			return page.XElements("ac:structured-macro[@ac:name='section']").ToList();
 		}
 
-		private static List<XElement> ParseColumns(XElement section)
+		private List<XElement> ParseColumns(XElement section)
 		{
 			return section.XElements("ac:rich-text-body/ac:structured-macro[@ac:name='column']").ToList();
 		}
 
-		private static XElement ParseFromDetails(XElement page, int index)
+		private XElement ParseFromDetails(XElement page, int index)
 		{
 			var sections = ParseSections(page);
 			if (sections.Count != 2)
@@ -80,17 +80,17 @@ namespace CCNet.Build.Reconfigure
 			return stats;
 		}
 
-		private static XElement ParseStats(XElement page)
+		private XElement ParseStats(XElement page)
 		{
 			return ParseFromDetails(page, 0);
 		}
 
-		private static XElement ParseHistory(XElement page)
+		private XElement ParseHistory(XElement page)
 		{
 			return ParseFromDetails(page, 2);
 		}
 
-		private static XElement ParseAbout(XElement page)
+		private XElement ParseAbout(XElement page)
 		{
 			var sections = ParseSections(page);
 			if (sections.Count != 2)
