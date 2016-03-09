@@ -102,7 +102,7 @@ namespace CCNet.Build.GenerateNuspec
 				if (sb.Length > 0)
 					sb.AppendLine();
 
-				var text = File.ReadAllText(file);
+				var text = File.ReadAllText(file).Trim();
 				sb.AppendLine(text);
 			}
 

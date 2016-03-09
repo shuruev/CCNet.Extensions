@@ -102,7 +102,7 @@ namespace CCNet.Build.NotifyProjects
 			var fileName = String.Format("{0}.txt", Args.ProjectName);
 			var filePath = Path.Combine(referencesFolder, fileName);
 
-			File.WriteAllText(filePath, DateTime.Now.ToDetailedString());
+			File.WriteAllText(filePath, String.Format("Updated on {0}", DateTime.Now.ToDetailedString()));
 		}
 	}
 }
