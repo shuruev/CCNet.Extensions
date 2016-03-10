@@ -66,13 +66,11 @@ namespace CCNet.Build.NotifyProjects
 				projectsToNotify.AddRange(outEdges.Select(edge => edge.Target));
 			}
 
-			Console.Write("Notified dependant projects... ");
+			Console.WriteLine("Notifying dependant projects...");
 			foreach (var project in projectsToNotify)
 			{
 				NotifyProject(project, servers[project]);
 			}
-
-			Console.WriteLine("OK");
 		}
 
 		private static AdjacencyGraph<string, Edge<string>> BuildReferencesGraph(out Dictionary<string, string> servers)
@@ -112,6 +110,8 @@ namespace CCNet.Build.NotifyProjects
 			var filePath = Path.Combine(referencesFolder, fileName);
 
 			File.WriteAllText(filePath, String.Format("Updated on {0}", DateTime.Now.ToDetailedString()));
+
+			Console.WriteLine("{0}: {1}", serverName, projectName);
 		}
 	}
 }

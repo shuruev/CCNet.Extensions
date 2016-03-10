@@ -103,5 +103,26 @@ namespace CCNet.Build.Reconfigure
 
 			return row;
 		}
+
+		public override List<ProjectConfiguration> ExportConfigurations()
+		{
+			return new List<ProjectConfiguration>
+			{
+				new LibraryProjectConfiguration
+				{
+					Name = ProjectName,
+					Description = Description,
+					Category = AreaName,
+					TfsPath = TfsPath,
+					//xxx
+					OwnerEmail = "oleg.shuruev@cbsinteractive.com",
+					Framework = Framework,
+					Documentation = Documentation,
+					RootNamespace = Namespace,
+					//xxx
+					CustomVersions = "mongocsharpdriver"
+				}
+			};
+		}
 	}
 }

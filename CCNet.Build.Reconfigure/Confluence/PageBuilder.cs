@@ -64,6 +64,11 @@ namespace CCNet.Build.Reconfigure
 			m_pages = result.ToList();
 		}
 
+		public List<ProjectConfiguration> ExportConfigurations()
+		{
+			return m_pages.SelectMany(p => p.ExportConfigurations()).ToList();
+		}
+
 		private bool UpdateSummaryPage(IEnumerable<IProjectPage> pages, Page existing)
 		{
 			var updated = new PageDocument();

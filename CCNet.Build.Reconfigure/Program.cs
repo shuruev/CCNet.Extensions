@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using CCNet.Build.Common;
@@ -46,9 +48,19 @@ namespace CCNet.Build.Reconfigure
 
 			using (Execute.Step("UPDATE CONFIG"))
 			{
-				BuildLibraryConfig();
-				BuildWebsiteConfig();
+				var configs = builder.ExportConfigurations();
+				BuildLibraryConfig(FilterByType<LibraryProjectConfiguration>(configs));
+				BuildWebsiteConfig(FilterByType<WebsiteProjectConfiguration>(configs));
 			}
+		}
+
+		private static List<T> FilterByType<T>(IEnumerable<ProjectConfiguration> configs) where T : ProjectConfiguration
+		{
+			return configs
+				.Where(c => c is T)
+				.OrderBy(c => c.UniqueName)
+				.Cast<T>()
+				.ToList();
 		}
 
 		private static XmlWriter WriteConfig(string filePath)
@@ -61,7 +73,7 @@ namespace CCNet.Build.Reconfigure
 			};
 		}
 
-		private static void BuildLibraryConfig()
+		private static void BuildLibraryConfig(IEnumerable<LibraryProjectConfiguration> configs)
 		{
 			Console.WriteLine("Generate library config...");
 			Console.WriteLine("Output file: {0}", Paths.LibraryConfig);
@@ -76,7 +88,13 @@ namespace CCNet.Build.Reconfigure
 				writer.Comment("IMPORT GLOBAL");
 				writer.CbTag("include", "href", "Global.config");
 
-				WriteLibraryProject(
+				foreach (var config in configs)
+				{
+					WriteLibraryProject(writer, config);
+					Console.WriteLine("> {0}", config.UniqueName);
+				}
+
+				/*xxxWriteLibraryProject(
 					writer,
 					new LibraryProjectConfiguration
 					{
@@ -89,7 +107,7 @@ namespace CCNet.Build.Reconfigure
 						OwnerEmail = "oleg.shuruev@cbsinteractive.com"
 					});
 
-				/*xxxWriteLibraryProject(
+				WriteLibraryProject(
 					writer,
 					new LibraryProjectConfiguration
 					{
@@ -101,117 +119,30 @@ namespace CCNet.Build.Reconfigure
 						Framework = TargetFramework.Net45
 					});*/
 
-				WriteLibraryProject(
-					writer,
-					new LibraryProjectConfiguration
-					{
-						Name = "CC.Showcase",
-						Description = "Client library for Showcase DB",
-						Category = "ContentCast",
-						TfsPath = "$/Main/ContentCast/Showcase/CC.Showcase",
-						Framework = TargetFramework.Net45
-					});
+				writer.End();
+			}
+		}
 
-				WriteLibraryProject(
-					writer,
-					new LibraryProjectConfiguration
-					{
-						Name = "Lean.ResourceLocators",
-						Description = "Some library from Sergey",
-						Category = "Sandbox",
-						TfsPath = "$/Sandbox/skolemasov/Lean/Lean.ResourceLocators",
-						Framework = TargetFramework.Net45
-					});
+		private static void BuildWebsiteConfig(IEnumerable<WebsiteProjectConfiguration> configs)
+		{
+			Console.WriteLine("Generate website config...");
+			Console.WriteLine("Output file: {0}", Paths.WebsiteConfig);
 
-				WriteLibraryProject(
-					writer,
-					new LibraryProjectConfiguration
-					{
-						Name = "Lean.Serialization",
-						Description = "Some library from Sergey",
-						Category = "Sandbox",
-						TfsPath = "$/Sandbox/skolemasov/Lean/Lean.Serialization",
-						Framework = TargetFramework.Net45
-					});
+			using (var writer = WriteConfig(Paths.WebsiteConfig))
+			{
+				writer.Begin();
 
-				WriteLibraryProject(
-					writer,
-					new LibraryProjectConfiguration
-					{
-						Name = "AlarmInterface",
-						Description = "Interface library for legacy A.L.A.R.M. system created in 2002 by Nenad Buncic",
-						Category = "Internal",
-						TfsPath = "$/Main/Internal/Monitor/TaskManagement/AlarmInterface",
-						Framework = TargetFramework.Net20,
-						Documentation = DocumentationType.Full
-					});
+				writer.Comment("SERVER NAME");
+				writer.CbTag("define", "serverName", "Website");
 
-				WriteLibraryProject(
-					writer,
-					new LibraryProjectConfiguration
-					{
-						Name = "AlarmClient",
-						Description = "Client library for legacy A.L.A.R.M. system created in 2002 by Nenad Buncic",
-						Category = "Internal",
-						TfsPath = "$/Main/Internal/Monitor/TaskManagement/AlarmClient",
-						Framework = TargetFramework.Net20,
-						Documentation = DocumentationType.Full
-					});
+				writer.Comment("IMPORT GLOBAL");
+				writer.CbTag("include", "href", "Global.config");
 
-				WriteLibraryProject(
-					writer,
-					new LibraryProjectConfiguration
-					{
-						Name = "TaskManagement",
-						Description = "Base library for TPD Monitor compatible tasks",
-						Category = "Internal",
-						TfsPath = "$/Main/Internal/Monitor/TaskManagement/TaskManagement",
-						Framework = TargetFramework.Net20
-					});
-
-				WriteLibraryProject(
-					writer,
-					new LibraryProjectConfiguration
-					{
-						Name = "TaskManagementService",
-						Description = "Base library for TPD Monitor compatible services",
-						Category = "Internal",
-						TfsPath = "$/Main/Internal/Monitor/TaskManagement/TaskManagementService",
-						Framework = TargetFramework.Net20
-					});
-
-				WriteLibraryProject(
-					writer,
-					new LibraryProjectConfiguration
-					{
-						Name = "VXMonitoring",
-						Description = "...",
-						Category = "Internal",
-						TfsPath = "$/Main/Internal/Monitor/VXMonitoring/VXMonitoring",
-						Framework = TargetFramework.Net35
-					});
-
-				WriteLibraryProject(
-					writer,
-					new LibraryProjectConfiguration
-					{
-						Name = "VXMonitoringDataAccess",
-						Description = "...",
-						Category = "Internal",
-						TfsPath = "$/Main/Internal/Monitor/VXMonitoring/VXMonitoringDataAccess",
-						Framework = TargetFramework.Net40
-					});
-
-				WriteLibraryProject(
-					writer,
-					new LibraryProjectConfiguration
-					{
-						Name = "VXWebControls",
-						Description = "...",
-						Category = "Vortex",
-						TfsPath = "$/Main/Vortex/Common/VXWebControls/VXWebControls",
-						Framework = TargetFramework.Net35
-					});
+				foreach (var config in configs)
+				{
+					WriteWebsiteProject(writer, config);
+					Console.WriteLine("> {0}", config.UniqueName);
+				}
 
 				writer.End();
 			}
@@ -409,38 +340,6 @@ namespace CCNet.Build.Reconfigure
 
 					CleanupLibraryProject(writer, project);
 				}
-			}
-		}
-
-		private static void BuildWebsiteConfig()
-		{
-			Console.WriteLine("Generate website config...");
-			Console.WriteLine("Output file: {0}", Paths.WebsiteConfig);
-
-			using (var writer = WriteConfig(Paths.WebsiteConfig))
-			{
-				writer.Begin();
-
-				writer.Comment("SERVER NAME");
-				writer.CbTag("define", "serverName", "Website");
-
-				writer.Comment("IMPORT GLOBAL");
-				writer.CbTag("include", "href", "Global.config");
-
-				WriteWebsiteProject(
-					writer,
-					new WebsiteProjectConfiguration
-					{
-						Name = "VXMonitoringSite",
-						Description = "Admin web site for VXMonitoring system",
-						Category = "Internal",
-						TfsPath = "$/Main/Internal/Monitor/VXMonitoring/VXMonitoringSite",
-						RootNamespace = "VXMonitoringSite",
-						Framework = TargetFramework.Net40,
-						OwnerEmail = "oleg.shuruev@cbsinteractive.com"
-					});
-
-				writer.End();
 			}
 		}
 

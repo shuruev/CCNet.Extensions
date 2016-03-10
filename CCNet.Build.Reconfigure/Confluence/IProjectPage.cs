@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
 using CCNet.Build.Confluence;
 using CCNet.Build.Tfs;
 
@@ -28,5 +29,10 @@ namespace CCNet.Build.Reconfigure
 		/// Renders table row for a summary page.
 		/// </summary>
 		XElement RenderSummaryRow(bool forArea);
+
+		/// <summary>
+		/// Exports configurations for build server.
+		/// </summary>
+		List<ProjectConfiguration> ExportConfigurations();
 	}
 }

@@ -56,8 +56,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Args.cs" />
-    <Compile Include="Configuration\BasicProjectConfiguration.cs" />
-    <Compile Include="Configuration\WebsiteProjectConfiguration.cs" />
+    <Compile Include="Configuration\Settings\BasicProjectConfiguration.cs" />
+    <Compile Include="Configuration\Settings\WebsiteProjectConfiguration.cs" />
     <Compile Include="Confluence\IProjectPage.cs" />
     <Compile Include="Confluence\Pages\WebsiteProjectPage.cs" />
     <Compile Include="Confluence\Pages\LibraryProjectPage.cs" />
@@ -69,7 +69,7 @@
     <Compile Include="Confluence\ProjectPage.cs" />
     <Compile Include="Paths.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Configuration\LibraryProjectConfiguration.cs" />
+    <Compile Include="Configuration\Settings\LibraryProjectConfiguration.cs" />
     <Compile Include="Configuration\ProjectConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configuration\CCNetConfigExtensions.cs" />
@@ -104,9 +104,7 @@
       <Name>CCNet.Build.Tfs</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Configuration\Settings\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -225,5 +225,7 @@ namespace CCNet.Build.Reconfigure
 				new XElement("td", BuildOwner(Owner)),
 				new XElement("td", BuildStatus(Status)));
 		}
+
+		public abstract List<ProjectConfiguration> ExportConfigurations();
 	}
 }
