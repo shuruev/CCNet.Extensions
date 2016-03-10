@@ -35,7 +35,8 @@ namespace CCNet.Build.NotifyProjects
 		private static void NotifyProjects()
 		{
 			Console.Write("Building references graph... ");
-			var graph = BuildReferencesGraph();
+			Dictionary<string, string> servers;
+			var graph = BuildReferencesGraph(out servers);
 			Console.WriteLine("OK");
 
 			Console.Write("Removing unnecessary edges... ");
@@ -56,7 +57,7 @@ namespace CCNet.Build.NotifyProjects
 				Console.WriteLine(
 					"[USAGE] {0} | {1}",
 					project,
-					Args.ServerName);
+					servers[project]);
 			}
 
 			var projectsToNotify = new List<string>();
@@ -68,35 +69,43 @@ namespace CCNet.Build.NotifyProjects
 			Console.Write("Notified dependant projects... ");
 			foreach (var project in projectsToNotify)
 			{
-				NotifyProject(project);
+				NotifyProject(project, servers[project]);
 			}
 
 			Console.WriteLine("OK");
 		}
 
-		private static AdjacencyGraph<string, Edge<string>> BuildReferencesGraph()
+		private static AdjacencyGraph<string, Edge<string>> BuildReferencesGraph(out Dictionary<string, string> servers)
 		{
+			servers = new Dictionary<string, string>();
+
 			var graph = new AdjacencyGraph<string, Edge<string>>();
-
-			foreach (string projectFolder in Directory.GetDirectories(Args.ProjectsPath))
+			foreach (var serverName in Args.ServerNames.Split('|'))
 			{
-				var projectName = Path.GetFileName(projectFolder);
-				var referencesFolder = Path.Combine(projectFolder, Args.ReferencesFolder);
+				var projectsPath = Paths.ProjectsFolder(serverName);
+				foreach (var projectFolder in Directory.GetDirectories(projectsPath))
+				{
+					var projectName = Path.GetFileName(projectFolder);
+					var referencesFolder = Path.Combine(projectFolder, Args.ReferencesFolder);
 
-				if (!Directory.Exists(referencesFolder))
-					continue;
+					servers.Add(projectName, serverName);
 
-				var referenceFiles = Directory.GetFiles(referencesFolder).Select(Path.GetFileNameWithoutExtension);
+					if (!Directory.Exists(referencesFolder))
+						continue;
 
-				graph.AddVerticesAndEdgeRange(referenceFiles.Select(referenceName => new Edge<string>(referenceName, projectName)));
+					var referenceFiles = Directory.GetFiles(referencesFolder).Select(Path.GetFileNameWithoutExtension);
+
+					graph.AddVerticesAndEdgeRange(referenceFiles.Select(referenceName => new Edge<string>(referenceName, projectName)));
+				}
 			}
 
 			return graph;
 		}
 
-		private static void NotifyProject(string projectName)
+		private static void NotifyProject(string projectName, string serverName)
 		{
-			var projectFolder = Path.Combine(Args.ProjectsPath, projectName);
+			var projectsPath = Paths.ProjectsFolder(serverName);
+			var projectFolder = Path.Combine(projectsPath, projectName);
 			var referencesFolder = Path.Combine(projectFolder, Args.ReferencesFolder);
 
 			var fileName = String.Format("{0}.txt", Args.ProjectName);

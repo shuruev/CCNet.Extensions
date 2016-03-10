@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Xml;
 using CCNet.Build.Common;
@@ -93,8 +92,7 @@ namespace CCNet.Build.GenerateNuspec
 		{
 			var sb = new StringBuilder();
 
-			var files = Args.ReleaseNotes.Split('|').ToList();
-			foreach (var file in files)
+			foreach (var file in Args.ReleaseNotes.Split('|'))
 			{
 				if (!File.Exists(file))
 					continue;

@@ -12,14 +12,14 @@ namespace CCNet.Build.NotifyProjects
 			get { return Current.Get<string>("ProjectName"); }
 		}
 
-		public static string ServerName
+		public static string BuildPath
 		{
-			get { return Current.Get<string>("ServerName"); }
+			get { return Current.Get<string>("BuildPath"); }
 		}
 
-		public static string ProjectsPath
+		public static string ServerNames
 		{
-			get { return Current.Get<string>("ProjectsPath"); }
+			get { return Current.Get<string>("ServerNames"); }
 		}
 
 		public static string ReferencesFolder

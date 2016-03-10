@@ -89,7 +89,7 @@ namespace CCNet.Build.Reconfigure
 						OwnerEmail = "oleg.shuruev@cbsinteractive.com"
 					});
 
-				WriteLibraryProject(
+				/*xxxWriteLibraryProject(
 					writer,
 					new LibraryProjectConfiguration
 					{
@@ -99,7 +99,7 @@ namespace CCNet.Build.Reconfigure
 						Category = "ContentCast",
 						TfsPath = "$/Main/ContentCast/V3/V3.Storage",
 						Framework = TargetFramework.Net45
-					});
+					});*/
 
 				WriteLibraryProject(
 					writer,
@@ -217,59 +217,68 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
+		private static void WriteProjectHeader(XmlWriter writer, ProjectConfiguration project)
+		{
+			writer.WriteElementString("name", project.UniqueName);
+			writer.WriteElementString("description", project.Description);
+			writer.WriteElementString("queue", project.Category);
+			writer.WriteElementString("category", project.Category);
+
+			writer.WriteElementString("workingDirectory", project.WorkingDirectory);
+			writer.WriteElementString("artifactDirectory", project.WorkingDirectory);
+			using (writer.OpenTag("state"))
+			{
+				writer.WriteAttributeString("type", "state");
+				writer.WriteAttributeString("directory", project.WorkingDirectory);
+			}
+
+			writer.WriteElementString("webURL", project.WebUrl);
+		}
+
+		private static void WriteSourceControl(XmlWriter writer, ProjectConfiguration project, bool autoBuild)
+		{
+			using (writer.OpenTag("sourcecontrol"))
+			{
+				writer.WriteAttributeString("type", "multi");
+				using (writer.OpenTag("sourceControls"))
+				{
+					using (writer.OpenTag("filesystem"))
+					{
+						writer.WriteElementString("repositoryRoot", project.WorkingDirectoryReferences);
+						writer.WriteElementString("autoGetSource", "false");
+						writer.WriteElementString("ignoreMissingRoot", "true");
+					}
+
+					using (writer.OpenTag("vsts"))
+					{
+						writer.WriteElementString("executable", "$(tfsExecutable)");
+						writer.WriteElementString("server", "$(tfsUrl)");
+						writer.WriteElementString("project", project.TfsPath);
+						writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
+						writer.WriteElementString("applyLabel", "false");
+						writer.WriteElementString("autoGetSource", "true");
+						writer.WriteElementString("cleanCopy", "true");
+						writer.WriteElementString("deleteWorkspace", "true");
+					}
+				}
+			}
+
+			writer.Tag("labeller", "type", "shortDateLabeller");
+
+			using (writer.OpenTag("triggers"))
+			{
+				writer.Tag("intervalTrigger", "name", "source or references", "seconds", "30", "buildCondition", "IfModificationExists", "initialSeconds", "5");
+			}
+		}
+
 		private static void WriteLibraryProject(XmlWriter writer, LibraryProjectConfiguration project)
 		{
 			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
 
 			using (writer.OpenTag("project"))
 			{
-				writer.WriteElementString("name", project.UniqueName);
-				writer.WriteElementString("description", project.Description);
-				writer.WriteElementString("queue", project.Category);
-				writer.WriteElementString("category", project.Category);
-
-				writer.WriteElementString("workingDirectory", project.WorkingDirectory);
-				writer.WriteElementString("artifactDirectory", project.WorkingDirectory);
-				using (writer.OpenTag("state"))
-				{
-					writer.WriteAttributeString("type", "state");
-					writer.WriteAttributeString("directory", project.WorkingDirectory);
-				}
-
-				writer.WriteElementString("webURL", project.WebUrl);
-
-				using (writer.OpenTag("sourcecontrol"))
-				{
-					writer.WriteAttributeString("type", "multi");
-					using (writer.OpenTag("sourceControls"))
-					{
-						using (writer.OpenTag("filesystem"))
-						{
-							writer.WriteElementString("repositoryRoot", project.WorkingDirectoryReferences);
-							writer.WriteElementString("autoGetSource", "false");
-							writer.WriteElementString("ignoreMissingRoot", "true");
-						}
-
-						using (writer.OpenTag("vsts"))
-						{
-							writer.WriteElementString("executable", "$(tfsExecutable)");
-							writer.WriteElementString("server", "$(tfsUrl)");
-							writer.WriteElementString("project", project.TfsPath);
-							writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
-							writer.WriteElementString("applyLabel", "false");
-							writer.WriteElementString("autoGetSource", "true");
-							writer.WriteElementString("cleanCopy", "true");
-							writer.WriteElementString("deleteWorkspace", "true");
-						}
-					}
-				}
-
-				writer.Tag("labeller", "type", "shortDateLabeller");
-
-				using (writer.OpenTag("triggers"))
-				{
-					writer.Tag("intervalTrigger", "name", "source or references", "seconds", "30", "buildCondition", "IfModificationExists", "initialSeconds", "5");
-				}
+				WriteProjectHeader(writer, project);
+				WriteSourceControl(writer, project, true);
 
 				using (writer.OpenTag("prebuild"))
 				{
@@ -282,9 +291,11 @@ namespace CCNet.Build.Reconfigure
 					{
 						writer.WriteElementString("executable", "$(ccnetBuildSetupProject)");
 						writer.WriteBuildArgs(
-							new Arg("ProjectName", project.Name),
 							new Arg("ProjectType", project.Type),
+							new Arg("ProjectName", project.Name),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
+							new Arg("TempPath", project.WorkingDirectoryTemp),
+							new Arg("TfsPath", project.TfsPath),
 							new Arg("CurrentVersion", "$[$CCNetLabel]"));
 
 						writer.WriteElementString("description", "Setup project");
@@ -298,6 +309,7 @@ namespace CCNet.Build.Reconfigure
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("PackagesPath", project.WorkingDirectoryPackages),
 							new Arg("ReferencesPath", project.WorkingDirectoryReferences),
+							new Arg("TempPath", project.WorkingDirectoryTemp),
 							new Arg(project.CustomVersions != null ? "CustomVersions" : null, project.CustomVersions),
 							new Arg("NuGetExecutable", "$(nugetExecutable)"),
 							new Arg("NuGetUrl", project.NugetRestoreUrl));
@@ -358,21 +370,16 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString("description", "Publish package");
 					}
 
-					foreach (var server in new[] { "Library", "Website" })
+					using (writer.OpenTag("exec"))
 					{
-						using (writer.OpenTag("exec"))
-						{
-							writer.WriteElementString("executable", "$(ccnetBuildNotifyProjects)");
-							writer.WriteBuildArgs(
-								new Arg("ProjectName", project.Name),
-								new Arg("ServerName", server),
-								new Arg("ProjectsPath", String.Format(@"$(buildPath)\Projects-{0}", server)),
-								new Arg("ReferencesFolder", "references"));
+						writer.WriteElementString("executable", "$(ccnetBuildNotifyProjects)");
+						writer.WriteBuildArgs(
+							new Arg("ProjectName", project.Name),
+							new Arg("BuildPath", "$(buildPath)"),
+							new Arg("ServerNames", "Library|Website"),
+							new Arg("ReferencesFolder", "references"));
 
-							writer.WriteElementString(
-								"description",
-								String.Format("Notify other projects (from {0} server)", server));
-						}
+						writer.WriteElementString("description", "Notify other projects");
 					}
 
 					// xxx temporarily copy release back to RUFRT-VXBUILD
@@ -443,53 +450,8 @@ namespace CCNet.Build.Reconfigure
 
 			using (writer.OpenTag("project"))
 			{
-				writer.WriteElementString("name", project.UniqueName);
-				writer.WriteElementString("description", project.Description);
-				writer.WriteElementString("queue", project.Category);
-				writer.WriteElementString("category", project.Category);
-
-				writer.WriteElementString("workingDirectory", project.WorkingDirectory);
-				writer.WriteElementString("artifactDirectory", project.WorkingDirectory);
-				using (writer.OpenTag("state"))
-				{
-					writer.WriteAttributeString("type", "state");
-					writer.WriteAttributeString("directory", project.WorkingDirectory);
-				}
-
-				writer.WriteElementString("webURL", project.WebUrl);
-
-				using (writer.OpenTag("sourcecontrol"))
-				{
-					writer.WriteAttributeString("type", "multi");
-					using (writer.OpenTag("sourceControls"))
-					{
-						using (writer.OpenTag("filesystem"))
-						{
-							writer.WriteElementString("repositoryRoot", project.WorkingDirectoryReferences);
-							writer.WriteElementString("autoGetSource", "false");
-							writer.WriteElementString("ignoreMissingRoot", "true");
-						}
-
-						using (writer.OpenTag("vsts"))
-						{
-							writer.WriteElementString("executable", "$(tfsExecutable)");
-							writer.WriteElementString("server", "$(tfsUrl)");
-							writer.WriteElementString("project", project.TfsPath);
-							writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
-							writer.WriteElementString("applyLabel", "false");
-							writer.WriteElementString("autoGetSource", "true");
-							writer.WriteElementString("cleanCopy", "true");
-							writer.WriteElementString("deleteWorkspace", "true");
-						}
-					}
-				}
-
-				writer.Tag("labeller", "type", "shortDateLabeller");
-
-				using (writer.OpenTag("triggers"))
-				{
-					writer.Tag("intervalTrigger", "name", "source or references", "seconds", "30", "buildCondition", "IfModificationExists", "initialSeconds", "5");
-				}
+				WriteProjectHeader(writer, project);
+				WriteSourceControl(writer, project, true);
 
 				using (writer.OpenTag("prebuild"))
 				{
@@ -502,9 +464,11 @@ namespace CCNet.Build.Reconfigure
 					{
 						writer.WriteElementString("executable", "$(ccnetBuildSetupProject)");
 						writer.WriteBuildArgs(
-							new Arg("ProjectName", project.Name),
 							new Arg("ProjectType", project.Type),
+							new Arg("ProjectName", project.Name),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
+							new Arg("TempPath", project.WorkingDirectoryTemp),
+							new Arg("TfsPath", project.TfsPath),
 							new Arg("CurrentVersion", "$[$CCNetLabel]"));
 
 						writer.WriteElementString("description", "Setup project");
@@ -518,6 +482,7 @@ namespace CCNet.Build.Reconfigure
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("PackagesPath", project.WorkingDirectoryPackages),
 							new Arg("ReferencesPath", project.WorkingDirectoryReferences),
+							new Arg("TempPath", project.WorkingDirectoryTemp),
 							new Arg(project.CustomVersions == null ? null : "CustomVersions", project.CustomVersions),
 							new Arg("NuGetExecutable", "$(nugetExecutable)"),
 							new Arg("NuGetUrl", project.NugetRestoreUrl));
@@ -532,6 +497,46 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
 						writer.WriteElementString("buildArgs", String.Format(@"/noconsolelogger /p:Configuration=Release;OutDir={0}\", project.WorkingDirectoryRelease));
 						writer.WriteElementString("description", "Build web site");
+					}
+
+					writer.CbTag("EraseXmlDocs", "path", project.ReleaseDirectoryPublished);
+					writer.CbTag("EraseConfigFiles", "path", project.ReleaseDirectoryPublished);
+					writer.CbTag("CompressDirectory", "path", project.ReleaseDirectoryPublished, "output", project.PublishFileLocal);
+
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
+						writer.WriteBuildArgs(
+							new Arg("Storage", "Devbuild"),
+							new Arg("Container", "publish"),
+							new Arg("LocalFile", project.PublishFileLocal),
+							new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/{1}", project.UniqueName, project.PublishFileName)));
+
+						writer.WriteElementString("description", "Publish release to Azure");
+					}
+
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
+						writer.WriteBuildArgs(
+							new Arg("Storage", "Devbuild"),
+							new Arg("Container", "publish"),
+							new Arg("LocalFile", project.TempFileSource),
+							new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/source.txt", project.UniqueName)));
+
+						writer.WriteElementString("description", "Publish source summary");
+					}
+
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
+						writer.WriteBuildArgs(
+							new Arg("Storage", "Devbuild"),
+							new Arg("Container", "publish"),
+							new Arg("LocalFile", project.TempFilePackages),
+							new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/packages.txt", project.UniqueName)));
+
+						writer.WriteElementString("description", "Publish packages summary");
 					}
 				}
 
@@ -548,7 +553,7 @@ namespace CCNet.Build.Reconfigure
 						writer.CbTag("EmailPublisher", "mailto", project.OwnerEmail);
 					}
 
-					//xxxCleanupWebsiteProject(writer, project);
+					CleanupWebsiteProject(writer, project);
 				}
 			}
 		}
