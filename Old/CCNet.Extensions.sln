@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Extensions.Plugin", "ccnet.extensions.plugin\CCNet.Extensions.Plugin.csproj", "{53DB7203-BDF9-4711-A4C6-28EAD1C8524F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.ProjectAdapter", "CCNet.ProjectAdapter\CCNet.ProjectAdapter.csproj", "{E8CDB0BD-9DE3-4C4E-9DA8-44287F564151}"
