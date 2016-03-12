@@ -220,6 +220,18 @@ namespace CCNet.Build.Reconfigure
 				{
 					using (writer.OpenTag("exec"))
 					{
+						writer.WriteElementString("executable", "$(ccnetBuildCheckProject)");
+						writer.WriteBuildArgs(
+							new Arg("ProjectName", project.Name),
+							new Arg("ProjectPath", project.WorkingDirectorySource),
+							new Arg("TfsPath", project.TfsPath),
+							new Arg("CheckIssues", "F01|F02|F03|F04|F05|C01|C02|C03"));
+
+						writer.WriteElementString("description", "Check project");
+					}
+
+					using (writer.OpenTag("exec"))
+					{
 						writer.WriteElementString("executable", "$(ccnetBuildSetupProject)");
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
@@ -359,6 +371,18 @@ namespace CCNet.Build.Reconfigure
 
 				using (writer.OpenTag("tasks"))
 				{
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildCheckProject)");
+						writer.WriteBuildArgs(
+							new Arg("ProjectName", project.Name),
+							new Arg("ProjectPath", project.WorkingDirectorySource),
+							new Arg("TfsPath", project.TfsPath),
+							new Arg("CheckIssues", "F01|F02|F03|F04|F05|C01|C02|C03"));
+
+						writer.WriteElementString("description", "Check project");
+					}
+
 					using (writer.OpenTag("exec"))
 					{
 						writer.WriteElementString("executable", "$(ccnetBuildSetupProject)");

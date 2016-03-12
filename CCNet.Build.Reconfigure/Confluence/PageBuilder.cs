@@ -114,7 +114,10 @@ namespace CCNet.Build.Reconfigure
 			{
 				"Archive",
 				"ContentCast",
+				"DataSource",
 				"Internal",
+				"PartnerAccess",
+				"Production",
 				"Sandbox",
 				"Vortex"
 			};

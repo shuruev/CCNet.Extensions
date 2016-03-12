@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -55,6 +56,16 @@ namespace CCNet.Build.Tfs
 				UserDisplay = changeset.CommitterDisplayName,
 				Date = changeset.CreationDate.ToUniversalTime()
 			};
+		}
+
+		public List<string> GetChildItems(string path)
+		{
+			var items = m_server.GetItems(path, RecursionType.OneLevel);
+			return items
+				.Items
+				.Select(i => i.ServerItem)
+				.Where(i => i != path)
+				.ToList();
 		}
 	}
 }

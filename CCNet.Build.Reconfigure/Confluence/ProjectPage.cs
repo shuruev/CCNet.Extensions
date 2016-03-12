@@ -131,6 +131,11 @@ namespace CCNet.Build.Reconfigure
 				case "8a99855552936a300152936cb4a77e8a":
 					return "8a99855552936a300152936cb4a77e8a";
 
+				case "luzin":
+				case "kluzin":
+				case "8a99855552936a300152936cc08259d7":
+					return "8a99855552936a300152936cc08259d7";
+
 				default:
 					throw new InvalidOperationException(
 						String.Format("Unknown user '{0}'.", owner));
