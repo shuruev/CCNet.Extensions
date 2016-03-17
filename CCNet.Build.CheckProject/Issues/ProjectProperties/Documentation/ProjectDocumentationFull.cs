@@ -12,7 +12,7 @@ namespace CCNet.Build.CheckProject
 
 			var release = context.ProjectReleaseProperties.Result;
 			release.CheckOptional("NoWarn", String.Empty);
-			release.CheckRequired("DocumentationFile", String.Format(@"bin\Debug\{0}.xml", Args.ProjectName));
+			release.CheckRequired("DocumentationFile", String.Format(@"bin\Release\{0}.xml", Args.ProjectName));
 		}
 	}
 }

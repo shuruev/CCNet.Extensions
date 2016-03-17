@@ -209,6 +209,7 @@ namespace CCNet.Build.Reconfigure
 				writer.WriteElementString("executable", "$(ccnetBuildCheckProject)");
 				writer.WriteBuildArgs(
 					new Arg("ProjectName", project.Name),
+					new Arg(project.RootNamespace != null ? "RootNamespace" : null, project.RootNamespace),
 					new Arg("ProjectPath", project.WorkingDirectorySource),
 					new Arg("TfsPath", project.TfsPath),
 					new Arg("CheckIssues", project.CheckIssues));

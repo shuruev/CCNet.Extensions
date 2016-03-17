@@ -29,7 +29,7 @@ namespace CCNet.Build.CheckProject
 			properties.CheckRequired("Trademark", String.Empty);
 			properties.CheckRequired("Culture", String.Empty);
 			properties.CheckRequired("Version", "1.0.0.0");
-			properties.CheckRequired("FileVersion", "1.0.0.0");
+			properties.CheckOptional("FileVersion", "1.0.0.0");
 		}
 
 		private Dictionary<string, string> ParseProperties(IEnumerable<string> lines)

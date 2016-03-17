@@ -56,6 +56,9 @@ Update source control encoding using Properties menu, and change file contents i
 						bag.Add(file);
 				});
 
+			if (bag.Count == 0)
+				return;
+
 			throw new FailedCheckException(
 				@"The following files are marked as UTF-8 in source control, but seems using non-ANSI characters:
 {0}
