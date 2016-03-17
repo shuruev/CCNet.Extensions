@@ -67,5 +67,13 @@ namespace CCNet.Build.Tfs
 				.Where(i => i != path)
 				.ToList();
 		}
+
+		public Dictionary<string, int> GetAllFileEncodings(string path)
+		{
+			var items = m_server.GetItems(path, VersionSpec.Latest, RecursionType.Full, DeletedState.NonDeleted, ItemType.File);
+			return items
+				.Items
+				.ToDictionary(i => i.ServerItem, i => i.Encoding);
+		}
 	}
 }

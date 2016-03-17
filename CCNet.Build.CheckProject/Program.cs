@@ -81,9 +81,10 @@ If you beleive everything is correct please talk to Oleg Shuruev to improve this
 				case "F07": return new LocalFilesShouldMatchProjectFiles();
 
 				// file contents
-				case "C01": return new CheckAssemblyInfo();
-				case "C02": return new CheckPrimarySolution();
-				case "C03": return new CheckNugetConfig();
+				case "C01": return new AllFilesShouldUseUtf8();
+				case "C02": return new CheckAssemblyInfo();
+				case "C03": return new CheckPrimarySolution();
+				case "C04": return new CheckNugetConfig();
 
 				// project properties
 				case "P01": return new CheckProjectConfigurations();

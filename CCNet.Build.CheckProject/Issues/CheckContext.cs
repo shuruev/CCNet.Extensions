@@ -42,6 +42,11 @@ namespace CCNet.Build.CheckProject
 			TfsNugetConfig = new CheckContextService<string>(GetTfsNugetConfig);
 		}
 
+		public TfsClient Tfs
+		{
+			get { return m_tfs; }
+		}
+
 		private List<string> GetLocalFiles()
 		{
 			Console.WriteLine("Getting local files from project folder...");

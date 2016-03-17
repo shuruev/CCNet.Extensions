@@ -14,6 +14,11 @@ namespace CCNet.Build.CheckProject
 			}
 		}
 
+		public static string ProjectFileName
+		{
+			get { return Path.GetFileName(ProjectFile); }
+		}
+
 		public static string ProjectPropertiesPath
 		{
 			get { return Path.Combine(Args.ProjectPath, "Properties"); }

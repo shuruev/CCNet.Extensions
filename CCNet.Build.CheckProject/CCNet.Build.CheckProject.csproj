@@ -52,6 +52,7 @@
     <Compile Include="Issues\FailedCheckException.cs" />
     <Compile Include="Issues\CheckContextService.cs" />
     <Compile Include="Issues\CheckContext.cs" />
+    <Compile Include="Issues\FileContents\AllFilesShouldUseUtf8.cs" />
     <Compile Include="Issues\FileContents\CheckPrimarySolution.cs" />
     <Compile Include="Issues\FileContents\CheckAssemblyInfo.cs" />
     <Compile Include="Issues\FileContents\CheckNugetConfig.cs" />

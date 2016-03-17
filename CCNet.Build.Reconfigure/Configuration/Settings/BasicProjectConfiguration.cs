@@ -121,9 +121,10 @@ namespace CCNet.Build.Reconfigure
 			// file contents
 			checks.AddRange(new[]
 			{
-				"C01", // CheckAssemblyInfo
-				"C02", // CheckPrimarySolution
-				"C03", // CheckNugetConfig
+				"C01", // AllFilesShouldUseUtf8
+				"C02", // CheckAssemblyInfo
+				"C03", // CheckPrimarySolution
+				"C04", // CheckNugetConfig
 				null
 			});
 

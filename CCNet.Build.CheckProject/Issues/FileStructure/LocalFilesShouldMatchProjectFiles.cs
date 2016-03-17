@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -9,11 +8,14 @@ namespace CCNet.Build.CheckProject
 	{
 		public void Check(CheckContext context)
 		{
-			var items = context.LocalFiles.Result;
+			var items = context.LocalFiles.Result
+				.Where(item => item != Paths.ProjectFileName + ".vspscc")
+				.Where(item => !item.StartsWith(@"$tf\"))
+				.ToList();
 
 			var required = context.ProjectFiles.Result
 				.Select(file => file.FullName)
-				.Union(new[] { Path.GetFileName(Paths.ProjectFile) })
+				.Union(new[] { Paths.ProjectFileName })
 				.ToList();
 
 			string description;
@@ -22,6 +24,7 @@ namespace CCNet.Build.CheckProject
 				throw new FailedCheckException(
 					@"All files under source control should match the files included into project:
 {0}
+                               
 Please include necessary files into project or remove them from source control.",
 					description);
 			}
