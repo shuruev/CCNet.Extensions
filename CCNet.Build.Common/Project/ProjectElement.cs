@@ -37,6 +37,8 @@ namespace CCNet.Build.Common
 		/// <summary>
 		/// Reloads all the inner properties.
 		/// </summary>
-		protected abstract void Reload();
+		protected virtual void Reload()
+		{
+		}
 	}
 }

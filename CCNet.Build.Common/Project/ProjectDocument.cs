@@ -134,8 +134,132 @@ namespace CCNet.Build.Common
 		/// </summary>
 		public Guid GetProjectGuid()
 		{
-			var guid = SelectElement("/ms:Project/ms:PropertyGroup/ms:ProjectGuid");
-			return new Guid(guid.Value);
+			var node = SelectElement("/ms:Project/ms:PropertyGroup/ms:ProjectGuid");
+			return new Guid(node.Value);
+		}
+
+		/// <summary>
+		/// Gets project type IDs.
+		/// </summary>
+		public HashSet<Guid> GetProjectTypeGuids()
+		{
+			var node = SelectElement("/ms:Project/ms:PropertyGroup/ms:ProjectTypeGuids");
+			if (node == null)
+				return new HashSet<Guid>();
+
+			return new HashSet<Guid>(
+				node.Value
+				.Split(';')
+				.Select(id => new Guid(id)));
+		}
+
+		/// <summary>
+		/// Gets a list of used conditions.
+		/// </summary>
+		private List<string> GetUsedConditions()
+		{
+			var result = new List<string>();
+			foreach (var node in SelectElements("/ms:Project/ms:PropertyGroup[@Condition]"))
+			{
+				var condition = node.Attribute("Condition").Value;
+				var value = condition
+					.Replace("'$(Configuration)|$(Platform)' == ", String.Empty)
+					.Trim('\'', ' ');
+
+				result.Add(value);
+			}
+
+			var configuration = SelectElement("/ms:Project/ms:PropertyGroup/ms:Configuration").Value;
+			var platform = SelectElement("/ms:Project/ms:PropertyGroup/ms:Platform").Value;
+			result.Add(String.Format("{0}|{1}", configuration, platform));
+
+			return result;
+		}
+
+		/// <summary>
+		/// Gets a list of used configurations.
+		/// </summary>
+		public List<string> GetUsedConfigurations()
+		{
+			return GetUsedConditions()
+				.Select(condition => condition.Split('|'))
+				.Where(parts => parts.Length > 0)
+				.Select(parts => parts[0])
+				.Distinct()
+				.ToList();
+		}
+
+		/// <summary>
+		/// Gets a list of used platforms.
+		/// </summary>
+		public List<string> GetUsedPlatforms()
+		{
+			return GetUsedConditions()
+				.Select(condition => condition.Split('|'))
+				.Where(parts => parts.Length > 1)
+				.Select(parts => parts[1])
+				.Distinct()
+				.ToList();
+		}
+
+		/// <summary>
+		/// Gets all common properties.
+		/// </summary>
+		public Dictionary<string, string> GetCommonProperties()
+		{
+			return SelectElements("/ms:Project/ms:PropertyGroup[not(@Condition)]")
+				.SelectMany(group => group.Elements())
+				.ToDictionary(node => node.Name.LocalName, node => node.Value);
+		}
+
+		/// <summary>
+		/// Gets all properties specific to condition.
+		/// </summary>
+		private Dictionary<string, string> GetConditionProperties(string condition)
+		{
+			var group = SelectElement(String.Format("/ms:Project/ms:PropertyGroup[contains(@Condition, '{0}')]", condition));
+			if (group == null)
+				return new Dictionary<string, string>();
+
+			return group.Elements().ToDictionary(node => node.Name.LocalName, node => node.Value);
+		}
+
+		/// <summary>
+		/// Gets all properties specific to Debug configuration.
+		/// </summary>
+		public Dictionary<string, string> GetDebugProperties()
+		{
+			return GetConditionProperties("Debug");
+		}
+
+		/// <summary>
+		/// Gets all properties specific to Release configuration.
+		/// </summary>
+		public Dictionary<string, string> GetReleaseProperties()
+		{
+			return GetConditionProperties("Release");
+		}
+
+		/// <summary>
+		/// Gets project files.
+		/// </summary>
+		public List<ProjectFile> GetProjectFiles()
+		{
+			return SelectElements("/ms:Project/ms:ItemGroup/ms:None")
+				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:Compile"))
+				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:Content"))
+				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:EmbeddedResource"))
+				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:EntityDeploy"))
+				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:Resource"))
+				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:Shadow"))
+				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:ApplicationDefinition"))
+				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:Page"))
+				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:ServiceDefinition"))
+				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:ServiceConfiguration"))
+				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:PublishProfile"))
+				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:SplashScreen"))
+				.Select(e => new ProjectFile(e))
+				.ToList();
 		}
 	}
 }
