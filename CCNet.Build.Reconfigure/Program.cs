@@ -166,7 +166,7 @@ namespace CCNet.Build.Reconfigure
 			writer.WriteElementString("webURL", project.WebUrl);
 		}
 
-		private static void WriteSourceControl(XmlWriter writer, ProjectConfiguration project, bool autoBuild)
+		private static void WriteSourceControl(XmlWriter writer, ProjectConfiguration project)
 		{
 			using (writer.OpenTag("sourcecontrol"))
 			{
@@ -202,6 +202,21 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
+		private static void WriteCheckProject(XmlWriter writer, BasicProjectConfiguration project)
+		{
+			using (writer.OpenTag("exec"))
+			{
+				writer.WriteElementString("executable", "$(ccnetBuildCheckProject)");
+				writer.WriteBuildArgs(
+					new Arg("ProjectName", project.Name),
+					new Arg("ProjectPath", project.WorkingDirectorySource),
+					new Arg("TfsPath", project.TfsPath),
+					new Arg("CheckIssues", project.CheckIssues));
+
+				writer.WriteElementString("description", "Check project");
+			}
+		}
+
 		private static void WriteLibraryProject(XmlWriter writer, LibraryProjectConfiguration project)
 		{
 			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
@@ -209,7 +224,7 @@ namespace CCNet.Build.Reconfigure
 			using (writer.OpenTag("project"))
 			{
 				WriteProjectHeader(writer, project);
-				WriteSourceControl(writer, project, true);
+				WriteSourceControl(writer, project);
 
 				using (writer.OpenTag("prebuild"))
 				{
@@ -218,17 +233,7 @@ namespace CCNet.Build.Reconfigure
 
 				using (writer.OpenTag("tasks"))
 				{
-					using (writer.OpenTag("exec"))
-					{
-						writer.WriteElementString("executable", "$(ccnetBuildCheckProject)");
-						writer.WriteBuildArgs(
-							new Arg("ProjectName", project.Name),
-							new Arg("ProjectPath", project.WorkingDirectorySource),
-							new Arg("TfsPath", project.TfsPath),
-							new Arg("CheckIssues", "F01|F02|F03|F04|F05|C01|C02|C03"));
-
-						writer.WriteElementString("description", "Check project");
-					}
+					WriteCheckProject(writer, project);
 
 					using (writer.OpenTag("exec"))
 					{
@@ -362,7 +367,7 @@ namespace CCNet.Build.Reconfigure
 			using (writer.OpenTag("project"))
 			{
 				WriteProjectHeader(writer, project);
-				WriteSourceControl(writer, project, true);
+				WriteSourceControl(writer, project);
 
 				using (writer.OpenTag("prebuild"))
 				{
@@ -371,17 +376,7 @@ namespace CCNet.Build.Reconfigure
 
 				using (writer.OpenTag("tasks"))
 				{
-					using (writer.OpenTag("exec"))
-					{
-						writer.WriteElementString("executable", "$(ccnetBuildCheckProject)");
-						writer.WriteBuildArgs(
-							new Arg("ProjectName", project.Name),
-							new Arg("ProjectPath", project.WorkingDirectorySource),
-							new Arg("TfsPath", project.TfsPath),
-							new Arg("CheckIssues", "F01|F02|F03|F04|F05|C01|C02|C03"));
-
-						writer.WriteElementString("description", "Check project");
-					}
+					WriteCheckProject(writer, project);
 
 					using (writer.OpenTag("exec"))
 					{

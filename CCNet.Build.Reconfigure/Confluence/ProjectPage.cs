@@ -119,22 +119,23 @@ namespace CCNet.Build.Reconfigure
 				case "none":
 					return String.Empty;
 
-				case "shuruev":
-				case "oshuruev":
-				case "olshuruev":
-				case "8a99855552936a300152936cadf74b66":
-					return "8a99855552936a300152936cadf74b66";
+				case "pbelousov":
+				case "8a99855552936a300152936cbe1246f1":
+					return "8a99855552936a300152936cbe1246f1";
 
-				case "kolemasov":
 				case "skolemasov":
 				case "kolemasovs":
 				case "8a99855552936a300152936cb4a77e8a":
 					return "8a99855552936a300152936cb4a77e8a";
 
-				case "luzin":
 				case "kluzin":
 				case "8a99855552936a300152936cc08259d7":
 					return "8a99855552936a300152936cc08259d7";
+
+				case "oshuruev":
+				case "olshuruev":
+				case "8a99855552936a300152936cadf74b66":
+					return "8a99855552936a300152936cadf74b66";
 
 				default:
 					throw new InvalidOperationException(
