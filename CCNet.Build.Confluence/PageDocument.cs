@@ -42,7 +42,8 @@ namespace CCNet.Build.Confluence
 			{
 				"nbsp",
 				"ndash",
-				"middot"
+				"middot",
+				"rsquo"
 			};
 
 			s_beforePage = "<page "
