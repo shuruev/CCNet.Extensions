@@ -48,18 +48,38 @@
   <ItemGroup>
     <Compile Include="Args.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Issues\CheckExtensions.cs" />
     <Compile Include="Issues\FailedCheckException.cs" />
     <Compile Include="Issues\CheckContextService.cs" />
     <Compile Include="Issues\CheckContext.cs" />
     <Compile Include="Issues\FileContents\CheckPrimarySolution.cs" />
     <Compile Include="Issues\FileContents\CheckAssemblyInfo.cs" />
     <Compile Include="Issues\FileContents\CheckNugetConfig.cs" />
+    <Compile Include="Issues\FileStructure\PackagesFolderShouldNotHavePackages.cs" />
     <Compile Include="Issues\FileStructure\NugetConfigShouldExist.cs" />
     <Compile Include="Issues\FileStructure\PrimarySolutionShouldExist.cs" />
     <Compile Include="Issues\FileStructure\AssemblyInfoShouldExist.cs" />
+    <Compile Include="Issues\FileStructure\LocalFilesShouldMatchProjectFiles.cs" />
     <Compile Include="Issues\FileStructure\ProjectFolderShouldHaveProjectName.cs" />
     <Compile Include="Issues\IChecker.cs" />
     <Compile Include="Issues\FileStructure\ProjectFileShouldExist.cs" />
+    <Compile Include="Issues\ProjectProperties\Documentation\ProjectDocumentationFull.cs" />
+    <Compile Include="Issues\ProjectProperties\Documentation\ProjectDocumentationPartial.cs" />
+    <Compile Include="Issues\ProjectProperties\Documentation\ProjectDocumentationNone.cs" />
+    <Compile Include="Issues\ProjectProperties\CheckProjectCompilation.cs" />
+    <Compile Include="Issues\ProjectProperties\CheckProjectStartupObject.cs" />
+    <Compile Include="Issues\ProjectProperties\CheckProjectRootNamespace.cs" />
+    <Compile Include="Issues\ProjectProperties\CheckProjectAssemblyName.cs" />
+    <Compile Include="Issues\ProjectProperties\TargetFramework\ProjectTargetFramework45.cs" />
+    <Compile Include="Issues\ProjectProperties\TargetFramework\ProjectTargetFramework40.cs" />
+    <Compile Include="Issues\ProjectProperties\TargetFramework\ProjectTargetFramework35.cs" />
+    <Compile Include="Issues\ProjectProperties\TargetFramework\ProjectTargetFramework20.cs" />
+    <Compile Include="Issues\ProjectProperties\OutputType\ProjectOutputTypeWinExe.cs" />
+    <Compile Include="Issues\ProjectProperties\OutputType\ProjectOutputTypeExe.cs" />
+    <Compile Include="Issues\ProjectProperties\OutputType\ProjectOutputTypeLibrary.cs" />
+    <Compile Include="Issues\ProjectProperties\CheckProjectSourceControl.cs" />
+    <Compile Include="Issues\ProjectProperties\CheckProjectPlatforms.cs" />
+    <Compile Include="Issues\ProjectProperties\CheckProjectConfigurations.cs" />
     <Compile Include="Paths.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,6 +98,7 @@
       <Name>CCNet.Build.Tfs</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -5,6 +5,25 @@ namespace CCNet.Build.CheckProject
 {
 	public static class Paths
 	{
+		public static string ProjectFile
+		{
+			get
+			{
+				var fileName = String.Format("{0}.csproj", Args.ProjectName);
+				return Path.Combine(Args.ProjectPath, fileName);
+			}
+		}
+
+		public static string ProjectPropertiesPath
+		{
+			get { return Path.Combine(Args.ProjectPath, "Properties"); }
+		}
+
+		public static string AssemblyInfoFile
+		{
+			get { return Path.Combine(ProjectPropertiesPath, "AssemblyInfo.cs"); }
+		}
+
 		public static string TfsSolutionPath
 		{
 			get
@@ -31,6 +50,16 @@ namespace CCNet.Build.CheckProject
 		public static string TfsNugetConfig
 		{
 			get { return String.Format("{0}/nuget.config", TfsNugetPath); }
+		}
+
+		public static string TfsPackagesPath
+		{
+			get { return String.Format("{0}/packages", TfsSolutionPath); }
+		}
+
+		public static string TfsRepositoriesConfig
+		{
+			get { return String.Format("{0}/repositories.config", TfsPackagesPath); }
 		}
 	}
 }

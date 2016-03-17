@@ -12,6 +12,16 @@ namespace CCNet.Build.CheckProject
 			get { return Current.Get<string>("ProjectName"); }
 		}
 
+		public static string ProjectTitle
+		{
+			get { return Current.Get("ProjectTitle", ProjectName); }
+		}
+
+		public static string RootNamespace
+		{
+			get { return Current.Get("RootNamespace", ProjectName); }
+		}
+
 		public static string ProjectPath
 		{
 			get { return Current.Get<string>("ProjectPath"); }

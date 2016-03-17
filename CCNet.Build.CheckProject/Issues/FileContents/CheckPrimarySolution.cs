@@ -25,7 +25,7 @@ namespace CCNet.Build.CheckProject
 			}
 
 			throw new FailedCheckException(@"It looks like solution file was saved using Visual Studio older than 2013.
-Please make sure solution file is saved with Visual Studio 2013 or above so the others could work with it conveniently.");
+Please make sure solution file is saved with Visual Studio 2013 or above, so the others could work with it conveniently.");
 		}
 
 		private void CheckTeamFoundationServer(IEnumerable<string> lines)
@@ -35,8 +35,7 @@ Please make sure solution file is saved with Visual Studio 2013 or above so the 
 				return;
 
 			throw new FailedCheckException(@"Something looks wrong with source control configuration in solution file.
-Please make sure both solution and project are properly connected to 'http://rufc-devbuild.cneu.cnwk:8080/tfs/sed'.
-If everything seems valid please talk to Oleg Shuruev to improve this check.");
+Please make sure both solution and project are properly connected to 'http://rufc-devbuild.cneu.cnwk:8080/tfs/sed'.");
 		}
 	}
 }

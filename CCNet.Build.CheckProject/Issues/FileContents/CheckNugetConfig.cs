@@ -15,7 +15,7 @@
 
 			if (config != compare)
 				throw new FailedCheckException(@"File 'nuget.config' has a strange contents.
-Please copy it from a different solution or talk to Oleg Shuruev to improve this check.");
+Please try to copy it from a different solution.");
 		}
 	}
 }

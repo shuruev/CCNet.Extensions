@@ -53,6 +53,8 @@ namespace CCNet.Build.CheckProject
                                
 {2}
                                
+If you beleive everything is correct please talk to Oleg Shuruev to improve this check.
+                               
                                
 ",
 							issue,
@@ -75,11 +77,32 @@ namespace CCNet.Build.CheckProject
 				case "F03": return new AssemblyInfoShouldExist();
 				case "F04": return new PrimarySolutionShouldExist();
 				case "F05": return new NugetConfigShouldExist();
+				case "F06": return new PackagesFolderShouldNotHavePackages();
+				case "F07": return new LocalFilesShouldMatchProjectFiles();
 
 				// file contents
 				case "C01": return new CheckAssemblyInfo();
 				case "C02": return new CheckPrimarySolution();
 				case "C03": return new CheckNugetConfig();
+
+				// project properties
+				case "P01": return new CheckProjectConfigurations();
+				case "P02": return new CheckProjectPlatforms();
+				case "P03": return new CheckProjectSourceControl();
+				case "P04": return new ProjectOutputTypeLibrary();
+				case "P05": return new ProjectOutputTypeExe();
+				case "P06": return new ProjectOutputTypeWinExe();
+				case "P07": return new CheckProjectAssemblyName();
+				case "P08": return new CheckProjectRootNamespace();
+				case "P09": return new CheckProjectStartupObject();
+				case "P10": return new ProjectTargetFramework20();
+				case "P11": return new ProjectTargetFramework35();
+				case "P12": return new ProjectTargetFramework40();
+				case "P13": return new ProjectTargetFramework45();
+				case "P14": return new CheckProjectCompilation();
+				case "P15": return new ProjectDocumentationNone();
+				case "P16": return new ProjectDocumentationPartial();
+				case "P17": return new ProjectDocumentationFull();
 
 				default:
 					throw new InvalidOperationException(
