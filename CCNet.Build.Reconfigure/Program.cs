@@ -173,13 +173,6 @@ namespace CCNet.Build.Reconfigure
 				writer.WriteAttributeString("type", "multi");
 				using (writer.OpenTag("sourceControls"))
 				{
-					using (writer.OpenTag("filesystem"))
-					{
-						writer.WriteElementString("repositoryRoot", project.WorkingDirectoryReferences);
-						writer.WriteElementString("autoGetSource", "false");
-						writer.WriteElementString("ignoreMissingRoot", "true");
-					}
-
 					using (writer.OpenTag("vsts"))
 					{
 						writer.WriteElementString("executable", "$(tfsExecutable)");
@@ -190,6 +183,20 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString("autoGetSource", "true");
 						writer.WriteElementString("cleanCopy", "true");
 						writer.WriteElementString("deleteWorkspace", "true");
+					}
+
+					using (writer.OpenTag("filesystem"))
+					{
+						writer.WriteElementString("repositoryRoot", project.WorkingDirectoryReferences);
+						writer.WriteElementString("autoGetSource", "false");
+						writer.WriteElementString("ignoreMissingRoot", "true");
+					}
+
+					using (writer.OpenTag("filesystem"))
+					{
+						writer.WriteElementString("repositoryRoot", "$(buildPath)/Admin/RebuildAll.txt");
+						writer.WriteElementString("autoGetSource", "false");
+						writer.WriteElementString("ignoreMissingRoot", "true");
 					}
 				}
 			}
@@ -356,7 +363,7 @@ namespace CCNet.Build.Reconfigure
 						writer.CbTag("EmailPublisher", "mailto", project.OwnerEmail);
 					}
 
-					//xxxCleanupLibraryProject(writer, project);
+					CleanupLibraryProject(writer, project);
 				}
 			}
 		}
