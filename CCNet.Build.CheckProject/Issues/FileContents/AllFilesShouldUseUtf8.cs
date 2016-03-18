@@ -120,7 +120,8 @@ This should help other team memebers to avoid possible conflicts while working w
 				|| name.EndsWith(".config")
 				|| name.EndsWith(".config.default")
 				|| name.EndsWith(".csproj")
-				|| name.EndsWith(".csproj.vspscc"))
+				|| name.EndsWith(".csproj.vspscc")
+				|| name.EndsWith(".resx"))
 				return true;
 
 			return false;
