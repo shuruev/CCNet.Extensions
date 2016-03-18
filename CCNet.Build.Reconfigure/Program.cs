@@ -356,7 +356,7 @@ namespace CCNet.Build.Reconfigure
 						writer.CbTag("EmailPublisher", "mailto", project.OwnerEmail);
 					}
 
-					CleanupLibraryProject(writer, project);
+					//xxxCleanupLibraryProject(writer, project);
 				}
 			}
 		}

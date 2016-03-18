@@ -14,11 +14,119 @@ namespace CCNet.Build.CheckProject
 
 		public void Check(CheckContext context)
 		{
-			var textFiles = CheckTfs(context);
-			CheckLocal(textFiles);
+			var encodings = GetTfsEncodings(context);
+			var signatures = GetLocalUtf8BomSignatures(encodings.Keys);
+
+			// skip files which are marked as UTF-8 in TFS and using BOM
+			var exclude = encodings
+				.Where(i => i.Value == 65001)
+				.Select(i => i.Key)
+				.Where(signatures.ContainsKey)
+				.Where(i => signatures[i])
+				.ToList();
+
+			foreach (var file in exclude)
+			{
+				encodings.Remove(file);
+				signatures.Remove(file);
+			}
+
+			var required = new List<string>();
+			var mismatched = new List<string>();
+			var exceptional = new List<string>();
+
+			var ansi = GetLocalOnlyAnsiCharacters(encodings);
+			foreach (var file in encodings.Keys)
+			{
+				if (ShouldAlwaysUseUtf8WithBom(file))
+				{
+					// some files (like *.cs or *.config) should always be saved with BOM and marked as UTF-8 in TFS
+					required.Add(file);
+				}
+				else if (signatures[file])
+				{
+					// file saved with BOM but not marked as UTF-8 in TFS
+					mismatched.Add(file);
+				}
+				else if (!ansi[file])
+				{
+					// all other files are forced to be UTF-8 + BOM only if they are using non-ANSI characters
+					exceptional.Add(file);
+				}
+			}
+
+			if (required.Count == 0 && exceptional.Count == 0)
+				return;
+
+			var sb = new StringBuilder();
+
+			Func<string, string> format = file =>
+			{
+				return String.Format(
+					"- {0} ({1} BOM, marked as {2})",
+					file,
+					signatures[file] ? "uses" : "no",
+					encodings[file]);
+			};
+
+			if (required.Count > 0)
+			{
+				sb.AppendLine("The following files should always be saved with BOM and marked as UTF-8 (65001) in TFS:");
+				foreach (var file in required)
+				{
+					sb.AppendLine(format(file));
+				}
+			}
+
+			if (mismatched.Count > 0)
+			{
+				if (sb.Length > 0)
+					sb.AppendLine("                               ");
+
+				sb.AppendLine("The following files are saved with BOM, so they should rather be marked as UTF-8 (65001) in TFS:");
+				foreach (var file in mismatched)
+				{
+					sb.AppendLine(format(file));
+				}
+			}
+
+			if (exceptional.Count > 0)
+			{
+				if (sb.Length > 0)
+					sb.AppendLine("                               ");
+
+				sb.AppendLine("The following files use non-ANSI characters, so they should rather be saved with BOM and marked as UTF-8 (65001) in TFS:");
+				foreach (var file in exceptional)
+				{
+					sb.AppendLine(format(file));
+				}
+			}
+
+			throw new FailedCheckException(
+				@"{0}
+                               
+Please update TFS encodings using 'Advanced/Properties...' dialog, and/or save required files using 'Advanced Save Options...' command in Visual Studio.
+This should help other team memebers to avoid possible conflicts while working with such files in Visual Studio and other tools.",
+				sb.ToString());
 		}
 
-		private List<string> CheckTfs(CheckContext context)
+		private bool ShouldAlwaysUseUtf8WithBom(string textFile)
+		{
+			var name = Path.GetFileName(textFile).ToLowerInvariant();
+			if (name.EndsWith(".cs")
+				|| name.EndsWith(".asax")
+				|| name.EndsWith(".ascx")
+				|| name.EndsWith(".aspx")
+				|| name.EndsWith(".config")
+				|| name.EndsWith(".config.default")
+				|| name.EndsWith(".csproj")
+				|| name.EndsWith(".csproj.vspscc"))
+				return true;
+
+			return false;
+		}
+
+		private Dictionary<string, int> GetTfsEncodings(CheckContext context)
 		{
 			Console.WriteLine("Getting file encodings from TFS...");
 			var files = context.Tfs.GetAllFileEncodings(Args.TfsPath)
@@ -28,59 +136,46 @@ namespace CCNet.Build.CheckProject
 					item => item.Value);
 
 			Console.WriteLine("Found {0} text files.", files.Count);
-
-			var nonUtf8 = files.Where(i => i.Value != 65001).ToList();
-			if (nonUtf8.Count == 0)
-				return files.Keys.ToList();
-
-			throw new FailedCheckException(
-				@"There are encoding issues with the following source control files:
-{0}
-                               
-Please make sure all files under source control are using UTF-8 (65001) encoding. Other encoding could happen if files were created outside Visual Studio.
-Update source control encoding using Properties menu, and change file contents if needed (in case it uses non-ANSI characters).",
-				String.Join(Environment.NewLine, nonUtf8.Select(i => String.Format("- {0} ({1})", i.Key, i.Value))));
+			return files;
 		}
 
-		private void CheckLocal(IEnumerable<string> textFiles)
+		private Dictionary<string, bool> GetLocalUtf8BomSignatures(IEnumerable<string> textFiles)
 		{
-			var bag = new ConcurrentBag<string>();
+			var bag = new ConcurrentDictionary<string, bool>();
 
-			Console.WriteLine("Checking local file encodings...");
+			Console.WriteLine("Checking if local files are using UTF-8 signatures...");
 			Parallel.ForEach(
 				textFiles,
 				file =>
 				{
-					var local = Path.Combine(Args.ProjectPath, file);
-					if (!CheckLocalFile(local))
-						bag.Add(file);
+					var filePath = Path.Combine(Args.ProjectPath, file);
+					bag[file] = IsUsingUtf8BomSignature(filePath);
+
 				});
 
-			if (bag.Count == 0)
-				return;
-
-			throw new FailedCheckException(
-				@"The following files are marked as UTF-8 in source control, but seems using non-ANSI characters:
-{0}
-                               
-Please double check file contents and properly re-save them using UTF-8 (65001) encoding with BOM signature. This will help avoiding issues for others working with these files in Visual Studio.",
-				String.Join(Environment.NewLine, bag.Select(i => String.Format("- {0}", i))));
+			Console.WriteLine("Checked {0} local files, {1} are using UTF-8 signatures.", bag.Count, bag.Count(i => i.Value));
+			return bag.ToDictionary(i => i.Key, i => i.Value);
 		}
 
-		private bool CheckLocalFile(string filePath)
+		private Dictionary<string, bool> GetLocalOnlyAnsiCharacters(Dictionary<string, int> tfsEncodings)
 		{
-			if (IsUsingUtf8Bom(filePath))
-				return true;
+			var bag = new ConcurrentDictionary<string, bool>();
 
-			var utf8 = File.ReadAllText(filePath, Encoding.UTF8);
-			var cp1252 = File.ReadAllText(filePath, Encoding.GetEncoding(1252));
-			if (utf8 == cp1252)
-				return true;
+			Console.WriteLine("Checking if local files are using non-ANSI characters...");
+			Parallel.ForEach(
+				tfsEncodings,
+				item =>
+				{
+					var filePath = Path.Combine(Args.ProjectPath, item.Key);
+					bag[item.Key] = IsUsingOnlyAnsiCharacters(filePath, item.Value);
 
-			return false;
+				});
+
+			Console.WriteLine("Checked {0} local files, {1} are using non-ANSI characters.", bag.Count, bag.Count(i => !i.Value));
+			return bag.ToDictionary(i => i.Key, i => i.Value);
 		}
 
-		private bool IsUsingUtf8Bom(string filePath)
+		private bool IsUsingUtf8BomSignature(string filePath)
 		{
 			using (var fs = File.Open(filePath, FileMode.Open))
 			{
@@ -95,6 +190,17 @@ Please double check file contents and properly re-save them using UTF-8 (65001) 
 
 				return true;
 			}
+		}
+
+		private bool IsUsingOnlyAnsiCharacters(string filePath, int tfsEncoding)
+		{
+			var utf8 = File.ReadAllText(filePath, Encoding.UTF8);
+			var cp1252 = File.ReadAllText(filePath, Encoding.GetEncoding(1252));
+			var tfs = File.ReadAllText(filePath, Encoding.GetEncoding(tfsEncoding));
+			if (utf8 == cp1252 && utf8 == tfs)
+				return true;
+
+			return false;
 		}
 	}
 }

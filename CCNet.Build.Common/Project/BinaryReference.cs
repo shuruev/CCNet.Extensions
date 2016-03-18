@@ -97,7 +97,7 @@ namespace CCNet.Build.Common
 			if (hint != null)
 			{
 				oldValue = String.Format(@"\\{0}\.[0-9\.?]+\\", Name);
-				newValue = String.Format(@"\{0}.{1}\", Name, newVersion.ToString().TrimEnd('.', '0'));
+				newValue = String.Format(@"\{0}.{1}\", Name, newVersion);
 
 				hint.Value = new Regex(oldValue).Replace(hint.Value, newValue);
 			}
