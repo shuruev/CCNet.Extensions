@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CachedConfluenceClient.cs" />
     <Compile Include="ConfluenceClient.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="PageDocument.Build.cs" />

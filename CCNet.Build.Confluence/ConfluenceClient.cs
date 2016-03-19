@@ -22,15 +22,27 @@ namespace CCNet.Build.Confluence
 			m_token = m_client.login(user, password);
 		}
 
-		public Page GetPage(string spaceCode, string pageName)
+		public PageSummary GetPageSummary(long pageId)
 		{
-			var page = m_client.getPage(m_token, spaceCode, pageName);
-			return ToPage(page);
+			var page = m_client.getPageSummary(m_token, pageId);
+			return ToPageSummary(page);
+		}
+
+		public PageSummary GetPageSummary(string spaceCode, string pageName)
+		{
+			var page = m_client.getPageSummary(m_token, spaceCode, pageName);
+			return ToPageSummary(page);
 		}
 
 		public Page GetPage(long pageId)
 		{
 			var page = m_client.getPage(m_token, pageId);
+			return ToPage(page);
+		}
+
+		public Page GetPage(string spaceCode, string pageName)
+		{
+			var page = m_client.getPage(m_token, spaceCode, pageName);
 			return ToPage(page);
 		}
 

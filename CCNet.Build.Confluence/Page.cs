@@ -8,6 +8,25 @@ namespace CCNet.Build.Confluence
 	public class Page : PageSummary
 	{
 		/// <summary>
+		/// Initializes a new instance.
+		/// </summary>
+		public Page()
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance.
+		/// </summary>
+		public Page(PageSummary summary)
+		{
+			Id = summary.Id;
+			ParentId = summary.ParentId;
+			Name = summary.Name;
+			Space = summary.Space;
+			Version = summary.Version;
+		}
+
+		/// <summary>
 		/// Gets or sets page content.
 		/// </summary>
 		public string Content { get; set; }
