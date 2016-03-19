@@ -13,6 +13,16 @@
 		/// <summary>
 		/// Web site.
 		/// </summary>
-		Website
+		Website,
+
+		/// <summary>
+		/// Web service.
+		/// </summary>
+		Webservice,
+
+		/// <summary>
+		/// Windows service.
+		/// </summary>
+		Service
 	}
 }
