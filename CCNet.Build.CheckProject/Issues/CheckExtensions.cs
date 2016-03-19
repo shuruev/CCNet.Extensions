@@ -6,47 +6,70 @@ namespace CCNet.Build.CheckProject
 {
 	public static class CheckExtensions
 	{
-		private static void CheckValue(string property, string expected, string current)
+		private static void RaiseError(string details, string format, params object[] args)
 		{
-			if (current != expected)
-				throw new FailedCheckException("Property '{0}' is expected to have value '{1}', but now it is '{2}'.", property, expected, current);
-		}
+			var sb = new StringBuilder();
+			sb.AppendFormat(format, args);
 
-		public static void CheckRequired(this IDictionary<string, string> properties, string key, string value)
-		{
-			if (!properties.ContainsKey(key))
-				throw new FailedCheckException("Missing required property '{0}': '{1}'.", key, value);
-
-			CheckValue(key, value, properties[key]);
-		}
-
-		public static void CheckRequired(this IDictionary<string, string> properties, string key, Func<string, bool> valueShouldBe, string valueExplanation = null)
-		{
-			if (!properties.ContainsKey(key))
-				throw new FailedCheckException("Missing required property '{0}'.");
-
-			var current = properties[key];
-			if (!valueShouldBe(current))
+			if (!String.IsNullOrEmpty(details))
 			{
-				var sb = new StringBuilder();
-				sb.AppendFormat("Property '{0}' seems having improper value '{1}'.", key, current);
-
-				if (!String.IsNullOrEmpty(valueExplanation))
-				{
-					sb.AppendLine();
-					sb.Append(valueExplanation);
-				}
-
-				throw new FailedCheckException(sb.ToString());
+				sb.AppendLine();
+				sb.Append(details);
 			}
+
+			throw new FailedCheckException(sb.ToString());
 		}
 
-		public static void CheckOptional(this IDictionary<string, string> properties, string key, string value)
+		private static void CheckValue(string details, string property, string expected, string current)
+		{
+			if (current == expected)
+				return;
+
+			RaiseError(details, "Property '{0}' is expected to have value '{1}', but now it is '{2}'.", property, expected, current);
+		}
+
+		private static void CheckValue(string details, string property, Func<string, bool> expected, string current)
+		{
+			if (expected(current))
+				return;
+
+			RaiseError(details, "Property '{0}' seems having improper value '{1}'.", property, current);
+		}
+
+		public static void CheckRequired(this IDictionary<string, string> properties, string key, string value, string details = null)
+		{
+			if (!properties.ContainsKey(key))
+			{
+				RaiseError(details, "Missing required property '{0}': '{1}'.", key, value);
+			}
+
+			CheckValue(details, key, value, properties[key]);
+		}
+
+		public static void CheckRequired(this IDictionary<string, string> properties, string key, Func<string, bool> shouldBe, string details = null)
+		{
+			if (!properties.ContainsKey(key))
+			{
+				RaiseError(details, "Missing required property '{0}'.", key);
+			}
+
+			CheckValue(details, key, shouldBe, properties[key]);
+		}
+
+		public static void CheckOptional(this IDictionary<string, string> properties, string key, string value, string details = null)
 		{
 			if (!properties.ContainsKey(key))
 				return;
 
-			CheckValue(key, value, properties[key]);
+			CheckValue(details, key, value, properties[key]);
+		}
+
+		public static void CheckOptional(this IDictionary<string, string> properties, string key, Func<string, bool> shouldBe, string details = null)
+		{
+			if (!properties.ContainsKey(key))
+				return;
+
+			CheckValue(details, key, shouldBe, properties[key]);
 		}
 	}
 }
