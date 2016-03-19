@@ -32,6 +32,16 @@ namespace CCNet.Build.Reconfigure
 			get { return String.Format("$(serverUrl)/project/{0}/ViewProjectReport.aspx", UniqueName); }
 		}
 
+		public string AdminDirectory
+		{
+			get { return "$(adminPath)"; }
+		}
+
+		public string AdminDirectoryRebuildAll
+		{
+			get { return String.Format(@"{0}\RebuildAll", AdminDirectory); }
+		}
+
 		public string WorkingDirectory
 		{
 			get { return String.Format(@"$(projectsPath)\{0}", UniqueName); }
@@ -39,27 +49,27 @@ namespace CCNet.Build.Reconfigure
 
 		public string WorkingDirectoryReferences
 		{
-			get { return String.Format(@"$(projectsPath)\{0}\references", UniqueName); }
+			get { return String.Format(@"{0}\references", WorkingDirectory); }
 		}
 
 		public string WorkingDirectorySource
 		{
-			get { return String.Format(@"$(projectsPath)\{0}\source", UniqueName); }
+			get { return String.Format(@"{0}\source", WorkingDirectory); }
 		}
 
 		public string WorkingDirectoryRelease
 		{
-			get { return String.Format(@"$(projectsPath)\{0}\release", UniqueName); }
+			get { return String.Format(@"{0}\release", WorkingDirectory); }
 		}
 
 		public string WorkingDirectoryPackages
 		{
-			get { return String.Format(@"$(projectsPath)\{0}\packages", UniqueName); }
+			get { return String.Format(@"{0}\packages", WorkingDirectory); }
 		}
 
 		public string WorkingDirectoryTemp
 		{
-			get { return String.Format(@"$(projectsPath)\{0}\temp", UniqueName); }
+			get { return String.Format(@"{0}\temp", WorkingDirectory); }
 		}
 
 		public string TempFileSource

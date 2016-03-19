@@ -51,6 +51,7 @@ namespace CCNet.Build.Reconfigure
 				var configs = builder.ExportConfigurations();
 				BuildLibraryConfig(FilterByType<LibraryProjectConfiguration>(configs));
 				BuildWebsiteConfig(FilterByType<WebsiteProjectConfiguration>(configs));
+				BuildServiceConfig(FilterByType<ServiceProjectConfiguration>(configs));
 			}
 		}
 
@@ -148,6 +149,31 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
+		private static void BuildServiceConfig(IEnumerable<ServiceProjectConfiguration> configs)
+		{
+			Console.WriteLine("Generate service config...");
+			Console.WriteLine("Output file: {0}", Paths.ServiceConfig);
+
+			using (var writer = WriteConfig(Paths.ServiceConfig))
+			{
+				writer.Begin();
+
+				writer.Comment("SERVER NAME");
+				writer.CbTag("define", "serverName", "Service");
+
+				writer.Comment("IMPORT GLOBAL");
+				writer.CbTag("include", "href", "Global.config");
+
+				foreach (var config in configs)
+				{
+					WriteServiceProject(writer, config);
+					Console.WriteLine("> {0}", config.UniqueName);
+				}
+
+				writer.End();
+			}
+		}
+
 		private static void WriteProjectHeader(XmlWriter writer, ProjectConfiguration project)
 		{
 			writer.WriteElementString("name", project.UniqueName);
@@ -195,7 +221,7 @@ namespace CCNet.Build.Reconfigure
 
 					using (writer.OpenTag("filesystem"))
 					{
-						writer.WriteElementString("repositoryRoot", @"$(buildPath)\Admin\RebuildAll");
+						writer.WriteElementString("repositoryRoot", project.AdminDirectoryRebuildAll);
 						writer.WriteElementString("autoGetSource", "false");
 						writer.WriteElementString("ignoreMissingRoot", "true");
 					}
@@ -210,18 +236,42 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
+		private static void WriteDefaultPublishers(XmlWriter writer, ProjectConfiguration project)
+		{
+			writer.Tag("modificationHistory", "onlyLogWhenChangesFound", "true");
+			writer.Tag("xmllogger");
+			writer.Tag("statistics");
+			writer.Tag("artifactcleanup", "cleanUpMethod", "KeepLastXBuilds", "cleanUpValue", "100");
+			writer.Tag("artifactcleanup", "cleanUpMethod", "KeepMaximumXHistoryDataEntries", "cleanUpValue", "100");
+
+			if (!String.IsNullOrEmpty(project.OwnerEmail))
+			{
+				writer.CbTag("EmailPublisher", "mailto", project.OwnerEmail);
+			}
+		}
+
 		private static void WriteCheckProject(XmlWriter writer, BasicProjectConfiguration project)
 		{
 			using (writer.OpenTag("exec"))
 			{
 				writer.WriteElementString("executable", "$(ccnetBuildCheckProject)");
-				writer.WriteBuildArgs(
+
+				var args = new List<Arg>
+				{
 					new Arg("ProjectName", project.Name),
 					new Arg(project.RootNamespace != null ? "RootNamespace" : null, project.RootNamespace),
 					new Arg("ProjectPath", project.WorkingDirectorySource),
 					new Arg("TfsPath", project.TfsPath),
-					new Arg("CheckIssues", project.CheckIssues));
+					new Arg("CheckIssues", project.CheckIssues)
+				};
 
+				var service = project as ServiceProjectConfiguration;
+				if (service != null)
+				{
+					args.Add(new Arg("ProjectTitle", service.Title));
+				}
+
+				writer.WriteBuildArgs(args.ToArray());
 				writer.WriteElementString("description", "Check project");
 			}
 		}
@@ -353,17 +403,7 @@ namespace CCNet.Build.Reconfigure
 
 				using (writer.OpenTag("publishers"))
 				{
-					writer.Tag("modificationHistory", "onlyLogWhenChangesFound", "true");
-					writer.Tag("xmllogger");
-					writer.Tag("statistics");
-					writer.Tag("artifactcleanup", "cleanUpMethod", "KeepLastXBuilds", "cleanUpValue", "100");
-					writer.Tag("artifactcleanup", "cleanUpMethod", "KeepMaximumXHistoryDataEntries", "cleanUpValue", "100");
-
-					if (!String.IsNullOrEmpty(project.OwnerEmail))
-					{
-						writer.CbTag("EmailPublisher", "mailto", project.OwnerEmail);
-					}
-
+					WriteDefaultPublishers(writer, project);
 					CleanupLibraryProject(writer, project);
 				}
 			}
@@ -469,18 +509,114 @@ namespace CCNet.Build.Reconfigure
 
 				using (writer.OpenTag("publishers"))
 				{
-					writer.Tag("modificationHistory", "onlyLogWhenChangesFound", "true");
-					writer.Tag("xmllogger");
-					writer.Tag("statistics");
-					writer.Tag("artifactcleanup", "cleanUpMethod", "KeepLastXBuilds", "cleanUpValue", "100");
-					writer.Tag("artifactcleanup", "cleanUpMethod", "KeepMaximumXHistoryDataEntries", "cleanUpValue", "100");
+					WriteDefaultPublishers(writer, project);
+					CleanupWebsiteProject(writer, project);
+				}
+			}
+		}
 
-					if (!String.IsNullOrEmpty(project.OwnerEmail))
+		private static void WriteServiceProject(XmlWriter writer, ServiceProjectConfiguration project)
+		{
+			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
+
+			using (writer.OpenTag("project"))
+			{
+				WriteProjectHeader(writer, project);
+				WriteSourceControl(writer, project);
+
+				using (writer.OpenTag("prebuild"))
+				{
+					CleanupServiceProject(writer, project);
+				}
+
+				using (writer.OpenTag("tasks"))
+				{
+					WriteCheckProject(writer, project);
+
+					using (writer.OpenTag("exec"))
 					{
-						writer.CbTag("EmailPublisher", "mailto", project.OwnerEmail);
+						writer.WriteElementString("executable", "$(ccnetBuildSetupProject)");
+						writer.WriteBuildArgs(
+							new Arg("ProjectType", project.Type),
+							new Arg("ProjectName", project.Name),
+							new Arg("ProjectPath", project.WorkingDirectorySource),
+							new Arg("TempPath", project.WorkingDirectoryTemp),
+							new Arg("TfsPath", project.TfsPath),
+							new Arg("CurrentVersion", "$[$CCNetLabel]"));
+
+						writer.WriteElementString("description", "Setup project");
 					}
 
-					CleanupWebsiteProject(writer, project);
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildSetupPackages)");
+						writer.WriteBuildArgs(
+							new Arg("ProjectName", project.Name),
+							new Arg("ProjectPath", project.WorkingDirectorySource),
+							new Arg("PackagesPath", project.WorkingDirectoryPackages),
+							new Arg("ReferencesPath", project.WorkingDirectoryReferences),
+							new Arg("TempPath", project.WorkingDirectoryTemp),
+							new Arg(project.CustomVersions == null ? null : "CustomVersions", project.CustomVersions),
+							new Arg("NuGetExecutable", "$(nugetExecutable)"),
+							new Arg("NuGetUrl", project.NugetRestoreUrl));
+
+						writer.WriteElementString("description", "Setup packages");
+					}
+
+					using (writer.OpenTag("msbuild"))
+					{
+						writer.WriteElementString("executable", project.MsbuildExecutable);
+						writer.WriteElementString("targets", "Build");
+						writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
+						writer.WriteElementString("buildArgs", String.Format(@"/noconsolelogger /p:Configuration=Release;OutDir={0}\", project.WorkingDirectoryRelease));
+						writer.WriteElementString("description", "Build windows service");
+					}
+
+					writer.CbTag("EraseXmlDocs", "path", project.WorkingDirectoryRelease);
+					writer.CbTag("EraseConfigFiles", "path", project.WorkingDirectoryRelease);
+					writer.CbTag("CompressDirectory", "path", project.WorkingDirectoryRelease, "output", project.ReleaseFileLocal);
+
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
+						writer.WriteBuildArgs(
+							new Arg("Storage", "Devbuild"),
+							new Arg("Container", "publish"),
+							new Arg("LocalFile", project.ReleaseFileLocal),
+							new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/{1}", project.UniqueName, project.ReleaseFileName)));
+
+						writer.WriteElementString("description", "Publish release to blobs");
+					}
+
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
+						writer.WriteBuildArgs(
+							new Arg("Storage", "Devbuild"),
+							new Arg("Container", "publish"),
+							new Arg("LocalFile", project.TempFileSource),
+							new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/source.txt", project.UniqueName)));
+
+						writer.WriteElementString("description", "Publish source summary");
+					}
+
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
+						writer.WriteBuildArgs(
+							new Arg("Storage", "Devbuild"),
+							new Arg("Container", "publish"),
+							new Arg("LocalFile", project.TempFilePackages),
+							new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/packages.txt", project.UniqueName)));
+
+						writer.WriteElementString("description", "Publish packages summary");
+					}
+				}
+
+				using (writer.OpenTag("publishers"))
+				{
+					WriteDefaultPublishers(writer, project);
+					CleanupServiceProject(writer, project);
 				}
 			}
 		}
@@ -500,6 +636,12 @@ namespace CCNet.Build.Reconfigure
 		}
 
 		private static void CleanupWebsiteProject(XmlWriter writer, WebsiteProjectConfiguration project)
+		{
+			CleanupProject(writer, project);
+			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryPublish);
+		}
+
+		private static void CleanupServiceProject(XmlWriter writer, ServiceProjectConfiguration project)
 		{
 			CleanupProject(writer, project);
 			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryPublish);
