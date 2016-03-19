@@ -1,9 +1,12 @@
 ﻿using System;
+using CCNet.Build.Common;
 
 namespace CCNet.Build.Reconfigure
 {
 	public abstract class ProjectConfiguration
 	{
+		public abstract ProjectType Type { get; }
+
 		public string Branch { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }
@@ -20,6 +23,11 @@ namespace CCNet.Build.Reconfigure
 
 				return String.Format("{0}-{1}", Name, Branch);
 			}
+		}
+
+		public string BuildQueue
+		{
+			get { return Category; }
 		}
 
 		public string WebUrl

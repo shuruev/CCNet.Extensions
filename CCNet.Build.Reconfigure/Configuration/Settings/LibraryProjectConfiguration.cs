@@ -5,7 +5,7 @@ namespace CCNet.Build.Reconfigure
 {
 	public class LibraryProjectConfiguration : BasicProjectConfiguration
 	{
-		public ProjectType Type
+		public override ProjectType Type
 		{
 			get { return ProjectType.Library; }
 		}

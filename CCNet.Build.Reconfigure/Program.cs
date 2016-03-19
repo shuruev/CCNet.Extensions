@@ -152,7 +152,7 @@ namespace CCNet.Build.Reconfigure
 		{
 			writer.WriteElementString("name", project.UniqueName);
 			writer.WriteElementString("description", project.Description);
-			writer.WriteElementString("queue", project.Category);
+			writer.WriteElementString("queue", project.BuildQueue);
 			writer.WriteElementString("category", project.Category);
 
 			writer.WriteElementString("workingDirectory", project.WorkingDirectory);
@@ -182,6 +182,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString("applyLabel", "false");
 						writer.WriteElementString("autoGetSource", "true");
 						writer.WriteElementString("cleanCopy", "true");
+						writer.WriteElementString("workspace", String.Format("CCNET_{0}_{1}", project.Type, project.BuildQueue));
 						writer.WriteElementString("deleteWorkspace", "true");
 					}
 
@@ -194,7 +195,7 @@ namespace CCNet.Build.Reconfigure
 
 					using (writer.OpenTag("filesystem"))
 					{
-						writer.WriteElementString("repositoryRoot", "$(buildPath)/Admin/RebuildAll.txt");
+						writer.WriteElementString("repositoryRoot", @"$(buildPath)\Admin\RebuildAll");
 						writer.WriteElementString("autoGetSource", "false");
 						writer.WriteElementString("ignoreMissingRoot", "true");
 					}
@@ -305,7 +306,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString(
 							"buildArgs",
 							String.Format(
-								@"pack ""{0}\{1}.nuspec"" -OutputDirectory ""{0}"" -NonInteractive -Verbosity Detailed",
+								@"pack ""{0}\{1}.nuspec"" -OutputDirectory ""{0}"" -MSBuildVersion 14 -NonInteractive -Verbosity Detailed",
 								project.WorkingDirectoryNuget,
 								project.Name));
 
@@ -438,7 +439,7 @@ namespace CCNet.Build.Reconfigure
 							new Arg("LocalFile", project.PublishFileLocal),
 							new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/{1}", project.UniqueName, project.PublishFileName)));
 
-						writer.WriteElementString("description", "Publish release to Azure");
+						writer.WriteElementString("description", "Publish release to blobs");
 					}
 
 					using (writer.OpenTag("exec"))
