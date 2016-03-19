@@ -42,14 +42,17 @@ namespace CCNet.Build.Reconfigure
 			var result = new ConcurrentBag<IProjectPage>();
 
 			var areas = m_children[root.Id];
-			Parallel.ForEach(areas, area =>
-			{
-				var pages = RebuildArea(area);
-				foreach (var page in pages)
+			Parallel.ForEach(
+				areas,
+				new ParallelOptions { MaxDegreeOfParallelism = 2 },
+				area =>
 				{
-					result.Add(page);
-				}
-			});
+					var pages = RebuildArea(area);
+					foreach (var page in pages)
+					{
+						result.Add(page);
+					}
+				});
 
 			var updated = UpdateSummaryPage(result, root);
 			if (updated)
@@ -131,11 +134,14 @@ namespace CCNet.Build.Reconfigure
 			var result = new ConcurrentBag<IProjectPage>();
 
 			var projects = m_children[area.Id];
-			Parallel.ForEach(projects, project =>
-			{
-				var page = RebuildProject(areaName, project);
-				result.Add(page);
-			});
+			Parallel.ForEach(
+				projects,
+				new ParallelOptions { MaxDegreeOfParallelism = 5 },
+				project =>
+				{
+					var page = RebuildProject(areaName, project);
+					result.Add(page);
+				});
 
 			var updated = UpdateAreaPage(result, area.Id);
 			if (updated)
