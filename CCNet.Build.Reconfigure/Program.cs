@@ -182,6 +182,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString("applyLabel", "false");
 						writer.WriteElementString("autoGetSource", "true");
 						writer.WriteElementString("cleanCopy", "true");
+						//xxx should be ServerName instead of ProjectType
 						writer.WriteElementString("workspace", String.Format("CCNET_{0}_{1}", project.Type, project.BuildQueue));
 						writer.WriteElementString("deleteWorkspace", "true");
 					}
