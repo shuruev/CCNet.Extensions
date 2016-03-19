@@ -99,7 +99,7 @@ namespace CCNet.Build.Reconfigure
 				"$nbsp$",
 				new XElement(
 					"sup",
-					PageDocument.BuildPageLink("Projects FAQ", "explain?", anchor))
+					PageDocument.BuildPageLink("Свойства проекта", "explain?", anchor))
 			};
 		}
 

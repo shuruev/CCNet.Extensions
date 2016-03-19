@@ -7,6 +7,8 @@ namespace CCNet.Build.Reconfigure
 {
 	public abstract class BasicProjectConfiguration : ProjectConfiguration
 	{
+		public abstract ProjectType Type { get; }
+
 		public TargetFramework Framework { get; set; }
 		public DocumentationType Documentation { get; set; }
 		public string RootNamespace { get; set; }

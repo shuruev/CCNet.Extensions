@@ -37,7 +37,7 @@ namespace CCNet.Build.Reconfigure
 
 		private static void Reconfigure()
 		{
-			var confluence = new ConfluenceClient(Config.ConfluenceUsername, Config.ConfluencePassword);
+			var confluence = new CachedConfluenceClient(Config.ConfluenceUsername, Config.ConfluencePassword, Args.ConfluenceCache);
 			var tfs = new TfsClient(Config.TfsUrl);
 			var builder = new PageBuilder(confluence, tfs);
 
@@ -166,7 +166,7 @@ namespace CCNet.Build.Reconfigure
 			writer.WriteElementString("webURL", project.WebUrl);
 		}
 
-		private static void WriteSourceControl(XmlWriter writer, ProjectConfiguration project)
+		private static void WriteSourceControl(XmlWriter writer, BasicProjectConfiguration project)
 		{
 			using (writer.OpenTag("sourcecontrol"))
 			{
@@ -182,8 +182,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString("applyLabel", "false");
 						writer.WriteElementString("autoGetSource", "true");
 						writer.WriteElementString("cleanCopy", "true");
-						//xxx should be ServerName instead of ProjectType
-						writer.WriteElementString("workspace", String.Format("CCNET_{0}_{1}", project.Type, project.BuildQueue));
+						writer.WriteElementString("workspace", String.Format("CCNET_{0}_{1}", project.Type.ServerName(), project.BuildQueue));
 						writer.WriteElementString("deleteWorkspace", "true");
 					}
 

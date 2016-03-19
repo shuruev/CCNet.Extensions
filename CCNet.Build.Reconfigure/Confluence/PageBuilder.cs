@@ -12,13 +12,13 @@ namespace CCNet.Build.Reconfigure
 {
 	public class PageBuilder
 	{
-		private readonly ConfluenceClient m_confluence;
+		private readonly CachedConfluenceClient m_confluence;
 		private readonly TfsClient m_tfs;
 
 		private Dictionary<long, List<PageSummary>> m_children;
 		private List<IProjectPage> m_pages;
 
-		public PageBuilder(ConfluenceClient confluence, TfsClient tfs)
+		public PageBuilder(CachedConfluenceClient confluence, TfsClient tfs)
 		{
 			if (confluence == null)
 				throw new ArgumentNullException("confluence");
@@ -33,7 +33,7 @@ namespace CCNet.Build.Reconfigure
 		public void Rebuild(string spaceCode, string pageName)
 		{
 			Console.Write("Reading projects page and subtree... ");
-			var root = m_confluence.GetPage(spaceCode, pageName);
+			var root = m_confluence.GetPageSummary(spaceCode, pageName);
 			var tree = m_confluence.GetSubtree(root.Id);
 			Console.WriteLine("OK");
 
@@ -72,7 +72,7 @@ namespace CCNet.Build.Reconfigure
 			return m_pages.SelectMany(p => p.ExportConfigurations()).ToList();
 		}
 
-		private bool UpdateSummaryPage(IEnumerable<IProjectPage> pages, Page existing)
+		private bool UpdateSummaryPage(IEnumerable<IProjectPage> pages, PageSummary summary)
 		{
 			var updated = new PageDocument();
 
@@ -97,6 +97,7 @@ namespace CCNet.Build.Reconfigure
 					tbody));
 
 			var content = updated.Render();
+			var existing = m_confluence.GetCachedPage(summary);
 
 			var before = NormalizeForComparison(existing.Content);
 			var after = NormalizeForComparison(content);
@@ -143,7 +144,7 @@ namespace CCNet.Build.Reconfigure
 					result.Add(page);
 				});
 
-			var updated = UpdateAreaPage(result, area.Id);
+			var updated = UpdateAreaPage(result, area);
 			if (updated)
 			{
 				Console.WriteLine("Rebuild [{0}] area summary ... UPDATED", areaName);
@@ -156,7 +157,7 @@ namespace CCNet.Build.Reconfigure
 			return result.ToList();
 		}
 
-		private bool UpdateAreaPage(IEnumerable<IProjectPage> pages, long pageId)
+		private bool UpdateAreaPage(IEnumerable<IProjectPage> pages, PageSummary area)
 		{
 			var updated = new PageDocument();
 
@@ -180,7 +181,7 @@ namespace CCNet.Build.Reconfigure
 					tbody));
 
 			var content = updated.Render();
-			var existing = m_confluence.GetPage(pageId);
+			var existing = m_confluence.GetCachedPage(area);
 
 			var before = NormalizeForComparison(existing.Content);
 			var after = NormalizeForComparison(content);
@@ -221,7 +222,7 @@ namespace CCNet.Build.Reconfigure
 			ProjectType projectType;
 			var projectName = ResolveProjectName(project.Name, out projectType);
 
-			var existing = m_confluence.GetPage(project.Id);
+			var existing = m_confluence.GetCachedPage(project);
 			var document = new PageDocument(existing.Content);
 
 			IProjectPage page;
@@ -235,6 +236,14 @@ namespace CCNet.Build.Reconfigure
 
 					case ProjectType.Website:
 						page = new WebsiteProjectPage(areaName, projectName, project.Name, document);
+						break;
+
+					case ProjectType.Webservice:
+						page = new WebserviceProjectPage(areaName, projectName, project.Name, document);
+						break;
+
+					case ProjectType.Service:
+						page = new ServiceProjectPage(areaName, projectName, project.Name, document);
 						break;
 
 					default:
@@ -302,6 +311,14 @@ namespace CCNet.Build.Reconfigure
 
 				case "web site":
 					projectType = ProjectType.Website;
+					break;
+
+				case "web service":
+					projectType = ProjectType.Webservice;
+					break;
+
+				case "service":
+					projectType = ProjectType.Service;
 					break;
 
 				default:

@@ -57,8 +57,12 @@
   <ItemGroup>
     <Compile Include="Args.cs" />
     <Compile Include="Configuration\Settings\BasicProjectConfiguration.cs" />
+    <Compile Include="Configuration\Settings\ServiceProjectConfiguration.cs" />
+    <Compile Include="Configuration\Settings\WebserviceProjectConfiguration.cs" />
     <Compile Include="Configuration\Settings\WebsiteProjectConfiguration.cs" />
     <Compile Include="Confluence\IProjectPage.cs" />
+    <Compile Include="Confluence\Pages\ServiceProjectPage.cs" />
+    <Compile Include="Confluence\Pages\WebserviceProjectPage.cs" />
     <Compile Include="Confluence\Pages\WebsiteProjectPage.cs" />
     <Compile Include="Confluence\Pages\LibraryProjectPage.cs" />
     <Compile Include="Confluence\PageBuilder.cs" />

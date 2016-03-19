@@ -141,7 +141,7 @@ namespace CCNet.Build.Reconfigure
 					"p",
 					new XElement(
 						"a",
-						new XAttribute("href", String.Format("{0}/server/{1}/project/{2}/ViewProjectReport.aspx", Config.CCNetUrl, Type, ProjectName)),
+						new XAttribute("href", String.Format("{0}/server/{1}/project/{2}/ViewProjectReport.aspx", Config.CCNetUrl, Type.ServerName(), ProjectName)),
 						PageDocument.BuildImage(String.Format("{0}/favicon.ico", Config.CCNetUrl)),
 						"$nbsp$Build project")));
 		}

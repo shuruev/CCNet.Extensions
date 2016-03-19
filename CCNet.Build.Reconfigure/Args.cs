@@ -11,5 +11,10 @@ namespace CCNet.Build.Reconfigure
 		{
 			get { return Current.Get<string>("OutputDirectory"); }
 		}
+
+		public static string ConfluenceCache
+		{
+			get { return Current.Get<string>("ConfluenceCache"); }
+		}
 	}
 }

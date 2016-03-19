@@ -1,12 +1,9 @@
 ﻿using System;
-using CCNet.Build.Common;
 
 namespace CCNet.Build.Reconfigure
 {
 	public abstract class ProjectConfiguration
 	{
-		public abstract ProjectType Type { get; }
-
 		public string Branch { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }
