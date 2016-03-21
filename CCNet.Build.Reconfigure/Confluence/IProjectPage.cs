@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using CCNet.Build.Confluence;
 using CCNet.Build.Tfs;
@@ -34,5 +35,10 @@ namespace CCNet.Build.Reconfigure
 		/// Exports configurations for build server.
 		/// </summary>
 		List<ProjectConfiguration> ExportConfigurations();
+
+		/// <summary>
+		/// Exports unique ID for referencing this project.
+		/// </summary>
+		Tuple<string, Guid> ExportMap();
 	}
 }

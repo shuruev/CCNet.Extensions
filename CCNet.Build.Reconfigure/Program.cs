@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -52,6 +53,15 @@ namespace CCNet.Build.Reconfigure
 				BuildLibraryConfig(FilterByType<LibraryProjectConfiguration>(configs));
 				BuildWebsiteConfig(FilterByType<WebsiteProjectConfiguration>(configs));
 				BuildServiceConfig(FilterByType<ServiceProjectConfiguration>(configs));
+			}
+
+			using (Execute.Step("SAVE GUID MAP"))
+			{
+				var map = builder.ExportMap();
+				foreach (var item in map)
+				{
+					SaveProjectUid(item.Key, item.Value);
+				}
 			}
 		}
 
@@ -645,6 +655,17 @@ namespace CCNet.Build.Reconfigure
 		{
 			CleanupProject(writer, project);
 			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryPublish);
+		}
+
+		private static void SaveProjectUid(string projectName, Guid projectUid)
+		{
+			var mapPath = Args.ProjectMap;
+			mapPath.CreateDirectoryIfNotExists();
+
+			var fileName = String.Format("{0}.txt", projectName);
+			var filePath = Path.Combine(mapPath, fileName);
+
+			File.WriteAllText(filePath, projectUid.ToString().ToUpperInvariant());
 		}
 	}
 }

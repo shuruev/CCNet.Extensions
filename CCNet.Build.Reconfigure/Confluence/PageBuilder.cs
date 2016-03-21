@@ -69,7 +69,17 @@ namespace CCNet.Build.Reconfigure
 
 		public List<ProjectConfiguration> ExportConfigurations()
 		{
-			return m_pages.SelectMany(p => p.ExportConfigurations()).ToList();
+			return m_pages
+				.SelectMany(p => p.ExportConfigurations())
+				.ToList();
+		}
+
+		public Dictionary<string, Guid> ExportMap()
+		{
+			return m_pages
+				.Select(p => p.ExportMap())
+				.Where(i => i != null)
+				.ToDictionary(i => i.Item1, i => i.Item2);
 		}
 
 		private bool UpdateSummaryPage(IEnumerable<IProjectPage> pages, PageSummary summary)

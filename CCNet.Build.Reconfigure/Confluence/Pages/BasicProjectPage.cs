@@ -252,5 +252,13 @@ namespace CCNet.Build.Reconfigure
 
 			return page;
 		}
+
+		public override Tuple<string, Guid> ExportMap()
+		{
+			if (ProjectUid == Guid.Empty)
+				return null;
+
+			return new Tuple<string, Guid>(ProjectName, ProjectUid);
+		}
 	}
 }

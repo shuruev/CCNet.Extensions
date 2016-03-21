@@ -16,5 +16,10 @@ namespace CCNet.Build.Reconfigure
 		{
 			get { return Current.Get<string>("ConfluenceCache"); }
 		}
+
+		public static string ProjectMap
+		{
+			get { return Current.Get<string>("ProjectMap"); }
+		}
 	}
 }
