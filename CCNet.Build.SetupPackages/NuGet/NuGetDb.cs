@@ -25,20 +25,24 @@ namespace CCNet.Build.SetupPackages
 				{
 					cmd.CommandText =
 						@"
-WITH T AS
-(
-	SELECT
-		PR.Id,
-		P.[Version],
-		DENSE_RANK() OVER (PARTITION BY PR.[Key] ORDER BY P.[Key] DESC) AS [Rank]
-	FROM PackageRegistrations PR
-		INNER JOIN Packages P
-		ON P.PackageRegistrationKey = PR.[Key]
-)
+SELECT MAX([Key]) AS LatestKey
+INTO #Latest
+FROM Packages
+GROUP BY PackageRegistrationKey
 
-SELECT Id, [Version]
-FROM T
-WHERE [Rank] = 1
+SELECT
+	PR.Id,
+	P.[Version],
+	PF.TargetFramework
+FROM #Latest T
+	INNER JOIN Packages P
+	ON P.[Key] = T.LatestKey
+	INNER JOIN PackageRegistrations PR
+	ON PR.[Key] = P.PackageRegistrationKey
+	INNER JOIN PackageFrameworks PF
+	ON PF.[Key] = P.[Key]
+
+DROP TABLE #Latest
 						";
 
 					using (var reader = cmd.ExecuteReader())
@@ -47,8 +51,9 @@ WHERE [Rank] = 1
 						{
 							var id = reader.ReadString("Id");
 							var version = reader.ReadString("Version");
+							var framework = reader.ReadString("TargetFramework");
 
-							result.Add(new NuGetPackage(id, version));
+							result.Add(new NuGetPackage(id, version, framework));
 						}
 					}
 				}

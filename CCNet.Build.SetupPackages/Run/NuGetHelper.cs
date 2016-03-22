@@ -29,9 +29,7 @@ namespace CCNet.Build.SetupPackages
 
 			foreach (var element in doc.Root.Elements("package"))
 			{
-				var id = element.Attribute("id").Value;
-				var version = element.Attribute("version").Value;
-				var package = new NuGetPackage(id, version);
+				var package = new NuGetPackage(element);
 
 				// skip local packages
 				if (m_checker.IsLocal(package.Name))
@@ -42,7 +40,7 @@ namespace CCNet.Build.SetupPackages
 					continue;
 
 				// try to update remote package
-				UpdatePackage(id);
+				UpdatePackage(package.Id);
 			}
 		}
 

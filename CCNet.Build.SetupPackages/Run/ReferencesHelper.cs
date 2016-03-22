@@ -6,13 +6,18 @@ namespace CCNet.Build.SetupPackages
 	public class ReferencesHelper
 	{
 		private readonly PackageChecker m_checker;
+		private readonly LogPackages m_log;
 
-		public ReferencesHelper(PackageChecker checker)
+		public ReferencesHelper(PackageChecker checker, LogPackages log)
 		{
 			if (checker == null)
 				throw new ArgumentNullException("checker");
 
+			if (log == null)
+				throw new ArgumentNullException("log");
+
 			m_checker = checker;
+			m_log = log;
 		}
 
 		public void PreAdjust()
@@ -34,7 +39,22 @@ namespace CCNet.Build.SetupPackages
 		{
 			Console.Write("Resolving project references... ");
 
-			// xxx nothing here yet
+			foreach (var reference in project.GetProjectReferences())
+			{
+				var name = reference.Name;
+
+				if (!m_log.ContainsKey(name))
+					throw new InvalidOperationException(
+						String.Format(
+							@"Referenced project '{0}' was not found in 'packages.config'.
+Please add it as a NuGet reference first, and only after that you can convert it into project reference.",
+							name));
+
+				m_log[name].ProjectReference = true;
+
+				var framework = m_checker.TargetFramework(name);
+				reference.ConvertToBinary(framework);
+			}
 
 			Console.WriteLine("OK");
 		}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using CCNet.Build.Common;
 
 namespace CCNet.Build.SetupPackages
@@ -9,6 +10,7 @@ namespace CCNet.Build.SetupPackages
 		public bool IsLocal { get; set; }
 		public Version SourceVersion { get; set; }
 		public Version BuildVersion { get; set; }
+		public bool ProjectReference { get; set; }
 		public bool PinnedToCurrent { get; set; }
 		public Version PinnedToSpecific { get; set; }
 
@@ -24,23 +26,21 @@ namespace CCNet.Build.SetupPackages
 		{
 			get
 			{
-				string pinned = null;
+				var sb = new StringBuilder(Location);
+
 				if (PinnedToCurrent)
 				{
-					pinned = "pinned to its current version";
+					sb.Append(", pinned to its current version");
 				}
 				else
 				{
 					if (PinnedToSpecific != null)
 					{
-						pinned = String.Format("pinned to version {0}", PinnedToSpecific.Normalize());
+						sb.AppendFormat(", pinned to version {0}", PinnedToSpecific.Normalize());
 					}
 				}
 
-				if (pinned == null)
-					return Location;
-
-				return String.Join(", ", Location, pinned);
+				return sb.ToString();
 			}
 		}
 
@@ -54,11 +54,19 @@ namespace CCNet.Build.SetupPackages
 				throw new InvalidOperationException(
 					String.Format("Build version is missing for package '{0}'.", Name));
 
+			var source = SourceVersion.Normalize().ToString();
+			var build = BuildVersion.Normalize().ToString();
+
+			if (ProjectReference)
+			{
+				source = source + " (csproj)";
+			}
+
 			Console.WriteLine(
 				"[PACKAGE] {0} | {1} | {2} | {3}",
 				Name,
-				SourceVersion.Normalize(),
-				BuildVersion.Normalize(),
+				source,
+				build,
 				Comment);
 		}
 	}

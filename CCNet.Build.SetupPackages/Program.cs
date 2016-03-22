@@ -43,14 +43,14 @@ namespace CCNet.Build.SetupPackages
 			}
 
 			var log = new LogPackages();
-			var references = new ReferencesHelper(checker);
 			var packages = new PackagesHelper(checker, log);
+			var references = new ReferencesHelper(checker, log);
 			var nuget = new NuGetHelper(checker);
 
 			using (Execute.Step("PRE ADJUST"))
 			{
-				references.PreAdjust();
 				packages.PreAdjust();
+				references.PreAdjust();
 			}
 
 			using (Execute.Step("RESTORE & UPDATE"))
@@ -61,8 +61,8 @@ namespace CCNet.Build.SetupPackages
 
 			using (Execute.Step("POST ADJUST"))
 			{
-				references.PostAdjust();
 				packages.PostAdjust();
+				references.PostAdjust();
 			}
 
 			using (Execute.Step("REPORT & SAVE"))

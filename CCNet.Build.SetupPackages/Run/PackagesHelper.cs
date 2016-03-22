@@ -22,13 +22,6 @@ namespace CCNet.Build.SetupPackages
 			m_log = log;
 		}
 
-		private NuGetPackage ReadPackage(XElement element)
-		{
-			var id = element.Attribute("id").Value;
-			var version = element.Attribute("version").Value;
-			return new NuGetPackage(id, version);
-		}
-
 		public void PreAdjust()
 		{
 			if (!File.Exists(Paths.PackagesConfig))
@@ -49,7 +42,7 @@ namespace CCNet.Build.SetupPackages
 
 			foreach (var element in config.Root.Elements("package"))
 			{
-				var package = ReadPackage(element);
+				var package = new NuGetPackage(element);
 
 				m_log.Add(
 					package.Name,
@@ -72,7 +65,7 @@ namespace CCNet.Build.SetupPackages
 
 			foreach (var element in config.Root.Elements("package"))
 			{
-				var package = ReadPackage(element);
+				var package = new NuGetPackage(element);
 
 				m_log[package.Name].BuildVersion = package.Version;
 			}
@@ -93,7 +86,7 @@ namespace CCNet.Build.SetupPackages
 
 			foreach (var element in config.Root.Elements("package"))
 			{
-				var package = ReadPackage(element);
+				var package = new NuGetPackage(element);
 
 				// skip remote packages
 				if (!m_checker.IsLocal(package.Name))

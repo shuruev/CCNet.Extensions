@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CCNet.Build.Common;
 
 namespace CCNet.Build.SetupPackages
 {
@@ -9,14 +10,14 @@ namespace CCNet.Build.SetupPackages
 		private readonly NuGetDb m_db;
 
 		private Dictionary<string, NuGetPackage> m_localPackages;
-		private Dictionary<string, NuGetPackage> m_customVersions;
+		private Dictionary<string, Version> m_customVersions;
 
 		public PackageChecker(string nugetDbConnection, string customVersions)
 		{
 			m_db = new NuGetDb(nugetDbConnection);
 
 			m_localPackages = new Dictionary<string, NuGetPackage>();
-			m_customVersions = new Dictionary<string, NuGetPackage>();
+			m_customVersions = new Dictionary<string, Version>();
 
 			if (!String.IsNullOrEmpty(customVersions))
 			{
@@ -31,24 +32,22 @@ namespace CCNet.Build.SetupPackages
 
 		private void ParseCustomVersions(string customVersions)
 		{
-			var versions = new List<NuGetPackage>();
+			m_customVersions = new Dictionary<string, Version>();
 
 			foreach (string item in customVersions.Split('|'))
 			{
 				if (!item.Contains('+'))
 				{
 					// empty version means package should be pinned to its current version
-					versions.Add(new NuGetPackage(item));
+					m_customVersions.Add(item, null);
 					continue;
 				}
 
 				var parts = item.Split('+');
 				var name = parts[0];
 				var version = parts[1];
-				versions.Add(new NuGetPackage(name, version));
+				m_customVersions.Add(name, new Version(version));
 			}
-
-			m_customVersions = versions.ToDictionary(p => p.Id, StringComparer.OrdinalIgnoreCase);
 		}
 
 		public void Load()
@@ -61,12 +60,20 @@ namespace CCNet.Build.SetupPackages
 			return m_localPackages.ContainsKey(name);
 		}
 
+		public TargetFramework TargetFramework(string name)
+		{
+			if (!IsLocal(name))
+				throw new InvalidOperationException("Target framework versions are available for local packages only.");
+
+			return m_localPackages[name].Framework;
+		}
+
 		public bool IsPinnedToCurrentVersion(string name)
 		{
 			if (!m_customVersions.ContainsKey(name))
 				return false;
 
-			var version = m_customVersions[name].Version;
+			var version = m_customVersions[name];
 			if (version == null)
 				return true;
 
@@ -81,7 +88,7 @@ namespace CCNet.Build.SetupPackages
 			if (!m_customVersions.ContainsKey(name))
 				return null;
 
-			var version = m_customVersions[name].Version;
+			var version = m_customVersions[name];
 			if (version == null)
 				return null;
 
