@@ -130,6 +130,16 @@ namespace CCNet.Build.Common
 		}
 
 		/// <summary>
+		/// Returns all project references from current project.
+		/// </summary>
+		public List<ProjectReference> GetProjectReferences()
+		{
+			return SelectElements("/ms:Project/ms:ItemGroup/ms:ProjectReference")
+				.Select(e => new ProjectReference(e))
+				.ToList();
+		}
+
+		/// <summary>
 		/// Gets unique project ID.
 		/// </summary>
 		public Guid GetProjectGuid()
