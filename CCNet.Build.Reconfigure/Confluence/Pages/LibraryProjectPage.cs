@@ -37,7 +37,7 @@ namespace CCNet.Build.Reconfigure
 
 		private DocumentationType ParseDocumentation(Dictionary<string, string> properties)
 		{
-			return ParseEnum(properties, "doc", DocumentationType.None);
+			return ParseEnum(properties, DocumentationType.None, "xml", "doc");
 		}
 
 		private string ParseNamespace(Dictionary<string, string> properties)
@@ -64,7 +64,7 @@ namespace CCNet.Build.Reconfigure
 			return new XElement(
 				"td",
 				BuildExplain(
-					"Документацияпроекта(Documentation)",
+					"Документацияпроекта(XMLdocumentation)",
 					BuildDocumentation(Documentation)));
 		}
 
@@ -89,7 +89,7 @@ namespace CCNet.Build.Reconfigure
 			}
 
 			addBefore.AddBeforeSelf(new XElement("tr", new XElement("th", ".NET framework"), RenderFramework()));
-			addBefore.AddBeforeSelf(new XElement("tr", new XElement("th", "Documentation"), RenderDocumentation()));
+			addBefore.AddBeforeSelf(new XElement("tr", new XElement("th", "XML documentation"), RenderDocumentation()));
 
 			return page;
 		}

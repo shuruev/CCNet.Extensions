@@ -82,6 +82,10 @@ namespace CCNet.Build.Reconfigure
 				if (user != null)
 					value = user;
 
+				var link = td.XElements("ac:link/ri:page").Select(e => e.XAttribute("ri:content-title").Value).FirstOrDefault();
+				if (link != null)
+					value = link;
+
 				map[key] = value;
 			}
 
@@ -98,7 +102,11 @@ namespace CCNet.Build.Reconfigure
 			if (desc == null)
 				throw new InvalidOperationException("Cannot find project description.");
 
-			return desc.CleanWhitespaces();
+			var norm = desc.CleanWhitespaces();
+			if (norm.Length < 10)
+				throw new InvalidOperationException("Something is wrong with project description.");
+
+			return norm;
 		}
 
 		private string ParseOwner(Dictionary<string, string> properties)
@@ -153,7 +161,7 @@ namespace CCNet.Build.Reconfigure
 
 		private ProjectStatus ParseStatus(Dictionary<string, string> properties)
 		{
-			return ParseEnum(properties, "status", ProjectStatus.Temporary);
+			return ParseEnum(properties, ProjectStatus.Temporary, "status");
 		}
 
 		private XElement RenderDescription()

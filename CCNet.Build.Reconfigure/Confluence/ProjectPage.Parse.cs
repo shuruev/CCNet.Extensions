@@ -35,14 +35,31 @@ namespace CCNet.Build.Reconfigure
 			return byDefault;
 		}
 
-		protected static T ParseEnum<T>(Dictionary<string, string> properties, string keyContains, T byDefault)
+		protected static T ParseEnum<T>(Dictionary<string, string> properties, T byDefault, params string[] keyContains)
 			where T : struct
 		{
 			return ParseEnum(
 				properties,
-				key => key.Contains(keyContains),
+				key => keyContains.Any(key.Contains),
 				value => value.AsciiOnly(),
 				byDefault);
+		}
+
+		protected static bool ParseBoolean(Dictionary<string, string> properties, bool byDefault, params string[] keyContains)
+		{
+			var value = FindByKey(properties, key => keyContains.Any(key.Contains));
+
+			if (value == null)
+				return byDefault;
+
+			switch (value.AsciiOnly().ToLowerInvariant())
+			{
+				case "true":
+				case "yes":
+					return true;
+			}
+
+			return false;
 		}
 	}
 }

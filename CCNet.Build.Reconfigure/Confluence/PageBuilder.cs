@@ -256,6 +256,14 @@ namespace CCNet.Build.Reconfigure
 						page = new ServiceProjectPage(areaName, projectName, project.Name, document);
 						break;
 
+					case ProjectType.Console:
+						page = new ConsoleProjectPage(areaName, projectName, project.Name, document);
+						break;
+
+					case ProjectType.Windows:
+						page = new WindowsProjectPage(areaName, projectName, project.Name, document);
+						break;
+
 					default:
 						throw new InvalidOperationException(
 							String.Format("Unknown how to process project of type '{0}'.", projectType.ToString().ToLowerInvariant()));
@@ -329,6 +337,14 @@ namespace CCNet.Build.Reconfigure
 
 				case "service":
 					projectType = ProjectType.Service;
+					break;
+
+				case "console":
+					projectType = ProjectType.Console;
+					break;
+
+				case "application":
+					projectType = ProjectType.Windows;
 					break;
 
 				default:

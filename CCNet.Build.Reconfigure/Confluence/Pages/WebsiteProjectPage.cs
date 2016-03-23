@@ -4,7 +4,7 @@ using CCNet.Build.Confluence;
 
 namespace CCNet.Build.Reconfigure
 {
-	public class WebsiteProjectPage : LibraryProjectPage
+	public class WebsiteProjectPage : ReleaseProjectPage
 	{
 		public WebsiteProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument)
 			: base(areaName, projectName, pageName, pageDocument)

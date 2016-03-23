@@ -57,10 +57,16 @@
   <ItemGroup>
     <Compile Include="Args.cs" />
     <Compile Include="Configuration\Settings\BasicProjectConfiguration.cs" />
+    <Compile Include="Configuration\Settings\WindowsProjectConfiguration.cs" />
+    <Compile Include="Configuration\Settings\PublishProjectConfiguration.cs" />
+    <Compile Include="Configuration\Settings\ConsoleProjectConfiguration.cs" />
     <Compile Include="Configuration\Settings\ServiceProjectConfiguration.cs" />
     <Compile Include="Configuration\Settings\WebserviceProjectConfiguration.cs" />
     <Compile Include="Configuration\Settings\WebsiteProjectConfiguration.cs" />
     <Compile Include="Confluence\IProjectPage.cs" />
+    <Compile Include="Confluence\Pages\ReleaseProjectPage.cs" />
+    <Compile Include="Confluence\Pages\ConsoleProjectPage.cs" />
+    <Compile Include="Confluence\Pages\WindowsProjectPage.cs" />
     <Compile Include="Confluence\Pages\ServiceProjectPage.cs" />
     <Compile Include="Confluence\Pages\WebserviceProjectPage.cs" />
     <Compile Include="Confluence\Pages\WebsiteProjectPage.cs" />

@@ -1,18 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using CCNet.Build.Common;
 
 namespace CCNet.Build.Reconfigure
 {
-	public class WebsiteProjectConfiguration : BasicProjectConfiguration
+	public class WebsiteProjectConfiguration : PublishProjectConfiguration
 	{
 		public override ProjectType Type
 		{
 			get { return ProjectType.Website; }
 		}
 
-		public string WorkingDirectoryPublish
+		public override string PublishFileName
 		{
-			get { return String.Format(@"$(projectsPath)\{0}\publish", UniqueName); }
+			get { return String.Format(@"{0}.publish.zip", Name); }
 		}
 
 		public string ReleaseDirectoryPublished
@@ -20,14 +21,19 @@ namespace CCNet.Build.Reconfigure
 			get { return String.Format(@"{0}\_PublishedWebsites\{1}", WorkingDirectoryRelease, Name); }
 		}
 
-		public string PublishFileName
+		protected override List<string> GetIssuesToCheck()
 		{
-			get { return String.Format(@"{0}.publish.zip", Name); }
-		}
+			var checks = base.GetIssuesToCheck();
 
-		public string PublishFileLocal
-		{
-			get { return String.Format(@"{0}\{1}", WorkingDirectoryPublish, PublishFileName); }
+			// replace I01 (ShouldHaveAppConfig) and I02 (ShouldHaveAppConfigDefault)
+			// with I03 (ShouldHaveWebConfig) and I04 (ShouldHaveWebConfigDefault)
+			var i01 = checks.IndexOf("I01");
+			checks.Insert(i01, "I03");
+			checks.Insert(i01, "I04");
+			checks.Remove("I01");
+			checks.Remove("I02");
+
+			return checks;
 		}
 	}
 }

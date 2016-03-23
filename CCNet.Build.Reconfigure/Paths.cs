@@ -18,5 +18,10 @@ namespace CCNet.Build.Reconfigure
 		{
 			get { return Path.Combine(Args.OutputDirectory, "CCNetService.config"); }
 		}
+
+		public static string ApplicationConfig
+		{
+			get { return Path.Combine(Args.OutputDirectory, "CCNetApplication.config"); }
+		}
 	}
 }

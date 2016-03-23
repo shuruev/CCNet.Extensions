@@ -63,6 +63,15 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
+		public static XElement BuildBoolean(bool value)
+		{
+			var color = value
+				? PageDocument.StatusColor.Green
+				: PageDocument.StatusColor.Grey;
+
+			return PageDocument.BuildStatus(value.ToString(), color, true);
+		}
+
 		public static XElement BuildFramework(TargetFramework framework)
 		{
 			var text = DisplayFramework(framework);
@@ -99,7 +108,7 @@ namespace CCNet.Build.Reconfigure
 				"$nbsp$",
 				new XElement(
 					"sup",
-					PageDocument.BuildPageLink("Свойства проекта", "explain?", anchor))
+					PageDocument.BuildPageLink("Свойства проекта", anchor, "explain?"))
 			};
 		}
 

@@ -120,7 +120,7 @@ namespace CCNet.Build.Reconfigure
 							"code",
 							new XElement(
 								"span",
-								new XAttribute("style", "color: rgb(153,153,153);"),
+								new XAttribute("style", PageDocument.Style.Color.Gray),
 								ProjectUid.ToString().ToUpperInvariant())))));
 		}
 

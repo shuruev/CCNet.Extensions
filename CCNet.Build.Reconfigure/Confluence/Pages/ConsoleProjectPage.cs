@@ -4,25 +4,26 @@ using CCNet.Build.Confluence;
 
 namespace CCNet.Build.Reconfigure
 {
-	public class WebserviceProjectPage : ReleaseProjectPage
+	public class ConsoleProjectPage : ReleaseProjectPage
 	{
-		public WebserviceProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument)
+		public ConsoleProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument)
 			: base(areaName, projectName, pageName, pageDocument)
 		{
 		}
 
 		public override ProjectType Type
 		{
-			get { return ProjectType.Webservice; }
+			get { return ProjectType.Service; }
 		}
 
 		public override List<ProjectConfiguration> ExportConfigurations()
 		{
 			return new List<ProjectConfiguration>
 			{
-				new WebserviceProjectConfiguration
+				new ConsoleProjectConfiguration
 				{
 					Name = ProjectName,
+					Title = Title,
 					Description = Description,
 					Category = AreaName,
 					TfsPath = TfsPath,
