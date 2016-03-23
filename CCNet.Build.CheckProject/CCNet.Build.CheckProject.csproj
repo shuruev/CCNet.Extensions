@@ -65,6 +65,10 @@
     <Compile Include="Issues\FileStructure\ProjectFolderShouldHaveProjectName.cs" />
     <Compile Include="Issues\IChecker.cs" />
     <Compile Include="Issues\FileStructure\ProjectFileShouldExist.cs" />
+    <Compile Include="Issues\ProjectItems\ShouldHaveAppConfigDefault.cs" />
+    <Compile Include="Issues\ProjectItems\ShouldHaveWebConfigDefault.cs" />
+    <Compile Include="Issues\ProjectItems\ShouldHaveWebConfig.cs" />
+    <Compile Include="Issues\ProjectItems\ShouldHaveAppConfig.cs" />
     <Compile Include="Issues\ProjectProperties\Documentation\ProjectDocumentationFull.cs" />
     <Compile Include="Issues\ProjectProperties\Documentation\ProjectDocumentationPartial.cs" />
     <Compile Include="Issues\ProjectProperties\Documentation\ProjectDocumentationNone.cs" />

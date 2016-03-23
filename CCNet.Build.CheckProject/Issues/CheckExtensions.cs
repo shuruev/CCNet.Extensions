@@ -36,6 +36,14 @@ namespace CCNet.Build.CheckProject
 			RaiseError(details, "Property '{0}' seems having improper value '{1}'.", property, current);
 		}
 
+		public static void Check<T>(this T item, Func<T, bool> shouldBe, string message)
+		{
+			if (shouldBe(item))
+				return;
+
+			RaiseError(null, message);
+		}
+
 		public static void CheckRequired(this IDictionary<string, string> properties, string key, string value, string details = null)
 		{
 			if (!properties.ContainsKey(key))

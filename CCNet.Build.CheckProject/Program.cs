@@ -105,6 +105,12 @@ If you beleive everything is correct please talk to Oleg Shuruev to improve this
 				case "P16": return new ProjectDocumentationPartial();
 				case "P17": return new ProjectDocumentationFull();
 
+				// project items
+				case "I01": return new ShouldHaveAppConfig();
+				case "I02": return new ShouldHaveAppConfigDefault();
+				case "I03": return new ShouldHaveWebConfig();
+				case "I04": return new ShouldHaveWebConfigDefault();
+
 				default:
 					throw new InvalidOperationException(
 						String.Format("Unknown issue '{0}'.", issue));

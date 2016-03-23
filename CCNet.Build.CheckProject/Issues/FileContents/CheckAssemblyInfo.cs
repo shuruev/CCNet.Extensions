@@ -15,11 +15,11 @@ namespace CCNet.Build.CheckProject
 			var lines = File.ReadAllLines(Paths.AssemblyInfoFile);
 			var properties = ParseProperties(lines);
 
-			properties.CheckRequired("Title", Args.ProjectTitle);
+			properties.CheckRequired("Title", Args.ProjectName);
 			properties.CheckRequired("Description", String.Empty);
 			properties.CheckRequired("Configuration", String.Empty);
 			properties.CheckRequired("Company", "CNET Content Solutions");
-			properties.CheckRequired("Product", Args.ProjectTitle);
+			properties.CheckRequired("Product", Args.ProjectName);
 
 			properties.CheckRequired(
 				"Copyright",
