@@ -54,8 +54,10 @@
     <Compile Include="Execute.Step.cs" />
     <Compile Include="Execute.cs" />
     <Compile Include="Enums\ProjectType.cs" />
+    <Compile Include="Project\CopyToOutputDirectory.cs" />
+    <Compile Include="Project\BuildAction.cs" />
     <Compile Include="Project\ProjectReference.cs" />
-    <Compile Include="Project\ProjectItem.cs" />
+    <Compile Include="Project\ProjectFile.cs" />
     <Compile Include="Project\BinaryReference.cs" />
     <Compile Include="Project\ProjectDocument.cs" />
     <Compile Include="Project\ProjectElement.cs" />

@@ -255,19 +255,9 @@ namespace CCNet.Build.Common
 		/// </summary>
 		public List<ProjectFile> GetProjectFiles()
 		{
-			return SelectElements("/ms:Project/ms:ItemGroup/ms:None")
-				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:Compile"))
-				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:Content"))
-				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:EmbeddedResource"))
-				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:EntityDeploy"))
-				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:Resource"))
-				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:Shadow"))
-				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:ApplicationDefinition"))
-				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:Page"))
-				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:ServiceDefinition"))
-				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:ServiceConfiguration"))
-				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:PublishProfile"))
-				.Union(SelectElements("/ms:Project/ms:ItemGroup/ms:SplashScreen"))
+			return SelectElements("/ms:Project/ms:ItemGroup/*")
+				.Where(e => e.Name.LocalName != "Reference")
+				.Where(e => e.Name.LocalName != "ProjectReference")
 				.Select(e => new ProjectFile(e))
 				.ToList();
 		}
