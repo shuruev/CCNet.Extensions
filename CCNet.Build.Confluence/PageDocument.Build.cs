@@ -21,6 +21,29 @@ namespace CCNet.Build.Confluence
 		}
 
 		/// <summary>
+		/// Supported emoticon symbols.
+		/// </summary>
+		public class Emoticon
+		{
+			public const string YellowStar = "yellow-star";
+		}
+
+		/// <summary>
+		/// Supported styles.
+		/// </summary>
+		public class Style
+		{
+			/// <summary>
+			/// Supported color styles.
+			/// </summary>
+			public class Color
+			{
+				public const string DarkGreen = "color: rgb(0,128,0);";
+				public const string Gray = "color: rgb(153,153,153);";
+			}
+		}
+
+		/// <summary>
 		/// Builds new element, using internal namespace prefixes.
 		/// </summary>
 		private static XElement Element(string name, params object[] content)
@@ -140,15 +163,52 @@ namespace CCNet.Build.Confluence
 		/// <summary>
 		/// Builds "Page link" block.
 		/// </summary>
-		public static XElement BuildPageLink(string pageTitle, string linkText = null, string anchor = null)
+		private static XElement BuildPageLink(Tuple<string, string> pageTitleAndAnchor, XElement linkBody)
 		{
 			return Element(
 				"ac:link",
-				String.IsNullOrEmpty(anchor) ? null : Attribute("ac:anchor", anchor),
-				Element(
-					"ri:page",
-					Attribute("ri:content-title", pageTitle)),
-					String.IsNullOrEmpty(linkText) ? null : Element("ac:plain-text-link-body", new XCData(linkText)));
+				String.IsNullOrEmpty(pageTitleAndAnchor.Item2) ? null : Attribute("ac:anchor", pageTitleAndAnchor.Item2),
+				Element("ri:page", Attribute("ri:content-title", pageTitleAndAnchor.Item1)),
+				linkBody);
+		}
+
+		/// <summary>
+		/// Builds "Page link" block.
+		/// </summary>
+		public static XElement BuildPageLink(string pageTitle)
+		{
+			var link = new Tuple<string, string>(pageTitle, null);
+			return BuildPageLink(link, null);
+		}
+
+		/// <summary>
+		/// Builds "Page link" block.
+		/// </summary>
+		public static XElement BuildPageLink(string pageTitle, string linkText)
+		{
+			var link = new Tuple<string, string>(pageTitle, null);
+			var body = Element("ac:plain-text-link-body", new XCData(linkText));
+			return BuildPageLink(link, body);
+		}
+
+		/// <summary>
+		/// Builds "Page link" block.
+		/// </summary>
+		public static XElement BuildPageLink(string pageTitle, string pageAnchor, string linkText)
+		{
+			var link = new Tuple<string, string>(pageTitle, pageAnchor);
+			var body = Element("ac:plain-text-link-body", new XCData(linkText));
+			return BuildPageLink(link, body);
+		}
+
+		/// <summary>
+		/// Builds "Page link" block.
+		/// </summary>
+		public static XElement BuildPageLink(string pageTitle, params object[] linkBody)
+		{
+			var link = new Tuple<string, string>(pageTitle, null);
+			var body = Element("ac:link-body", linkBody);
+			return BuildPageLink(link, body);
 		}
 
 		/// <summary>
@@ -168,6 +228,16 @@ namespace CCNet.Build.Confluence
 			return Element(
 				"ac:rich-text-body",
 				content);
+		}
+
+		/// <summary>
+		/// Builds emoticon symbol.
+		/// </summary>
+		public static XElement BuildEmoticon(string emoticon)
+		{
+			return Element(
+				"ac:emoticon",
+				Attribute("ac:name", emoticon));
 		}
 	}
 }
