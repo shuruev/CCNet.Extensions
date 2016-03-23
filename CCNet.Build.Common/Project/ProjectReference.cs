@@ -59,12 +59,14 @@ namespace CCNet.Build.Common
 		/// </summary>
 		public void ConvertToBinary(TargetFramework framework)
 		{
+			var include = String.Format("{0}, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL", Name);
+			var dotNet = framework.ToString().ToLowerInvariant();
+			var hintPath = String.Format(@"..\packages\{0}.1.0.0.0\lib\{1}\{0}.dll", Name, dotNet);
+
 			var binary = new XElement(
 				Ns + "Reference",
-				new XAttribute("Include", String.Format("{0}, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL", Name)),
-				new XElement(
-					Ns + "HintPath",
-					String.Format(@"..\packages\{0}.1.0.0.0\lib\net10\{0}.dll", Name)));
+				new XAttribute("Include", include),
+				new XElement(Ns + "HintPath", hintPath));
 
 			m_element.AddAfterSelf(binary);
 			m_element.Remove();
