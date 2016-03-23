@@ -24,6 +24,10 @@ namespace CCNet.Build.Common
 				case ProjectType.Service:
 					return "Service";
 
+				case ProjectType.Console:
+				case ProjectType.Windows:
+					return "Application";
+
 				default:
 					throw new InvalidOperationException(
 						String.Format("Unknown where to build projects of type '{0}'.", projectType));

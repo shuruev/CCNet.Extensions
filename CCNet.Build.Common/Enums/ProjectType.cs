@@ -23,6 +23,16 @@
 		/// <summary>
 		/// Windows service.
 		/// </summary>
-		Service
+		Service,
+
+		/// <summary>
+		/// Console application.
+		/// </summary>
+		Console,
+
+		/// <summary>
+		/// Windows application.
+		/// </summary>
+		Windows
 	}
 }
