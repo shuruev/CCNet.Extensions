@@ -258,6 +258,12 @@ namespace CCNet.Build.Common
 			return SelectElements("/ms:Project/ms:ItemGroup/*")
 				.Where(e => e.Name.LocalName != "Reference")
 				.Where(e => e.Name.LocalName != "ProjectReference")
+				.Where(e => e.Name.LocalName != "BootstrapperPackage")
+				.Where(e => e.Name.LocalName != "Service")
+				.Where(e => e.Name.LocalName != "WebReferences")
+				.Where(e => e.Name.LocalName != "WebReferenceUrl")
+				.Where(e => e.Name.LocalName != "WCFMetadata")
+				.Where(e => e.Name.LocalName != "WCFMetadataStorage")
 				.Select(e => new ProjectFile(e))
 				.ToList();
 		}
