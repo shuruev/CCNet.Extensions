@@ -1,4 +1,6 @@
-﻿namespace CCNet.Build.CheckProject
+﻿using System;
+
+namespace CCNet.Build.CheckProject
 {
 	public class ProjectTargetFramework45 : IChecker
 	{
@@ -6,6 +8,7 @@
 		{
 			var properties = context.ProjectCommonProperties.Result;
 			properties.CheckRequired("TargetFrameworkVersion", "v4.5");
+			properties.CheckOptional("TargetFrameworkProfile", String.Empty);
 		}
 	}
 }
