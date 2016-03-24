@@ -84,6 +84,14 @@ namespace CCNet.Build.SetupProject
 					links = BuildLinksService();
 					break;
 
+				case ProjectType.Console:
+					links = BuildLinksConsole();
+					break;
+
+				case ProjectType.Windows:
+					links = BuildLinksWindows();
+					break;
+
 				default:
 					throw new InvalidOperationException(
 						String.Format("Unknown project type '{0}'.", Args.ProjectType));
@@ -143,6 +151,30 @@ namespace CCNet.Build.SetupProject
 				new
 				{
 					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+service", Args.ProjectName),
+					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
+				}
+			};
+		}
+
+		private static List<dynamic> BuildLinksConsole()
+		{
+			return new List<dynamic>
+			{
+				new
+				{
+					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+console", Args.ProjectName),
+					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
+				}
+			};
+		}
+
+		private static List<dynamic> BuildLinksWindows()
+		{
+			return new List<dynamic>
+			{
+				new
+				{
+					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+application", Args.ProjectName),
 					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
 				}
 			};
