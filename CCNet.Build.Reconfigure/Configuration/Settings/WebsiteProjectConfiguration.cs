@@ -28,8 +28,8 @@ namespace CCNet.Build.Reconfigure
 			// replace I01 (ShouldHaveAppConfig) and I02 (ShouldHaveAppConfigDefault)
 			// with I03 (ShouldHaveWebConfig) and I04 (ShouldHaveWebConfigDefault)
 			var i01 = checks.IndexOf("I01");
-			checks.Insert(i01, "I03");
 			checks.Insert(i01, "I04");
+			checks.Insert(i01, "I03");
 			checks.Remove("I01");
 			checks.Remove("I02");
 

@@ -12,7 +12,7 @@ SET ccnetPath=\\rufc-devbuild.cneu.cnwk\d$\CruiseControl.NET
 
 :XCOPY "CCNet.Build.Common\bin\Debug\Lean.Configuration.dll" "%ccnetPath%\CCNet.Build" /D /Y
 XCOPY "CCNet.Build.Common\bin\Debug\CCNet.Build.Common.dll" "%ccnetPath%\CCNet.Build" /D /Y
-XCOPY "CCNet.Build.Confluence\bin\Debug\CCNet.Build.Confluence.dll" "%ccnetPath%\CCNet.Build" /D /Y
+:XCOPY "CCNet.Build.Confluence\bin\Debug\CCNet.Build.Confluence.dll" "%ccnetPath%\CCNet.Build" /D /Y
 :XCOPY "CCNet.Build.Tfs\bin\Debug\CCNet.Build.Tfs.dll" "%ccnetPath%\CCNet.Build" /D /Y
 
 :XCOPY "CCNet.Build.AzureUpload\bin\Debug\Microsoft.WindowsAzure.Storage.dll" "%ccnetPath%\CCNet.Build" /D /Y

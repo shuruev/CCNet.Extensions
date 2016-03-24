@@ -48,7 +48,7 @@ namespace CCNet.Build.Reconfigure
 				return null;
 
 			ns = ns.AsciiOnly('.');
-			if (String.Compare(ns, ProjectName, StringComparison.OrdinalIgnoreCase) == 0)
+			if (ns == ProjectName)
 				return null;
 
 			return ns;

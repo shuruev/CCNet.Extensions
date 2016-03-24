@@ -428,7 +428,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectName", project.Name),
 							new Arg("BuildPath", "$(buildPath)"),
-							new Arg("ServerNames", "Library|Website"),
+							new Arg("ServerNames", "Library|Website|Service|Application|Azure"),
 							new Arg("ReferencesFolder", "references"));
 
 						writer.WriteElementString("description", "Notify other projects");
