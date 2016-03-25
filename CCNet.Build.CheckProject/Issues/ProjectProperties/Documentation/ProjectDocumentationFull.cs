@@ -6,7 +6,7 @@ namespace CCNet.Build.CheckProject
 	{
 		public void Check(CheckContext context)
 		{
-			var details = "That is because documentation type was set to 'Partial' for this project.";
+			var details = "That is because documentation type was set to 'Full' for this project.";
 
 			var debug = context.ProjectDebugProperties.Result;
 			debug.CheckOptional("NoWarn", String.Empty, details);

@@ -17,8 +17,8 @@ namespace CCNet.Build.Reconfigure
 					color = PageDocument.StatusColor.Green;
 					break;
 
-				case ProjectStatus.Temporary:
-					color = PageDocument.StatusColor.Yellow;
+				case ProjectStatus.Normal:
+					color = PageDocument.StatusColor.Blue;
 					break;
 
 				case ProjectStatus.Legacy:

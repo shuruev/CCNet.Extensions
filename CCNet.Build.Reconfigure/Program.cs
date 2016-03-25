@@ -321,6 +321,27 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
+		private static void WriteSetupPackages(XmlWriter writer, BasicProjectConfiguration project)
+		{
+			project.CustomVersions = "mongocsharpdriver|SolrNet|CommonServiceLocator";
+
+			using (writer.OpenTag("exec"))
+			{
+				writer.WriteElementString("executable", "$(ccnetBuildSetupPackages)");
+				writer.WriteBuildArgs(
+					new Arg("ProjectName", project.Name),
+					new Arg("ProjectPath", project.WorkingDirectorySource),
+					new Arg("PackagesPath", project.WorkingDirectoryPackages),
+					new Arg("ReferencesPath", project.WorkingDirectoryReferences),
+					new Arg("TempPath", project.WorkingDirectoryTemp),
+					new Arg(project.CustomVersions != null ? "CustomVersions" : null, project.CustomVersions),
+					new Arg("NuGetExecutable", "$(nugetExecutable)"),
+					new Arg("NuGetUrl", project.NugetRestoreUrl));
+
+				writer.WriteElementString("description", "Setup packages");
+			}
+		}
+
 		private static void WriteLibraryProject(XmlWriter writer, LibraryProjectConfiguration project)
 		{
 			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
@@ -353,21 +374,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString("description", "Setup project");
 					}
 
-					using (writer.OpenTag("exec"))
-					{
-						writer.WriteElementString("executable", "$(ccnetBuildSetupPackages)");
-						writer.WriteBuildArgs(
-							new Arg("ProjectName", project.Name),
-							new Arg("ProjectPath", project.WorkingDirectorySource),
-							new Arg("PackagesPath", project.WorkingDirectoryPackages),
-							new Arg("ReferencesPath", project.WorkingDirectoryReferences),
-							new Arg("TempPath", project.WorkingDirectoryTemp),
-							new Arg(project.CustomVersions != null ? "CustomVersions" : null, project.CustomVersions),
-							new Arg("NuGetExecutable", "$(nugetExecutable)"),
-							new Arg("NuGetUrl", project.NugetRestoreUrl));
-
-						writer.WriteElementString("description", "Setup packages");
-					}
+					WriteSetupPackages(writer, project);
 
 					using (writer.OpenTag("msbuild"))
 					{
@@ -486,21 +493,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString("description", "Setup project");
 					}
 
-					using (writer.OpenTag("exec"))
-					{
-						writer.WriteElementString("executable", "$(ccnetBuildSetupPackages)");
-						writer.WriteBuildArgs(
-							new Arg("ProjectName", project.Name),
-							new Arg("ProjectPath", project.WorkingDirectorySource),
-							new Arg("PackagesPath", project.WorkingDirectoryPackages),
-							new Arg("ReferencesPath", project.WorkingDirectoryReferences),
-							new Arg("TempPath", project.WorkingDirectoryTemp),
-							new Arg(project.CustomVersions == null ? null : "CustomVersions", project.CustomVersions),
-							new Arg("NuGetExecutable", "$(nugetExecutable)"),
-							new Arg("NuGetUrl", project.NugetRestoreUrl));
-
-						writer.WriteElementString("description", "Setup packages");
-					}
+					WriteSetupPackages(writer, project);
 
 					using (writer.OpenTag("msbuild"))
 					{
@@ -592,21 +585,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString("description", "Setup project");
 					}
 
-					using (writer.OpenTag("exec"))
-					{
-						writer.WriteElementString("executable", "$(ccnetBuildSetupPackages)");
-						writer.WriteBuildArgs(
-							new Arg("ProjectName", project.Name),
-							new Arg("ProjectPath", project.WorkingDirectorySource),
-							new Arg("PackagesPath", project.WorkingDirectoryPackages),
-							new Arg("ReferencesPath", project.WorkingDirectoryReferences),
-							new Arg("TempPath", project.WorkingDirectoryTemp),
-							new Arg(project.CustomVersions == null ? null : "CustomVersions", project.CustomVersions),
-							new Arg("NuGetExecutable", "$(nugetExecutable)"),
-							new Arg("NuGetUrl", project.NugetRestoreUrl));
-
-						writer.WriteElementString("description", "Setup packages");
-					}
+					WriteSetupPackages(writer, project);
 
 					using (writer.OpenTag("msbuild"))
 					{
@@ -698,21 +677,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString("description", "Setup project");
 					}
 
-					using (writer.OpenTag("exec"))
-					{
-						writer.WriteElementString("executable", "$(ccnetBuildSetupPackages)");
-						writer.WriteBuildArgs(
-							new Arg("ProjectName", project.Name),
-							new Arg("ProjectPath", project.WorkingDirectorySource),
-							new Arg("PackagesPath", project.WorkingDirectoryPackages),
-							new Arg("ReferencesPath", project.WorkingDirectoryReferences),
-							new Arg("TempPath", project.WorkingDirectoryTemp),
-							new Arg(project.CustomVersions == null ? null : "CustomVersions", project.CustomVersions),
-							new Arg("NuGetExecutable", "$(nugetExecutable)"),
-							new Arg("NuGetUrl", project.NugetRestoreUrl));
-
-						writer.WriteElementString("description", "Setup packages");
-					}
+					WriteSetupPackages(writer, project);
 
 					using (writer.OpenTag("msbuild"))
 					{

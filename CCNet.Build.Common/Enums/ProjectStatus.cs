@@ -11,17 +11,17 @@
 		Disabled,
 
 		/// <summary>
-		/// The project has no plans to be developed any further, build process can be forced manually.
+		/// The project has no plans to be developed any further, build process has the lowest priority.
 		/// </summary>
 		Legacy,
 
 		/// <summary>
-		/// This project will not be supported forever, but we still perform continuous integration for it.
+		/// Project is supported without active development, continuous integration is performed with a normal priority.
 		/// </summary>
-		Temporary,
+		Normal,
 
 		/// <summary>
-		/// The project is actively supported, builds are issued automatically based on source code changes and updated dependencies.
+		/// The project is actively developed, builds are issued with the highest priority based on source code changes and updated dependencies.
 		/// </summary>
 		Active
 	}

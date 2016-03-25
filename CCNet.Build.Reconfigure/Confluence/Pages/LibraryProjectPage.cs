@@ -118,9 +118,7 @@ namespace CCNet.Build.Reconfigure
 					OwnerEmail = "oleg.shuruev@cbsinteractive.com",
 					Framework = Framework,
 					Documentation = Documentation,
-					RootNamespace = Namespace,
-					//xxx
-					CustomVersions = "mongocsharpdriver"
+					RootNamespace = Namespace
 				}
 			};
 		}

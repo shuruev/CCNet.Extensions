@@ -127,6 +127,10 @@ namespace CCNet.Build.Reconfigure
 				case "none":
 					return String.Empty;
 
+				case "alisitsyn":
+				case "8a99855552936a300152936cb0a65fbd":
+					return "8a99855552936a300152936cb0a65fbd";
+
 				case "kluzin":
 				case "8a99855552936a300152936cc08259d7":
 					return "8a99855552936a300152936cc08259d7";
@@ -169,7 +173,7 @@ namespace CCNet.Build.Reconfigure
 
 		private ProjectStatus ParseStatus(Dictionary<string, string> properties)
 		{
-			return ParseEnum(properties, ProjectStatus.Temporary, "status");
+			return ParseEnum(properties, ProjectStatus.Normal, "status");
 		}
 
 		private XElement RenderDescription()
