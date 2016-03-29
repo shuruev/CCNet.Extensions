@@ -322,8 +322,6 @@ namespace CCNet.Build.Reconfigure
 
 		private static void WriteSetupPackages(XmlWriter writer, BasicProjectConfiguration project)
 		{
-			project.CustomVersions = "mongocsharpdriver|SolrNet|CommonServiceLocator|WindowsAzure.Storage|Newtonsoft.Json|System.Spatial|Microsoft.Data.Edm|Microsoft.Data.OData|Microsoft.Data.Services.Client|Microsoft.Azure.KeyVault.Core";
-
 			using (writer.OpenTag("exec"))
 			{
 				writer.WriteElementString("executable", "$(ccnetBuildSetupPackages)");

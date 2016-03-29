@@ -151,7 +151,6 @@ This should help other team memebers to avoid possible conflicts while working w
 				{
 					var filePath = Path.Combine(Args.ProjectPath, file);
 					bag[file] = IsUsingUtf8BomSignature(filePath);
-
 				});
 
 			Console.WriteLine("Checked {0} local files, {1} are using UTF-8 signatures.", bag.Count, bag.Count(i => i.Value));
@@ -169,7 +168,6 @@ This should help other team memebers to avoid possible conflicts while working w
 				{
 					var filePath = Path.Combine(Args.ProjectPath, item.Key);
 					bag[item.Key] = IsUsingOnlyAnsiCharacters(filePath, item.Value);
-
 				});
 
 			Console.WriteLine("Checked {0} local files, {1} are using non-ANSI characters.", bag.Count, bag.Count(i => !i.Value));

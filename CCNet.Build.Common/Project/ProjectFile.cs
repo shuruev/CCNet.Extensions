@@ -14,7 +14,7 @@ namespace CCNet.Build.Common
 		public BuildAction BuildAction { get; private set; }
 
 		/// <summary>
-		/// Gets or sets copying to output directory option.
+		/// Gets copying to output directory option.
 		/// </summary>
 		public CopyToOutputDirectory CopyToOutput { get; private set; }
 

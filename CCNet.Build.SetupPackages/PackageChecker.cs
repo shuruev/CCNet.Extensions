@@ -38,7 +38,9 @@ namespace CCNet.Build.SetupPackages
 			{
 				if (!item.Contains('+'))
 				{
-					// empty version means package should be pinned to its current version
+					// empty version behavior depends on the package type
+					// for local packages, it means they should be pinned to its current version
+					// for remote packages, it means they should be updated to their latest version
 					m_customVersions.Add(item, null);
 					continue;
 				}
@@ -70,17 +72,30 @@ namespace CCNet.Build.SetupPackages
 
 		public bool IsPinnedToCurrentVersion(string name)
 		{
-			if (!m_customVersions.ContainsKey(name))
-				return false;
+			bool custom = m_customVersions.ContainsKey(name);
 
-			var version = m_customVersions[name];
-			if (version == null)
+			if (IsLocal(name))
+			{
+				if (!custom)
+					return false;
+
+				var version = m_customVersions[name];
+				if (version != null)
+					return false;
+
 				return true;
+			}
+			else
+			{
+				if (!custom)
+					return true;
 
-			if (!IsLocal(name))
-				throw new InvalidOperationException("Only local packages can be pinned to specific version.");
+				var version = m_customVersions[name];
+				if (version != null)
+					throw new InvalidOperationException("Only local packages can be pinned to specific version.");
 
-			return false;
+				return false;
+			}
 		}
 
 		public Version IsPinnedToSpecificVersion(string name)
