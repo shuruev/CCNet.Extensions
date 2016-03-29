@@ -28,15 +28,22 @@ namespace CCNet.Build.SetupPackages
 			{
 				var sb = new StringBuilder(Location);
 
-				if (PinnedToCurrent)
+				if (IsLocal)
 				{
-					sb.Append(", pinned to its current version");
+					if (PinnedToCurrent)
+					{
+						sb.Append(", pinned to current version");
+					}
+					else if (PinnedToSpecific != null)
+					{
+						sb.AppendFormat(", pinned to version {0}", PinnedToSpecific.Normalize());
+					}
 				}
 				else
 				{
-					if (PinnedToSpecific != null)
+					if (!PinnedToCurrent)
 					{
-						sb.AppendFormat(", pinned to version {0}", PinnedToSpecific.Normalize());
+						sb.Append(", free update");
 					}
 				}
 

@@ -34,7 +34,7 @@ namespace CCNet.Build.SetupPackages
 		{
 			m_customVersions = new Dictionary<string, Version>();
 
-			foreach (string item in customVersions.Split('|'))
+			foreach (var item in customVersions.Split('|'))
 			{
 				if (!item.Contains('+'))
 				{

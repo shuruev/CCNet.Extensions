@@ -52,7 +52,7 @@ Please include necessary files into project or remove them from source control."
 				map.Remove(item);
 			}
 
-			foreach (string item in map)
+			foreach (var item in map)
 			{
 				sb.AppendFormat("- found unexpected entry '{0}'", item);
 				sb.AppendLine();
