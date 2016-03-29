@@ -51,6 +51,7 @@
     <Compile Include="Enums\ProjectStatus.cs" />
     <Compile Include="Enums\ProjectTypeExtensions.cs" />
     <Compile Include="Execute.Run.cs" />
+    <Compile Include="Execute.Report.cs" />
     <Compile Include="Execute.Step.cs" />
     <Compile Include="Execute.cs" />
     <Compile Include="Enums\ProjectType.cs" />

@@ -55,6 +55,14 @@ namespace CCNet.Build.Common
 		}
 
 		/// <summary>
+		/// Updates the include location.
+		/// </summary>
+		public void UpdateLocation(string path)
+		{
+			m_element.Attribute("Include").Value = path;
+		}
+
+		/// <summary>
 		/// Removes project reference from a project document replacing it with the binary one.
 		/// </summary>
 		public void ConvertToBinary(TargetFramework framework)

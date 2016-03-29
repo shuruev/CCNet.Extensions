@@ -33,6 +33,11 @@
 		/// <summary>
 		/// Windows application.
 		/// </summary>
-		Windows
+		Windows,
+
+		/// <summary>
+		/// Azure cloud service.
+		/// </summary>
+		Cloud
 	}
 }
