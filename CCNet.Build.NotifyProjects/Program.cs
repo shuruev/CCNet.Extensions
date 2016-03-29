@@ -54,10 +54,7 @@ namespace CCNet.Build.NotifyProjects
 
 			foreach (var project in projectsToReport.OrderBy(i => i))
 			{
-				Console.WriteLine(
-					"[USAGE] {0} | {1}",
-					project,
-					servers[project]);
+				Execute.ReportUsage(project, servers[project]);
 			}
 
 			var projectsToNotify = new List<string>();
