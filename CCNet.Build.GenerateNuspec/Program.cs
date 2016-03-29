@@ -33,16 +33,7 @@ namespace CCNet.Build.GenerateNuspec
 
 		private static void GenerateNuspec()
 		{
-			switch (Args.ProjectType)
-			{
-				case ProjectType.Library:
-					GenerateNuspecLibrary();
-					break;
-
-				default:
-					throw new InvalidOperationException(
-						String.Format("Unknown project type '{0}'.", Args.ProjectType));
-			}
+			GenerateNuspecLibrary();
 		}
 
 		private static void GenerateNuspecLibrary()
@@ -112,9 +103,12 @@ namespace CCNet.Build.GenerateNuspec
 
 		private static void AddNuspecLibraryCoreFile(XmlTextWriter xtw, string extension)
 		{
+			var src = String.Format(@"{0}\{1}.{2}", Args.ReleasePath, Args.ProjectName, extension.ToLowerInvariant());
+			var target = String.Format(@"lib\{0}", Args.TargetFramework.ToString().ToLowerInvariant());
+
 			xtw.WriteStartElement("file");
-			xtw.WriteAttributeString("src", String.Format(@"..\release\{0}.{1}", Args.ProjectName, extension.ToLowerInvariant()));
-			xtw.WriteAttributeString("target", String.Format(@"lib\{0}", Args.TargetFramework.ToString().ToLowerInvariant()));
+			xtw.WriteAttributeString("src", src);
+			xtw.WriteAttributeString("target", target);
 			xtw.WriteEndElement();
 		}
 	}
