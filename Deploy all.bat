@@ -30,6 +30,6 @@ XCOPY "CCNet.Build.Reconfigure\bin\Debug\CCNet.Build.Reconfigure.exe" "%ccnetPat
 :XCOPY "CCNet.Build.SetupPackages\bin\Debug\Lean.Database.dll" "%ccnetPath%\CCNet.Build" /D /Y
 :XCOPY "CCNet.Build.SetupPackages\bin\Debug\CCNet.Build.SetupPackages.exe" "%ccnetPath%\CCNet.Build" /D /Y
 
-:XCOPY "CCNet.Build.SetupProject\bin\Debug\CCNet.Build.SetupProject.exe" "%ccnetPath%\CCNet.Build" /D /Y
+XCOPY "CCNet.Build.SetupProject\bin\Debug\CCNet.Build.SetupProject.exe" "%ccnetPath%\CCNet.Build" /D /Y
 
 PAUSE

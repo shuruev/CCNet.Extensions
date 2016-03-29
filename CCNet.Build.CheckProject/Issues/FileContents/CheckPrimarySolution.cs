@@ -17,15 +17,27 @@ namespace CCNet.Build.CheckProject
 
 		private void CheckVisualStudioVersion(IList<string> lines)
 		{
-			if (lines[0].StartsWith("Microsoft Visual Studio Solution File, Format Version 12.")
-				&& lines[1] == "# Visual Studio 2013"
-				&& lines[2].StartsWith("VisualStudioVersion = 12."))
+			if (IsVs2013(lines) || IsVs2015(lines))
 			{
 				return;
 			}
 
 			throw new FailedCheckException(@"It looks like solution file was saved using Visual Studio older than 2013.
 Please make sure solution file is saved with Visual Studio 2013 or above, so the others could work with it conveniently.");
+		}
+
+		private bool IsVs2013(IList<string> lines)
+		{
+			return lines[0].StartsWith("Microsoft Visual Studio Solution File, Format Version 12.")
+				&& lines[1] == "# Visual Studio 2013"
+				&& lines[2].StartsWith("VisualStudioVersion = 12.");
+		}
+
+		private bool IsVs2015(IList<string> lines)
+		{
+			return lines[0].StartsWith("Microsoft Visual Studio Solution File, Format Version 12.")
+				&& lines[1] == "# Visual Studio 14"
+				&& lines[2].StartsWith("VisualStudioVersion = 14.");
 		}
 
 		private void CheckTeamFoundationServer(IEnumerable<string> lines)
