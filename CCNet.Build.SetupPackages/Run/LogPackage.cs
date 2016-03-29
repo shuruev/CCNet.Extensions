@@ -62,12 +62,7 @@ namespace CCNet.Build.SetupPackages
 				source = source + " (csproj)";
 			}
 
-			Console.WriteLine(
-				"[PACKAGE] {0} | {1} | {2} | {3}",
-				Name,
-				source,
-				build,
-				Comment);
+			Execute.ReportPackage(Name, source, build, Comment);
 		}
 	}
 }
