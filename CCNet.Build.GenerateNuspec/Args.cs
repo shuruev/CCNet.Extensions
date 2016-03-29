@@ -38,6 +38,11 @@ namespace CCNet.Build.GenerateNuspec
 			get { return Current.Get("IncludeXmlDocumentation", false); }
 		}
 
+		public static string Dependencies
+		{
+			get { return Current.Get("Dependencies", String.Empty); }
+		}
+
 		public static string ReleaseNotes
 		{
 			get { return Current.Get("ReleaseNotes", String.Empty); }

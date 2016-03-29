@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using CCNet.Build.Common;
@@ -64,15 +66,8 @@ namespace CCNet.Build.GenerateNuspec
 
 				xtw.WriteEndElement();
 
-				xtw.WriteStartElement("files");
-
-				AddNuspecLibraryCoreFile(xtw, "dll");
-				AddNuspecLibraryCoreFile(xtw, "pdb");
-
-				if (Args.IncludeXmlDocumentation)
-					AddNuspecLibraryCoreFile(xtw, "xml");
-
-				xtw.WriteEndElement();
+				AddFiles(xtw);
+				AddDependencies(xtw);
 
 				xtw.WriteEndElement();
 				xtw.WriteEndDocument();
@@ -101,6 +96,19 @@ namespace CCNet.Build.GenerateNuspec
 			xtw.WriteElementString("releaseNotes", sb.ToString());
 		}
 
+		private static void AddFiles(XmlTextWriter xtw)
+		{
+			xtw.WriteStartElement("files");
+
+			AddNuspecLibraryCoreFile(xtw, "dll");
+			AddNuspecLibraryCoreFile(xtw, "pdb");
+
+			if (Args.IncludeXmlDocumentation)
+				AddNuspecLibraryCoreFile(xtw, "xml");
+
+			xtw.WriteEndElement();
+		}
+
 		private static void AddNuspecLibraryCoreFile(XmlTextWriter xtw, string extension)
 		{
 			var src = String.Format(@"{0}\{1}.{2}", Args.ReleasePath, Args.ProjectName, extension.ToLowerInvariant());
@@ -110,6 +118,45 @@ namespace CCNet.Build.GenerateNuspec
 			xtw.WriteAttributeString("src", src);
 			xtw.WriteAttributeString("target", target);
 			xtw.WriteEndElement();
+		}
+
+		private static void AddDependencies(XmlTextWriter xtw)
+		{
+			var dependencies = ParseDependencies(Args.Dependencies);
+			if (dependencies.Count == 0)
+				return;
+
+			xtw.WriteStartElement("dependencies");
+			xtw.WriteStartElement("group");
+
+			foreach (var dependency in dependencies)
+			{
+				xtw.WriteStartElement("dependency");
+				xtw.WriteAttributeString("id", dependency.Key);
+				xtw.WriteAttributeString("version", dependency.Value.ToString());
+				xtw.WriteEndElement();
+			}
+
+			xtw.WriteEndElement();
+			xtw.WriteEndElement();
+		}
+
+		private static Dictionary<string, Version> ParseDependencies(string dependencies)
+		{
+			var result = new Dictionary<string, Version>();
+
+			foreach (var item in dependencies.Split('|'))
+			{
+				if (!item.Contains('+'))
+					throw new InvalidOperationException("Invalid syntax for dependencies string.");
+
+				var parts = item.Split('+');
+				var name = parts[0];
+				var version = parts[1];
+				result.Add(name, new Version(version));
+			}
+
+			return result;
 		}
 	}
 }
