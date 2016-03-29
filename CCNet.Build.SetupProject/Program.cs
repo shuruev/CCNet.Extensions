@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -8,7 +7,7 @@ using CCNet.Build.Tfs;
 
 namespace CCNet.Build.SetupProject
 {
-	public static class Program
+	public static partial class Program
 	{
 		public static int Main(string[] args)
 		{
@@ -38,6 +37,7 @@ namespace CCNet.Build.SetupProject
 			SaveSource();
 			RenderLinks();
 			UpdateAssemblyInfo();
+			SetupRelatedProjects();
 		}
 
 		private static void SaveSource()
@@ -62,127 +62,12 @@ namespace CCNet.Build.SetupProject
 			Console.WriteLine("OK");
 		}
 
-		private static void RenderLinks()
-		{
-			List<dynamic> links;
-
-			switch (Args.ProjectType)
-			{
-				case ProjectType.Library:
-					links = BuildLinksLibrary();
-					break;
-
-				case ProjectType.Website:
-					links = BuildLinksWebsite();
-					break;
-
-				case ProjectType.Webservice:
-					links = BuildLinksWebservice();
-					break;
-
-				case ProjectType.Service:
-					links = BuildLinksService();
-					break;
-
-				case ProjectType.Console:
-					links = BuildLinksConsole();
-					break;
-
-				case ProjectType.Windows:
-					links = BuildLinksWindows();
-					break;
-
-				default:
-					throw new InvalidOperationException(
-						String.Format("Unknown project type '{0}'.", Args.ProjectType));
-			}
-
-			foreach (var link in links)
-			{
-				Console.WriteLine("[LINK] {0} | {1}", link.Url, link.Image);
-			}
-		}
-
-		private static List<dynamic> BuildLinksLibrary()
-		{
-			return new List<dynamic>
-			{
-				new
-				{
-					Url = String.Format("{0}/packages/{1}/", Config.NuGetUrl, Args.ProjectName),
-					Image = String.Format("{0}/Content/Logos/nugetlogo.png", Config.NuGetUrl)
-				},
-				new
-				{
-					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+library", Args.ProjectName),
-					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
-				}
-			};
-		}
-
-		private static List<dynamic> BuildLinksWebsite()
-		{
-			return new List<dynamic>
-			{
-				new
-				{
-					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+web+site", Args.ProjectName),
-					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
-				}
-			};
-		}
-
-		private static List<dynamic> BuildLinksWebservice()
-		{
-			return new List<dynamic>
-			{
-				new
-				{
-					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+web+service", Args.ProjectName),
-					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
-				}
-			};
-		}
-
-		private static List<dynamic> BuildLinksService()
-		{
-			return new List<dynamic>
-			{
-				new
-				{
-					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+service", Args.ProjectName),
-					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
-				}
-			};
-		}
-
-		private static List<dynamic> BuildLinksConsole()
-		{
-			return new List<dynamic>
-			{
-				new
-				{
-					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+console", Args.ProjectName),
-					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
-				}
-			};
-		}
-
-		private static List<dynamic> BuildLinksWindows()
-		{
-			return new List<dynamic>
-			{
-				new
-				{
-					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+application", Args.ProjectName),
-					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
-				}
-			};
-		}
-
 		private static void UpdateAssemblyInfo()
 		{
-			Console.WriteLine("Updating assembly information... ");
+			if (Args.ProjectType == ProjectType.Cloud)
+				return;
+
+			Console.Write("Updating assembly information... ");
 
 			var version = new Version(Args.CurrentVersion).Normalize();
 			var text = File.ReadAllText(Paths.AssemblyInfoFile);
@@ -194,6 +79,32 @@ namespace CCNet.Build.SetupProject
 				.Replace(text, String.Format("[assembly: AssemblyFileVersion(\"{0}\")]", version));
 
 			File.WriteAllText(Paths.AssemblyInfoFile, text, Encoding.UTF8);
+			Console.WriteLine("OK");
+		}
+
+		private static void SetupRelatedProjects()
+		{
+			if (Args.ProjectType != ProjectType.Cloud)
+				return;
+
+			Console.Write("Converting paths for related projects... ");
+
+			var project = new ProjectDocument(Paths.CloudProjectFile);
+			project.Load();
+
+			foreach (var reference in project.GetProjectReferences())
+			{
+				if (String.IsNullOrEmpty(Args.RelatedPath))
+					throw new InvalidOperationException("Configuration argument 'RelatedPath' is not set.");
+
+				var fileName = Path.GetFileName(reference.Include);
+				var folderName = reference.Name;
+				var includePath = Path.Combine(Args.RelatedPath, folderName, fileName);
+
+				reference.UpdateLocation(includePath);
+			}
+
+			project.Save();
 			Console.WriteLine("OK");
 		}
 	}

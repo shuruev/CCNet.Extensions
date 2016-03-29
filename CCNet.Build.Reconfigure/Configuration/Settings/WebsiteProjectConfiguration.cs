@@ -4,21 +4,21 @@ using CCNet.Build.Common;
 
 namespace CCNet.Build.Reconfigure
 {
-	public class WebsiteProjectConfiguration : PublishProjectConfiguration
+	public class WebsiteProjectConfiguration : PublishProjectConfiguration, IProjectPublish
 	{
 		public override ProjectType Type
 		{
 			get { return ProjectType.Website; }
 		}
 
-		public override string PublishFileName
+		public override string SourceDirectoryRelease
 		{
-			get { return String.Format(@"{0}.publish.zip", Name); }
+			get { return String.Format(@"{0}\bin", WorkingDirectorySource); }
 		}
 
-		public string ReleaseDirectoryPublished
+		public string SourceDirectoryPublished
 		{
-			get { return String.Format(@"{0}\_PublishedWebsites\{1}", WorkingDirectoryRelease, Name); }
+			get { return String.Format(@"{0}\_PublishedWebsites\{1}", SourceDirectoryRelease, Name); }
 		}
 
 		protected override List<string> GetIssuesToCheck()

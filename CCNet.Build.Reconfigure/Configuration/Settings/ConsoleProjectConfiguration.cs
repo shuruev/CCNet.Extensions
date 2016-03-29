@@ -3,7 +3,7 @@ using CCNet.Build.Common;
 
 namespace CCNet.Build.Reconfigure
 {
-	public class ConsoleProjectConfiguration : PublishProjectConfiguration
+	public class ConsoleProjectConfiguration : PublishProjectConfiguration, IProjectRelease
 	{
 		public override ProjectType Type
 		{

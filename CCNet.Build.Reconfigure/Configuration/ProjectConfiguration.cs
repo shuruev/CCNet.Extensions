@@ -57,11 +57,6 @@ namespace CCNet.Build.Reconfigure
 			get { return String.Format(@"{0}\source", WorkingDirectory); }
 		}
 
-		public string WorkingDirectoryRelease
-		{
-			get { return String.Format(@"{0}\release", WorkingDirectory); }
-		}
-
 		public string WorkingDirectoryPackages
 		{
 			get { return String.Format(@"{0}\packages", WorkingDirectory); }

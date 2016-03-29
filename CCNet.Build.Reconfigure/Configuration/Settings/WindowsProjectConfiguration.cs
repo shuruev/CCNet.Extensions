@@ -3,7 +3,7 @@ using CCNet.Build.Common;
 
 namespace CCNet.Build.Reconfigure
 {
-	public class WindowsProjectConfiguration : PublishProjectConfiguration
+	public class WindowsProjectConfiguration : ConsoleProjectConfiguration, IProjectPublish
 	{
 		public bool ClickOnce { get; set; }
 
@@ -16,10 +16,10 @@ namespace CCNet.Build.Reconfigure
 		{
 			var checks = base.GetIssuesToCheck();
 
-			// replace P04 (ProjectOutputTypeLibrary) with P06 (ProjectOutputTypeWinExe)
-			var p04 = checks.IndexOf("P04");
-			checks.Insert(p04, "P06");
-			checks.Remove("P04");
+			// replace P05 (ProjectOutputTypeExe) with P06 (ProjectOutputTypeWinExe)
+			var p05 = checks.IndexOf("P05");
+			checks.Insert(p05, "P06");
+			checks.Remove("P05");
 
 			return checks;
 		}

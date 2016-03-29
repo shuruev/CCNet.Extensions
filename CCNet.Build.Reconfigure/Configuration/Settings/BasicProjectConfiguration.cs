@@ -14,6 +14,11 @@ namespace CCNet.Build.Reconfigure
 		public string RootNamespace { get; set; }
 		public string CustomVersions { get; set; }
 
+		public virtual string SourceDirectoryRelease
+		{
+			get { return String.Format(@"{0}\bin\Release", WorkingDirectorySource); }
+		}
+
 		public string MsbuildExecutable
 		{
 			get

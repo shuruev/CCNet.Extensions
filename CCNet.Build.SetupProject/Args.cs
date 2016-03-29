@@ -1,4 +1,5 @@
-﻿using CCNet.Build.Common;
+﻿using System;
+using CCNet.Build.Common;
 using Lean.Configuration;
 
 namespace CCNet.Build.SetupProject
@@ -20,6 +21,16 @@ namespace CCNet.Build.SetupProject
 		public static string ProjectPath
 		{
 			get { return Current.Get<string>("ProjectPath"); }
+		}
+
+		public static string ReferencesPath
+		{
+			get { return Current.Get("ReferencesPath", String.Empty); }
+		}
+
+		public static string RelatedPath
+		{
+			get { return Current.Get("RelatedPath", String.Empty); }
 		}
 
 		public static string TempPath

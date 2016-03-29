@@ -61,7 +61,6 @@ namespace CCNet.Build.Reconfigure
 
 				BuildApplicationConfig(
 					FilterByType<ConsoleProjectConfiguration>(configs)
-					.Cast<PublishProjectConfiguration>()
 					.Union(FilterByType<WindowsProjectConfiguration>(configs)));
 			}
 
@@ -194,7 +193,7 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
-		private static void BuildApplicationConfig(IEnumerable<PublishProjectConfiguration> configs)
+		private static void BuildApplicationConfig(IEnumerable<ConsoleProjectConfiguration> configs)
 		{
 			Console.WriteLine("Generate application config...");
 			Console.WriteLine("Output file: {0}", Paths.ApplicationConfig);
@@ -323,7 +322,7 @@ namespace CCNet.Build.Reconfigure
 
 		private static void WriteSetupPackages(XmlWriter writer, BasicProjectConfiguration project)
 		{
-			project.CustomVersions = "mongocsharpdriver|SolrNet|CommonServiceLocator";
+			project.CustomVersions = "mongocsharpdriver|SolrNet|CommonServiceLocator|WindowsAzure.Storage|Newtonsoft.Json|System.Spatial|Microsoft.Data.Edm|Microsoft.Data.OData|Microsoft.Data.Services.Client|Microsoft.Azure.KeyVault.Core";
 
 			using (writer.OpenTag("exec"))
 			{
@@ -339,6 +338,18 @@ namespace CCNet.Build.Reconfigure
 					new Arg("NuGetUrl", project.NugetRestoreUrl));
 
 				writer.WriteElementString("description", "Setup packages");
+			}
+		}
+
+		private static void WriteBuildProject(XmlWriter writer, BasicProjectConfiguration project)
+		{
+			using (writer.OpenTag("msbuild"))
+			{
+				writer.WriteElementString("executable", project.MsbuildExecutable);
+				writer.WriteElementString("targets", "Build");
+				writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
+				writer.WriteElementString("buildArgs", "/noconsolelogger /p:Configuration=Release");
+				writer.WriteElementString("description", "Build project");
 			}
 		}
 
@@ -375,29 +386,31 @@ namespace CCNet.Build.Reconfigure
 					}
 
 					WriteSetupPackages(writer, project);
+					WriteBuildProject(writer, project);
 
-					using (writer.OpenTag("msbuild"))
-					{
-						writer.WriteElementString("executable", project.MsbuildExecutable);
-						writer.WriteElementString("targets", "Build");
-						writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
-						writer.WriteElementString("buildArgs", String.Format(@"/noconsolelogger /p:Configuration=Release;OutDir={0}\", project.WorkingDirectoryRelease));
-						writer.WriteElementString("description", "Build library");
-					}
+					// copy output files to the release folder, including satellite assemblies
+					writer.CbTag(
+						"CopyFilesWildcard",
+						"from",
+						project.SourceDirectoryRelease,
+						"wildcard",
+						String.Format("{0}.???, {0}.resources.???", project.Name),
+						"to",
+						project.WorkingDirectoryRelease());
 
 					using (writer.OpenTag("exec"))
 					{
 						writer.WriteElementString("executable", "$(ccnetBuildGenerateNuspec)");
 						writer.WriteBuildArgs(
-							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
 							new Arg("ProjectDescription", project.Description),
 							new Arg("CompanyName", "CNET Content Solutions"),
 							new Arg("CurrentVersion", "$[$CCNetLabel]"),
 							new Arg("TargetFramework", project.Framework),
+							new Arg(project.IncludeXmlDocumentation ? "IncludeXmlDocumentation" : null, project.IncludeXmlDocumentation),
 							new Arg("ReleaseNotes", project.TempFileSource + "|" + project.TempFilePackages),
-							new Arg("OutputDirectory", project.WorkingDirectoryNuget),
-							new Arg(project.IncludeXmlDocumentation ? "IncludeXmlDocumentation" : null, project.IncludeXmlDocumentation));
+							new Arg("ReleasePath", project.WorkingDirectoryRelease()),
+							new Arg("OutputDirectory", project.WorkingDirectoryNuget));
 
 						writer.WriteElementString("description", "Generate nuspec file");
 					}
@@ -447,9 +460,9 @@ namespace CCNet.Build.Reconfigure
 						writer.CbTag(
 							"CopyFiles",
 							"from",
-							String.Format(@"$(projectsPath)\{0}\release\{0}.*", project.Name),
+							project.WorkingDirectoryRelease() + @"\*",
 							"to",
-							String.Format(@"\\rufrt-vxbuild.cneu.cnwk\InternalReferences\{0}\Latest\", project.Name));
+							String.Format(@"\\rufrt-vxbuild.cneu.cnwk\InternalReferences\{0}\Latest", project.Name));
 					}
 				}
 
@@ -494,19 +507,20 @@ namespace CCNet.Build.Reconfigure
 					}
 
 					WriteSetupPackages(writer, project);
+					WriteBuildProject(writer, project);
 
 					using (writer.OpenTag("msbuild"))
 					{
 						writer.WriteElementString("executable", project.MsbuildExecutable);
 						writer.WriteElementString("targets", "Build;_CopyWebApplication");
 						writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
-						writer.WriteElementString("buildArgs", String.Format(@"/noconsolelogger /p:Configuration=Release;OutDir={0}\", project.WorkingDirectoryRelease));
-						writer.WriteElementString("description", "Build web site");
+						writer.WriteElementString("buildArgs", String.Format(@"/noconsolelogger /p:Configuration=Release;OutDir={0}\", project.SourceDirectoryRelease));
+						writer.WriteElementString("description", "Publish web site");
 					}
 
-					writer.CbTag("EraseXmlDocs", "path", project.ReleaseDirectoryPublished);
-					writer.CbTag("EraseConfigFiles", "path", project.ReleaseDirectoryPublished);
-					writer.CbTag("CompressDirectory", "path", project.ReleaseDirectoryPublished, "output", project.PublishFileLocal);
+					writer.CbTag("EraseXmlDocs", "path", project.SourceDirectoryPublished);
+					writer.CbTag("EraseConfigFiles", "path", project.SourceDirectoryPublished);
+					writer.CbTag("CompressDirectory", "path", project.SourceDirectoryPublished, "output", project.PublishFileLocal());
 
 					using (writer.OpenTag("exec"))
 					{
@@ -514,8 +528,8 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("Storage", "Devbuild"),
 							new Arg("Container", "publish"),
-							new Arg("LocalFile", project.PublishFileLocal),
-							new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/{1}", project.UniqueName, project.PublishFileName)));
+							new Arg("LocalFile", project.PublishFileLocal()),
+							new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/{1}", project.UniqueName, project.PublishFileName())));
 
 						writer.WriteElementString("description", "Publish release to blobs");
 					}
@@ -586,19 +600,11 @@ namespace CCNet.Build.Reconfigure
 					}
 
 					WriteSetupPackages(writer, project);
+					WriteBuildProject(writer, project);
 
-					using (writer.OpenTag("msbuild"))
-					{
-						writer.WriteElementString("executable", project.MsbuildExecutable);
-						writer.WriteElementString("targets", "Build");
-						writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
-						writer.WriteElementString("buildArgs", String.Format(@"/noconsolelogger /p:Configuration=Release;OutDir={0}\", project.WorkingDirectoryRelease));
-						writer.WriteElementString("description", "Build windows service");
-					}
-
-					writer.CbTag("EraseXmlDocs", "path", project.WorkingDirectoryRelease);
-					writer.CbTag("EraseConfigFiles", "path", project.WorkingDirectoryRelease);
-					writer.CbTag("CompressDirectory", "path", project.WorkingDirectoryRelease, "output", project.PublishFileLocal);
+					writer.CbTag("EraseXmlDocs", "path", project.SourceDirectoryRelease);
+					writer.CbTag("EraseConfigFiles", "path", project.SourceDirectoryRelease);
+					writer.CbTag("CompressDirectory", "path", project.SourceDirectoryRelease, "output", project.ReleaseFileLocal());
 
 					using (writer.OpenTag("exec"))
 					{
@@ -606,8 +612,8 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("Storage", "Devbuild"),
 							new Arg("Container", "publish"),
-							new Arg("LocalFile", project.PublishFileLocal),
-							new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/{1}", project.UniqueName, project.PublishFileName)));
+							new Arg("LocalFile", project.ReleaseFileLocal()),
+							new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/{1}", project.UniqueName, project.ReleaseFileName())));
 
 						writer.WriteElementString("description", "Publish release to blobs");
 					}
@@ -645,7 +651,7 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
-		private static void WriteApplicationProject(XmlWriter writer, PublishProjectConfiguration project)
+		private static void WriteApplicationProject(XmlWriter writer, ConsoleProjectConfiguration project)
 		{
 			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
 
@@ -678,19 +684,11 @@ namespace CCNet.Build.Reconfigure
 					}
 
 					WriteSetupPackages(writer, project);
+					WriteBuildProject(writer, project);
 
-					using (writer.OpenTag("msbuild"))
-					{
-						writer.WriteElementString("executable", project.MsbuildExecutable);
-						writer.WriteElementString("targets", "Build");
-						writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
-						writer.WriteElementString("buildArgs", String.Format(@"/noconsolelogger /p:Configuration=Release;OutDir={0}\", project.WorkingDirectoryRelease));
-						writer.WriteElementString("description", "Build windows service");
-					}
-
-					writer.CbTag("EraseXmlDocs", "path", project.WorkingDirectoryRelease);
-					writer.CbTag("EraseConfigFiles", "path", project.WorkingDirectoryRelease);
-					writer.CbTag("CompressDirectory", "path", project.WorkingDirectoryRelease, "output", project.PublishFileLocal);
+					writer.CbTag("EraseXmlDocs", "path", project.SourceDirectoryRelease);
+					writer.CbTag("EraseConfigFiles", "path", project.SourceDirectoryRelease);
+					writer.CbTag("CompressDirectory", "path", project.SourceDirectoryRelease, "output", project.ReleaseFileLocal());
 
 					using (writer.OpenTag("exec"))
 					{
@@ -698,8 +696,8 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("Storage", "Devbuild"),
 							new Arg("Container", "publish"),
-							new Arg("LocalFile", project.PublishFileLocal),
-							new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/{1}", project.UniqueName, project.PublishFileName)));
+							new Arg("LocalFile", project.ReleaseFileLocal()),
+							new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/{1}", project.UniqueName, project.ReleaseFileName())));
 
 						writer.WriteElementString("description", "Publish release to blobs");
 					}
@@ -740,7 +738,6 @@ namespace CCNet.Build.Reconfigure
 		private static void CleanupProject(XmlWriter writer, ProjectConfiguration project)
 		{
 			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectorySource);
-			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryRelease);
 			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryPackages);
 			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryTemp);
 		}
@@ -748,28 +745,32 @@ namespace CCNet.Build.Reconfigure
 		private static void CleanupLibraryProject(XmlWriter writer, LibraryProjectConfiguration project)
 		{
 			CleanupProject(writer, project);
+			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryRelease());
 			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryNuget);
-		}
-
-		private static void CleanupPublishProject(XmlWriter writer, PublishProjectConfiguration project)
-		{
-			CleanupProject(writer, project);
-			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryPublish);
 		}
 
 		private static void CleanupWebsiteProject(XmlWriter writer, WebsiteProjectConfiguration project)
 		{
-			CleanupPublishProject(writer, project);
+			CleanupProject(writer, project);
+			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryPublish());
 		}
 
 		private static void CleanupServiceProject(XmlWriter writer, ServiceProjectConfiguration project)
 		{
-			CleanupPublishProject(writer, project);
+			CleanupProject(writer, project);
+			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryRelease());
 		}
 
-		private static void CleanupApplicationProject(XmlWriter writer, PublishProjectConfiguration project)
+		private static void CleanupApplicationProject(XmlWriter writer, ConsoleProjectConfiguration project)
 		{
-			CleanupPublishProject(writer, project);
+			CleanupProject(writer, project);
+			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryRelease());
+
+			var windows = project as WindowsProjectConfiguration;
+			if (windows != null)
+			{
+				writer.CbTag("DeleteDirectory", "path", windows.WorkingDirectoryPublish());
+			}
 		}
 
 		private static void SaveProjectUid(string projectName, Guid projectUid)

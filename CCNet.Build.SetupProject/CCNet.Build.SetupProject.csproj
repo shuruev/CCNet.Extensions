@@ -50,6 +50,7 @@
     <Compile Include="Args.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Paths.cs" />
+    <Compile Include="Program.Links.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

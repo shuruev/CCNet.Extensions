@@ -24,11 +24,15 @@ namespace CCNet.Build.Reconfigure
 			if (title == null)
 				throw new InvalidOperationException("Cannot find project title.");
 
-			var norm = title.AsciiOnly(' ').CleanWhitespaces();
+			var norm = title.AsciiOnly(' ', '-').CleanWhitespaces();
 			if (norm.Length < 10)
 				throw new InvalidOperationException("Something is wrong with project title.");
 
-			return norm;
+			if (title != norm)
+				throw new ArgumentException(
+					String.Format("Project title '{0}' does not look well-formed.", title));
+
+			return title;
 		}
 
 		private XElement RenderTitle()

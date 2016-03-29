@@ -56,6 +56,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Args.cs" />
+    <Compile Include="Configuration\Shared\IProjectRelease.cs" />
+    <Compile Include="Configuration\Shared\ProjectExtensions.Publish.cs" />
+    <Compile Include="Configuration\Shared\ProjectExtensions.Release.cs" />
+    <Compile Include="Configuration\Shared\ProjectExtensions.cs" />
+    <Compile Include="Configuration\Shared\IProjectPublish.cs" />
     <Compile Include="Configuration\Settings\BasicProjectConfiguration.cs" />
     <Compile Include="Configuration\Settings\WindowsProjectConfiguration.cs" />
     <Compile Include="Configuration\Settings\PublishProjectConfiguration.cs" />

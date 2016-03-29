@@ -3,7 +3,7 @@ using CCNet.Build.Common;
 
 namespace CCNet.Build.Reconfigure
 {
-	public class LibraryProjectConfiguration : BasicProjectConfiguration
+	public class LibraryProjectConfiguration : BasicProjectConfiguration, IProjectRelease
 	{
 		public override ProjectType Type
 		{
@@ -12,7 +12,7 @@ namespace CCNet.Build.Reconfigure
 
 		public string WorkingDirectoryNuget
 		{
-			get { return String.Format(@"$(projectsPath)\{0}\nuget", UniqueName); }
+			get { return String.Format(@"{0}\nuget", WorkingDirectory); }
 		}
 
 		public string NugetPushUrl
