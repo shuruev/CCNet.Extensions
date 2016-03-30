@@ -48,7 +48,8 @@ namespace CCNet.Build.SetupPackages
 					package.Name,
 					new LogPackage
 					{
-						Name = package.Name,
+						PackageName = package.Name,
+						ProjectName = m_checker.ProjectName(package.Name),
 						IsLocal = m_checker.IsLocal(package.Name),
 						SourceVersion = package.Version,
 						PinnedToCurrent = m_checker.IsPinnedToCurrentVersion(package.Name),
@@ -74,7 +75,7 @@ namespace CCNet.Build.SetupPackages
 			{
 				if (item.BuildVersion == null)
 					throw new InvalidOperationException(
-						String.Format("Build version is missing for package '{0}'.", item.Name));
+						String.Format("Build version is missing for package '{0}'.", item.PackageName));
 			}
 
 			Console.WriteLine("OK");

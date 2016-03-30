@@ -81,7 +81,7 @@ namespace CCNet.Build.SetupPackages
 
 			var after = log.Values
 				.Where(i => i.IsLocal)
-				.ToDictionary(i => i.Name);
+				.ToDictionary(i => i.ProjectName);
 
 			var before = Directory
 				.GetFiles(Args.ReferencesPath)

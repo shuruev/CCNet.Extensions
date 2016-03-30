@@ -70,6 +70,18 @@ namespace CCNet.Build.SetupPackages
 			return m_localPackages[name].Framework;
 		}
 
+		public string ProjectName(string name)
+		{
+			if (!IsLocal(name))
+				return name;
+
+			var tags = m_localPackages[name].Tags;
+			if (String.IsNullOrEmpty(tags))
+				return name;
+
+			return tags;
+		}
+
 		public bool IsPinnedToCurrentVersion(string name)
 		{
 			bool custom = m_customVersions.ContainsKey(name);

@@ -57,7 +57,7 @@ namespace CCNet.Build.SetupProject
 			{
 				new
 				{
-					Url = String.Format("{0}/packages/{1}/", Config.NuGetUrl, Args.ProjectName),
+					Url = String.Format("{0}/packages/{1}/", Config.NuGetUrl, Args.PackageId),
 					Image = String.Format("{0}/Content/Logos/nugetlogo.png", Config.NuGetUrl)
 				},
 				new

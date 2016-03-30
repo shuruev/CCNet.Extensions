@@ -15,7 +15,7 @@ namespace CCNet.Build.SetupPackages
 
 		public void Report()
 		{
-			foreach (var reference in Values.OrderBy(i => i.Location).ThenBy(i => i.Name))
+			foreach (var reference in Values.OrderBy(i => i.Location).ThenBy(i => i.PackageName))
 			{
 				reference.Report();
 			}
@@ -29,11 +29,11 @@ namespace CCNet.Build.SetupPackages
 			var sb = new StringBuilder();
 			sb.AppendLine("Packages:");
 
-			foreach (var reference in Values.OrderBy(i => i.Location).ThenBy(i => i.Name))
+			foreach (var reference in Values.OrderBy(i => i.Location).ThenBy(i => i.PackageName))
 			{
 				sb.AppendFormat(
 					"- {0} {1} ({2})",
-					reference.Name,
+					reference.PackageName,
 					reference.BuildVersion.Normalize(),
 					reference.Comment.ToLowerInvariant());
 

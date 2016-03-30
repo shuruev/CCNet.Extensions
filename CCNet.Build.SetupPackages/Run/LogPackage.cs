@@ -6,7 +6,8 @@ namespace CCNet.Build.SetupPackages
 {
 	public class LogPackage
 	{
-		public string Name { get; set; }
+		public string PackageName { get; set; }
+		public string ProjectName { get; set; }
 		public bool IsLocal { get; set; }
 		public Version SourceVersion { get; set; }
 		public Version BuildVersion { get; set; }
@@ -55,11 +56,11 @@ namespace CCNet.Build.SetupPackages
 		{
 			if (SourceVersion == null)
 				throw new InvalidOperationException(
-					String.Format("Source version is missing for package '{0}'.", Name));
+					String.Format("Source version is missing for package '{0}'.", PackageName));
 
 			if (BuildVersion == null)
 				throw new InvalidOperationException(
-					String.Format("Build version is missing for package '{0}'.", Name));
+					String.Format("Build version is missing for package '{0}'.", PackageName));
 
 			var source = SourceVersion.Normalize().ToString();
 			var build = BuildVersion.Normalize().ToString();
@@ -69,7 +70,7 @@ namespace CCNet.Build.SetupPackages
 				source = source + " (csproj)";
 			}
 
-			Execute.ReportPackage(Name, source, build, Comment);
+			Execute.ReportPackage(ProjectName, source, build, Comment);
 		}
 	}
 }

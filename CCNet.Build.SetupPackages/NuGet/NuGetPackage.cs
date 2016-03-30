@@ -9,8 +9,11 @@ namespace CCNet.Build.SetupPackages
 		public string Id { get; private set; }
 		public string Name { get; private set; }
 		public string Area { get; private set; }
+
 		public Version Version { get; private set; }
 		public TargetFramework Framework { get; private set; }
+
+		public string Tags { get; set; }
 
 		private NuGetPackage(string id)
 		{
