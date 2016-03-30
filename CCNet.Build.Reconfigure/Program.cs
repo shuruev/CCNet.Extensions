@@ -50,6 +50,7 @@ namespace CCNet.Build.Reconfigure
 			using (Execute.Step("UPDATE CONFIG"))
 			{
 				var configs = builder.ExportConfigurations();
+				ApplyCustomizations(configs);
 
 				BuildLibraryConfig(FilterByType<LibraryProjectConfiguration>(configs));
 
@@ -71,6 +72,18 @@ namespace CCNet.Build.Reconfigure
 				{
 					SaveProjectUid(item.Key, item.Value);
 				}
+			}
+		}
+
+		private static void ApplyCustomizations(List<ProjectConfiguration> configs)
+		{
+			var azureDirectory = configs.FirstOrDefault(item => item.Name == "AzureDirectory") as LibraryProjectConfiguration;
+			if (azureDirectory != null)
+			{
+				azureDirectory.CustomAssemblyName = "Lucene.Net.Store.Azure";
+				azureDirectory.CustomPackageTitle = "AzureDirectory for Lucene.Net";
+				azureDirectory.CustomCompanyName = "Microsoft";
+				azureDirectory.Dependencies = "WindowsAzure.Storage|Lucene.Net";
 			}
 		}
 
@@ -309,6 +322,21 @@ namespace CCNet.Build.Reconfigure
 					new Arg("CheckIssues", project.CheckIssues)
 				};
 
+				var company = "CNET Content Solutions";
+
+				var library = project as LibraryProjectConfiguration;
+				if (library != null)
+				{
+					args.Add(new Arg("AssemblyName", library.CustomAssemblyName));
+
+					if (library.CustomCompanyName != null)
+					{
+						company = library.CustomCompanyName;
+					}
+				}
+
+				args.Add(new Arg("CompanyName", company));
+
 				var publish = project as PublishProjectConfiguration;
 				if (publish != null)
 				{
@@ -375,6 +403,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg(project.CustomAssemblyName != null ? "PackageId" : null, project.CustomAssemblyName),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("TempPath", project.WorkingDirectoryTemp),
 							new Arg("TfsPath", project.TfsPath),
@@ -392,7 +421,7 @@ namespace CCNet.Build.Reconfigure
 						"from",
 						project.SourceDirectoryRelease,
 						"wildcard",
-						String.Format("{0}.???, {0}.resources.???", project.Name),
+						String.Format("{0}.???, {0}.resources.???", project.CustomAssemblyName ?? project.Name),
 						"to",
 						project.WorkingDirectoryRelease());
 
@@ -401,11 +430,14 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString("executable", "$(ccnetBuildGenerateNuspec)");
 						writer.WriteBuildArgs(
 							new Arg("ProjectName", project.Name),
+							new Arg(project.CustomAssemblyName != null ? "PackageId" : null, project.CustomAssemblyName),
+							new Arg(project.CustomPackageTitle != null ? "PackageTitle" : null, project.CustomPackageTitle),
 							new Arg("ProjectDescription", project.Description),
-							new Arg("CompanyName", "CNET Content Solutions"),
+							new Arg("CompanyName", project.CustomCompanyName ?? "CNET Content Solutions"),
 							new Arg("CurrentVersion", "$[$CCNetLabel]"),
 							new Arg("TargetFramework", project.Framework),
 							new Arg(project.IncludeXmlDocumentation ? "IncludeXmlDocumentation" : null, project.IncludeXmlDocumentation),
+							new Arg(project.Dependencies != null ? "Dependencies" : null, project.Dependencies),
 							new Arg("ReleaseNotes", project.TempFileSource + "|" + project.TempFilePackages),
 							new Arg("ReleasePath", project.WorkingDirectoryRelease()),
 							new Arg("OutputDirectory", project.WorkingDirectoryNuget));
@@ -434,7 +466,7 @@ namespace CCNet.Build.Reconfigure
 							String.Format(
 								@"push ""{0}\{1}.$[$CCNetLabel].nupkg"" -Source ""{2}"" -NonInteractive -Verbosity Detailed",
 								project.WorkingDirectoryNuget,
-								project.Name,
+								project.CustomAssemblyName ?? project.Name,
 								project.NugetPushUrl));
 
 						writer.WriteElementString("description", "Publish package");

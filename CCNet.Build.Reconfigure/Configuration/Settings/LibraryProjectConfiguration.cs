@@ -5,6 +5,11 @@ namespace CCNet.Build.Reconfigure
 {
 	public class LibraryProjectConfiguration : BasicProjectConfiguration, IProjectRelease
 	{
+		public string Dependencies { get; set; }
+		public string CustomAssemblyName { get; set; }
+		public string CustomPackageTitle { get; set; }
+		public string CustomCompanyName { get; set; }
+
 		public override ProjectType Type
 		{
 			get { return ProjectType.Library; }
