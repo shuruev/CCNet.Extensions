@@ -53,21 +53,36 @@ namespace CCNet.Build.GenerateNuspec
 
 				xtw.WriteStartElement("metadata");
 
-				xtw.WriteElementString("id", Args.ProjectName);
+				xtw.WriteElementString("id", Args.PackageId);
 				xtw.WriteElementString("version", Args.CurrentVersion);
+				xtw.WriteElementString("title", Args.PackageTitle);
 				xtw.WriteElementString("authors", Args.CompanyName);
 				xtw.WriteElementString("description", Args.ProjectDescription);
 				xtw.WriteElementString("requireLicenseAcceptance", "false");
 
+				AddDependencies(xtw);
 				AddReleaseNotes(xtw);
 
-				xtw.WriteElementString("projectUrl", String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+library", Args.ProjectName));
-				xtw.WriteElementString("iconUrl", "https://owl.cbsi.com/confluence/download/attachments/12795231/CCSSEDRU");
+				var projectUrl = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+library", Args.ProjectName);
+				var iconUrl = "https://owl.cbsi.com/confluence/download/attachments/12795232/cnet.png";
+
+				if (Args.ProjectName != Args.PackageTitle
+					|| Args.ProjectName != Args.PackageId)
+				{
+					iconUrl = "https://owl.cbsi.com/confluence/download/attachments/12795232/cnet-bw.png";
+				}
+
+				xtw.WriteElementString("projectUrl", projectUrl);
+				xtw.WriteElementString("iconUrl", iconUrl);
+
+				if (Args.ProjectName != Args.PackageId)
+				{
+					xtw.WriteElementString("tags", Args.ProjectName);
+				}
 
 				xtw.WriteEndElement();
 
 				AddFiles(xtw);
-				AddDependencies(xtw);
 
 				xtw.WriteEndElement();
 				xtw.WriteEndDocument();
@@ -111,7 +126,7 @@ namespace CCNet.Build.GenerateNuspec
 
 		private static void AddNuspecLibraryCoreFile(XmlTextWriter xtw, string extension)
 		{
-			var src = String.Format(@"{0}\{1}.{2}", Args.ReleasePath, Args.ProjectName, extension.ToLowerInvariant());
+			var src = String.Format(@"{0}\{1}.{2}", Args.ReleasePath, Args.PackageId, extension.ToLowerInvariant());
 			var target = String.Format(@"lib\{0}", Args.TargetFramework.ToString().ToLowerInvariant());
 
 			xtw.WriteStartElement("file");
@@ -145,15 +160,24 @@ namespace CCNet.Build.GenerateNuspec
 		{
 			var result = new Dictionary<string, Version>();
 
+			if (String.IsNullOrEmpty(dependencies))
+				return result;
+
+			// xxx quick dirty workaround
+			var packages = Args.ReleaseNotes.Split('|')
+				.Where(File.Exists)
+				.SelectMany(File.ReadLines)
+				.Where(line => line.StartsWith("- "))
+				.Select(line => line.Split(' '))
+				.ToDictionary(parts => parts[1], parts => new Version(parts[2]));
+
 			foreach (var item in dependencies.Split('|'))
 			{
-				if (!item.Contains('+'))
-					throw new InvalidOperationException("Invalid syntax for dependencies string.");
+				if (!packages.ContainsKey(item))
+					throw new InvalidOperationException(
+						String.Format("Cannot find dependency '{0}' within used packages.", item));
 
-				var parts = item.Split('+');
-				var name = parts[0];
-				var version = parts[1];
-				result.Add(name, new Version(version));
+				result.Add(item, packages[item]);
 			}
 
 			return result;

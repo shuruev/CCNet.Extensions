@@ -13,6 +13,16 @@ namespace CCNet.Build.GenerateNuspec
 			get { return Current.Get<string>("ProjectName"); }
 		}
 
+		public static string PackageId
+		{
+			get { return Current.Get("PackageId", ProjectName); }
+		}
+
+		public static string PackageTitle
+		{
+			get { return Current.Get("PackageTitle", ProjectName); }
+		}
+
 		public static string ProjectDescription
 		{
 			get { return Current.Get<string>("ProjectDescription"); }
