@@ -10,11 +10,11 @@ namespace CCNet.Build.CheckProject
 
 			var debug = context.ProjectDebugProperties.Result;
 			debug.CheckOptional("NoWarn", String.Empty, details);
-			debug.CheckRequired("DocumentationFile", String.Format(@"bin\Debug\{0}.xml", Args.ProjectName), details);
+			debug.CheckRequired("DocumentationFile", String.Format(@"bin\Debug\{0}.xml", Args.AssemblyName), details);
 
 			var release = context.ProjectReleaseProperties.Result;
 			release.CheckOptional("NoWarn", String.Empty, details);
-			release.CheckRequired("DocumentationFile", String.Format(@"bin\Release\{0}.xml", Args.ProjectName), details);
+			release.CheckRequired("DocumentationFile", String.Format(@"bin\Release\{0}.xml", Args.AssemblyName), details);
 		}
 	}
 }

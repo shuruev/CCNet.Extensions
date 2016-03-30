@@ -12,7 +12,7 @@ namespace CCNet.Build.CheckProject
 			var debug = context.ProjectDebugProperties.Result;
 			debug.CheckRequired("DebugSymbols", "true");
 			debug.CheckRequired("DebugType", "full");
-			debug.CheckRequired("DefineConstants", "DEBUG;TRACE");
+			debug.CheckRequired("DefineConstants", p => p == "DEBUG;TRACE" || p == "TRACE;DEBUG", "Should define DEBUG and TRACE.");
 			debug.CheckRequired("ErrorReport", "prompt");
 			debug.CheckRequired("Optimize", "false");
 			CheckPlatformTarget(debug);

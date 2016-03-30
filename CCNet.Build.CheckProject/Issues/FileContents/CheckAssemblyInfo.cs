@@ -7,24 +7,22 @@ namespace CCNet.Build.CheckProject
 {
 	public class CheckAssemblyInfo : IChecker
 	{
-		private static readonly Regex s_propertyRegex = new Regex(@"^\[assembly: Assembly(?<Name>\w+)\((?<Value>.*)\)]$");
-		private static readonly Regex s_copyrightRegex = new Regex(@"^Copyright © CNET Content Solutions 20[0-2]\d$");
-
 		public void Check(CheckContext context)
 		{
 			var lines = File.ReadAllLines(Paths.AssemblyInfoFile);
 			var properties = ParseProperties(lines);
 
-			properties.CheckRequired("Title", Args.ProjectName);
+			properties.CheckRequired("Title", Args.AssemblyName);
 			properties.CheckRequired("Description", String.Empty);
 			properties.CheckRequired("Configuration", String.Empty);
-			properties.CheckRequired("Company", "CNET Content Solutions");
-			properties.CheckRequired("Product", Args.ProjectName);
+			properties.CheckRequired("Company", Args.CompanyName);
+			properties.CheckRequired("Product", Args.AssemblyName);
 
+			var copyrightRegex = new Regex(String.Format(@"^Copyright © {0} 20[0-2]\d$", Args.CompanyName));
 			properties.CheckRequired(
 				"Copyright",
-				value => s_copyrightRegex.IsMatch(value),
-				String.Format("Usually it should end with '... CNET Content Solutions {0}', or another year.", DateTime.UtcNow.Year));
+				copyrightRegex.IsMatch,
+				String.Format("Usually it should end with '... {0} {1}', or another year.", Args.CompanyName, DateTime.UtcNow.Year));
 
 			properties.CheckRequired("Trademark", String.Empty);
 			properties.CheckRequired("Culture", String.Empty);
@@ -34,14 +32,15 @@ namespace CCNet.Build.CheckProject
 
 		private Dictionary<string, string> ParseProperties(IEnumerable<string> lines)
 		{
-			var result = new Dictionary<string, string>();
+			var propertyRegex = new Regex(@"^\[assembly: Assembly(?<Name>\w+)\((?<Value>.*)\)]$");
 
+			var result = new Dictionary<string, string>();
 			foreach (var line in lines)
 			{
-				if (!s_propertyRegex.IsMatch(line))
+				if (!propertyRegex.IsMatch(line))
 					continue;
 
-				var match = s_propertyRegex.Match(line);
+				var match = propertyRegex.Match(line);
 				var name = match.Groups["Name"].Value;
 				var value = match.Groups["Value"].Value.Trim('"');
 

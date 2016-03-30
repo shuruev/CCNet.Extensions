@@ -5,7 +5,7 @@
 		public void Check(CheckContext context)
 		{
 			var properties = context.ProjectCommonProperties.Result;
-			properties.CheckRequired("AssemblyName", Args.ProjectName);
+			properties.CheckRequired("AssemblyName", Args.AssemblyName);
 		}
 	}
 }
