@@ -131,6 +131,7 @@ namespace CCNet.Build.Reconfigure
 				"DataSource",
 				"Internal",
 				"PartnerAccess",
+				"Platform",
 				"Production",
 				"Sandbox",
 				"Vortex"
