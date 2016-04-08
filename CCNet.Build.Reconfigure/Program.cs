@@ -77,13 +77,21 @@ namespace CCNet.Build.Reconfigure
 
 		private static void ApplyCustomizations(List<ProjectConfiguration> configs)
 		{
-			var azureDirectory = configs.FirstOrDefault(item => item.Name == "AzureDirectory") as LibraryProjectConfiguration;
-			if (azureDirectory != null)
+			LibraryProjectConfiguration library;
+
+			library = configs.FirstOrDefault(item => item.Name == "AzureDirectory") as LibraryProjectConfiguration;
+			if (library != null)
 			{
-				azureDirectory.CustomAssemblyName = "Lucene.Net.Store.Azure";
-				azureDirectory.CustomPackageTitle = "AzureDirectory for Lucene.Net";
-				azureDirectory.CustomCompanyName = "Microsoft";
-				azureDirectory.Dependencies = "WindowsAzure.Storage|Lucene.Net";
+				library.CustomAssemblyName = "Lucene.Net.Store.Azure";
+				library.CustomPackageTitle = "AzureDirectory for Lucene.Net";
+				library.CustomCompanyName = "Microsoft";
+				library.Dependencies = "WindowsAzure.Storage|Lucene.Net";
+			}
+
+			library = configs.FirstOrDefault(item => item.Name == "CnetContent.FlexQueue.Client") as LibraryProjectConfiguration;
+			if (library != null)
+			{
+				library.Dependencies = "Lean.ResourceLocators|Lean.Serialization|Lean.Rest|CnetContent.FlexQueue.Core";
 			}
 		}
 
@@ -353,6 +361,7 @@ namespace CCNet.Build.Reconfigure
 			using (writer.OpenTag("exec"))
 			{
 				writer.WriteElementString("executable", "$(ccnetBuildSetupPackages)");
+				writer.WriteElementString("buildTimeoutSeconds", "45");
 				writer.WriteBuildArgs(
 					new Arg("ProjectName", project.Name),
 					new Arg("ProjectPath", project.WorkingDirectorySource),
@@ -448,6 +457,7 @@ namespace CCNet.Build.Reconfigure
 					using (writer.OpenTag("exec"))
 					{
 						writer.WriteElementString("executable", "$(nugetExecutable)");
+						writer.WriteElementString("buildTimeoutSeconds", "45");
 						writer.WriteElementString(
 							"buildArgs",
 							String.Format(
@@ -461,6 +471,7 @@ namespace CCNet.Build.Reconfigure
 					using (writer.OpenTag("exec"))
 					{
 						writer.WriteElementString("executable", "$(nugetExecutable)");
+						writer.WriteElementString("buildTimeoutSeconds", "45");
 						writer.WriteElementString(
 							"buildArgs",
 							String.Format(

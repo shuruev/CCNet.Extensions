@@ -161,6 +161,10 @@ namespace CCNet.Build.Reconfigure
 				case "8a99855552936a300152936cb4a77e8a":
 					return "8a99855552936a300152936cb4a77e8a";
 
+				case "vilyin":
+				case "8a99855552936a300152936caec65198":
+					return "8a99855552936a300152936caec65198";
+
 				case "vperfilieva":
 				case "8a99855552936a300152936cb85b1ac8":
 					return "8a99855552936a300152936cb85b1ac8";
