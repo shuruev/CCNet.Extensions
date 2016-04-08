@@ -9,7 +9,9 @@ namespace CCNet.Build.CheckProject
 		{
 			get
 			{
-				var fileName = String.Format("{0}.csproj", Args.ProjectName);
+				// we use TFS folder name here instead of ProjectName due to CnetContent.* exception
+				var folderName = Path.GetFileName(Args.TfsPath);
+				var fileName = String.Format("{0}.csproj", folderName);
 				return Path.Combine(Args.ProjectPath, fileName);
 			}
 		}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using CCNet.Build.Common;
@@ -33,7 +34,9 @@ namespace CCNet.Build.Reconfigure
 		{
 			get
 			{
-				var fileName = String.Format("{0}.csproj", ProjectName);
+				// we use TFS folder name here instead of ProjectName due to CnetContent.* exception
+				var folderName = Path.GetFileName(TfsPath);
+				var fileName = String.Format("{0}.csproj", folderName);
 				return String.Format("{0}/{1}", TfsPath, fileName);
 			}
 		}
@@ -216,11 +219,11 @@ namespace CCNet.Build.Reconfigure
 
 			var path = TfsPath;
 
-			if (!path.Contains(String.Format("/{0}/", AreaName)))
+			if (!CheckTfsPathArea(path, AreaName))
 				throw new InvalidOperationException(
 					String.Format("TFS path '{0}' seems not conforming with area name '{1}'.", path, AreaName));
 
-			if (!path.EndsWith(String.Format("/{0}", ProjectName)))
+			if (!CheckTfsPathProject(path, ProjectName))
 				throw new InvalidOperationException(
 					String.Format("TFS path '{0}' seems not conforming with project name '{1}'.", path, ProjectName));
 
@@ -229,6 +232,27 @@ namespace CCNet.Build.Reconfigure
 			project.Load(xml);
 
 			ProjectUid = project.GetProjectGuid();
+		}
+
+		private static bool CheckTfsPathArea(string tfsPath, string areaName)
+		{
+			return tfsPath.Contains(String.Format("/{0}/", areaName));
+		}
+
+		private static bool CheckTfsPathProject(string tfsPath, string projectName)
+		{
+			if (tfsPath.EndsWith(String.Format("/{0}", projectName)))
+				return true;
+
+			const string prefix = "CnetContent.";
+			if (projectName.StartsWith(prefix))
+			{
+				var custom = projectName.Substring(prefix.Length);
+				if (tfsPath.EndsWith(String.Format("/{0}", custom)))
+					return true;
+			}
+
+			return false;
 		}
 
 		public override PageDocument RenderPage()
