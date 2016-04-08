@@ -377,7 +377,10 @@ namespace CCNet.Build.Reconfigure
 				var publish = project as PublishProjectConfiguration;
 				if (publish != null)
 				{
-					args.Add(new Arg("ProjectTitle", publish.Title));
+					if (publish.Title != null)
+					{
+						args.Add(new Arg("ProjectTitle", publish.Title));
+					}
 				}
 
 				args.Add(new Arg("CheckIssues", project.CheckIssues));
