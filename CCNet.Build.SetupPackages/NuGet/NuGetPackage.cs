@@ -42,6 +42,9 @@ namespace CCNet.Build.SetupPackages
 			if (String.IsNullOrEmpty(framework))
 				throw new ArgumentNullException("framework");
 
+			// so far we just ignore preview and prerelase marks
+			version = version.Replace("-preview", "");
+
 			Version = new Version(version);
 			Framework = ParseFramework(framework);
 		}
