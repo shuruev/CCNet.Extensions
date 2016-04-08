@@ -13,7 +13,28 @@ namespace CCNet.Build.Common
 		/// </summary>
 		public static void Run(string fileName, string arguments)
 		{
-			var process = new Process
+			using (var process = CreateProcess(fileName, arguments))
+			{
+				process.Start();
+
+				var output = process.StandardOutput.ReadToEnd();
+				var error = process.StandardError.ReadToEnd();
+
+				process.WaitForExit();
+
+				Console.WriteLine(output);
+
+				if (!String.IsNullOrEmpty(error))
+					throw new ApplicationException(error);
+			}
+		}
+
+		/// <summary>
+		/// Creates process instance to run.
+		/// </summary>
+		private static Process CreateProcess(string fileName, string arguments)
+		{
+			return new Process
 			{
 				StartInfo = new ProcessStartInfo
 				{
@@ -25,16 +46,6 @@ namespace CCNet.Build.Common
 					RedirectStandardError = true
 				}
 			};
-
-			process.Start();
-			process.WaitForExit();
-
-			var output = process.StandardOutput.ReadToEnd();
-			Console.WriteLine(output);
-
-			var error = process.StandardError.ReadToEnd();
-			if (!String.IsNullOrEmpty(error))
-				throw new ApplicationException(error);
 		}
 	}
 }
