@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace CCNet.Build.CheckProject
 {
@@ -14,9 +13,8 @@ namespace CCNet.Build.CheckProject
 			debug.CheckRequired("DebugType", "full");
 			debug.CheckRequired("DefineConstants", p => p == "DEBUG;TRACE" || p == "TRACE;DEBUG", "Should define DEBUG and TRACE.");
 			debug.CheckRequired("ErrorReport", "prompt");
-			debug.CheckRequired("Optimize", "false");
-			CheckPlatformTarget(debug);
-			debug.CheckRequired("WarningLevel", "4");
+			debug.CheckOptional("Optimize", "false");
+			debug.CheckOptional("WarningLevel", "4");
 
 			var release = context.ProjectReleaseProperties.Result;
 			release.CheckOptional("DebugSymbols", "true");
@@ -24,8 +22,7 @@ namespace CCNet.Build.CheckProject
 			release.CheckRequired("DefineConstants", "TRACE");
 			release.CheckRequired("ErrorReport", "prompt");
 			release.CheckRequired("Optimize", "true");
-			CheckPlatformTarget(release);
-			release.CheckRequired("WarningLevel", "4");
+			release.CheckOptional("WarningLevel", "4");
 
 			var web = context.ProjectDocument.Result.GetProjectTypeGuids().Contains(s_webType);
 			if (web)
@@ -38,14 +35,6 @@ namespace CCNet.Build.CheckProject
 				debug.CheckRequired("OutputPath", @"bin\Debug\");
 				release.CheckRequired("OutputPath", @"bin\Release\");
 			}
-		}
-
-		private void CheckPlatformTarget(Dictionary<string, string> properties)
-		{
-			properties.CheckOptional(
-				"PlatformTarget",
-				value => value == "AnyCPU" || value == "x86",
-				"Usually it should be AnyCPU or x86.");
 		}
 	}
 }
