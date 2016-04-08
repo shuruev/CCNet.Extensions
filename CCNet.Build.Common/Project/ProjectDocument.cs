@@ -179,10 +179,6 @@ namespace CCNet.Build.Common
 				result.Add(value);
 			}
 
-			var configuration = SelectElement("/ms:Project/ms:PropertyGroup/ms:Configuration").Value;
-			var platform = SelectElement("/ms:Project/ms:PropertyGroup/ms:Platform").Value;
-			result.Add(String.Format("{0}|{1}", configuration, platform));
-
 			return result;
 		}
 
@@ -210,6 +206,24 @@ namespace CCNet.Build.Common
 				.Select(parts => parts[1])
 				.Distinct()
 				.ToList();
+		}
+
+		/// <summary>
+		/// Gets the default configuration value.
+		/// </summary>
+		public string GetDefaultConfiguration()
+		{
+			var configuration = SelectElement("/ms:Project/ms:PropertyGroup/ms:Configuration");
+			return configuration.Value;
+		}
+
+		/// <summary>
+		/// Gets the default platform value.
+		/// </summary>
+		public string GetDefaultPlatform()
+		{
+			var platform = SelectElement("/ms:Project/ms:PropertyGroup/ms:Platform");
+			return platform.Value;
 		}
 
 		/// <summary>
