@@ -23,5 +23,10 @@ namespace CCNet.Build.Reconfigure
 		{
 			get { return Path.Combine(Args.OutputDirectory, "CCNetApplication.config"); }
 		}
+
+		public static string AzureConfig
+		{
+			get { return Path.Combine(Args.OutputDirectory, "CCNetAzure.config"); }
+		}
 	}
 }

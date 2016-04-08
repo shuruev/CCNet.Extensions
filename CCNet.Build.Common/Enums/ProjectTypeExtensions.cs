@@ -28,6 +28,10 @@ namespace CCNet.Build.Common
 				case ProjectType.Windows:
 					return "Application";
 
+				case ProjectType.CloudRole:
+				case ProjectType.CloudService:
+					return "Azure";
+
 				default:
 					throw new InvalidOperationException(
 						String.Format("Unknown where to build projects of type '{0}'.", projectType));

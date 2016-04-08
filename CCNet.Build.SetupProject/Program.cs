@@ -64,7 +64,7 @@ namespace CCNet.Build.SetupProject
 
 		private static void UpdateAssemblyInfo()
 		{
-			if (Args.ProjectType == ProjectType.Cloud)
+			if (Args.ProjectType == ProjectType.CloudService)
 				return;
 
 			Console.Write("Updating assembly information... ");
@@ -84,7 +84,7 @@ namespace CCNet.Build.SetupProject
 
 		private static void SetupRelatedProjects()
 		{
-			if (Args.ProjectType != ProjectType.Cloud)
+			if (Args.ProjectType != ProjectType.CloudService)
 				return;
 
 			Console.Write("Converting paths for related projects... ");

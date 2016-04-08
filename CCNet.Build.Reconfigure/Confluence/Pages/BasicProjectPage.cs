@@ -129,24 +129,35 @@ namespace CCNet.Build.Reconfigure
 
 		private XElement RenderLinks()
 		{
-			var title = new XElement("p", new XElement("code", new XElement("u", "ʟɪɴᴋs")));
+			var content = new List<object>();
 
-			return PageDocument.BuildBody(
-				title,
-				new XElement(
+			var title = new XElement("p", new XElement("code", new XElement("u", "ʟɪɴᴋs")));
+			content.Add(title);
+
+			if (GetType() == typeof(LibraryProjectPage))
+			{
+				var nuget = new XElement(
 					"p",
 					new XElement(
 						"a",
 						new XAttribute("href", String.Format("{0}/packages/{1}/", Config.NuGetUrl, ProjectName)),
 						PageDocument.BuildImage(String.Format("{0}/favicon.ico", Config.NuGetUrl)),
-						"$nbsp$NuGet package")),
+						"$nbsp$NuGet package"));
+
+				content.Add(nuget);
+			}
+
+			var build = new XElement(
+				"p",
 				new XElement(
-					"p",
-					new XElement(
-						"a",
-						new XAttribute("href", String.Format("{0}/server/{1}/project/{2}/ViewProjectReport.aspx", Config.CCNetUrl, Type.ServerName(), ProjectName)),
-						PageDocument.BuildImage(String.Format("{0}/favicon.ico", Config.CCNetUrl)),
-						"$nbsp$Build project")));
+					"a",
+					new XAttribute("href", String.Format("{0}/server/{1}/project/{2}/ViewProjectReport.aspx", Config.CCNetUrl, Type.ServerName(), ProjectName)),
+					PageDocument.BuildImage(String.Format("{0}/favicon.ico", Config.CCNetUrl)),
+					"$nbsp$Build project"));
+
+			content.Add(build);
+
+			return PageDocument.BuildBody(content);
 		}
 
 		private XElement RenderStats()

@@ -36,8 +36,13 @@
 		Windows,
 
 		/// <summary>
+		/// Azure cloud role.
+		/// </summary>
+		CloudRole,
+
+		/// <summary>
 		/// Azure cloud service.
 		/// </summary>
-		Cloud
+		CloudService
 	}
 }

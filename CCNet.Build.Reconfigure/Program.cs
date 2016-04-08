@@ -63,6 +63,8 @@ namespace CCNet.Build.Reconfigure
 				BuildApplicationConfig(
 					FilterByType<ConsoleProjectConfiguration>(configs)
 					.Union(FilterByType<WindowsProjectConfiguration>(configs)));
+
+				BuildAzureConfig(FilterByType<CloudRoleProjectConfiguration>(configs));
 			}
 
 			using (Execute.Step("SAVE GUID MAP"))
@@ -239,6 +241,31 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
+		private static void BuildAzureConfig(IEnumerable<CloudRoleProjectConfiguration> cloudRoles)
+		{
+			Console.WriteLine("Generate azure config...");
+			Console.WriteLine("Output file: {0}", Paths.AzureConfig);
+
+			using (var writer = WriteConfig(Paths.AzureConfig))
+			{
+				writer.Begin();
+
+				writer.Comment("SERVER NAME");
+				writer.CbTag("define", "serverName", "Azure");
+
+				writer.Comment("IMPORT GLOBAL");
+				writer.CbTag("include", "href", "Global.config");
+
+				foreach (var config in cloudRoles)
+				{
+					WriteCloudRoleProject(writer, config);
+					Console.WriteLine("> {0}", config.UniqueName);
+				}
+
+				writer.End();
+			}
+		}
+
 		private static void WriteProjectHeader(XmlWriter writer, ProjectConfiguration project)
 		{
 			writer.WriteElementString("name", project.UniqueName);
@@ -326,8 +353,7 @@ namespace CCNet.Build.Reconfigure
 					new Arg("ProjectName", project.Name),
 					new Arg(project.RootNamespace != null ? "RootNamespace" : null, project.RootNamespace),
 					new Arg("ProjectPath", project.WorkingDirectorySource),
-					new Arg("TfsPath", project.TfsPath),
-					new Arg("CheckIssues", project.CheckIssues)
+					new Arg("TfsPath", project.TfsPath)
 				};
 
 				var company = "CNET Content Solutions";
@@ -335,7 +361,10 @@ namespace CCNet.Build.Reconfigure
 				var library = project as LibraryProjectConfiguration;
 				if (library != null)
 				{
-					args.Add(new Arg("AssemblyName", library.CustomAssemblyName));
+					if (library.CustomAssemblyName != null)
+					{
+						args.Add(new Arg("AssemblyName", library.CustomAssemblyName));
+					}
 
 					if (library.CustomCompanyName != null)
 					{
@@ -350,6 +379,8 @@ namespace CCNet.Build.Reconfigure
 				{
 					args.Add(new Arg("ProjectTitle", publish.Title));
 				}
+
+				args.Add(new Arg("CheckIssues", project.CheckIssues));
 
 				writer.WriteBuildArgs(args.ToArray());
 				writer.WriteElementString("description", "Check project");
@@ -392,6 +423,13 @@ namespace CCNet.Build.Reconfigure
 		{
 			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
 
+			Action cleanup = () =>
+			{
+				WriteDefaultCleanup(writer, project);
+				writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryRelease());
+				writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryNuget);
+			};
+
 			using (writer.OpenTag("project"))
 			{
 				WriteProjectHeader(writer, project);
@@ -399,7 +437,7 @@ namespace CCNet.Build.Reconfigure
 
 				using (writer.OpenTag("prebuild"))
 				{
-					CleanupLibraryProject(writer, project);
+					cleanup.Invoke();
 				}
 
 				using (writer.OpenTag("tasks"))
@@ -510,7 +548,7 @@ namespace CCNet.Build.Reconfigure
 				using (writer.OpenTag("publishers"))
 				{
 					WriteDefaultPublishers(writer, project);
-					CleanupLibraryProject(writer, project);
+					cleanup.Invoke();
 				}
 			}
 		}
@@ -519,6 +557,12 @@ namespace CCNet.Build.Reconfigure
 		{
 			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
 
+			Action cleanup = () =>
+			{
+				WriteDefaultCleanup(writer, project);
+				writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryPublish());
+			};
+
 			using (writer.OpenTag("project"))
 			{
 				WriteProjectHeader(writer, project);
@@ -526,7 +570,7 @@ namespace CCNet.Build.Reconfigure
 
 				using (writer.OpenTag("prebuild"))
 				{
-					CleanupWebsiteProject(writer, project);
+					cleanup.Invoke();
 				}
 
 				using (writer.OpenTag("tasks"))
@@ -603,7 +647,7 @@ namespace CCNet.Build.Reconfigure
 				using (writer.OpenTag("publishers"))
 				{
 					WriteDefaultPublishers(writer, project);
-					CleanupWebsiteProject(writer, project);
+					cleanup.Invoke();
 				}
 			}
 		}
@@ -612,6 +656,12 @@ namespace CCNet.Build.Reconfigure
 		{
 			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
 
+			Action cleanup = () =>
+			{
+				WriteDefaultCleanup(writer, project);
+				writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryRelease());
+			};
+
 			using (writer.OpenTag("project"))
 			{
 				WriteProjectHeader(writer, project);
@@ -619,7 +669,7 @@ namespace CCNet.Build.Reconfigure
 
 				using (writer.OpenTag("prebuild"))
 				{
-					CleanupServiceProject(writer, project);
+					cleanup.Invoke();
 				}
 
 				using (writer.OpenTag("tasks"))
@@ -687,7 +737,7 @@ namespace CCNet.Build.Reconfigure
 				using (writer.OpenTag("publishers"))
 				{
 					WriteDefaultPublishers(writer, project);
-					CleanupServiceProject(writer, project);
+					cleanup.Invoke();
 				}
 			}
 		}
@@ -696,6 +746,18 @@ namespace CCNet.Build.Reconfigure
 		{
 			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
 
+			Action cleanup = () =>
+			{
+				WriteDefaultCleanup(writer, project);
+				writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryRelease());
+
+				var windows = project as WindowsProjectConfiguration;
+				if (windows != null)
+				{
+					writer.CbTag("DeleteDirectory", "path", windows.WorkingDirectoryPublish());
+				}
+			};
+
 			using (writer.OpenTag("project"))
 			{
 				WriteProjectHeader(writer, project);
@@ -703,7 +765,7 @@ namespace CCNet.Build.Reconfigure
 
 				using (writer.OpenTag("prebuild"))
 				{
-					CleanupApplicationProject(writer, project);
+					cleanup.Invoke();
 				}
 
 				using (writer.OpenTag("tasks"))
@@ -771,47 +833,101 @@ namespace CCNet.Build.Reconfigure
 				using (writer.OpenTag("publishers"))
 				{
 					WriteDefaultPublishers(writer, project);
-					CleanupApplicationProject(writer, project);
+					cleanup.Invoke();
 				}
 			}
 		}
 
-		private static void CleanupProject(XmlWriter writer, ProjectConfiguration project)
+		private static void WriteCloudRoleProject(XmlWriter writer, CloudRoleProjectConfiguration project)
+		{
+			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
+
+			Action cleanup = () => WriteDefaultCleanup(writer, project);
+
+			using (writer.OpenTag("project"))
+			{
+				WriteProjectHeader(writer, project);
+				WriteSourceControl(writer, project);
+
+				using (writer.OpenTag("prebuild"))
+				{
+					cleanup.Invoke();
+				}
+
+				using (writer.OpenTag("tasks"))
+				{
+					WriteCheckProject(writer, project);
+
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildSetupProject)");
+						writer.WriteBuildArgs(
+							new Arg("ProjectType", project.Type),
+							new Arg("ProjectName", project.Name),
+							new Arg("ProjectPath", project.WorkingDirectorySource),
+							new Arg("TempPath", project.WorkingDirectoryTemp),
+							new Arg("TfsPath", project.TfsPath),
+							new Arg("CurrentVersion", "$[$CCNetLabel]"));
+
+						writer.WriteElementString("description", "Setup project");
+					}
+
+					WriteSetupPackages(writer, project);
+					WriteBuildProject(writer, project);
+
+					writer.CbTag("AppendToFile", "file", project.TempFileExclude(), "text", "$tf");
+					writer.CbTag("CompressDirectoryExclude", "path", project.WorkingDirectorySource, "output", project.TempFileSnapshot(), "exclude", project.TempFileExclude());
+
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
+						writer.WriteBuildArgs(
+							new Arg("Storage", "Devbuild"),
+							new Arg("Container", "snapshot"),
+							new Arg("LocalFile", project.TempFileSnapshot()),
+							new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/{1}", project.UniqueName, project.SnapshotFileName())));
+
+						writer.WriteElementString("description", "Publish source snapshot");
+					}
+
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
+						writer.WriteBuildArgs(
+							new Arg("Storage", "Devbuild"),
+							new Arg("Container", "snapshot"),
+							new Arg("LocalFile", project.TempFileSource),
+							new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/source.txt", project.UniqueName)));
+
+						writer.WriteElementString("description", "Publish source summary");
+					}
+
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
+						writer.WriteBuildArgs(
+							new Arg("Storage", "Devbuild"),
+							new Arg("Container", "snapshot"),
+							new Arg("LocalFile", project.TempFilePackages),
+							new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/packages.txt", project.UniqueName)));
+
+						writer.WriteElementString("description", "Publish packages summary");
+					}
+				}
+
+				using (writer.OpenTag("publishers"))
+				{
+					WriteDefaultPublishers(writer, project);
+					cleanup.Invoke();
+				}
+			}
+		}
+
+		private static void WriteDefaultCleanup(XmlWriter writer, ProjectConfiguration project)
 		{
 			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectorySource);
 			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryPackages);
 			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryTemp);
-		}
-
-		private static void CleanupLibraryProject(XmlWriter writer, LibraryProjectConfiguration project)
-		{
-			CleanupProject(writer, project);
-			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryRelease());
-			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryNuget);
-		}
-
-		private static void CleanupWebsiteProject(XmlWriter writer, WebsiteProjectConfiguration project)
-		{
-			CleanupProject(writer, project);
-			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryPublish());
-		}
-
-		private static void CleanupServiceProject(XmlWriter writer, ServiceProjectConfiguration project)
-		{
-			CleanupProject(writer, project);
-			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryRelease());
-		}
-
-		private static void CleanupApplicationProject(XmlWriter writer, ConsoleProjectConfiguration project)
-		{
-			CleanupProject(writer, project);
-			writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryRelease());
-
-			var windows = project as WindowsProjectConfiguration;
-			if (windows != null)
-			{
-				writer.CbTag("DeleteDirectory", "path", windows.WorkingDirectoryPublish());
-			}
 		}
 
 		private static void SaveProjectUid(string projectName, Guid projectUid)

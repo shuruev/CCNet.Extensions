@@ -36,8 +36,12 @@ namespace CCNet.Build.SetupProject
 					links = BuildLinksWindows();
 					break;
 
-				case ProjectType.Cloud:
-					links = BuildLinksCloud();
+				case ProjectType.CloudRole:
+					links = BuildLinksCloudRole();
+					break;
+
+				case ProjectType.CloudService:
+					links = BuildLinksCloudService();
 					break;
 
 				default:
@@ -128,7 +132,19 @@ namespace CCNet.Build.SetupProject
 			};
 		}
 
-		private static List<dynamic> BuildLinksCloud()
+		private static List<dynamic> BuildLinksCloudRole()
+		{
+			return new List<dynamic>
+			{
+				new
+				{
+					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+cloud+role", Args.ProjectName),
+					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
+				}
+			};
+		}
+
+		private static List<dynamic> BuildLinksCloudService()
 		{
 			return new List<dynamic>
 			{
