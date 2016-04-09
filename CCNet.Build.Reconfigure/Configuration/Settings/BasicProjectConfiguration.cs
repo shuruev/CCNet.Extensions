@@ -18,25 +18,9 @@ namespace CCNet.Build.Reconfigure
 			get { return String.Format(@"{0}\bin\Release", WorkingDirectorySource); }
 		}
 
-		public string MsbuildExecutable
+		public virtual string MsbuildExecutable
 		{
-			get
-			{
-				//return @"C:\Program Files (x86)\MSBuild\12.0\Bin\MSBuild.exe";
-				return @"C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe";
-				switch (Framework)
-				{
-					case TargetFramework.Net20:
-					case TargetFramework.Net35:
-					case TargetFramework.Net40:
-					case TargetFramework.Net45:
-						return @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe";
-
-					default:
-						throw new InvalidOperationException(
-							String.Format("Unknown target framework '{0}'.", Framework));
-				}
-			}
+			get { return @"C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"; }
 		}
 
 		public string NugetRestoreUrl

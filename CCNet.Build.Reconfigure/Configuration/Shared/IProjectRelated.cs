@@ -1,9 +1,8 @@
 ﻿namespace CCNet.Build.Reconfigure
 {
-	public interface IProjectPublish
+	public interface IProjectRelated
 	{
 		string Name { get; }
-		string UniqueName { get; }
 		string WorkingDirectory { get; }
 	}
 }

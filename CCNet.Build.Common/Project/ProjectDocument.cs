@@ -274,6 +274,7 @@ namespace CCNet.Build.Common
 				.Where(e => e.Name.LocalName != "ProjectReference")
 				.Where(e => e.Name.LocalName != "BootstrapperPackage")
 				.Where(e => e.Name.LocalName != "Service")
+				.Where(e => e.Name.LocalName != "Folder")
 				.Where(e => e.Name.LocalName != "WebReferences")
 				.Where(e => e.Name.LocalName != "WebReferenceUrl")
 				.Where(e => e.Name.LocalName != "WCFMetadata")

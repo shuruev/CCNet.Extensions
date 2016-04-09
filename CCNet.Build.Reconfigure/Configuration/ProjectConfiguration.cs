@@ -76,5 +76,10 @@ namespace CCNet.Build.Reconfigure
 		{
 			get { return String.Format(@"{0}\packages.txt", WorkingDirectoryTemp); }
 		}
+
+		public string TempFileVersion
+		{
+			get { return String.Format(@"{0}\version.txt", WorkingDirectoryTemp); }
+		}
 	}
 }

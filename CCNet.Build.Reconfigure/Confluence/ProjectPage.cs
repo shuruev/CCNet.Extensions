@@ -245,12 +245,14 @@ namespace CCNet.Build.Reconfigure
 
 		public virtual XElement RenderSummaryRow(bool forArea)
 		{
+			const string na = "n/a";
+
 			if (forArea)
 			{
 				return new XElement(
 					"tr",
 					RenderNameAndDescription(),
-					new XElement("td"),
+					new XElement("td", na),
 					new XElement("td", BuildOwner(Owner)),
 					new XElement("td", BuildStatus(Status)));
 			}
@@ -259,7 +261,7 @@ namespace CCNet.Build.Reconfigure
 				"tr",
 				RenderAreaColumn(),
 				RenderNameAndDescription(),
-				new XElement("td"),
+				new XElement("td", na),
 				new XElement("td", BuildOwner(Owner)),
 				new XElement("td", BuildStatus(Status)));
 		}

@@ -10,11 +10,12 @@ namespace CCNet.Build.Common
 		/// <summary>
 		/// Reports package used by the current project.
 		/// </summary>
-		public static void ReportPackage(string name, string source, string build, string notes)
+		public static void ReportPackage(string name, string url, string source, string build, string notes)
 		{
 			Console.WriteLine(
-				"[PACKAGE] {0} | {1} | {2} | {3}",
+				"[PACKAGE] {0} | {1} | {2} | {3} | {4}",
 				name,
+				url,
 				source,
 				build,
 				notes);

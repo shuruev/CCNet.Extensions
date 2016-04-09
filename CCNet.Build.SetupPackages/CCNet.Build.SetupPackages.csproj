@@ -60,8 +60,6 @@
     <Compile Include="Run\NuGetHelper.cs" />
     <Compile Include="Run\PackagesHelper.cs" />
     <Compile Include="Run\ReferencesHelper.cs" />
-    <Compile Include="Run\LogPackages.cs" />
-    <Compile Include="Run\LogPackage.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="NuGet\NuGetDb.cs" />
     <Compile Include="NuGet\NuGetPackage.cs" />

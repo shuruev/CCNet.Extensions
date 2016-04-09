@@ -56,9 +56,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Args.cs" />
+    <Compile Include="Configuration\Settings\CloudServiceProjectConfiguration.cs" />
     <Compile Include="Configuration\Settings\CloudRoleProjectConfiguration.cs" />
+    <Compile Include="Configuration\Shared\IProjectRelated.cs" />
     <Compile Include="Configuration\Shared\IProjectSnapshot.cs" />
     <Compile Include="Configuration\Shared\IProjectRelease.cs" />
+    <Compile Include="Configuration\Shared\ProjectExtensions.Related.cs" />
     <Compile Include="Configuration\Shared\ProjectExtensions.Snapshot.cs" />
     <Compile Include="Configuration\Shared\ProjectExtensions.Publish.cs" />
     <Compile Include="Configuration\Shared\ProjectExtensions.Release.cs" />
@@ -72,6 +75,7 @@
     <Compile Include="Configuration\Settings\WebserviceProjectConfiguration.cs" />
     <Compile Include="Configuration\Settings\WebsiteProjectConfiguration.cs" />
     <Compile Include="Confluence\IProjectPage.cs" />
+    <Compile Include="Confluence\Pages\CloudServiceProjectPage.cs" />
     <Compile Include="Confluence\Pages\ReleaseProjectPage.cs" />
     <Compile Include="Confluence\Pages\ConsoleProjectPage.cs" />
     <Compile Include="Confluence\Pages\CloudRoleProjectPage.cs" />

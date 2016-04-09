@@ -2,25 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CCNet.Build.Common;
 
-namespace CCNet.Build.SetupPackages
+namespace CCNet.Build.Common
 {
+	/// <summary>
+	/// Represents a collection of referenced packages.
+	/// </summary>
 	public class LogPackages : Dictionary<string, LogPackage>
 	{
+		/// <summary>
+		/// Initializes a new instance.
+		/// </summary>
 		public LogPackages()
 			: base(StringComparer.OrdinalIgnoreCase)
 		{
 		}
 
+		/// <summary>
+		/// Reports all referenced packages to a console.
+		/// </summary>
 		public void Report()
 		{
-			foreach (var reference in Values.OrderBy(i => i.Location).ThenBy(i => i.PackageName))
+			foreach (var reference in Values.OrderBy(i => i.Location).ThenBy(i => i.ProjectName))
 			{
 				reference.Report();
 			}
 		}
 
+		/// <summary>
+		/// Prepares textual summary for all referenced packages.
+		/// </summary>
 		public string Summary()
 		{
 			if (Count == 0)

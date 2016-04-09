@@ -269,6 +269,10 @@ namespace CCNet.Build.Reconfigure
 						page = new CloudRoleProjectPage(areaName, projectName, project.Name, document);
 						break;
 
+					case ProjectType.CloudService:
+						page = new CloudServiceProjectPage(areaName, projectName, project.Name, document);
+						break;
+
 					default:
 						throw new InvalidOperationException(
 							String.Format("Unknown how to process project of type '{0}'.", projectType.ToString().ToLowerInvariant()));
@@ -354,6 +358,10 @@ namespace CCNet.Build.Reconfigure
 
 				case "cloud role":
 					projectType = ProjectType.CloudRole;
+					break;
+
+				case "cloud service":
+					projectType = ProjectType.CloudService;
 					break;
 
 				default:

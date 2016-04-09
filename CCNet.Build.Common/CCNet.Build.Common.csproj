@@ -55,6 +55,9 @@
     <Compile Include="Execute.Step.cs" />
     <Compile Include="Execute.cs" />
     <Compile Include="Enums\ProjectType.cs" />
+    <Compile Include="Log\LogPackage.cs" />
+    <Compile Include="Log\LogPackagesExtensions.cs" />
+    <Compile Include="Log\LogPackages.cs" />
     <Compile Include="Project\CopyToOutputDirectory.cs" />
     <Compile Include="Project\BuildAction.cs" />
     <Compile Include="Project\ProjectReference.cs" />

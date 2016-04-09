@@ -44,20 +44,34 @@ namespace CCNet.Build.SetupPackages
 			{
 				var package = new NuGetPackage(element);
 
-				m_log.Add(
-					package.Name,
-					new LogPackage
-					{
-						PackageName = package.Name,
-						ProjectName = m_checker.ProjectName(package.Name),
-						IsLocal = m_checker.IsLocal(package.Name),
-						SourceVersion = package.Version,
-						PinnedToCurrent = m_checker.IsPinnedToCurrentVersion(package.Name),
-						PinnedToSpecific = m_checker.IsPinnedToSpecificVersion(package.Name)
-					});
+				var log = new LogPackage
+				{
+					PackageName = package.Name,
+					ProjectName = m_checker.ProjectName(package.Name),
+					IsLocal = m_checker.IsLocal(package.Name),
+					SourceVersion = package.Version,
+					PinnedToCurrent = m_checker.IsPinnedToCurrentVersion(package.Name),
+					PinnedToSpecific = m_checker.IsPinnedToSpecificVersion(package.Name)
+				};
+
+				SetupProjectUrl(log);
+
+				m_log.Add(package.Name, log);
 			}
 
 			Console.WriteLine("OK");
+		}
+
+		private void SetupProjectUrl(LogPackage package)
+		{
+			if (package.IsLocal)
+			{
+				package.ProjectUrl = String.Format("http://rufc-devbuild.cneu.cnwk/ccnet/server/Library/project/{0}/ViewProjectReport.aspx", package.ProjectName);
+			}
+			else
+			{
+				package.ProjectUrl = String.Format("https://www.nuget.org/packages/{0}/", package.PackageName);
+			}
 		}
 
 		private void PostAnalyzePackages(XDocument config)

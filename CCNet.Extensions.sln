@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.Tfs", "CCNet.Bu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.CheckProject", "CCNet.Build.CheckProject\CCNet.Build.CheckProject.csproj", "{ED216588-1C98-4968-BDE4-92F5BA0BE2B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.AzureDownload", "CCNet.Build.AzureDownload\CCNet.Build.AzureDownload.csproj", "{7A4BA511-3E9D-4B79-B5A6-83FAF9C8CBC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{ED216588-1C98-4968-BDE4-92F5BA0BE2B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED216588-1C98-4968-BDE4-92F5BA0BE2B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED216588-1C98-4968-BDE4-92F5BA0BE2B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A4BA511-3E9D-4B79-B5A6-83FAF9C8CBC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A4BA511-3E9D-4B79-B5A6-83FAF9C8CBC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A4BA511-3E9D-4B79-B5A6-83FAF9C8CBC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A4BA511-3E9D-4B79-B5A6-83FAF9C8CBC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using CCNet.Build.Common;
 
 namespace CCNet.Build.SetupPackages
@@ -68,68 +65,15 @@ namespace CCNet.Build.SetupPackages
 			using (Execute.Step("REPORT & SAVE"))
 			{
 				log.Report();
-				SaveReferences(log);
-				SaveSummary(log);
+
+				Console.Write("Saving local references... ");
+				log.SaveReferences(Args.ReferencesPath);
+				Console.WriteLine("OK");
+
+				Console.Write("Saving packages summary... ");
+				log.SaveSummary(Args.TempPath);
+				Console.WriteLine("OK");
 			}
-		}
-
-		private static void SaveReferences(LogPackages log)
-		{
-			Console.Write("Saving local references... ");
-
-			Args.ReferencesPath.CreateDirectoryIfNotExists();
-
-			var after = log.Values
-				.Where(i => i.IsLocal)
-				.ToDictionary(i => i.ProjectName);
-
-			var before = Directory
-				.GetFiles(Args.ReferencesPath)
-				.ToDictionary(Path.GetFileNameWithoutExtension);
-
-			var toAdd = new List<string>();
-			foreach (var reference in after)
-			{
-				if (before.ContainsKey(reference.Key))
-					continue;
-
-				var name = String.Format("{0}.txt", reference.Key);
-				var path = Path.Combine(Args.ReferencesPath, name);
-				toAdd.Add(path);
-			}
-
-			var toRemove = new List<string>();
-			foreach (var reference in before)
-			{
-				if (after.ContainsKey(reference.Key))
-					continue;
-
-				toRemove.Add(reference.Value);
-			}
-
-			foreach (var file in toRemove)
-			{
-				File.Delete(file);
-			}
-
-			foreach (var file in toAdd)
-			{
-				File.WriteAllText(file, String.Format("Created on {0}", DateTime.Now.ToDetailedString()));
-			}
-
-			Console.WriteLine("OK");
-		}
-
-		private static void SaveSummary(LogPackages log)
-		{
-			Console.Write("Saving packages summary... ");
-
-			Args.TempPath.CreateDirectoryIfNotExists();
-
-			var file = Path.Combine(Args.TempPath, "packages.txt");
-			File.WriteAllText(file, log.Summary());
-
-			Console.WriteLine("OK");
 		}
 	}
 }
