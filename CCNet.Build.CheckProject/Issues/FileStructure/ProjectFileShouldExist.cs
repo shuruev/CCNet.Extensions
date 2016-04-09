@@ -7,12 +7,12 @@ namespace CCNet.Build.CheckProject
 {
 	public class ProjectFileShouldExist : IChecker
 	{
-		public void Check(CheckContext context)
+		public virtual void Check(CheckContext context)
 		{
 			Check(context.LocalFiles.Result, ".csproj");
 		}
 
-		public void Check(List<string> files, string extension)
+		protected void Check(List<string> files, string extension)
 		{
 			if (!extension.StartsWith("."))
 				throw new ArgumentException("Extension should start with '.' character.");

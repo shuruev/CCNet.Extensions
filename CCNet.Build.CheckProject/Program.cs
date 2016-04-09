@@ -79,6 +79,7 @@ If you beleive everything is correct please talk to Oleg Shuruev to improve this
 				case "F05": return new NugetConfigShouldExist();
 				case "F06": return new PackagesFolderShouldNotHavePackages();
 				case "F07": return new LocalFilesShouldMatchProjectFiles();
+				case "F08": return new CloudProjectFileShouldExist();
 
 				// file contents
 				case "C01": return new AllFilesShouldUseUtf8();

@@ -62,6 +62,7 @@
     <Compile Include="Issues\FileStructure\PrimarySolutionShouldExist.cs" />
     <Compile Include="Issues\FileStructure\AssemblyInfoShouldExist.cs" />
     <Compile Include="Issues\FileStructure\LocalFilesShouldMatchProjectFiles.cs" />
+    <Compile Include="Issues\FileStructure\CloudProjectFileShouldExist.cs" />
     <Compile Include="Issues\FileStructure\ProjectFolderShouldHaveProjectName.cs" />
     <Compile Include="Issues\IChecker.cs" />
     <Compile Include="Issues\FileStructure\ProjectFileShouldExist.cs" />

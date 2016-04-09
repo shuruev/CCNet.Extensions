@@ -42,7 +42,7 @@ Please use standard platforms only, the most common and recommended one is 'Any 
 				throw new FailedCheckException(
 					@"According to the project configuration, the default value for the '$(Platform)' build variable should be set to '{0}', but now it's '{1}'.
 This might happen, especially if project platform was changed after the project was initially created with another platform (e.g. from AnyCPU to x64).
-You manually edit the project file, by locating the tag <Platform Condition="" '$(Platform)' == '' "">... and changing its value.",
+Please consider editing project file manually, by locating the tag <Platform Condition="" '$(Platform)' == '' "">... and changing its value.",
 					platform,
 					condition);
 			}

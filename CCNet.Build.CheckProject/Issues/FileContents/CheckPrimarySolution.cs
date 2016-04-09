@@ -29,7 +29,8 @@ namespace CCNet.Build.CheckProject
 		private static Dictionary<string, string> ParseProjects(IEnumerable<string> lines)
 		{
 			return lines
-				.Where(line => line.StartsWith("Project(\""))
+				.Where(line => line.StartsWith("Project(\"{"))
+				.Where(line => !line.StartsWith("Project(\"{2150E333-8FDC-42A3-9474-1A3956D46DE8}\")"))
 				.Select(line => line.Split(' '))
 				.ToDictionary(parts => parts[4].Trim('"'), parts => parts[2].Trim('"', ','));
 		}
@@ -41,8 +42,10 @@ namespace CCNet.Build.CheckProject
 				return;
 			}
 
-			throw new FailedCheckException(@"It looks like solution file was saved using Visual Studio older than 2013.
-Please make sure solution file is saved with Visual Studio 2013 or above, so the others could work with it conveniently.");
+			throw new FailedCheckException(
+				@"It looks like solution file '{0}' was saved using Visual Studio older than 2013.
+Please make sure solution file is saved with Visual Studio 2013 or above, so the others could work with it conveniently.",
+				Paths.TfsSolutionName);
 		}
 
 		private bool IsVs2013()
@@ -65,15 +68,19 @@ Please make sure solution file is saved with Visual Studio 2013 or above, so the
 			if (tfs.Count == 1 && tfs[0] == "\t\tSccTeamFoundationServer = http://rufc-devbuild.cneu.cnwk:8080/tfs/sed")
 				return;
 
-			throw new FailedCheckException(@"Something looks wrong with source control configuration in solution file.
-Please make sure both solution and project are properly connected to 'http://rufc-devbuild.cneu.cnwk:8080/tfs/sed'.");
+			throw new FailedCheckException(
+				@"Something looks wrong with source control configuration in solution file '{0}'.
+Please make sure both solution and project are properly connected to 'http://rufc-devbuild.cneu.cnwk:8080/tfs/sed'.",
+				Paths.TfsSolutionName);
 		}
 
 		private void CheckSolutionConfigurationPlatforms()
 		{
 			var index = m_lines.IndexOf("\tGlobalSection(SolutionConfigurationPlatforms) = preSolution");
 			if (index == -1)
-				throw new FailedCheckException(@"Something went wrong while trying to find platforms configuration within a solution file.");
+				throw new FailedCheckException(
+					"Something went wrong while trying to find platforms configuration within a solution file '{0}'.",
+					Paths.TfsSolutionName);
 
 			if (m_lines[index + 1] == "\t\tDebug|Any CPU = Debug|Any CPU"
 				&& m_lines[index + 2] == "\t\tRelease|Any CPU = Release|Any CPU")
@@ -81,7 +88,11 @@ Please make sure both solution and project are properly connected to 'http://ruf
 				return;
 			}
 
-			throw new FailedCheckException("We agreed solution configuration should only have one platform defined with the default name 'Any CPU'.");
+			throw new FailedCheckException(
+				@"Something looks strange about solution file '{0}' for this project.
+We agreed there should be just one solution platform, which should be named 'Any CPU'.
+Please go to 'Configuration Manager' dialog and check 'Active solution platform' dropdown list. Also make sure that 'Build' checkbox is enabled for all the projects in both 'Debug' and 'Release' configurations.",
+				Paths.TfsSolutionName);
 		}
 
 		private void CheckProjectConfigurationPlatforms()
@@ -94,9 +105,10 @@ Please make sure both solution and project are properly connected to 'http://ruf
 				if (debugPlatform != releasePlatform)
 				{
 					throw new FailedCheckException(
-						@"Something looks wrong with project '{0}' configuration within primary solution.
-It seems specifying different platforms for 'Debug' and 'Release' configurations: '{1}' and '{2}'.",
+						@"Something looks strange about how project '{0}' is configured within its primary solution '{1}'.
+It seems specifying different platforms for 'Debug' and 'Release' configurations: '{2}' and '{3}'.",
 						project.Value,
+						Paths.TfsSolutionName,
 						debugPlatform,
 						releasePlatform);
 				}
@@ -114,9 +126,10 @@ It seems specifying different platforms for 'Debug' and 'Release' configurations
 			if (line1 == null || line2 == null)
 			{
 				throw new FailedCheckException(
-					@"Something looks wrong with project '{0}' configuration within primary solution.
-Please make sure the project is configured to be built for '{1}' solution configuration in 'Configuration Manager' dialog.",
+					@"Something looks strange about how project '{0}' is configured within its primary solution '{1}'.
+Please go to 'Configuration Manager' dialog, then choose '{2}' as active solution configuration, and make sure 'Build' checkbox is enabled for this project.",
 					m_projects[projectUid],
+					Paths.TfsSolutionName,
 					configuration);
 			}
 
@@ -129,18 +142,20 @@ Please make sure the project is configured to be built for '{1}' solution config
 			if (parts1[0] != configuration || parts2[0] != configuration)
 			{
 				throw new FailedCheckException(
-					@"Something looks wrong with project '{0}' configuration within primary solution.
-Please make sure the project is using '{1}' configuration for '{1}' solution configuration in 'Configuration Manager' dialog.",
+					@"Something looks strange about how project '{0}' is configured within its primary solution '{1}'.
+Please go to 'Configuration Manager' dialog, then choose '{2}' as active solution configuration, and make sure this project is using '{2}' configuration there.",
 					m_projects[projectUid],
+					Paths.TfsSolutionName,
 					configuration);
 			}
 
 			if (parts1[1] != parts2[1])
 			{
 				throw new FailedCheckException(
-					@"Something looks wrong with project '{0}' configuration within primary solution.
-For some reason it specifies different platforms for 'Build' and 'Active configuration' properties under '{1}' configuration: '{2}' and '{3}'.",
+					@"Something looks strange about how project '{0}' is configured within its primary solution '{1}'.
+For some reason it specifies different platforms for 'Build' and 'Active configuration' properties within '{2}' configuration: '{3}' and '{4}'.",
 					m_projects[projectUid],
+					Paths.TfsSolutionName,
 					configuration,
 					parts1[1],
 					parts2[1]);
