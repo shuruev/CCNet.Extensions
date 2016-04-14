@@ -16,7 +16,8 @@ namespace CCNet.Build.Confluence
 	{
 		private static readonly Dictionary<string, string> s_prefixes;
 		private static readonly XmlNamespaceManager s_namespaces;
-		private static readonly HashSet<string> s_entities;
+		private static readonly HashSet<string> s_encode;
+		private static readonly HashSet<string> s_ignore;
 
 		private static readonly string s_beforePage;
 		private static readonly string s_afterPage;
@@ -38,13 +39,18 @@ namespace CCNet.Build.Confluence
 				s_namespaces.AddNamespace(prefix.Key, prefix.Value);
 			}
 
-			s_entities = new HashSet<string>
+			s_encode = new HashSet<string>
 			{
 				"nbsp",
 				"ndash",
 				"middot",
 				"rsquo",
 				"quot",
+			};
+
+			s_ignore = new HashSet<string>
+			{
+				"zwnj"
 			};
 
 			s_beforePage = "<page "
@@ -120,7 +126,12 @@ namespace CCNet.Build.Confluence
 		/// </summary>
 		public static string EncodeEntities(string content)
 		{
-			foreach (var entity in s_entities)
+			foreach (var entity in s_ignore)
+			{
+				content = content.Replace('&' + entity + ';', String.Empty);
+			}
+
+			foreach (var entity in s_encode)
 			{
 				content = content.Replace('&' + entity + ';', '$' + entity + '$');
 			}
@@ -133,7 +144,7 @@ namespace CCNet.Build.Confluence
 		/// </summary>
 		public static string DecodeEntities(string content)
 		{
-			foreach (var entity in s_entities)
+			foreach (var entity in s_encode)
 			{
 				content = content.Replace('$' + entity + '$', '&' + entity + ';');
 			}
