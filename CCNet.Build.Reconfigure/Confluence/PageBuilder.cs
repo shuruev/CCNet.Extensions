@@ -76,10 +76,22 @@ namespace CCNet.Build.Reconfigure
 
 		public Dictionary<string, Guid> ExportMap()
 		{
-			return m_pages
+			var map = m_pages
 				.Select(p => p.ExportMap())
 				.Where(i => i != null)
 				.ToDictionary(i => i.Item1, i => i.Item2);
+
+			var dup = map.GroupBy(i => i.Value).FirstOrDefault(g => g.Count() > 1);
+			if (dup != null)
+			{
+				throw new InvalidOperationException(
+					String.Format(
+						"Project UID = {0} seems not unique and belongs to projects {1}.",
+						dup.Key.ToString("B").ToUpper(),
+						String.Join(", ", dup.Select(i => "'" + i.Key + "'"))));
+			}
+
+			return map;
 		}
 
 		private bool UpdateSummaryPage(IEnumerable<IProjectPage> pages, PageSummary summary)
