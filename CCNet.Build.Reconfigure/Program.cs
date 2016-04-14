@@ -459,14 +459,14 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
-		private static void WriteAzureUploadSource(XmlWriter writer, ProjectConfiguration project, string container)
+		private static void WriteAzureUploadSource(XmlWriter writer, ProjectConfiguration project)
 		{
 			using (writer.OpenTag("exec"))
 			{
 				writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
 				writer.WriteBuildArgs(
 					new Arg("Storage", "Devbuild"),
-					new Arg("Container", container),
+					new Arg("Container", "build"),
 					new Arg("LocalFile", project.TempFileSource),
 					new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/source.txt", project.UniqueName)));
 
@@ -474,14 +474,14 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
-		private static void WriteAzureUploadPackages(XmlWriter writer, ProjectConfiguration project, string container)
+		private static void WriteAzureUploadPackages(XmlWriter writer, ProjectConfiguration project)
 		{
 			using (writer.OpenTag("exec"))
 			{
 				writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
 				writer.WriteBuildArgs(
 					new Arg("Storage", "Devbuild"),
-					new Arg("Container", container),
+					new Arg("Container", "build"),
 					new Arg("LocalFile", project.TempFilePackages),
 					new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/packages.txt", project.UniqueName)));
 
@@ -489,14 +489,14 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
-		private static void WriteAzureUploadVersion(XmlWriter writer, ProjectConfiguration project, string container)
+		private static void WriteAzureUploadVersion(XmlWriter writer, ProjectConfiguration project)
 		{
 			using (writer.OpenTag("exec"))
 			{
 				writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
 				writer.WriteBuildArgs(
 					new Arg("Storage", "Devbuild"),
-					new Arg("Container", container),
+					new Arg("Container", "build"),
 					new Arg("LocalFile", project.TempFileVersion),
 					new Arg("BlobFile", String.Format("{0}/version.txt", project.UniqueName)));
 
@@ -606,6 +606,10 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString("description", "Publish package");
 					}
 
+					WriteAzureUploadSource(writer, project);
+					WriteAzureUploadPackages(writer, project);
+					WriteAzureUploadVersion(writer, project);
+
 					using (writer.OpenTag("exec"))
 					{
 						writer.WriteElementString("executable", "$(ccnetBuildNotifyProjects)");
@@ -693,8 +697,9 @@ namespace CCNet.Build.Reconfigure
 					writer.CbTag("CompressDirectory", "path", project.SourceDirectoryPublished, "output", project.PublishFileLocal());
 
 					WriteAzureUploadPublish(writer, project);
-					WriteAzureUploadSource(writer, project, "publish");
-					WriteAzureUploadPackages(writer, project, "publish");
+					WriteAzureUploadSource(writer, project);
+					WriteAzureUploadPackages(writer, project);
+					WriteAzureUploadVersion(writer, project);
 				}
 
 				using (writer.OpenTag("publishers"))
@@ -751,8 +756,9 @@ namespace CCNet.Build.Reconfigure
 					writer.CbTag("CompressDirectory", "path", project.SourceDirectoryRelease, "output", project.ReleaseFileLocal());
 
 					WriteAzureUploadRelease(writer, project);
-					WriteAzureUploadSource(writer, project, "publish");
-					WriteAzureUploadPackages(writer, project, "publish");
+					WriteAzureUploadSource(writer, project);
+					WriteAzureUploadPackages(writer, project);
+					WriteAzureUploadVersion(writer, project);
 				}
 
 				using (writer.OpenTag("publishers"))
@@ -815,8 +821,9 @@ namespace CCNet.Build.Reconfigure
 					writer.CbTag("CompressDirectory", "path", project.SourceDirectoryRelease, "output", project.ReleaseFileLocal());
 
 					WriteAzureUploadRelease(writer, project);
-					WriteAzureUploadSource(writer, project, "publish");
-					WriteAzureUploadPackages(writer, project, "publish");
+					WriteAzureUploadSource(writer, project);
+					WriteAzureUploadPackages(writer, project);
+					WriteAzureUploadVersion(writer, project);
 				}
 
 				using (writer.OpenTag("publishers"))
@@ -868,9 +875,21 @@ namespace CCNet.Build.Reconfigure
 					writer.CbTag("CompressDirectoryExclude", "path", project.WorkingDirectorySource, "output", project.TempFileSnapshot(), "exclude", project.TempFileExclude());
 
 					WriteAzureUploadSnapshot(writer, project);
-					WriteAzureUploadSource(writer, project, "snapshot");
-					WriteAzureUploadPackages(writer, project, "snapshot");
-					WriteAzureUploadVersion(writer, project, "snapshot");
+					WriteAzureUploadSource(writer, project);
+					WriteAzureUploadPackages(writer, project);
+					WriteAzureUploadVersion(writer, project);
+
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildNotifyProjects)");
+						writer.WriteBuildArgs(
+							new Arg("ProjectName", project.Name),
+							new Arg("BuildPath", "$(buildPath)"),
+							new Arg("ServerNames", "Library|Website|Service|Application|Azure"),
+							new Arg("ReferencesFolder", "references"));
+
+						writer.WriteElementString("description", "Notify other projects");
+					}
 				}
 
 				using (writer.OpenTag("publishers"))
@@ -981,8 +1000,9 @@ namespace CCNet.Build.Reconfigure
 						}
 					}
 
-					WriteAzureUploadSource(writer, project, "publish");
-					WriteAzureUploadPackages(writer, project, "publish");
+					WriteAzureUploadSource(writer, project);
+					WriteAzureUploadPackages(writer, project);
+					WriteAzureUploadVersion(writer, project);
 				}
 
 				using (writer.OpenTag("publishers"))

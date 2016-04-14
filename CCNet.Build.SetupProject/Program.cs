@@ -153,7 +153,7 @@ namespace CCNet.Build.SetupProject
 			Execute.Run(
 				"CCNet.Build.AzureDownload.exe",
 				String.Format(
-					@"Storage=Devbuild Container=snapshot ""BlobFile={0}"" ""LocalFile={1}""",
+					@"Storage=Devbuild Container=build ""BlobFile={0}"" ""LocalFile={1}""",
 					blobVersion,
 					localVersion));
 
