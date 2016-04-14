@@ -121,6 +121,8 @@ namespace CCNet.Build.GenerateNuspec
 			if (Args.IncludeXmlDocumentation)
 				AddNuspecLibraryCoreFile(xtw, "xml");
 
+			AddNuspecLibrarySatelliteAssemblies(xtw);
+
 			xtw.WriteEndElement();
 		}
 
@@ -133,6 +135,22 @@ namespace CCNet.Build.GenerateNuspec
 			xtw.WriteAttributeString("src", src);
 			xtw.WriteAttributeString("target", target);
 			xtw.WriteEndElement();
+		}
+
+		private static void AddNuspecLibrarySatelliteAssemblies(XmlTextWriter xtw)
+		{
+			var directories = Directory.GetDirectories(Args.ReleasePath);
+			foreach (var dir in directories)
+			{
+				var locale = Path.GetFileName(dir);
+				var src = String.Format(@"{0}\{1}.resources.dll", dir, Args.PackageId);
+				var target = String.Format(@"lib\{0}\{1}", Args.TargetFramework.ToString().ToLowerInvariant(), locale);
+
+				xtw.WriteStartElement("file");
+				xtw.WriteAttributeString("src", src);
+				xtw.WriteAttributeString("target", target);
+				xtw.WriteEndElement();
+			}
 		}
 
 		private static void AddDependencies(XmlTextWriter xtw)
