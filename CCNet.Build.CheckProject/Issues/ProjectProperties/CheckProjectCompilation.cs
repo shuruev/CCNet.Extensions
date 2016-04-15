@@ -1,11 +1,7 @@
-﻿using System;
-
-namespace CCNet.Build.CheckProject
+﻿namespace CCNet.Build.CheckProject
 {
 	public class CheckProjectCompilation : IChecker
 	{
-		private static readonly Guid s_webType = new Guid("349C5851-65DF-11DA-9384-00065B846F21");
-
 		public void Check(CheckContext context)
 		{
 			var debug = context.ProjectDebugProperties.Result;
@@ -24,8 +20,7 @@ namespace CCNet.Build.CheckProject
 			release.CheckRequired("Optimize", "true");
 			release.CheckOptional("WarningLevel", "4");
 
-			var web = context.ProjectDocument.Result.GetProjectTypeGuids().Contains(s_webType);
-			if (web)
+			if (context.ProjectIsWeb.Result)
 			{
 				debug.CheckRequired("OutputPath", @"bin\");
 				release.CheckRequired("OutputPath", @"bin\");

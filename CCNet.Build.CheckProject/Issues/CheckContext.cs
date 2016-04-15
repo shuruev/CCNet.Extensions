@@ -9,6 +9,8 @@ namespace CCNet.Build.CheckProject
 {
 	public class CheckContext
 	{
+		private static readonly Guid s_webType = new Guid("349C5851-65DF-11DA-9384-00065B846F21");
+
 		private readonly TfsClient m_tfs;
 
 		public CheckContextService<List<string>> LocalFiles { get; private set; }
@@ -16,6 +18,7 @@ namespace CCNet.Build.CheckProject
 		public CheckContextService<Dictionary<string, string>> ProjectCommonProperties { get; private set; }
 		public CheckContextService<Dictionary<string, string>> ProjectDebugProperties { get; private set; }
 		public CheckContextService<Dictionary<string, string>> ProjectReleaseProperties { get; private set; }
+		public CheckContextService<bool> ProjectIsWeb { get; private set; }
 		public CheckContextService<List<ProjectFile>> ProjectFiles { get; private set; }
 
 		public CheckContextService<List<string>> TfsSolutionItems { get; private set; }
@@ -33,6 +36,7 @@ namespace CCNet.Build.CheckProject
 			ProjectCommonProperties = new CheckContextService<Dictionary<string, string>>(GetProjectCommonProperties);
 			ProjectDebugProperties = new CheckContextService<Dictionary<string, string>>(GetProjectDebugProperties);
 			ProjectReleaseProperties = new CheckContextService<Dictionary<string, string>>(GetProjectReleaseProperties);
+			ProjectIsWeb = new CheckContextService<bool>(GetProjectIsWeb);
 			ProjectFiles = new CheckContextService<List<ProjectFile>>(GetProjectFiles);
 
 			TfsSolutionItems = new CheckContextService<List<string>>(GetTfsSolutionItems);
@@ -83,6 +87,11 @@ namespace CCNet.Build.CheckProject
 		{
 			Console.WriteLine("Getting project release properties...");
 			return ProjectDocument.Result.GetReleaseProperties();
+		}
+
+		private bool GetProjectIsWeb()
+		{
+			return ProjectDocument.Result.GetProjectTypeGuids().Contains(s_webType);
 		}
 
 		private List<ProjectFile> GetProjectFiles()
