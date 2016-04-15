@@ -19,9 +19,9 @@ SET ccnetPath=\\rufc-devbuild.cneu.cnwk\d$\CruiseControl.NET
 :XCOPY "CCNet.Build.AzureUpload\bin\Debug\CCNet.Build.AzureUpload.exe" "%ccnetPath%\CCNet.Build" /D /Y
 :XCOPY "CCNet.Build.AzureDownload\bin\Debug\CCNet.Build.AzureDownload.exe" "%ccnetPath%\CCNet.Build" /D /Y
 
-:XCOPY "CCNet.Build.CheckProject\bin\Debug\CCNet.Build.CheckProject.exe" "%ccnetPath%\CCNet.Build" /D /Y
+XCOPY "CCNet.Build.CheckProject\bin\Debug\CCNet.Build.CheckProject.exe" "%ccnetPath%\CCNet.Build" /D /Y
 
-XCOPY "CCNet.Build.GenerateNuspec\bin\Debug\CCNet.Build.GenerateNuspec.exe" "%ccnetPath%\CCNet.Build" /D /Y
+:XCOPY "CCNet.Build.GenerateNuspec\bin\Debug\CCNet.Build.GenerateNuspec.exe" "%ccnetPath%\CCNet.Build" /D /Y
 
 :XCOPY "CCNet.Build.NotifyProjects\bin\Debug\QuickGraph.dll" "%ccnetPath%\CCNet.Build" /D /Y
 :XCOPY "CCNet.Build.NotifyProjects\bin\Debug\CCNet.Build.NotifyProjects.exe" "%ccnetPath%\CCNet.Build" /D /Y

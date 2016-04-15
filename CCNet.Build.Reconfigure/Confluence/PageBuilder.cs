@@ -104,6 +104,7 @@ namespace CCNet.Build.Reconfigure
 					"tr",
 					new XElement("th", "Area"),
 					new XElement("th", "Project"),
+					new XElement("th", "Type"),
 					new XElement("th", ".NET"),
 					new XElement("th", "Owner"),
 					new XElement("th", "Status")));

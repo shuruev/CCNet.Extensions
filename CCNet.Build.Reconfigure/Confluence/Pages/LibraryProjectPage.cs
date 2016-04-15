@@ -98,7 +98,7 @@ namespace CCNet.Build.Reconfigure
 		{
 			var row = base.RenderSummaryRow(forArea);
 
-			var framework = row.Elements().Skip(forArea ? 1 : 2).First();
+			var framework = row.Elements().Skip(forArea ? 1 : 3).First();
 			framework.Value = DisplayFramework(Framework);
 
 			return row;

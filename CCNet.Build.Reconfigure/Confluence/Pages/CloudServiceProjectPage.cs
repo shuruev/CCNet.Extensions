@@ -71,19 +71,22 @@ namespace CCNet.Build.Reconfigure
 		{
 			var row = base.RenderSummaryRow(forArea);
 
-			var project = row.Elements().Skip(forArea ? 0 : 1).First();
-			project.Add(
-				new XElement("br"),
-				new XElement(
-					"sup",
-					PageDocument.BuildEmoticon(PageDocument.Emoticon.YellowStar),
-					"$nbsp$released as$nbsp$",
-					PageDocument.BuildPageLink(
-						Title,
-						new XElement(
-							"span",
-							new XAttribute("style", PageDocument.Style.Color.DarkGreen),
-							new XElement("strong", Title)))));
+			if (forArea)
+			{
+				var project = row.Elements().First();
+				project.Add(
+					new XElement("br"),
+					new XElement(
+						"sup",
+						PageDocument.BuildEmoticon(PageDocument.Emoticon.YellowStar),
+						"$nbsp$released as$nbsp$",
+						PageDocument.BuildPageLink(
+							Title,
+							new XElement(
+								"span",
+								new XAttribute("style", PageDocument.Style.Color.DarkGreen),
+								new XElement("strong", Title)))));
+			}
 
 			return row;
 		}

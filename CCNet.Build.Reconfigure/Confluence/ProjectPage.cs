@@ -230,6 +230,20 @@ namespace CCNet.Build.Reconfigure
 				PageDocument.BuildPageLink(AreaName + " area", AreaName));
 		}
 
+		private XElement RenderNameColumn()
+		{
+			return new XElement(
+				"td",
+				PageDocument.BuildPageLink(m_page, ProjectName));
+		}
+
+		private XElement RenderTypeColumn()
+		{
+			return new XElement(
+				"td",
+				m_page.Replace(ProjectName, String.Empty).Trim());
+		}
+
 		public virtual void CheckPage(TfsClient client)
 		{
 		}
@@ -260,7 +274,8 @@ namespace CCNet.Build.Reconfigure
 			return new XElement(
 				"tr",
 				RenderAreaColumn(),
-				RenderNameAndDescription(),
+				RenderNameColumn(),
+				RenderTypeColumn(),
 				new XElement("td", na),
 				new XElement("td", BuildOwner(Owner)),
 				new XElement("td", BuildStatus(Status)));
