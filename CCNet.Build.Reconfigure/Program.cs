@@ -99,6 +99,24 @@ namespace CCNet.Build.Reconfigure
 				library.Dependencies = "Lean.ResourceLocators|Lean.Serialization|Lean.Rest|CnetContent.FlexQueue.Core";
 			}
 
+			library = configs.FirstOrDefault(item => item.Name == "CnetContent.Jobs.Workers.Bootstrap") as LibraryProjectConfiguration;
+			if (library != null)
+			{
+				library.Dependencies = "CnetContent.ExtConfig.Client|CnetContent.ExtConfig.Common|CnetContent.FlexQueue.Client|CnetContent.FlexQueue.Core|CnetContent.Jobs.Core|CnetContent.Jobs.Services|CnetContent.Jobs.Services.Azure|CnetContent.Jobs.Workers|Lean.ResourceLocators|Lean.Rest|Lean.Serialization|Elasticsearch.Net|Newtonsoft.Json|Serilog|Serilog.Sinks.Elasticsearch";
+			}
+
+			library = configs.FirstOrDefault(item => item.Name == "CnetContent.Jobs.Client") as LibraryProjectConfiguration;
+			if (library != null)
+			{
+				library.Dependencies = "CnetContent.Jobs.Core|Lean.ResourceLocators|Lean.Rest|Lean.Serialization";
+			}
+
+			library = configs.FirstOrDefault(item => item.Name == "CnetContent.DataNode.Client") as LibraryProjectConfiguration;
+			if (library != null)
+			{
+				library.Dependencies = "CnetContent.DataNode.Core|Lean.ResourceLocators|Lean.Rest|Lean.Serialization|Newtonsoft.Json";
+			}
+
 			cloudService = configs.FirstOrDefault(item => item.Name == "CC.MLG.Cloud") as CloudServiceProjectConfiguration;
 			if (cloudService != null)
 			{
