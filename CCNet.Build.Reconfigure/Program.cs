@@ -970,6 +970,9 @@ namespace CCNet.Build.Reconfigure
 					writer.CbTag("CopyFiles", "from", project.ReleaseFileServiceConfiguration, "to", project.WorkingDirectoryPublish());
 					filesToUpload.Add(Path.GetFileName(project.ReleaseFileServiceConfiguration));
 
+					writer.CbTag("CopyFiles", "from", project.SourceFileDiagnostics, "to", project.WorkingDirectoryPublish());
+					filesToUpload.Add(Path.GetFileName(project.SourceFileDiagnostics));
+
 					foreach (var vmSize in project.VmSizes)
 					{
 						writer.CbTag(
