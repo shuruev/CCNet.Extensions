@@ -86,7 +86,7 @@ namespace CCNet.Build.Reconfigure
 				if (link != null)
 					value = link;
 
-				map[key] = value;
+				map[key] = value.Trim();
 			}
 
 			if (map.Count == 0)
