@@ -77,16 +77,17 @@ namespace CCNet.Build.Reconfigure
 
 			var sb = new StringBuilder();
 
-			for (int i = 0; i < arguments.Length; i++)
+			foreach (var arg in arguments)
 			{
-				var arg = arguments[i];
 				if (arg.Item1 == null)
 					continue;
 
 				if (arg.Item1.Length == 0)
 					throw new ArgumentException("Empty argument name.");
 
-				sb.AppendFormat("\r\n\t\t\t\t\t\"{0}={{{1}}}\"", arg.Item1, i);
+				var line = String.Format("{0}={1}", arg.Item1, arg.Item2).Replace("\"", "\"\"");
+
+				sb.AppendFormat("\r\n\t\t\t\t\t\"{0}\"", line);
 			}
 
 			if (sb.Length == 0)
@@ -94,8 +95,7 @@ namespace CCNet.Build.Reconfigure
 
 			sb.Append("\r\n\t\t\t\t");
 
-			var value = String.Format(sb.ToString(), arguments.Select(a => a.Item2).ToArray());
-			writer.WriteElementString("buildArgs", value);
+			writer.WriteElementString("buildArgs", sb.ToString());
 		}
 	}
 }
