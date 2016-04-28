@@ -127,9 +127,25 @@ namespace CCNet.Build.Reconfigure
 				case "none":
 					return String.Empty;
 
+				case "agolyakov":
+				case "8a99855552936a300152936cbec64c67":
+					return "8a99855552936a300152936cbec64c67";
+
+				case "akovalenko":
+				case "8a99855552936a300152936cb7cf1681":
+					return "8a99855552936a300152936cb7cf1681";
+
 				case "alisitsyn":
 				case "8a99855552936a300152936cb0a65fbd":
 					return "8a99855552936a300152936cb0a65fbd";
+
+				case "aryzhkov":
+				case "8a99855552936a300152936ca5340e71":
+					return "8a99855552936a300152936ca5340e71";
+
+				case "dsemikolenov":
+				case "8a99855552936a300152936cbc1c37ac":
+					return "8a99855552936a300152936cbc1c37ac";
 
 				case "kluzin":
 				case "8a99855552936a300152936cc08259d7":
@@ -147,6 +163,10 @@ namespace CCNet.Build.Reconfigure
 				case "pbelousov":
 				case "8a99855552936a300152936cbe1246f1":
 					return "8a99855552936a300152936cbe1246f1";
+
+				case "pkashirin":
+				case "8a99855552936a300152936cb51901bc":
+					return "8a99855552936a300152936cb51901bc";
 
 				case "psvintsov":
 				case "8a99855552936a300152936cb15d6557":
