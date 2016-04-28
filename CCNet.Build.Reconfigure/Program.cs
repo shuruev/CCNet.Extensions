@@ -654,6 +654,8 @@ namespace CCNet.Build.Reconfigure
 
 					// xxx temporarily copy release back to RUFRT-VXBUILD
 					if (project.Name == "V3.Storage"
+						|| project.Name == "CC.Security"
+						|| project.Name == "CC.Solr"
 						|| project.Name == "CC.Core"
 						|| project.Name == "CC.Core.Data"
 						|| project.Name == "CC.Domain"
