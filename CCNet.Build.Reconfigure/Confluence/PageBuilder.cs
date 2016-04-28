@@ -296,7 +296,7 @@ namespace CCNet.Build.Reconfigure
 			catch (Exception e)
 			{
 				throw new InvalidOperationException(
-					String.Format("An error occurred while processing page '{0}'.", project.Name),
+					String.Format("An error occurred while processing page '{0}' version {1}.", project.Name, project.Version),
 					e);
 			}
 
