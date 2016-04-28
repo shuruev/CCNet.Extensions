@@ -117,6 +117,18 @@ namespace CCNet.Build.Reconfigure
 				library.Dependencies = "CnetContent.DataNode.Core|Lean.ResourceLocators|Lean.Rest|Lean.Serialization|Newtonsoft.Json";
 			}
 
+			library = configs.FirstOrDefault(item => item.Name == "ClaimSystem.Storage") as LibraryProjectConfiguration;
+			if (library != null)
+			{
+				library.Dependencies = "ClaimSystem.Core|VXSystem|Lucene.Net|EntityFramework|SharpZipLib";
+			}
+
+			library = configs.FirstOrDefault(item => item.Name == "ClaimSystem.Domain") as LibraryProjectConfiguration;
+			if (library != null)
+			{
+				library.Dependencies = "ClaimSystem.Storage|ClaimSystem.Core";
+			}
+
 			cloudService = configs.FirstOrDefault(item => item.Name == "CC.MLG.Cloud") as CloudServiceProjectConfiguration;
 			if (cloudService != null)
 			{
@@ -641,7 +653,15 @@ namespace CCNet.Build.Reconfigure
 					}
 
 					// xxx temporarily copy release back to RUFRT-VXBUILD
-					if (project.Name == "V3.Storage")
+					if (project.Name == "V3.Storage"
+						|| project.Name == "CC.Core"
+						|| project.Name == "CC.Core.Data"
+						|| project.Name == "CC.Domain"
+						|| project.Name == "CC.Showcase"
+						|| project.Name == "CC.Storage.Azure"
+						|| project.Name == "CC.Storage.Solr"
+						|| project.Name == "CC.Storage.Sql"
+						|| project.Name == "FcatApi")
 					{
 						writer.CbTag(
 							"CopyFiles",
