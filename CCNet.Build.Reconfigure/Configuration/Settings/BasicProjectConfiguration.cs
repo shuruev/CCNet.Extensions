@@ -18,7 +18,7 @@ namespace CCNet.Build.Reconfigure
 			get { return String.Format(@"{0}\bin\Release", WorkingDirectorySource); }
 		}
 
-		public virtual string MsbuildExecutable
+		public string MsbuildExecutable
 		{
 			get { return @"C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"; }
 		}

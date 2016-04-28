@@ -43,11 +43,6 @@ namespace CCNet.Build.Reconfigure
 			get { return String.Format(@"{0}\{1}.cspkg", SourceDirectoryPublished, Name); }
 		}
 
-		public override string MsbuildExecutable
-		{
-			get { return @"C:\Program Files (x86)\MSBuild\12.0\Bin\MSBuild.exe"; }
-		}
-
 		protected override List<string> GetIssuesToCheck()
 		{
 			var checks = base.GetIssuesToCheck();
