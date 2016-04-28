@@ -18,6 +18,7 @@ namespace CCNet.Build.Confluence
 		private static readonly XmlNamespaceManager s_namespaces;
 		private static readonly HashSet<string> s_encode;
 		private static readonly HashSet<string> s_ignore;
+		private static readonly Dictionary<string, string> s_render;
 
 		private static readonly string s_beforePage;
 		private static readonly string s_afterPage;
@@ -46,11 +47,17 @@ namespace CCNet.Build.Confluence
 				"middot",
 				"rsquo",
 				"quot",
+				"#39"
 			};
 
 			s_ignore = new HashSet<string>
 			{
 				"zwnj"
+			};
+
+			s_render = new Dictionary<string, string>
+			{
+				{ "&#39;", "'" }
 			};
 
 			s_beforePage = "<page "
@@ -174,6 +181,11 @@ namespace CCNet.Build.Confluence
 				.RemoveFromEnd(s_afterPage);
 
 			xml = DecodeEntities(xml);
+			foreach (var item in s_render)
+			{
+				xml = xml.Replace(item.Key, item.Value);
+			}
+
 			return xml.CleanWhitespaces();
 		}
 	}
