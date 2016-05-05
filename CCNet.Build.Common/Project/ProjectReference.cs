@@ -65,11 +65,11 @@ namespace CCNet.Build.Common
 		/// <summary>
 		/// Removes project reference from a project document replacing it with the binary one.
 		/// </summary>
-		public void ConvertToBinary(TargetFramework framework)
+		public void ConvertToBinary(TargetFramework framework, string name)
 		{
-			var include = String.Format("{0}, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL", Name);
+			var include = String.Format("{0}, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL", name);
 			var dotNet = framework.ToString().ToLowerInvariant();
-			var hintPath = String.Format(@"..\packages\{0}.1.0.0.0\lib\{1}\{0}.dll", Name, dotNet);
+			var hintPath = String.Format(@"..\packages\{0}.1.0.0.0\lib\{1}\{0}.dll", name, dotNet);
 
 			var binary = new XElement(
 				Ns + "Reference",

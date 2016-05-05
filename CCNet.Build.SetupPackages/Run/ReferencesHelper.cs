@@ -44,16 +44,26 @@ namespace CCNet.Build.SetupPackages
 				var name = reference.Name;
 
 				if (!m_log.ContainsKey(name))
-					throw new InvalidOperationException(
-						String.Format(
-							@"Referenced project '{0}' was not found in 'packages.config'.
+				{
+					const string prefix = "CnetContent.";
+
+					// another attempt to resolve name due to CnetContent.* exception
+					name = prefix + name;
+
+					if (!m_log.ContainsKey(name))
+					{
+						throw new InvalidOperationException(
+							String.Format(
+								@"Referenced project '{0}' was not found in 'packages.config'.
 Please add it as a NuGet reference first, and only after that you can convert it into project reference.",
-							name));
+								name));
+					}
+				}
 
 				m_log[name].ProjectReference = true;
 
 				var framework = m_checker.TargetFramework(name);
-				reference.ConvertToBinary(framework);
+				reference.ConvertToBinary(framework, name);
 			}
 
 			Console.WriteLine("OK");
