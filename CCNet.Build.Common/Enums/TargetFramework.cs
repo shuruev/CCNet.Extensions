@@ -23,6 +23,11 @@
 		/// <summary>
 		/// Represents ".NET Framework 4.5" target.
 		/// </summary>
-		Net45
+		Net45,
+
+		/// <summary>
+		/// Represents ".NET Framework 4.6.1" target.
+		/// </summary>
+		Net461
 	}
 }

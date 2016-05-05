@@ -73,6 +73,9 @@ namespace CCNet.Build.SetupPackages
 				case "net45":
 					return TargetFramework.Net45;
 
+				case "net461":
+					return TargetFramework.Net461;
+
 				default:
 					throw new InvalidOperationException(
 						String.Format("Unknown target framework '{0}'.", framework));

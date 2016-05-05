@@ -101,6 +101,7 @@ If you beleive everything is correct please talk to Oleg Shuruev to improve this
 				case "P11": return new ProjectTargetFramework35();
 				case "P12": return new ProjectTargetFramework40();
 				case "P13": return new ProjectTargetFramework45();
+				case "P18": return new ProjectTargetFramework461();
 				case "P14": return new CheckProjectCompilation();
 				case "P15": return new ProjectDocumentationNone();
 				case "P16": return new ProjectDocumentationPartial();

@@ -57,6 +57,9 @@ namespace CCNet.Build.Reconfigure
 				case TargetFramework.Net45:
 					return "4.5";
 
+				case TargetFramework.Net461:
+					return "4.6.1";
+
 				default:
 					throw new InvalidOperationException(
 						String.Format("Unknown target framework '{0}'.", framework));
