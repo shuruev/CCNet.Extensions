@@ -43,6 +43,11 @@ namespace CCNet.Build.GenerateNuspec
 			get { return Current.Get("IncludeXmlDocumentation", false); }
 		}
 
+		public static bool IncludeExeInsteadOfDll
+		{
+			get { return Current.Get("IncludeExeInsteadOfDll", false); }
+		}
+
 		public static bool MarkAsCustom
 		{
 			get { return Current.Get("MarkAsCustom", false); }

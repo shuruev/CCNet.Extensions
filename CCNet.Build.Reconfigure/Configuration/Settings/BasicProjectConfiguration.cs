@@ -12,6 +12,12 @@ namespace CCNet.Build.Reconfigure
 		public DocumentationType Documentation { get; set; }
 		public string RootNamespace { get; set; }
 		public string CustomVersions { get; set; }
+		public List<string> IgnoreIssues { get; set; }
+
+		protected BasicProjectConfiguration()
+		{
+			IgnoreIssues = new List<string>();
+		}
 
 		public virtual string SourceDirectoryRelease
 		{
@@ -41,7 +47,14 @@ namespace CCNet.Build.Reconfigure
 
 		public string CheckIssues
 		{
-			get { return String.Join("|", GetIssuesToCheck().Where(code => code != null)); }
+			get
+			{
+				return String.Join(
+					"|",
+					GetIssuesToCheck()
+						.Except(IgnoreIssues)
+						.Where(code => code != null));
+			}
 		}
 
 		private string ProjectTargetFrameworkIssue

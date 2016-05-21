@@ -8,6 +8,7 @@ namespace CCNet.Build.Reconfigure
 		public string Dependencies { get; set; }
 		public string CustomAssemblyName { get; set; }
 		public string CustomCompanyName { get; set; }
+		public bool BuildAsExe { get; set; }
 
 		public override ProjectType Type
 		{
@@ -26,6 +27,11 @@ namespace CCNet.Build.Reconfigure
 
 				return false;
 			}
+		}
+
+		public bool IncludeExeInsteadOfDll
+		{
+			get { return BuildAsExe; }
 		}
 
 		public string WorkingDirectoryNuget

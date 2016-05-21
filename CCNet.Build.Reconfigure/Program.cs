@@ -92,6 +92,13 @@ namespace CCNet.Build.Reconfigure
 				library.Dependencies = "WindowsAzure.Storage|Lucene.Net";
 			}
 
+			library = configs.FirstOrDefault(item => item.Name == "Vortex.Images.Remote") as LibraryProjectConfiguration;
+			if (library != null)
+			{
+				library.IgnoreIssues = new List<string> { "P04" };
+				library.BuildAsExe = true;
+			}
+
 			cloudService = configs.FirstOrDefault(item => item.Name == "CC.MLG.Cloud") as CloudServiceProjectConfiguration;
 			if (cloudService != null)
 			{
@@ -628,6 +635,7 @@ namespace CCNet.Build.Reconfigure
 							new Arg("CurrentVersion", "$[$CCNetLabel]"),
 							new Arg("TargetFramework", project.Framework),
 							new Arg(project.IncludeXmlDocumentation ? "IncludeXmlDocumentation" : null, project.IncludeXmlDocumentation),
+							new Arg(project.IncludeExeInsteadOfDll ? "IncludeExeInsteadOfDll" : null, project.IncludeExeInsteadOfDll),
 							new Arg(project.MarkAsCustom ? "MarkAsCustom" : null, project.MarkAsCustom),
 							new Arg(project.Dependencies != null ? "Dependencies" : null, project.Dependencies),
 							new Arg("ReleaseNotes", project.TempFileSource + "|" + project.TempFilePackages),

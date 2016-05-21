@@ -56,7 +56,7 @@ namespace CCNet.Build.SetupPackages
 							String.Format(
 								@"Referenced project '{0}' was not found in 'packages.config'.
 Please add it as a NuGet reference first, and only after that you can convert it into project reference.",
-								name));
+								reference.Name));
 					}
 				}
 

@@ -136,11 +136,21 @@ namespace CCNet.Build.GenerateNuspec
 		{
 			xtw.WriteStartElement("files");
 
-			AddNuspecLibraryCoreFile(xtw, "dll");
+			if (Args.IncludeExeInsteadOfDll)
+			{
+				AddNuspecLibraryCoreFile(xtw, "exe");
+			}
+			else
+			{
+				AddNuspecLibraryCoreFile(xtw, "dll");
+			}
+
 			AddNuspecLibraryCoreFile(xtw, "pdb");
 
 			if (Args.IncludeXmlDocumentation)
+			{
 				AddNuspecLibraryCoreFile(xtw, "xml");
+			}
 
 			AddNuspecLibrarySatelliteAssemblies(xtw);
 
