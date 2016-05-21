@@ -47,6 +47,7 @@ namespace CCNet.Build.Confluence
 				"middot",
 				"rsquo",
 				"quot",
+				"hellip",
 				"#39"
 			};
 

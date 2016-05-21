@@ -243,15 +243,15 @@ namespace CCNet.Build.Reconfigure
 		{
 			Console.WriteLine("Processing page '{0} / {1}'...", areaName, project.Name);
 
-			ProjectType projectType;
-			var projectName = ResolveProjectName(project.Name, out projectType);
-
-			var existing = m_confluence.GetCachedPage(project);
-			var document = new PageDocument(existing.Content);
-
 			IProjectPage page;
 			try
 			{
+				ProjectType projectType;
+				var projectName = ResolveProjectName(project.Name, out projectType);
+
+				var existing = m_confluence.GetCachedPage(project);
+				var document = new PageDocument(existing.Content);
+
 				switch (projectType)
 				{
 					case ProjectType.Library:
@@ -292,22 +292,22 @@ namespace CCNet.Build.Reconfigure
 				}
 
 				page.CheckPage(m_tfs);
+
+				var updated = UpdateProjectPage(page, existing);
+				if (updated)
+				{
+					Console.WriteLine("[{0}] {1} #{2}... UPDATED", areaName, projectName, projectType.ToString().ToLowerInvariant());
+				}
+				else
+				{
+					Console.WriteLine("[{0}] {1} #{2}... not changed", areaName, projectName, projectType.ToString().ToLowerInvariant());
+				}
 			}
 			catch (Exception e)
 			{
 				throw new InvalidOperationException(
 					String.Format("An error occurred while processing page '{0}' version {1}.", project.Name, project.Version),
 					e);
-			}
-
-			var updated = UpdateProjectPage(page, existing);
-			if (updated)
-			{
-				Console.WriteLine("[{0}] {1} #{2}... UPDATED", areaName, projectName, projectType.ToString().ToLowerInvariant());
-			}
-			else
-			{
-				Console.WriteLine("[{0}] {1} #{2}... not changed", areaName, projectName, projectType.ToString().ToLowerInvariant());
 			}
 
 			return page;
