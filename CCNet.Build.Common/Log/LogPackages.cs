@@ -40,11 +40,11 @@ namespace CCNet.Build.Common
 			var sb = new StringBuilder();
 			sb.AppendLine("Packages:");
 
-			foreach (var reference in Values.OrderBy(i => i.Location).ThenBy(i => i.PackageName))
+			foreach (var reference in Values.OrderBy(i => i.Location).ThenBy(i => i.PackageId))
 			{
 				sb.AppendFormat(
 					"- {0} {1} ({2})",
-					reference.PackageName,
+					reference.PackageId,
 					reference.BuildVersion.Normalize(),
 					reference.Comment.ToLowerInvariant());
 

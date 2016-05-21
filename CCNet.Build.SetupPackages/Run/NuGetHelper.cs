@@ -32,11 +32,11 @@ namespace CCNet.Build.SetupPackages
 				var package = new NuGetPackage(element);
 
 				// skip local packages
-				if (m_checker.IsLocal(package.Name))
+				if (m_checker.IsLocal(package.Id))
 					continue;
 
 				// package should be pinned to its current version
-				if (m_checker.IsPinnedToCurrentVersion(package.Name))
+				if (m_checker.IsPinnedToCurrentVersion(package.Id))
 					continue;
 
 				// try to update remote package

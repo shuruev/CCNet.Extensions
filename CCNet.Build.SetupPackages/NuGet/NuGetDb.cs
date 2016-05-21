@@ -32,8 +32,9 @@ GROUP BY PackageRegistrationKey
 
 SELECT
 	PR.Id,
-	P.[Version],
 	P.Tags,
+	P.Title,
+	P.[Version],
 	PF.TargetFramework
 FROM #Latest T
 	INNER JOIN Packages P
@@ -53,10 +54,12 @@ DROP TABLE #Latest
 							var id = reader.ReadString("Id");
 							var version = reader.ReadString("Version");
 							var framework = reader.ReadString("TargetFramework");
+							var title = reader.ReadStringOrNull("Title");
 							var tags = reader.ReadStringOrNull("Tags");
 
 							var package = new NuGetPackage(id, version, framework)
 							{
+								Title = title,
 								Tags = tags
 							};
 

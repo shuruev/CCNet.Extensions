@@ -46,17 +46,18 @@ namespace CCNet.Build.SetupPackages
 
 				var log = new LogPackage
 				{
-					PackageName = package.Name,
-					ProjectName = m_checker.ProjectName(package.Name),
-					IsLocal = m_checker.IsLocal(package.Name),
+					PackageId = package.Id,
+					ProjectName = m_checker.ProjectName(package.Id),
+					IsLocal = m_checker.IsLocal(package.Id),
+					IsStatic = m_checker.IsStatic(package.Id),
 					SourceVersion = package.Version,
-					PinnedToCurrent = m_checker.IsPinnedToCurrentVersion(package.Name),
-					PinnedToSpecific = m_checker.IsPinnedToSpecificVersion(package.Name)
+					PinnedToCurrent = m_checker.IsPinnedToCurrentVersion(package.Id),
+					PinnedToSpecific = m_checker.IsPinnedToSpecificVersion(package.Id)
 				};
 
 				SetupProjectUrl(log);
 
-				m_log.Add(package.Name, log);
+				m_log.Add(package.Id, log);
 			}
 
 			Console.WriteLine("OK");
@@ -64,14 +65,19 @@ namespace CCNet.Build.SetupPackages
 
 		private void SetupProjectUrl(LogPackage package)
 		{
-			if (package.IsLocal)
+			if (!package.IsLocal)
 			{
-				package.ProjectUrl = String.Format("http://rufc-devbuild.cneu.cnwk/ccnet/server/Library/project/{0}/ViewProjectReport.aspx", package.ProjectName);
+				package.ProjectUrl = String.Format("https://www.nuget.org/packages/{0}/", package.PackageId);
+				return;
 			}
-			else
+
+			if (package.IsStatic)
 			{
-				package.ProjectUrl = String.Format("https://www.nuget.org/packages/{0}/", package.PackageName);
+				package.ProjectUrl = String.Format("https://rufc-devbuild.cneu.cnwk/nuget/packages/{0}/", package.PackageId);
+				return;
 			}
+
+			package.ProjectUrl = String.Format("http://rufc-devbuild.cneu.cnwk/ccnet/server/Library/project/{0}/ViewProjectReport.aspx", package.ProjectName);
 		}
 
 		private void PostAnalyzePackages(XDocument config)
@@ -82,14 +88,14 @@ namespace CCNet.Build.SetupPackages
 			{
 				var package = new NuGetPackage(element);
 
-				m_log[package.Name].BuildVersion = package.Version;
+				m_log[package.Id].BuildVersion = package.Version;
 			}
 
 			foreach (var item in m_log.Values)
 			{
 				if (item.BuildVersion == null)
 					throw new InvalidOperationException(
-						String.Format("Build version is missing for package '{0}'.", item.PackageName));
+						String.Format("Build version is missing for package '{0}'.", item.PackageId));
 			}
 
 			Console.WriteLine("OK");
@@ -104,15 +110,19 @@ namespace CCNet.Build.SetupPackages
 				var package = new NuGetPackage(element);
 
 				// skip remote packages
-				if (!m_checker.IsLocal(package.Name))
+				if (!m_checker.IsLocal(package.Id))
+					continue;
+
+				// skip static packages
+				if (m_checker.IsStatic(package.Id))
 					continue;
 
 				// package should be pinned to its current version
-				if (m_checker.IsPinnedToCurrentVersion(package.Name))
+				if (m_checker.IsPinnedToCurrentVersion(package.Id))
 					continue;
 
 				// get version to use for local package
-				var versionToUse = m_checker.VersionToUse(package.Name);
+				var versionToUse = m_checker.VersionToUse(package.Id);
 
 				// update is not required
 				if (versionToUse.Normalize() == package.Version.Normalize())

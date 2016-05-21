@@ -7,35 +7,17 @@ namespace CCNet.Build.SetupPackages
 	public class NuGetPackage
 	{
 		public string Id { get; private set; }
-		public string Name { get; private set; }
-		public string Area { get; private set; }
-
 		public Version Version { get; private set; }
 		public TargetFramework Framework { get; private set; }
 
+		public string Title { get; set; }
 		public string Tags { get; set; }
 
-		private NuGetPackage(string id)
+		public NuGetPackage(string id, string version, string framework)
 		{
 			if (String.IsNullOrEmpty(id))
 				throw new ArgumentNullException("id");
 
-			Id = id;
-
-			if (!id.Contains("__"))
-			{
-				Name = id;
-				return;
-			}
-
-			var parts = id.Split(new[] { "__" }, 2, StringSplitOptions.None);
-			Area = parts[0];
-			Name = parts[1];
-		}
-
-		public NuGetPackage(string id, string version, string framework)
-			: this(id)
-		{
 			if (String.IsNullOrEmpty(version))
 				throw new ArgumentNullException("version");
 
@@ -45,6 +27,7 @@ namespace CCNet.Build.SetupPackages
 			// so far we just ignore additional marks, like aplha, beta, preview, prerelase, etc.
 			version = version.Split('-')[0];
 
+			Id = id;
 			Version = new Version(version);
 			Framework = ParseFramework(framework);
 		}

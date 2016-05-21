@@ -9,12 +9,12 @@ namespace CCNet.Build.Common
 	public class LogPackage
 	{
 		/// <summary>
-		/// Gets or sets package name.
+		/// Gets or sets package ID.
 		/// </summary>
-		public string PackageName { get; set; }
+		public string PackageId { get; set; }
 
 		/// <summary>
-		/// Gets or sets project name (sometimes it can be different from package name).
+		/// Gets or sets project name (sometimes it can be different from package ID).
 		/// </summary>
 		public string ProjectName { get; set; }
 
@@ -27,6 +27,12 @@ namespace CCNet.Build.Common
 		/// Gets or sets a value indicating whether current package belongs to the internal company artifacts.
 		/// </summary>
 		public bool IsLocal { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating whether current package represents some static files
+		/// which were manually published to the internal company artifacts.
+		/// </summary>
+		public bool IsStatic { get; set; }
 
 		/// <summary>
 		/// Gets or sets checked-in version of the package.
@@ -60,7 +66,12 @@ namespace CCNet.Build.Common
 		{
 			get
 			{
-				return IsLocal ? "Local" : "Remote";
+				if (IsLocal)
+				{
+					return IsStatic ? "Local (static)" : "Local";
+				}
+
+				return "Remote";
 			}
 		}
 
@@ -105,20 +116,20 @@ namespace CCNet.Build.Common
 		/// </summary>
 		public void Report()
 		{
-			if (String.IsNullOrEmpty(PackageName))
-				throw new InvalidOperationException("Package name is not specified.");
+			if (String.IsNullOrEmpty(PackageId))
+				throw new InvalidOperationException("Package ID is not specified.");
 
 			if (String.IsNullOrEmpty(ProjectName))
 				throw new InvalidOperationException(
-					String.Format("Project name is missing for package '{0}'.", PackageName));
+					String.Format("Project name is missing for package '{0}'.", PackageId));
 
 			if (String.IsNullOrEmpty(ProjectUrl))
 				throw new InvalidOperationException(
-					String.Format("Project URL is missing for package '{0}'.", PackageName));
+					String.Format("Project URL is missing for package '{0}'.", PackageId));
 
 			if (BuildVersion == null)
 				throw new InvalidOperationException(
-					String.Format("Build version is missing for package '{0}'.", PackageName));
+					String.Format("Build version is missing for package '{0}'.", PackageId));
 
 			string source;
 			if (SourceVersion == null)

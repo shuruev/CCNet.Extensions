@@ -88,45 +88,8 @@ namespace CCNet.Build.Reconfigure
 			if (library != null)
 			{
 				library.CustomAssemblyName = "Lucene.Net.Store.Azure";
-				library.CustomPackageTitle = "AzureDirectory for Lucene.Net";
 				library.CustomCompanyName = "Microsoft";
 				library.Dependencies = "WindowsAzure.Storage|Lucene.Net";
-			}
-
-			library = configs.FirstOrDefault(item => item.Name == "CnetContent.FlexQueue.Client") as LibraryProjectConfiguration;
-			if (library != null)
-			{
-				library.Dependencies = "Lean.ResourceLocators|Lean.Serialization|Lean.Rest|CnetContent.FlexQueue.Core";
-			}
-
-			library = configs.FirstOrDefault(item => item.Name == "CnetContent.Jobs.Workers.Bootstrap") as LibraryProjectConfiguration;
-			if (library != null)
-			{
-				library.Dependencies = "CnetContent.ExtConfig.Client|CnetContent.ExtConfig.Common|CnetContent.FlexQueue.Client|CnetContent.FlexQueue.Core|CnetContent.Jobs.Core|CnetContent.Jobs.Services|CnetContent.Jobs.Services.Azure|CnetContent.Jobs.Workers|Lean.ResourceLocators|Lean.Rest|Lean.Serialization|Elasticsearch.Net|Newtonsoft.Json|Serilog|Serilog.Sinks.Elasticsearch";
-			}
-
-			library = configs.FirstOrDefault(item => item.Name == "CnetContent.Jobs.Client") as LibraryProjectConfiguration;
-			if (library != null)
-			{
-				library.Dependencies = "CnetContent.Jobs.Core|Lean.ResourceLocators|Lean.Rest|Lean.Serialization";
-			}
-
-			library = configs.FirstOrDefault(item => item.Name == "CnetContent.DataNode.Client") as LibraryProjectConfiguration;
-			if (library != null)
-			{
-				library.Dependencies = "CnetContent.DataNode.Core|Lean.ResourceLocators|Lean.Rest|Lean.Serialization|Newtonsoft.Json";
-			}
-
-			library = configs.FirstOrDefault(item => item.Name == "ClaimSystem.Storage") as LibraryProjectConfiguration;
-			if (library != null)
-			{
-				library.Dependencies = "ClaimSystem.Core|VXSystem|Lucene.Net|EntityFramework|SharpZipLib";
-			}
-
-			library = configs.FirstOrDefault(item => item.Name == "ClaimSystem.Domain") as LibraryProjectConfiguration;
-			if (library != null)
-			{
-				library.Dependencies = "ClaimSystem.Storage|ClaimSystem.Core";
 			}
 
 			cloudService = configs.FirstOrDefault(item => item.Name == "CC.MLG.Cloud") as CloudServiceProjectConfiguration;
@@ -134,6 +97,73 @@ namespace CCNet.Build.Reconfigure
 			{
 				cloudService.VmSizes = new List<string> { "Small", "Medium" };
 			}
+
+			SetupDependencies(
+				configs,
+				"CnetContent.FlexQueue.Client",
+				"Lean.ResourceLocators",
+				"Lean.Serialization",
+				"Lean.Rest",
+				"CnetContent.FlexQueue.Core");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.Jobs.Workers.Bootstrap",
+				"CnetContent.ExtConfig.Client",
+				"CnetContent.ExtConfig.Common",
+				"CnetContent.FlexQueue.Client",
+				"CnetContent.FlexQueue.Core",
+				"CnetContent.Jobs.Core",
+				"CnetContent.Jobs.Services",
+				"CnetContent.Jobs.Services.Azure",
+				"CnetContent.Jobs.Workers",
+				"Lean.ResourceLocators",
+				"Lean.Rest",
+				"Lean.Serialization",
+				"Elasticsearch.Net",
+				"Newtonsoft.Json",
+				"Serilog",
+				"Serilog.Sinks.Elasticsearch");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.Jobs.Client",
+				"CnetContent.Jobs.Core",
+				"Lean.ResourceLocators",
+				"Lean.Rest",
+				"Lean.Serialization");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.DataNode.Client",
+				"CnetContent.DataNode.Core",
+				"Lean.ResourceLocators",
+				"Lean.Rest",
+				"Lean.Serialization",
+				"Newtonsoft.Json");
+
+			SetupDependencies(
+				configs,
+				"ClaimSystem.Storage",
+				"ClaimSystem.Core",
+				"VXSystem",
+				"Lucene.Net",
+				"EntityFramework",
+				"SharpZipLib");
+
+			SetupDependencies(
+				configs,
+				"ClaimSystem.Domain",
+				"ClaimSystem.Core");
+		}
+
+		private static void SetupDependencies(IEnumerable<ProjectConfiguration> configs, string libraryName, params string[] dependencies)
+		{
+			var library = configs.FirstOrDefault(item => item.Name == libraryName) as LibraryProjectConfiguration;
+			if (library == null)
+				return;
+
+			library.Dependencies = String.Join("|", dependencies);
 		}
 
 		private static List<T> FilterByType<T>(IEnumerable<ProjectConfiguration> configs) where T : ProjectConfiguration
@@ -593,12 +623,12 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectName", project.Name),
 							new Arg(project.CustomAssemblyName != null ? "PackageId" : null, project.CustomAssemblyName),
-							new Arg(project.CustomPackageTitle != null ? "PackageTitle" : null, project.CustomPackageTitle),
 							new Arg("ProjectDescription", project.Description),
 							new Arg("CompanyName", project.CustomCompanyName ?? "CNET Content Solutions"),
 							new Arg("CurrentVersion", "$[$CCNetLabel]"),
 							new Arg("TargetFramework", project.Framework),
 							new Arg(project.IncludeXmlDocumentation ? "IncludeXmlDocumentation" : null, project.IncludeXmlDocumentation),
+							new Arg(project.MarkAsCustom ? "MarkAsCustom" : null, project.MarkAsCustom),
 							new Arg(project.Dependencies != null ? "Dependencies" : null, project.Dependencies),
 							new Arg("ReleaseNotes", project.TempFileSource + "|" + project.TempFilePackages),
 							new Arg("ReleasePath", project.WorkingDirectoryRelease()),

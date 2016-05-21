@@ -18,11 +18,6 @@ namespace CCNet.Build.GenerateNuspec
 			get { return Current.Get("PackageId", ProjectName); }
 		}
 
-		public static string PackageTitle
-		{
-			get { return Current.Get("PackageTitle", ProjectName); }
-		}
-
 		public static string ProjectDescription
 		{
 			get { return Current.Get<string>("ProjectDescription"); }
@@ -46,6 +41,16 @@ namespace CCNet.Build.GenerateNuspec
 		public static bool IncludeXmlDocumentation
 		{
 			get { return Current.Get("IncludeXmlDocumentation", false); }
+		}
+
+		public static bool MarkAsCustom
+		{
+			get { return Current.Get("MarkAsCustom", false); }
+		}
+
+		public static bool MarkAsStatic
+		{
+			get { return Current.Get("MarkAsStatic", false); }
 		}
 
 		public static string Dependencies

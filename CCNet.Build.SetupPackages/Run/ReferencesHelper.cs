@@ -83,6 +83,10 @@ Please add it as a NuGet reference first, and only after that you can convert it
 				if (!m_checker.IsLocal(reference.Name))
 					continue;
 
+				// skip static packages
+				if (m_checker.IsStatic(reference.Name))
+					continue;
+
 				// package should be pinned to its current version
 				if (m_checker.IsPinnedToCurrentVersion(reference.Name))
 					continue;

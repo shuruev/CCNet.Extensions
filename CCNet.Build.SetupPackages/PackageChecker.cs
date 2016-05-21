@@ -57,41 +57,56 @@ namespace CCNet.Build.SetupPackages
 			m_localPackages = m_db.GetLatestVersions().ToDictionary(p => p.Id, StringComparer.OrdinalIgnoreCase);
 		}
 
-		public bool IsLocal(string name)
+		public bool IsLocal(string id)
 		{
-			return m_localPackages.ContainsKey(name);
+			return m_localPackages.ContainsKey(id);
 		}
 
-		public TargetFramework TargetFramework(string name)
+		public bool IsStatic(string id)
 		{
-			if (!IsLocal(name))
+			if (!IsLocal(id))
+				return false;
+
+			var tags = m_localPackages[id].Tags;
+			if (String.IsNullOrEmpty(tags))
+				return false;
+
+			if (tags.Contains("static"))
+				return true;
+
+			return false;
+		}
+
+		public TargetFramework TargetFramework(string id)
+		{
+			if (!IsLocal(id))
 				throw new InvalidOperationException("Target framework versions are available for local packages only.");
 
-			return m_localPackages[name].Framework;
+			return m_localPackages[id].Framework;
 		}
 
-		public string ProjectName(string name)
+		public string ProjectName(string id)
 		{
-			if (!IsLocal(name))
-				return name;
+			if (!IsLocal(id))
+				return id;
 
-			var tags = m_localPackages[name].Tags;
-			if (String.IsNullOrEmpty(tags))
-				return name;
+			var title = m_localPackages[id].Title;
+			if (String.IsNullOrEmpty(title))
+				return id;
 
-			return tags;
+			return title;
 		}
 
-		public bool IsPinnedToCurrentVersion(string name)
+		public bool IsPinnedToCurrentVersion(string id)
 		{
-			bool custom = m_customVersions.ContainsKey(name);
+			bool custom = m_customVersions.ContainsKey(id);
 
-			if (IsLocal(name))
+			if (IsLocal(id))
 			{
 				if (!custom)
 					return false;
 
-				var version = m_customVersions[name];
+				var version = m_customVersions[id];
 				if (version != null)
 					return false;
 
@@ -102,7 +117,7 @@ namespace CCNet.Build.SetupPackages
 				if (!custom)
 					return true;
 
-				var version = m_customVersions[name];
+				var version = m_customVersions[id];
 				if (version != null)
 					throw new InvalidOperationException("Only local packages can be pinned to specific version.");
 
@@ -110,34 +125,34 @@ namespace CCNet.Build.SetupPackages
 			}
 		}
 
-		public Version IsPinnedToSpecificVersion(string name)
+		public Version IsPinnedToSpecificVersion(string id)
 		{
-			if (!m_customVersions.ContainsKey(name))
+			if (!m_customVersions.ContainsKey(id))
 				return null;
 
-			var version = m_customVersions[name];
+			var version = m_customVersions[id];
 			if (version == null)
 				return null;
 
-			if (!IsLocal(name))
+			if (!IsLocal(id))
 				throw new InvalidOperationException("Only local packages can be pinned to specific version.");
 
 			return version;
 		}
 
-		public Version VersionToUse(string name)
+		public Version VersionToUse(string id)
 		{
-			if (!IsLocal(name))
+			if (!IsLocal(id))
 				throw new InvalidOperationException("Only local packages can be updated to a specifc version.");
 
-			if (IsPinnedToCurrentVersion(name))
+			if (IsPinnedToCurrentVersion(id))
 				throw new InvalidOperationException("This package is pinned to its current version.");
 
-			var custom = IsPinnedToSpecificVersion(name);
+			var custom = IsPinnedToSpecificVersion(id);
 			if (custom != null)
 				return custom;
 
-			return m_localPackages[name].Version;
+			return m_localPackages[id].Version;
 		}
 	}
 }

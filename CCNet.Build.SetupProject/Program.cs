@@ -181,7 +181,7 @@ namespace CCNet.Build.SetupProject
 				folderName,
 				new LogPackage
 				{
-					PackageName = folderName,
+					PackageId = folderName,
 					ProjectName = folderName,
 					ProjectUrl = String.Format("http://rufc-devbuild.cneu.cnwk/ccnet/server/Azure/project/{0}/ViewProjectReport.aspx", folderName),
 					IsLocal = true,

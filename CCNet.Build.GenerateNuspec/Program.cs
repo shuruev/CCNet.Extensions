@@ -55,30 +55,21 @@ namespace CCNet.Build.GenerateNuspec
 
 				xtw.WriteElementString("id", Args.PackageId);
 				xtw.WriteElementString("version", Args.CurrentVersion);
-				xtw.WriteElementString("title", Args.PackageTitle);
+
+				if (Args.PackageId != Args.ProjectName)
+				{
+					xtw.WriteElementString("title", Args.ProjectName);
+				}
+
 				xtw.WriteElementString("authors", Args.CompanyName);
 				xtw.WriteElementString("description", Args.ProjectDescription);
 				xtw.WriteElementString("requireLicenseAcceptance", "false");
 
 				AddDependencies(xtw);
 				AddReleaseNotes(xtw);
+				AddUrls(xtw);
 
-				var projectUrl = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+library", Args.ProjectName);
-				var iconUrl = "https://owl.cbsi.com/confluence/download/attachments/12795232/cnet.png";
-
-				if (Args.ProjectName != Args.PackageTitle
-					|| Args.ProjectName != Args.PackageId)
-				{
-					iconUrl = "https://owl.cbsi.com/confluence/download/attachments/12795232/cnet-bw.png";
-				}
-
-				xtw.WriteElementString("projectUrl", projectUrl);
-				xtw.WriteElementString("iconUrl", iconUrl);
-
-				if (Args.ProjectName != Args.PackageId)
-				{
-					xtw.WriteElementString("tags", Args.ProjectName);
-				}
+				AddTags(xtw);
 
 				xtw.WriteEndElement();
 
@@ -109,6 +100,36 @@ namespace CCNet.Build.GenerateNuspec
 				return;
 
 			xtw.WriteElementString("releaseNotes", sb.ToString());
+		}
+
+		private static void AddUrls(XmlTextWriter xtw)
+		{
+			var projectUrl = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+library", Args.ProjectName);
+			var iconUrl = "https://owl.cbsi.com/confluence/download/attachments/12795232/cnet.png";
+
+			if (Args.MarkAsCustom)
+			{
+				iconUrl = "https://owl.cbsi.com/confluence/download/attachments/12795232/cnet-bw.png";
+			}
+
+			xtw.WriteElementString("projectUrl", projectUrl);
+			xtw.WriteElementString("iconUrl", iconUrl);
+		}
+
+		private static void AddTags(XmlTextWriter xtw)
+		{
+			var tags = new List<string>();
+
+			if (Args.MarkAsCustom)
+				tags.Add("custom");
+
+			if (Args.MarkAsStatic)
+				tags.Add("static");
+
+			if (tags.Count == 0)
+				return;
+
+			xtw.WriteElementString("tags", String.Join(",", tags));
 		}
 
 		private static void AddFiles(XmlTextWriter xtw)
