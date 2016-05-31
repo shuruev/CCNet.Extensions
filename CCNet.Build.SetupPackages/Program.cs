@@ -30,7 +30,11 @@ namespace CCNet.Build.SetupPackages
 
 		private static void SetupPackages()
 		{
-			var checker = new PackageChecker(Config.NuGetDbConnection, Args.CustomVersions);
+			var checker = new PackageChecker(
+				Config.NuGetDbConnection,
+				Args.CustomVersions,
+				Args.Dependencies,
+				Args.Bundles);
 
 			using (Execute.Step("INIT"))
 			{

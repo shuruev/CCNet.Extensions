@@ -60,18 +60,23 @@ namespace CCNet.Build.Common
 		public Version PinnedToSpecific { get; set; }
 
 		/// <summary>
+		/// Gets or sets a value indicating whether current package should be marked as an explicit dependency.
+		/// </summary>
+		public bool IsDependency { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating whether current package should be bundled within a target assembly.
+		/// </summary>
+		public bool IsBundle { get; set; }
+
+		/// <summary>
 		/// Gets textual description of package location.
 		/// </summary>
 		public string Location
 		{
 			get
 			{
-				if (IsLocal)
-				{
-					return IsStatic ? "Local (static)" : "Local";
-				}
-
-				return "Remote";
+				return IsLocal ? "Local" : "Remote";
 			}
 		}
 
@@ -82,6 +87,10 @@ namespace CCNet.Build.Common
 		{
 			get
 			{
+				// special case for static artifacts
+				if (IsStatic)
+					return "Static";
+
 				// special case for snapshots, better to refactor in future
 				if (SourceVersion == null && ProjectReference)
 					return "Snapshot";
@@ -107,6 +116,16 @@ namespace CCNet.Build.Common
 					}
 				}
 
+				if (IsDependency)
+				{
+					sb.Append(", marked as dependency");
+				}
+
+				if (IsBundle)
+				{
+					sb.Append(", merged as bundle");
+				}
+
 				return sb.ToString();
 			}
 		}
@@ -130,6 +149,10 @@ namespace CCNet.Build.Common
 			if (BuildVersion == null)
 				throw new InvalidOperationException(
 					String.Format("Build version is missing for package '{0}'.", PackageId));
+
+			if (IsDependency && IsBundle)
+				throw new InvalidOperationException(
+					String.Format("Both dependency and bundle cannot be specified for package '{0}'.", PackageId));
 
 			string source;
 			if (SourceVersion == null)

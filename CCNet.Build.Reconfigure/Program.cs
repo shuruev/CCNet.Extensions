@@ -455,7 +455,9 @@ namespace CCNet.Build.Reconfigure
 			{
 				writer.WriteElementString("executable", "$(ccnetBuildSetupPackages)");
 				writer.WriteElementString("buildTimeoutSeconds", "45");
-				writer.WriteBuildArgs(
+
+				var args = new List<Arg>
+				{
 					new Arg("ProjectName", project.Name),
 					new Arg("ProjectPath", project.WorkingDirectorySource),
 					new Arg("PackagesPath", project.WorkingDirectoryPackages),
@@ -463,8 +465,24 @@ namespace CCNet.Build.Reconfigure
 					new Arg("TempPath", project.WorkingDirectoryTemp),
 					new Arg(project.CustomVersions != null ? "CustomVersions" : null, project.CustomVersions),
 					new Arg("NuGetExecutable", "$(nugetExecutable)"),
-					new Arg("NuGetUrl", project.NugetRestoreUrl));
+					new Arg("NuGetUrl", project.NugetRestoreUrl)
+				};
 
+				var library = project as LibraryProjectConfiguration;
+				if (library != null)
+				{
+					if (library.Dependencies != null)
+					{
+						args.Add(new Arg("Dependencies", library.Dependencies));
+					}
+
+					if (library.Bundles != null)
+					{
+						args.Add(new Arg("Bundles", library.Bundles));
+					}
+				}
+
+				writer.WriteBuildArgs(args.ToArray());
 				writer.WriteElementString("description", "Setup packages");
 			}
 		}

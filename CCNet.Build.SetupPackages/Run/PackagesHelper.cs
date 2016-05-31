@@ -52,7 +52,9 @@ namespace CCNet.Build.SetupPackages
 					IsStatic = m_checker.IsStatic(package.Id),
 					SourceVersion = package.Version,
 					PinnedToCurrent = m_checker.IsPinnedToCurrentVersion(package.Id),
-					PinnedToSpecific = m_checker.IsPinnedToSpecificVersion(package.Id)
+					PinnedToSpecific = m_checker.IsPinnedToSpecificVersion(package.Id),
+					IsDependency = m_checker.IsDependency(package.Id),
+					IsBundle = m_checker.IsBundle(package.Id)
 				};
 
 				SetupProjectUrl(log);

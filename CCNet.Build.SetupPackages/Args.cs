@@ -38,6 +38,16 @@ namespace CCNet.Build.SetupPackages
 			get { return Current.Get("CustomVersions", String.Empty); }
 		}
 
+		public static string Dependencies
+		{
+			get { return Current.Get("Dependencies", String.Empty); }
+		}
+
+		public static string Bundles
+		{
+			get { return Current.Get("Bundles", String.Empty); }
+		}
+
 		public static string NuGetExecutable
 		{
 			get { return Current.Get<string>("NuGetExecutable"); }

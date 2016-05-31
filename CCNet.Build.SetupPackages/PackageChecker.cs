@@ -10,19 +10,24 @@ namespace CCNet.Build.SetupPackages
 		private readonly NuGetDb m_db;
 
 		private Dictionary<string, NuGetPackage> m_localPackages;
-		private Dictionary<string, Version> m_customVersions;
 
-		public PackageChecker(string nugetDbConnection, string customVersions)
+		private readonly Dictionary<string, Version> m_customVersions;
+		private readonly HashSet<string> m_dependencies;
+		private readonly HashSet<string> m_bundles;
+
+		public PackageChecker(
+			string nugetDbConnection,
+			string customVersions,
+			string dependencies,
+			string bundles)
 		{
 			m_db = new NuGetDb(nugetDbConnection);
 
 			m_localPackages = new Dictionary<string, NuGetPackage>();
-			m_customVersions = new Dictionary<string, Version>();
 
-			if (!String.IsNullOrEmpty(customVersions))
-			{
-				ParseCustomVersions(customVersions);
-			}
+			m_customVersions = ParseCustomVersions(customVersions);
+			m_dependencies = ParseCustomPackages(dependencies);
+			m_bundles = ParseCustomPackages(bundles);
 		}
 
 		public int PackageCount
@@ -30,9 +35,11 @@ namespace CCNet.Build.SetupPackages
 			get { return m_localPackages.Count; }
 		}
 
-		private void ParseCustomVersions(string customVersions)
+		private static Dictionary<string, Version> ParseCustomVersions(string customVersions)
 		{
-			m_customVersions = new Dictionary<string, Version>();
+			var result = new Dictionary<string, Version>();
+			if (String.IsNullOrEmpty(customVersions))
+				return result;
 
 			foreach (var item in customVersions.Split('|'))
 			{
@@ -41,15 +48,25 @@ namespace CCNet.Build.SetupPackages
 					// empty version behavior depends on the package type
 					// for local packages, it means they should be pinned to its current version
 					// for remote packages, it means they should be updated to their latest version
-					m_customVersions.Add(item, null);
+					result.Add(item, null);
 					continue;
 				}
 
 				var parts = item.Split('+');
 				var name = parts[0];
 				var version = parts[1];
-				m_customVersions.Add(name, new Version(version));
+				result.Add(name, new Version(version));
 			}
+
+			return result;
+		}
+
+		private static HashSet<string> ParseCustomPackages(string customPackages)
+		{
+			if (String.IsNullOrEmpty(customPackages))
+				return new HashSet<string>();
+
+			return new HashSet<string>(customPackages.Split('|'));
 		}
 
 		public void Load()
@@ -75,6 +92,16 @@ namespace CCNet.Build.SetupPackages
 				return true;
 
 			return false;
+		}
+
+		public bool IsDependency(string id)
+		{
+			return m_dependencies.Contains(id);
+		}
+
+		public bool IsBundle(string id)
+		{
+			return m_bundles.Contains(id);
 		}
 
 		public TargetFramework TargetFramework(string id)
