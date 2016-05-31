@@ -162,6 +162,16 @@ namespace CCNet.Build.Reconfigure
 				configs,
 				"ClaimSystem.Domain",
 				"ClaimSystem.Core");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.Metro.Core",
+				"CnetContent.Metro.Common");
+
+			SetupBundles(
+				configs,
+				"CnetContent.Metro.Common",
+				"Atom.Module.Base64Url");
 		}
 
 		private static void SetupDependencies(IEnumerable<ProjectConfiguration> configs, string libraryName, params string[] dependencies)
@@ -171,6 +181,15 @@ namespace CCNet.Build.Reconfigure
 				return;
 
 			library.Dependencies = String.Join("|", dependencies);
+		}
+
+		private static void SetupBundles(IEnumerable<ProjectConfiguration> configs, string libraryName, params string[] bundles)
+		{
+			var library = configs.FirstOrDefault(item => item.Name == libraryName) as LibraryProjectConfiguration;
+			if (library == null)
+				return;
+
+			library.Bundles = String.Join("|", bundles);
 		}
 
 		private static List<T> FilterByType<T>(IEnumerable<ProjectConfiguration> configs) where T : ProjectConfiguration
@@ -641,6 +660,28 @@ namespace CCNet.Build.Reconfigure
 						String.Format("{0}.???, {0}.resources.???", project.CustomAssemblyName ?? project.Name),
 						"to",
 						project.WorkingDirectoryRelease());
+
+					// xxx temporary implementation for merging bundles
+					if (project.Bundles != null)
+					{
+						using (writer.OpenTag("exec"))
+						{
+							var args = new StringBuilder();
+							args.AppendFormat("/out:\"{0}\\{1}.dll\"", project.WorkingDirectoryRelease(), project.CustomAssemblyName ?? project.Name);
+
+							foreach (var bundle in project.Bundles.Split('|'))
+							{
+								args.AppendFormat(" \"{0}\\{1}.dll\"", project.SourceDirectoryRelease, bundle);
+							}
+
+							args.Append(" /xmldocs");
+
+							writer.WriteElementString("executable", "$(ilmergeExecutable)");
+							writer.WriteElementString("buildTimeoutSeconds", "45");
+							writer.WriteElementString("buildArgs", args.ToString());
+							writer.WriteElementString("description", "Merge bundles package");
+						}
+					}
 
 					using (writer.OpenTag("exec"))
 					{
