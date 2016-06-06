@@ -105,6 +105,12 @@ namespace CCNet.Build.Reconfigure
 				cloudService.VmSizes = new List<string> { "Small", "Medium" };
 			}
 
+			ApplyDependencies(configs);
+			ApplyBundles(configs);
+		}
+
+		private static void ApplyDependencies(List<ProjectConfiguration> configs)
+		{
 			SetupDependencies(
 				configs,
 				"CnetContent.FlexQueue.Client",
@@ -166,12 +172,79 @@ namespace CCNet.Build.Reconfigure
 			SetupDependencies(
 				configs,
 				"CnetContent.Metro.Core",
-				"CnetContent.Metro.Common");
+				"Newtonsoft.Json");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.Metro.Api.Server",
+				"CnetContent.Metro.Core");
+
+			SetupDependencies(
+				configs,
+				"Lean.Rest.Client",
+				"Newtonsoft.Json");
+
+			SetupDependencies(
+				configs,
+				"Vortex.TPDServiceApplication.CoreLibrary",
+				"Vortex.WindowsServiceApplication.CoreLibrary",
+				"TaskManagement");
+
+			SetupDependencies(
+				configs,
+				"Vortex.WindowsServiceApplication.CoreLibrary",
+				"Vortex.ConsoleApplication.CoreLibrary");
+
+			SetupDependencies(
+				configs,
+				"Vortex.ConsoleApplication.CoreLibrary",
+				"VXSystem");
+
+			SetupDependencies(
+				configs,
+				"Vortex.WebServiceApplication.CoreLibrary",
+				"VXSystem");
+
+			SetupDependencies(
+				configs,
+				"Vortex.WindowsFormsApplication.CoreLibrary",
+				"VXSystem");
+
+			SetupDependencies(
+				configs,
+				"VXSqlAdapter",
+				"VXStorage");
+
+			SetupDependencies(
+				configs,
+				"VXWebAdapter",
+				"VXStorage",
+				"Microsoft.Web.Services3");
+		}
+
+		private static void ApplyBundles(List<ProjectConfiguration> configs)
+		{
+			SetupBundles(
+				configs,
+				"CnetContent.Metro.Core",
+				"Atom.Module.Base64Url",
+				"Lean.Rest.Client");
 
 			SetupBundles(
 				configs,
-				"CnetContent.Metro.Common",
-				"Atom.Module.Base64Url");
+				"CnetContent.Metro.Api.Server",
+				"Lean.Rest.Server");
+
+			SetupBundles(
+				configs,
+				"Lean.Rest.Client",
+				"Lean.Security.Auth",
+				"RestSharp");
+
+			SetupBundles(
+				configs,
+				"Lean.Rest.Server",
+				"Lean.Security.Auth");
 		}
 
 		private static void SetupDependencies(IEnumerable<ProjectConfiguration> configs, string libraryName, params string[] dependencies)
@@ -667,14 +740,16 @@ namespace CCNet.Build.Reconfigure
 						using (writer.OpenTag("exec"))
 						{
 							var args = new StringBuilder();
-							args.AppendFormat("/out:\"{0}\\{1}.dll\"", project.WorkingDirectoryRelease(), project.CustomAssemblyName ?? project.Name);
+							args.AppendFormat("/out:\"{0}\\{1}.dll\"", project.WorkingDirectoryRelease(), project.Name);
 
-							foreach (var bundle in project.Bundles.Split('|'))
+							foreach (var bundle in new[] { project.Name }.Union(project.Bundles.Split('|')))
 							{
 								args.AppendFormat(" \"{0}\\{1}.dll\"", project.SourceDirectoryRelease, bundle);
 							}
 
 							args.Append(" /xmldocs");
+							//xxx experimenting
+							args.Append(" /allowDup:AuthHeaders /allowDup:HmacAuth /allowDup:HmacGenerator /allowDup:HmacValidator /allowDup:HmacSignature");
 
 							writer.WriteElementString("executable", "$(ilmergeExecutable)");
 							writer.WriteElementString("buildTimeoutSeconds", "45");
