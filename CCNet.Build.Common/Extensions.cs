@@ -18,7 +18,7 @@ namespace CCNet.Build.Common
 		{
 			return String.Format(
 				CultureInfo.InvariantCulture,
-				"{0:yyyy-MM-dd HH:mm:ss} #MSK ({1:MMM d, h:mm:ss tt} #PST)",
+				"{0:yyyy-MM-dd HH:mm} MSK ({1:MMM d, h:mm tt} PST)",
 				TimeZoneInfo.ConvertTimeBySystemTimeZoneId(dateTime, "Russian Standard Time"),
 				TimeZoneInfo.ConvertTimeBySystemTimeZoneId(dateTime, "Pacific Standard Time"));
 		}
