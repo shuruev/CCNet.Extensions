@@ -57,6 +57,9 @@ namespace CCNet.Build.Reconfigure
 				case TargetFramework.Net45:
 					return "4.5";
 
+				case TargetFramework.Net452:
+					return "4.5.2";
+
 				case TargetFramework.Net461:
 					return "4.6.1";
 

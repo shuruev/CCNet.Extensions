@@ -75,6 +75,9 @@ namespace CCNet.Build.Reconfigure
 					case TargetFramework.Net45:
 						return "P13"; // ProjectTargetFramework45
 
+					case TargetFramework.Net452:
+						return "P19"; // ProjectTargetFramework452
+
 					case TargetFramework.Net461:
 						return "P18"; // ProjectTargetFramework461
 

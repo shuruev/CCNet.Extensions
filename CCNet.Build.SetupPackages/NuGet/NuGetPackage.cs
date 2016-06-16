@@ -56,6 +56,9 @@ namespace CCNet.Build.SetupPackages
 				case "net45":
 					return TargetFramework.Net45;
 
+				case "net452":
+					return TargetFramework.Net452;
+
 				case "net461":
 					return TargetFramework.Net461;
 
