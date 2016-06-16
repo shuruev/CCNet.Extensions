@@ -171,13 +171,26 @@ namespace CCNet.Build.Reconfigure
 
 			SetupDependencies(
 				configs,
-				"CnetContent.Metro.Core",
+				"CnetContent.Metro.Common",
 				"Newtonsoft.Json");
 
 			SetupDependencies(
 				configs,
-				"CnetContent.Metro.Api.Server",
-				"CnetContent.Metro.Core");
+				"CnetContent.Metro.Core",
+				"CnetContent.Metro.Common");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.Metro.Api",
+				"CnetContent.Metro.Api.Web",
+				"CnetContent.Metro.Api.Fabric",
+				"CnetContent.Metro.Core",
+				"Lean.Rest.Server",
+				"Microsoft.AspNet.WebApi.Owin",
+				"Microsoft.Owin.Hosting",
+				"Microsoft.Owin.Host.HttpListener",
+				"Microsoft.Owin.Host.SystemWeb",
+				"Microsoft.ServiceFabric.Services");
 
 			SetupDependencies(
 				configs,
@@ -217,29 +230,39 @@ namespace CCNet.Build.Reconfigure
 
 			SetupDependencies(
 				configs,
+				"VXStorage",
+				"VXSystem");
+
+			SetupDependencies(
+				configs,
 				"VXWebAdapter",
 				"VXStorage",
 				"Microsoft.Web.Services3");
+
+			SetupDependencies(
+				configs,
+				"OMClientLib",
+				"OMCore");
+
+			SetupDependencies(
+				configs,
+				"WFMClientLib",
+				"WFMCore");
 		}
 
 		private static void ApplyBundles(List<ProjectConfiguration> configs)
 		{
 			SetupBundles(
 				configs,
-				"CnetContent.Metro.Core",
+				"CnetContent.Metro.Common",
 				"Atom.Module.Base64Url",
+				"Atom.Module.Configuration",
 				"Lean.Rest.Client");
 
 			SetupBundles(
 				configs,
-				"CnetContent.Metro.Api.Server",
-				"Lean.Rest.Server");
-
-			SetupBundles(
-				configs,
 				"Lean.Rest.Client",
-				"Lean.Security.Auth",
-				"RestSharp");
+				"Lean.Security.Auth");
 
 			SetupBundles(
 				configs,
