@@ -105,11 +105,11 @@ namespace CCNet.Build.GenerateNuspec
 		private static void AddUrls(XmlTextWriter xtw)
 		{
 			var projectUrl = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+library", Args.ProjectName);
-			var iconUrl = "https://owl.cbsi.com/confluence/download/attachments/12795232/cnet.png";
+			var iconUrl = "http://ccsdevbuild.blob.core.windows.net/icon/cnet.png";
 
 			if (Args.MarkAsCustom)
 			{
-				iconUrl = "https://owl.cbsi.com/confluence/download/attachments/12795232/cnet-bw.png";
+				iconUrl = "http://ccsdevbuild.blob.core.windows.net/icon/cnet-bw.png";
 			}
 
 			xtw.WriteElementString("projectUrl", projectUrl);
