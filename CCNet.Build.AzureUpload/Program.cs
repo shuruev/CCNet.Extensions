@@ -50,6 +50,15 @@ namespace CCNet.Build.AzureUpload
 
 			switch (extension)
 			{
+				case ".txt":
+					blob.Properties.ContentType = "text/plain";
+					break;
+
+				case ".xml":
+				case ".cscfg":
+					blob.Properties.ContentType = "text/xml";
+					break;
+
 				case ".zip":
 					blob.Properties.ContentType = "application/zip";
 					break;
