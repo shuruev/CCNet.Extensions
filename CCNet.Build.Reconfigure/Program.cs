@@ -92,6 +92,30 @@ namespace CCNet.Build.Reconfigure
 				library.Dependencies = "WindowsAzure.Storage|Lucene.Net";
 			}
 
+			library = configs.FirstOrDefault(item => item.Name == "Libium.Core.Windows.Net") as LibraryProjectConfiguration;
+			if (library != null)
+			{
+				library.CustomCompanyName = "Severin Pankov";
+			}
+
+			library = configs.FirstOrDefault(item => item.Name == "Libium.Drawing.Windows.Net") as LibraryProjectConfiguration;
+			if (library != null)
+			{
+				library.CustomCompanyName = "Severin Pankov";
+			}
+
+			library = configs.FirstOrDefault(item => item.Name == "Libium.UI.Windows.Net.Forms") as LibraryProjectConfiguration;
+			if (library != null)
+			{
+				library.CustomCompanyName = "Severin Pankov";
+			}
+
+			library = configs.FirstOrDefault(item => item.Name == "Libium.UseCases.Windows.Net") as LibraryProjectConfiguration;
+			if (library != null)
+			{
+				library.CustomCompanyName = "Severin Pankov";
+			}
+
 			library = configs.FirstOrDefault(item => item.Name == "Vortex.Images.Remote") as LibraryProjectConfiguration;
 			if (library != null)
 			{
@@ -246,8 +270,35 @@ namespace CCNet.Build.Reconfigure
 
 			SetupDependencies(
 				configs,
+				"OMServerLib",
+				"OMCore");
+
+			SetupDependencies(
+				configs,
 				"WFMClientLib",
 				"WFMCore");
+
+			SetupDependencies(
+				configs,
+				"WFMServerLib",
+				"WFMCore");
+
+			SetupDependencies(
+				configs,
+				"Helix.Data",
+				"Helix.Data.Core");
+
+			SetupDependencies(
+				configs,
+				"Helix.Data.Core.Sql",
+				"Helix.Data.Core",
+				"VXSqlAdapter");
+
+			SetupDependencies(
+				configs,
+				"Helix.Data.Core.Web",
+				"Helix.Data.Core",
+				"VXWebAdapter");
 		}
 
 		private static void ApplyBundles(List<ProjectConfiguration> configs)
