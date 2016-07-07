@@ -143,9 +143,17 @@ namespace CCNet.Build.Reconfigure
 				case "8a99855552936a300152936ca5340e71":
 					return "8a99855552936a300152936ca5340e71";
 
+				case "dbaranov":
+				case "8a99855552936a300152936ca3210228":
+					return "8a99855552936a300152936ca3210228";
+
 				case "dsemikolenov":
 				case "8a99855552936a300152936cbc1c37ac":
 					return "8a99855552936a300152936cbc1c37ac";
+
+				case "eelokhov":
+				case "8a99855552936a300152936cbbb53498":
+					return "8a99855552936a300152936cbbb53498";
 
 				case "itirskaya":
 				case "8a99855552936a300152936cb588051e":
@@ -184,6 +192,10 @@ namespace CCNet.Build.Reconfigure
 				case "kolemasovs":
 				case "8a99855552936a300152936cb4a77e8a":
 					return "8a99855552936a300152936cb4a77e8a";
+
+				case "skonkin":
+				case "8a99855552936a300152936cabe33b9b":
+					return "8a99855552936a300152936cabe33b9b";
 
 				case "vilyin":
 				case "8a99855552936a300152936caec65198":

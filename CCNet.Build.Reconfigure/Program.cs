@@ -98,6 +98,12 @@ namespace CCNet.Build.Reconfigure
 				library.CustomCompanyName = "Severin Pankov";
 			}
 
+			library = configs.FirstOrDefault(item => item.Name == "Rsdn.Editor") as LibraryProjectConfiguration;
+			if (library != null)
+			{
+				library.CustomCompanyName = "optim";
+			}
+
 			library = configs.FirstOrDefault(item => item.Name == "Libium.Drawing.Windows.Net") as LibraryProjectConfiguration;
 			if (library != null)
 			{
@@ -299,6 +305,22 @@ namespace CCNet.Build.Reconfigure
 				"Helix.Data.Core.Web",
 				"Helix.Data.Core",
 				"VXWebAdapter");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.ExtConfig.Client",
+				"CnetContent.ExtConfig.Common",
+				"Lean.Rest");
+
+			SetupDependencies(
+				configs,
+				"SpecFlow.Common.Database",
+				"SpecFlow.Common");
+
+			SetupDependencies(
+				configs,
+				"SpecFlow.Common",
+				"SpecFlow");
 		}
 
 		private static void ApplyBundles(List<ProjectConfiguration> configs)
@@ -907,6 +929,7 @@ namespace CCNet.Build.Reconfigure
 						|| project.Name == "CC.Domain"
 						|| project.Name == "CC.Showcase"
 						|| project.Name == "CC.Storage.Azure"
+						|| project.Name == "CC.Storage.Hive"
 						|| project.Name == "CC.Storage.Solr"
 						|| project.Name == "CC.Storage.Sql"
 						|| project.Name == "FcatApi")

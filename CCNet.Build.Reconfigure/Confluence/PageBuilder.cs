@@ -142,6 +142,7 @@ namespace CCNet.Build.Reconfigure
 				"Archive",
 				"ContentCast",
 				"DataSource",
+				"GuidedSelling",
 				"Internal",
 				"PartnerAccess",
 				"Platform",
