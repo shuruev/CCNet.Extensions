@@ -135,6 +135,12 @@ namespace CCNet.Build.Reconfigure
 				cloudService.VmSizes = new List<string> { "Small", "Medium" };
 			}
 
+			cloudService = configs.FirstOrDefault(item => item.Name == "CC.PE.Cloud") as CloudServiceProjectConfiguration;
+			if (cloudService != null)
+			{
+				cloudService.VmSizes = new List<string> { "Small", "Large" };
+			}
+
 			ApplyDependencies(configs);
 			ApplyBundles(configs);
 		}
@@ -321,6 +327,21 @@ namespace CCNet.Build.Reconfigure
 				configs,
 				"SpecFlow.Common",
 				"SpecFlow");
+
+			SetupDependencies(
+				configs,
+				"AlarmClient",
+				"AlarmInterface");
+
+			SetupDependencies(
+				configs,
+				"Vortex.WebServiceApplication.CoreLibrary",
+				"Microsoft.Web.Services3");
+
+			SetupDependencies(
+				configs,
+				"VXSSClient",
+				"VXSSCore");
 		}
 
 		private static void ApplyBundles(List<ProjectConfiguration> configs)
@@ -932,7 +953,8 @@ namespace CCNet.Build.Reconfigure
 						|| project.Name == "CC.Storage.Hive"
 						|| project.Name == "CC.Storage.Solr"
 						|| project.Name == "CC.Storage.Sql"
-						|| project.Name == "FcatApi")
+						|| project.Name == "FcatApi"
+						|| project.Name == "CC.PresentationEngine.Shared")
 					{
 						writer.CbTag(
 							"CopyFiles",
@@ -1260,9 +1282,6 @@ namespace CCNet.Build.Reconfigure
 
 					writer.CbTag("CopyFiles", "from", project.ReleaseFileServiceConfiguration, "to", project.WorkingDirectoryPublish());
 					filesToUpload.Add(Path.GetFileName(project.ReleaseFileServiceConfiguration));
-
-					writer.CbTag("CopyFiles", "from", project.SourceFileDiagnostics, "to", project.WorkingDirectoryPublish());
-					filesToUpload.Add(Path.GetFileName(project.SourceFileDiagnostics));
 
 					foreach (var vmSize in project.VmSizes)
 					{

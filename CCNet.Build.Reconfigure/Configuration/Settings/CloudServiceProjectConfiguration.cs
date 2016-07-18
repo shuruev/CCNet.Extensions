@@ -23,11 +23,6 @@ namespace CCNet.Build.Reconfigure
 			get { return String.Format(@"{0}\ServiceDefinition.csdef", WorkingDirectorySource); }
 		}
 
-		public string SourceFileDiagnostics
-		{
-			get { return String.Format(@"{0}\diagnostics.xml", WorkingDirectorySource); }
-		}
-
 		public string ReleaseFileServiceConfiguration
 		{
 			get { return String.Format(@"{0}\ServiceConfiguration.cscfg", SourceDirectoryRelease); }

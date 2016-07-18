@@ -13,7 +13,7 @@ namespace CCNet.Build.Reconfigure
 
 		public override ProjectType Type
 		{
-			get { return ProjectType.Service; }
+			get { return ProjectType.Console; }
 		}
 
 		public override List<ProjectConfiguration> ExportConfigurations()
