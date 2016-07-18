@@ -104,6 +104,8 @@ If you beleive everything is correct please talk to Oleg Shuruev to improve this
 				case "P19": return new ProjectTargetFramework452();
 				case "P18": return new ProjectTargetFramework461();
 				case "P14": return new CheckProjectCompilation();
+				case "P20": return new OutputPathDefault();
+				case "P21": return new OutputPathBin();
 				case "P15": return new ProjectDocumentationNone();
 				case "P16": return new ProjectDocumentationPartial();
 				case "P17": return new ProjectDocumentationFull();

@@ -19,17 +19,6 @@
 			release.CheckRequired("ErrorReport", "prompt");
 			release.CheckRequired("Optimize", "true");
 			release.CheckOptional("WarningLevel", "4");
-
-			if (context.ProjectIsWeb.Result)
-			{
-				debug.CheckRequired("OutputPath", @"bin\");
-				release.CheckRequired("OutputPath", @"bin\");
-			}
-			else
-			{
-				debug.CheckRequired("OutputPath", @"bin\Debug\");
-				release.CheckRequired("OutputPath", @"bin\Release\");
-			}
 		}
 	}
 }

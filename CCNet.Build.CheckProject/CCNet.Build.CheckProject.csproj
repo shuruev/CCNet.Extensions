@@ -70,6 +70,8 @@
     <Compile Include="Issues\ProjectItems\ShouldHaveWebConfigDefault.cs" />
     <Compile Include="Issues\ProjectItems\ShouldHaveWebConfig.cs" />
     <Compile Include="Issues\ProjectItems\ShouldHaveAppConfig.cs" />
+    <Compile Include="Issues\ProjectProperties\OutputPath\OutputPathBin.cs" />
+    <Compile Include="Issues\ProjectProperties\OutputPath\OutputPathDefault.cs" />
     <Compile Include="Issues\ProjectProperties\Documentation\ProjectDocumentationFull.cs" />
     <Compile Include="Issues\ProjectProperties\Documentation\ProjectDocumentationPartial.cs" />
     <Compile Include="Issues\ProjectProperties\Documentation\ProjectDocumentationNone.cs" />

@@ -147,6 +147,7 @@ namespace CCNet.Build.Reconfigure
 				"P08", // CheckProjectRootNamespace
 				"P09", // CheckProjectStartupObject
 				"P14", // CheckProjectCompilation
+				"P20", // OutputPathDefault
 				null
 			});
 

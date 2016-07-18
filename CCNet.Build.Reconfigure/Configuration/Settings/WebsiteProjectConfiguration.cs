@@ -33,6 +33,11 @@ namespace CCNet.Build.Reconfigure
 			checks.Remove("I01");
 			checks.Remove("I02");
 
+			// replace P20 (OutputPathDefault) with P21 (OutputPathBin)
+			var p20 = checks.IndexOf("P20");
+			checks.Insert(p20, "P21");
+			checks.Remove("P20");
+
 			return checks;
 		}
 	}
