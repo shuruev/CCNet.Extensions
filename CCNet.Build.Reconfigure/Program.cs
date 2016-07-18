@@ -125,8 +125,15 @@ namespace CCNet.Build.Reconfigure
 			library = configs.FirstOrDefault(item => item.Name == "Vortex.Images.Remote") as LibraryProjectConfiguration;
 			if (library != null)
 			{
-				library.IgnoreIssues = new List<string> { "P04" };
+				library.IgnoreChecks = new List<string> { "P04" };
 				library.BuildAsExe = true;
+			}
+
+			library = configs.FirstOrDefault(item => item.Name == "CnetContent.Metro.Mail.Engine") as LibraryProjectConfiguration;
+			if (library != null)
+			{
+				library.IgnoreChecks = new List<string> { "P20" };
+				library.ForceChecks = new List<string> { "P21" };
 			}
 
 			cloudService = configs.FirstOrDefault(item => item.Name == "CC.MLG.Cloud") as CloudServiceProjectConfiguration;

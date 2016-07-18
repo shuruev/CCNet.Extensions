@@ -12,22 +12,18 @@ namespace CCNet.Build.Reconfigure
 		public DocumentationType Documentation { get; set; }
 		public string RootNamespace { get; set; }
 		public string CustomVersions { get; set; }
-		public List<string> IgnoreIssues { get; set; }
+		public List<string> IgnoreChecks { get; set; }
+		public List<string> ForceChecks { get; set; }
 
 		protected BasicProjectConfiguration()
 		{
-			IgnoreIssues = new List<string>();
+			IgnoreChecks = new List<string>();
+			ForceChecks = new List<string>();
 		}
 
-		public virtual string SourceDirectoryRelease
-		{
-			get { return String.Format(@"{0}\bin\Release", WorkingDirectorySource); }
-		}
+		public virtual string SourceDirectoryRelease => $@"{WorkingDirectorySource}\bin\Release";
 
-		public string MsbuildExecutable
-		{
-			get { return @"C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"; }
-		}
+		public string MsbuildExecutable => @"C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe";
 
 		public string NugetRestoreUrl
 		{
@@ -36,14 +32,11 @@ namespace CCNet.Build.Reconfigure
 				if (String.IsNullOrEmpty(Branch))
 					return "$(nugetUrl)/api/v2";
 
-				return String.Format("$(nugetUrl)/private/{0}/api/v2", Branch);
+				return $"$(nugetUrl)/private/{Branch}/api/v2";
 			}
 		}
 
-		public bool IncludeXmlDocumentation
-		{
-			get { return Documentation != DocumentationType.None; }
-		}
+		public bool IncludeXmlDocumentation => Documentation != DocumentationType.None;
 
 		public string CheckIssues
 		{
@@ -52,7 +45,8 @@ namespace CCNet.Build.Reconfigure
 				return String.Join(
 					"|",
 					GetIssuesToCheck()
-						.Except(IgnoreIssues)
+						.Except(IgnoreChecks)
+						.Union(ForceChecks)
 						.Where(code => code != null));
 			}
 		}
@@ -83,7 +77,7 @@ namespace CCNet.Build.Reconfigure
 
 					default:
 						throw new InvalidOperationException(
-							String.Format("Unknown target framework '{0}'.", Framework));
+							$"Unknown target framework '{Framework}'.");
 				}
 			}
 		}
@@ -105,7 +99,7 @@ namespace CCNet.Build.Reconfigure
 
 					default:
 						throw new InvalidOperationException(
-							String.Format("Unknown documentation type '{0}'.", Documentation));
+							$"Unknown documentation type '{Documentation}'.");
 				}
 			}
 		}

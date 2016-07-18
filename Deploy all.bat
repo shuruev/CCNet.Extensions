@@ -19,7 +19,7 @@ XCOPY "CCNet.Build.Common\bin\Debug\CCNet.Build.Common.dll" "%ccnetPath%\CCNet.B
 :XCOPY "CCNet.Build.AzureUpload\bin\Debug\CCNet.Build.AzureUpload.exe" "%ccnetPath%\CCNet.Build" /D /Y
 :XCOPY "CCNet.Build.AzureDownload\bin\Debug\CCNet.Build.AzureDownload.exe" "%ccnetPath%\CCNet.Build" /D /Y
 
-:XCOPY "CCNet.Build.CheckProject\bin\Debug\CCNet.Build.CheckProject.exe" "%ccnetPath%\CCNet.Build" /D /Y
+XCOPY "CCNet.Build.CheckProject\bin\Debug\CCNet.Build.CheckProject.exe" "%ccnetPath%\CCNet.Build" /D /Y
 
 :XCOPY "CCNet.Build.GenerateNuspec\bin\Debug\CCNet.Build.GenerateNuspec.exe" "%ccnetPath%\CCNet.Build" /D /Y
 
