@@ -17,6 +17,9 @@ namespace CCNet.Build.Reconfigure
 			// remove P04 (ProjectOutputTypeLibrary)
 			checks.Remove("P04");
 
+			// remove P20 (OutputPathDefault)
+			checks.Remove("P20");
+
 			return checks;
 		}
 	}

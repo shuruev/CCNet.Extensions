@@ -132,8 +132,8 @@ namespace CCNet.Build.Reconfigure
 			library = configs.FirstOrDefault(item => item.Name == "CnetContent.Metro.Mail.Engine") as LibraryProjectConfiguration;
 			if (library != null)
 			{
-				library.IgnoreChecks = new List<string> { "P20" };
-				library.ForceChecks = new List<string> { "P21" };
+				library.IgnoreChecks = new List<string> { "P21" };
+				library.ForceChecks = new List<string> { "P20" };
 			}
 
 			cloudService = configs.FirstOrDefault(item => item.Name == "CC.MLG.Cloud") as CloudServiceProjectConfiguration;
@@ -339,11 +339,6 @@ namespace CCNet.Build.Reconfigure
 				configs,
 				"AlarmClient",
 				"AlarmInterface");
-
-			SetupDependencies(
-				configs,
-				"Vortex.WebServiceApplication.CoreLibrary",
-				"Microsoft.Web.Services3");
 
 			SetupDependencies(
 				configs,
