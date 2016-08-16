@@ -6,33 +6,19 @@ namespace CCNet.Build.Reconfigure
 {
 	public class CloudRoleProjectPage : LibraryProjectPage
 	{
-		public CloudRoleProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument)
-			: base(areaName, projectName, pageName, pageDocument)
+		public CloudRoleProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument, BuildOwners buildOwners)
+			: base(areaName, projectName, pageName, pageDocument, buildOwners)
 		{
 		}
 
-		public override ProjectType Type
-		{
-			get { return ProjectType.CloudRole; }
-		}
+		public override ProjectType Type => ProjectType.CloudRole;
 
 		public override List<ProjectConfiguration> ExportConfigurations()
 		{
-			return new List<ProjectConfiguration>
-			{
-				new CloudRoleProjectConfiguration
-				{
-					Name = ProjectName,
-					Description = Description,
-					Category = AreaName,
-					TfsPath = TfsPath,
-					//xxx
-					OwnerEmail = "oleg.shuruev@cbsinteractive.com",
-					Framework = Framework,
-					Documentation = Documentation,
-					RootNamespace = Namespace
-				}
-			};
+			var config = new CloudRoleProjectConfiguration();
+			ApplyTo(config);
+
+			return new List<ProjectConfiguration> { config };
 		}
 	}
 }

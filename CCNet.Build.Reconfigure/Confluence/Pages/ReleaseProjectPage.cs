@@ -11,8 +11,8 @@ namespace CCNet.Build.Reconfigure
 	{
 		public string Title { get; set; }
 
-		protected ReleaseProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument)
-			: base(areaName, projectName, pageName, pageDocument)
+		protected ReleaseProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument, BuildOwners buildOwners)
+			: base(areaName, projectName, pageName, pageDocument, buildOwners)
 		{
 			Title = ParseTitle(m_properties);
 		}
@@ -29,8 +29,7 @@ namespace CCNet.Build.Reconfigure
 				throw new InvalidOperationException("Something is wrong with project title.");
 
 			if (title != norm)
-				throw new ArgumentException(
-					String.Format("Project title '{0}' does not look well-formed.", title));
+				throw new ArgumentException($"Project title '{title}' does not look well-formed.");
 
 			return title;
 		}
@@ -78,6 +77,13 @@ namespace CCNet.Build.Reconfigure
 			}
 
 			return row;
+		}
+
+		protected void ApplyTo(PublishProjectConfiguration config)
+		{
+			base.ApplyTo(config);
+
+			config.Title = Title;
 		}
 	}
 }

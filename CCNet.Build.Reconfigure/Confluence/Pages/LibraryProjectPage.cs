@@ -13,18 +13,15 @@ namespace CCNet.Build.Reconfigure
 		public DocumentationType Documentation { get; set; }
 		public string Namespace { get; set; }
 
-		public LibraryProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument)
-			: base(areaName, projectName, pageName, pageDocument)
+		public LibraryProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument, BuildOwners buildOwners)
+			: base(areaName, projectName, pageName, pageDocument, buildOwners)
 		{
 			Framework = ParseFramework(m_properties);
 			Documentation = ParseDocumentation(m_properties);
 			Namespace = ParseNamespace(m_properties);
 		}
 
-		public override ProjectType Type
-		{
-			get { return ProjectType.Library; }
-		}
+		public override ProjectType Type => ProjectType.Library;
 
 		private TargetFramework ParseFramework(Dictionary<string, string> properties)
 		{
@@ -104,23 +101,21 @@ namespace CCNet.Build.Reconfigure
 			return row;
 		}
 
+		protected void ApplyTo(BasicProjectConfiguration config)
+		{
+			base.ApplyTo(config);
+
+			config.Framework = Framework;
+			config.Documentation = Documentation;
+			config.RootNamespace = Namespace;
+		}
+
 		public override List<ProjectConfiguration> ExportConfigurations()
 		{
-			return new List<ProjectConfiguration>
-			{
-				new LibraryProjectConfiguration
-				{
-					Name = ProjectName,
-					Description = Description,
-					Category = AreaName,
-					TfsPath = TfsPath,
-					//xxx
-					OwnerEmail = "oleg.shuruev@cbsinteractive.com",
-					Framework = Framework,
-					Documentation = Documentation,
-					RootNamespace = Namespace
-				}
-			};
+			var config = new LibraryProjectConfiguration();
+			ApplyTo(config);
+
+			return new List<ProjectConfiguration> { config };
 		}
 	}
 }

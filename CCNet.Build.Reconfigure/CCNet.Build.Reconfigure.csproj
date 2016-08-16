@@ -96,6 +96,7 @@
     <Compile Include="Configuration\ProjectConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configuration\CCNetConfigExtensions.cs" />
+    <Compile Include="Users\BuildOwners.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

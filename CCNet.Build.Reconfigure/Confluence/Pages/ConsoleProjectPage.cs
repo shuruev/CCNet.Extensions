@@ -6,34 +6,19 @@ namespace CCNet.Build.Reconfigure
 {
 	public class ConsoleProjectPage : ReleaseProjectPage
 	{
-		public ConsoleProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument)
-			: base(areaName, projectName, pageName, pageDocument)
+		public ConsoleProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument, BuildOwners buildOwners)
+			: base(areaName, projectName, pageName, pageDocument, buildOwners)
 		{
 		}
 
-		public override ProjectType Type
-		{
-			get { return ProjectType.Console; }
-		}
+		public override ProjectType Type => ProjectType.Console;
 
 		public override List<ProjectConfiguration> ExportConfigurations()
 		{
-			return new List<ProjectConfiguration>
-			{
-				new ConsoleProjectConfiguration
-				{
-					Name = ProjectName,
-					Title = Title,
-					Description = Description,
-					Category = AreaName,
-					TfsPath = TfsPath,
-					//xxx
-					OwnerEmail = "oleg.shuruev@cbsinteractive.com",
-					Framework = Framework,
-					Documentation = Documentation,
-					RootNamespace = Namespace
-				}
-			};
+			var config = new ConsoleProjectConfiguration();
+			ApplyTo(config);
+
+			return new List<ProjectConfiguration> { config };
 		}
 	}
 }

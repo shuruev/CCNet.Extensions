@@ -40,7 +40,8 @@ namespace CCNet.Build.Reconfigure
 		{
 			var confluence = new CachedConfluenceClient(Config.ConfluenceUsername, Config.ConfluencePassword, Args.ConfluenceCache);
 			var tfs = new TfsClient(Config.TfsUrl);
-			var builder = new PageBuilder(confluence, tfs);
+			var owners = new BuildOwners();
+			var builder = new PageBuilder(confluence, tfs, owners);
 
 			using (Execute.Step("REBUILD PAGES"))
 			{
@@ -570,7 +571,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString("applyLabel", "false");
 						writer.WriteElementString("autoGetSource", "true");
 						writer.WriteElementString("cleanCopy", "true");
-						writer.WriteElementString("workspace", String.Format("CCNET_{0}_{1}", project.Type.ServerName(), project.BuildQueue));
+						writer.WriteElementString("workspace", $"CCNET_{project.Type.ServerName()}_{project.BuildQueue}");
 						writer.WriteElementString("deleteWorkspace", "true");
 					}
 
@@ -594,7 +595,21 @@ namespace CCNet.Build.Reconfigure
 
 			using (writer.OpenTag("triggers"))
 			{
-				writer.Tag("intervalTrigger", "name", "source or references", "seconds", "30", "buildCondition", "IfModificationExists", "initialSeconds", "5");
+				using (writer.OpenTag("intervalTrigger", "name", "source or references", "buildCondition", "IfModificationExists"))
+				{
+					writer.WriteElementString("seconds", project.BuildEvery.TotalSeconds.ToString());
+					writer.WriteElementString("initialSeconds", "15");
+				}
+
+				using (writer.OpenTag("scheduleTrigger", "name", "weekly force", "buildCondition", "ForceBuild"))
+				{
+					writer.WriteElementString("time", "23:00");
+					writer.WriteElementString("randomOffSetInMinutesFromTime", "45");
+					using (writer.OpenTag("weekDays"))
+					{
+						writer.WriteElementString("weekDay", "Saturday");
+					}
+				}
 			}
 		}
 
@@ -719,7 +734,7 @@ namespace CCNet.Build.Reconfigure
 					new Arg("Storage", "Devbuild"),
 					new Arg("Container", "publish"),
 					new Arg("LocalFile", project.PublishFileLocal()),
-					new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/{1}", project.UniqueName, project.PublishFileName())));
+					new Arg("BlobFile", $"{project.UniqueName}/$[$CCNetLabel]/{project.PublishFileName()}"));
 
 				writer.WriteElementString("description", "Save published release to blobs");
 			}
@@ -734,7 +749,7 @@ namespace CCNet.Build.Reconfigure
 					new Arg("Storage", "Devbuild"),
 					new Arg("Container", "publish"),
 					new Arg("LocalFile", project.ReleaseFileLocal()),
-					new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/{1}", project.UniqueName, project.ReleaseFileName())));
+					new Arg("BlobFile", $"{project.UniqueName}/$[$CCNetLabel]/{project.ReleaseFileName()}"));
 
 				writer.WriteElementString("description", "Save packed release to blobs");
 			}
@@ -749,7 +764,7 @@ namespace CCNet.Build.Reconfigure
 					new Arg("Storage", "Devbuild"),
 					new Arg("Container", "snapshot"),
 					new Arg("LocalFile", project.TempFileSnapshot()),
-					new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/{1}", project.UniqueName, project.SnapshotFileName())));
+					new Arg("BlobFile", $"{project.UniqueName}/$[$CCNetLabel]/{project.SnapshotFileName()}"));
 
 				writer.WriteElementString("description", "Save source snapshot to blobs");
 			}
@@ -764,7 +779,7 @@ namespace CCNet.Build.Reconfigure
 					new Arg("Storage", "Devbuild"),
 					new Arg("Container", "build"),
 					new Arg("LocalFile", project.TempFileSource),
-					new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/source.txt", project.UniqueName)));
+					new Arg("BlobFile", $"{project.UniqueName}/$[$CCNetLabel]/source.txt"));
 
 				writer.WriteElementString("description", "Save source summary to blobs");
 			}
@@ -779,7 +794,7 @@ namespace CCNet.Build.Reconfigure
 					new Arg("Storage", "Devbuild"),
 					new Arg("Container", "build"),
 					new Arg("LocalFile", project.TempFilePackages),
-					new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/packages.txt", project.UniqueName)));
+					new Arg("BlobFile", $"{project.UniqueName}/$[$CCNetLabel]/packages.txt"));
 
 				writer.WriteElementString("description", "Save packages summary to blobs");
 			}
@@ -794,7 +809,7 @@ namespace CCNet.Build.Reconfigure
 					new Arg("Storage", "Devbuild"),
 					new Arg("Container", "build"),
 					new Arg("LocalFile", project.TempFileVersion),
-					new Arg("BlobFile", String.Format("{0}/version.txt", project.UniqueName)));
+					new Arg("BlobFile", $"{project.UniqueName}/version.txt"));
 
 				writer.WriteElementString("description", "Save latest version to blobs");
 			}
@@ -802,7 +817,12 @@ namespace CCNet.Build.Reconfigure
 
 		private static void WriteLibraryProject(XmlWriter writer, LibraryProjectConfiguration project)
 		{
-			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
+			writer.Comment($"PROJECT: {project.UniqueName}");
+			if (project.BuildEvery == TimeSpan.Zero)
+			{
+				writer.Comment("Builds are disabled.");
+				return;
+			}
 
 			Action cleanup = () =>
 			{
@@ -963,7 +983,7 @@ namespace CCNet.Build.Reconfigure
 							"from",
 							project.WorkingDirectoryRelease() + @"\*",
 							"to",
-							String.Format(@"\\rufrt-vxbuild.cneu.cnwk\InternalReferences\{0}\Latest", project.Name));
+							$@"\\rufrt-vxbuild.cneu.cnwk\InternalReferences\{project.Name}\Latest");
 					}
 				}
 
@@ -977,7 +997,12 @@ namespace CCNet.Build.Reconfigure
 
 		private static void WriteWebsiteProject(XmlWriter writer, WebsiteProjectConfiguration project)
 		{
-			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
+			writer.Comment($"PROJECT: {project.UniqueName}");
+			if (project.BuildEvery == TimeSpan.Zero)
+			{
+				writer.Comment("Builds are disabled.");
+				return;
+			}
 
 			Action cleanup = () =>
 			{
@@ -1021,7 +1046,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteElementString("executable", project.MsbuildExecutable);
 						writer.WriteElementString("targets", "Build;_CopyWebApplication");
 						writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
-						writer.WriteElementString("buildArgs", String.Format(@"/noconsolelogger /p:Configuration=Release;OutDir={0}\", project.SourceDirectoryRelease));
+						writer.WriteElementString("buildArgs", $@"/noconsolelogger /p:Configuration=Release;OutDir={project.SourceDirectoryRelease}\");
 						writer.WriteElementString("description", "Publish web site");
 					}
 
@@ -1045,7 +1070,12 @@ namespace CCNet.Build.Reconfigure
 
 		private static void WriteServiceProject(XmlWriter writer, ServiceProjectConfiguration project)
 		{
-			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
+			writer.Comment($"PROJECT: {project.UniqueName}");
+			if (project.BuildEvery == TimeSpan.Zero)
+			{
+				writer.Comment("Builds are disabled.");
+				return;
+			}
 
 			Action cleanup = () =>
 			{
@@ -1104,7 +1134,12 @@ namespace CCNet.Build.Reconfigure
 
 		private static void WriteApplicationProject(XmlWriter writer, ConsoleProjectConfiguration project)
 		{
-			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
+			writer.Comment($"PROJECT: {project.UniqueName}");
+			if (project.BuildEvery == TimeSpan.Zero)
+			{
+				writer.Comment("Builds are disabled.");
+				return;
+			}
 
 			Action cleanup = () =>
 			{
@@ -1169,7 +1204,12 @@ namespace CCNet.Build.Reconfigure
 
 		private static void WriteCloudRoleProject(XmlWriter writer, CloudRoleProjectConfiguration project)
 		{
-			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
+			writer.Comment($"PROJECT: {project.UniqueName}");
+			if (project.BuildEvery == TimeSpan.Zero)
+			{
+				writer.Comment("Builds are disabled.");
+				return;
+			}
 
 			Action cleanup = () => WriteDefaultCleanup(writer, project);
 
@@ -1235,7 +1275,12 @@ namespace CCNet.Build.Reconfigure
 
 		private static void WriteCloudServiceProject(XmlWriter writer, CloudServiceProjectConfiguration project)
 		{
-			writer.Comment(String.Format("PROJECT: {0}", project.UniqueName));
+			writer.Comment($"PROJECT: {project.UniqueName}");
+			if (project.BuildEvery == TimeSpan.Zero)
+			{
+				writer.Comment("Builds are disabled for this project.");
+				return;
+			}
 
 			Action cleanup = () =>
 			{
@@ -1275,8 +1320,7 @@ namespace CCNet.Build.Reconfigure
 					}
 
 					if (project.VmSizes.Count == 0)
-						throw new InvalidOperationException(
-							String.Format("VmSizes property is not set for project '{0}'.", project.UniqueName));
+						throw new InvalidOperationException($"VmSizes property is not set for project '{project.UniqueName}'.");
 
 					WriteBuildProject(writer, project);
 
@@ -1294,7 +1338,7 @@ namespace CCNet.Build.Reconfigure
 							"regex",
 							@"vmsize=.(\w*_*)+",
 							"result",
-							String.Format(@"vmsize=""""{0}", vmSize));
+							$@"vmsize=""""{vmSize}");
 
 						using (writer.OpenTag("msbuild"))
 						{
@@ -1302,16 +1346,16 @@ namespace CCNet.Build.Reconfigure
 							writer.WriteElementString("targets", "CorePublish");
 							writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
 							writer.WriteElementString("buildArgs", "/noconsolelogger /p:Configuration=Release");
-							writer.WriteElementString("description", String.Format("Publish cloud service with VM size '{0}'", vmSize));
+							writer.WriteElementString("description", $"Publish cloud service with VM size '{vmSize}'");
 						}
 
 						writer.CbTag("CopyFiles", "from", project.PublishedFilePackage, "to", project.WorkingDirectoryPublish());
 
-						var publishName = String.Format("{0}.{1}.cspkg", project.Name, vmSize);
+						var publishName = $"{project.Name}.{vmSize}.cspkg";
 						writer.CbTag(
 							"RenameFile",
 							"old",
-							String.Format(@"{0}\{1}", project.WorkingDirectoryPublish(), Path.GetFileName(project.PublishedFilePackage)),
+							$@"{project.WorkingDirectoryPublish()}\{Path.GetFileName(project.PublishedFilePackage)}",
 							"new",
 							publishName);
 
@@ -1326,10 +1370,10 @@ namespace CCNet.Build.Reconfigure
 							writer.WriteBuildArgs(
 								new Arg("Storage", "Devbuild"),
 								new Arg("Container", "publish"),
-								new Arg("LocalFile", String.Format(@"{0}\{1}", project.WorkingDirectoryPublish(), fileToUpload)),
-								new Arg("BlobFile", String.Format("{0}/$[$CCNetLabel]/{1}", project.UniqueName, fileToUpload)));
+								new Arg("LocalFile", $@"{project.WorkingDirectoryPublish()}\{fileToUpload}"),
+								new Arg("BlobFile", $"{project.UniqueName}/$[$CCNetLabel]/{fileToUpload}"));
 
-							writer.WriteElementString("description", String.Format("Save '{0}' to blobs", fileToUpload));
+							writer.WriteElementString("description", $"Save '{fileToUpload}' to blobs");
 						}
 					}
 
@@ -1358,7 +1402,7 @@ namespace CCNet.Build.Reconfigure
 			var mapPath = Args.ProjectMap;
 			mapPath.CreateDirectoryIfNotExists();
 
-			var fileName = String.Format("{0}.txt", projectName);
+			var fileName = $"{projectName}.txt";
 			var filePath = Path.Combine(mapPath, fileName);
 
 			File.WriteAllText(filePath, projectUid.ToString().ToUpperInvariant());

@@ -20,8 +20,8 @@ namespace CCNet.Build.Reconfigure
 		public XElement History { get; set; }
 		public XElement About { get; set; }
 
-		protected BasicProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument)
-			: base(areaName, projectName, pageName, pageDocument)
+		protected BasicProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument, BuildOwners buildOwners)
+			: base(areaName, projectName, pageName, pageDocument, buildOwners)
 		{
 			TfsPath = ParseTfsPath(m_properties);
 
@@ -36,8 +36,8 @@ namespace CCNet.Build.Reconfigure
 			{
 				// we use TFS folder name here instead of ProjectName due to CnetContent.* exception
 				var folderName = Path.GetFileName(TfsPath);
-				var fileName = String.Format("{0}.csproj", folderName);
-				return String.Format("{0}/{1}", TfsPath, fileName);
+				var fileName = $"{folderName}.csproj";
+				return $"{TfsPath}/{fileName}";
 			}
 		}
 
@@ -49,8 +49,7 @@ namespace CCNet.Build.Reconfigure
 				throw new InvalidOperationException("Cannot find TFS path.");
 
 			if (path != path.AsciiOnly('$', '/', '.').CleanWhitespaces())
-				throw new ArgumentException(
-					String.Format("TFS path '{0}' does not look well-formed.", path));
+				throw new ArgumentException($"TFS path '{path}' does not look well-formed.");
 
 			return path.TrimEnd('/');
 		}
@@ -140,8 +139,8 @@ namespace CCNet.Build.Reconfigure
 					"p",
 					new XElement(
 						"a",
-						new XAttribute("href", String.Format("{0}/packages/{1}/", Config.NuGetUrl, ProjectName)),
-						PageDocument.BuildImage(String.Format("{0}/favicon.ico", Config.NuGetUrl)),
+						new XAttribute("href", $"{Config.NuGetUrl}/packages/{ProjectName}/"),
+						PageDocument.BuildImage($"{Config.NuGetUrl}/favicon.ico"),
 						"$nbsp$NuGet package"));
 
 				content.Add(nuget);
@@ -151,8 +150,8 @@ namespace CCNet.Build.Reconfigure
 				"p",
 				new XElement(
 					"a",
-					new XAttribute("href", String.Format("{0}/server/{1}/project/{2}/ViewProjectReport.aspx", Config.CCNetUrl, Type.ServerName(), ProjectName)),
-					PageDocument.BuildImage(String.Format("{0}/favicon.ico", Config.CCNetUrl)),
+					new XAttribute("href", $"{Config.CCNetUrl}/server/{Type.ServerName()}/project/{ProjectName}/ViewProjectReport.aspx"),
+					PageDocument.BuildImage($"{Config.CCNetUrl}/favicon.ico"),
 					"$nbsp$Build project"));
 
 			content.Add(build);
@@ -231,12 +230,10 @@ namespace CCNet.Build.Reconfigure
 			var path = TfsPath;
 
 			if (!CheckTfsPathArea(path, AreaName))
-				throw new InvalidOperationException(
-					String.Format("TFS path '{0}' seems not conforming with area name '{1}'.", path, AreaName));
+				throw new InvalidOperationException($"TFS path '{path}' seems not conforming with area name '{AreaName}'.");
 
 			if (!CheckTfsPathProject(path, ProjectName))
-				throw new InvalidOperationException(
-					String.Format("TFS path '{0}' seems not conforming with project name '{1}'.", path, ProjectName));
+				throw new InvalidOperationException($"TFS path '{path}' seems not conforming with project name '{ProjectName}'.");
 
 			var xml = client.ReadFile(ProjectFile);
 			var project = new ProjectDocument();
@@ -247,19 +244,19 @@ namespace CCNet.Build.Reconfigure
 
 		private static bool CheckTfsPathArea(string tfsPath, string areaName)
 		{
-			return tfsPath.Contains(String.Format("/{0}/", areaName));
+			return tfsPath.Contains($"/{areaName}/");
 		}
 
 		private static bool CheckTfsPathProject(string tfsPath, string projectName)
 		{
-			if (tfsPath.EndsWith(String.Format("/{0}", projectName)))
+			if (tfsPath.EndsWith($"/{projectName}"))
 				return true;
 
 			const string prefix = "CnetContent.";
 			if (projectName.StartsWith(prefix))
 			{
 				var custom = projectName.Substring(prefix.Length);
-				if (tfsPath.EndsWith(String.Format("/{0}", custom)))
+				if (tfsPath.EndsWith($"/{custom}"))
 					return true;
 			}
 
@@ -294,6 +291,13 @@ namespace CCNet.Build.Reconfigure
 				return null;
 
 			return new Tuple<string, Guid>(ProjectName, ProjectUid);
+		}
+
+		protected new void ApplyTo(ProjectConfiguration config)
+		{
+			base.ApplyTo(config);
+
+			config.TfsPath = TfsPath;
 		}
 	}
 }

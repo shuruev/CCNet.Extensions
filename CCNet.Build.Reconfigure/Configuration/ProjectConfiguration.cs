@@ -10,6 +10,7 @@ namespace CCNet.Build.Reconfigure
 		public string Category { get; set; }
 		public string TfsPath { get; set; }
 		public string OwnerEmail { get; set; }
+		public TimeSpan BuildEvery { get; set; }
 
 		public string UniqueName
 		{
@@ -18,68 +19,32 @@ namespace CCNet.Build.Reconfigure
 				if (String.IsNullOrEmpty(Branch))
 					return Name;
 
-				return String.Format("{0}-{1}", Name, Branch);
+				return $"{Name}-{Branch}";
 			}
 		}
 
-		public string BuildQueue
-		{
-			get { return Category; }
-		}
+		public string BuildQueue => Category;
 
-		public string WebUrl
-		{
-			get { return String.Format("$(serverUrl)/project/{0}/ViewProjectReport.aspx", UniqueName); }
-		}
+		public string WebUrl => $"$(serverUrl)/project/{UniqueName}/ViewProjectReport.aspx";
 
-		public string AdminDirectory
-		{
-			get { return "$(adminPath)"; }
-		}
+		public string AdminDirectory => "$(adminPath)";
 
-		public string AdminDirectoryRebuildAll
-		{
-			get { return String.Format(@"{0}\RebuildAll", AdminDirectory); }
-		}
+		public string AdminDirectoryRebuildAll => $@"{AdminDirectory}\RebuildAll";
 
-		public string WorkingDirectory
-		{
-			get { return String.Format(@"$(projectsPath)\{0}", UniqueName); }
-		}
+		public string WorkingDirectory => $@"$(projectsPath)\{UniqueName}";
 
-		public string WorkingDirectoryReferences
-		{
-			get { return String.Format(@"{0}\references", WorkingDirectory); }
-		}
+		public string WorkingDirectoryReferences => $@"{WorkingDirectory}\references";
 
-		public string WorkingDirectorySource
-		{
-			get { return String.Format(@"{0}\source", WorkingDirectory); }
-		}
+		public string WorkingDirectorySource => $@"{WorkingDirectory}\source";
 
-		public string WorkingDirectoryPackages
-		{
-			get { return String.Format(@"{0}\packages", WorkingDirectory); }
-		}
+		public string WorkingDirectoryPackages => $@"{WorkingDirectory}\packages";
 
-		public string WorkingDirectoryTemp
-		{
-			get { return String.Format(@"{0}\temp", WorkingDirectory); }
-		}
+		public string WorkingDirectoryTemp => $@"{WorkingDirectory}\temp";
 
-		public string TempFileSource
-		{
-			get { return String.Format(@"{0}\source.txt", WorkingDirectoryTemp); }
-		}
+		public string TempFileSource => $@"{WorkingDirectoryTemp}\source.txt";
 
-		public string TempFilePackages
-		{
-			get { return String.Format(@"{0}\packages.txt", WorkingDirectoryTemp); }
-		}
+		public string TempFilePackages => $@"{WorkingDirectoryTemp}\packages.txt";
 
-		public string TempFileVersion
-		{
-			get { return String.Format(@"{0}\version.txt", WorkingDirectoryTemp); }
-		}
+		public string TempFileVersion => $@"{WorkingDirectoryTemp}\version.txt";
 	}
 }

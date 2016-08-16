@@ -6,33 +6,19 @@ namespace CCNet.Build.Reconfigure
 {
 	public class WebserviceProjectPage : ReleaseProjectPage
 	{
-		public WebserviceProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument)
-			: base(areaName, projectName, pageName, pageDocument)
+		public WebserviceProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument, BuildOwners buildOwners)
+			: base(areaName, projectName, pageName, pageDocument, buildOwners)
 		{
 		}
 
-		public override ProjectType Type
-		{
-			get { return ProjectType.Webservice; }
-		}
+		public override ProjectType Type => ProjectType.Webservice;
 
 		public override List<ProjectConfiguration> ExportConfigurations()
 		{
-			return new List<ProjectConfiguration>
-			{
-				new WebserviceProjectConfiguration
-				{
-					Name = ProjectName,
-					Description = Description,
-					Category = AreaName,
-					TfsPath = TfsPath,
-					//xxx
-					OwnerEmail = "oleg.shuruev@cbsinteractive.com",
-					Framework = Framework,
-					Documentation = Documentation,
-					RootNamespace = Namespace
-				}
-			};
+			var config = new WebserviceProjectConfiguration();
+			ApplyTo(config);
+
+			return new List<ProjectConfiguration> { config };
 		}
 	}
 }

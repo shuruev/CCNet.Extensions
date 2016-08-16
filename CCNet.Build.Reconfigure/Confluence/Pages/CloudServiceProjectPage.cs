@@ -12,16 +12,13 @@ namespace CCNet.Build.Reconfigure
 	{
 		public string Title { get; set; }
 
-		public CloudServiceProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument)
-			: base(areaName, projectName, pageName, pageDocument)
+		public CloudServiceProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument, BuildOwners buildOwners)
+			: base(areaName, projectName, pageName, pageDocument, buildOwners)
 		{
 			Title = ParseTitle(m_properties);
 		}
 
-		public override ProjectType Type
-		{
-			get { return ProjectType.CloudService; }
-		}
+		public override ProjectType Type => ProjectType.CloudService;
 
 		public override string ProjectFile
 		{
@@ -29,8 +26,8 @@ namespace CCNet.Build.Reconfigure
 			{
 				// we use TFS folder name here instead of ProjectName due to CnetContent.* exception
 				var folderName = Path.GetFileName(TfsPath);
-				var fileName = String.Format("{0}.ccproj", folderName);
-				return String.Format("{0}/{1}", TfsPath, fileName);
+				var fileName = $"{folderName}.ccproj";
+				return $"{TfsPath}/{fileName}";
 			}
 		}
 
@@ -46,8 +43,7 @@ namespace CCNet.Build.Reconfigure
 				throw new InvalidOperationException("Something is wrong with project title.");
 
 			if (title != norm)
-				throw new ArgumentException(
-					String.Format("Project title '{0}' does not look well-formed.", title));
+				throw new ArgumentException($"Project title '{title}' does not look well-formed.");
 
 			return title;
 		}
@@ -93,18 +89,10 @@ namespace CCNet.Build.Reconfigure
 
 		public override List<ProjectConfiguration> ExportConfigurations()
 		{
-			return new List<ProjectConfiguration>
-			{
-				new CloudServiceProjectConfiguration
-				{
-					Name = ProjectName,
-					Description = Description,
-					Category = AreaName,
-					TfsPath = TfsPath,
-					//xxx
-					OwnerEmail = "oleg.shuruev@cbsinteractive.com"
-				}
-			};
+			var config = new CloudServiceProjectConfiguration();
+			ApplyTo(config);
+
+			return new List<ProjectConfiguration> { config };
 		}
 	}
 }

@@ -14,20 +14,25 @@ namespace CCNet.Build.Reconfigure
 	{
 		private readonly CachedConfluenceClient m_confluence;
 		private readonly TfsClient m_tfs;
+		private readonly BuildOwners m_owners;
 
 		private Dictionary<long, List<PageSummary>> m_children;
 		private List<IProjectPage> m_pages;
 
-		public PageBuilder(CachedConfluenceClient confluence, TfsClient tfs)
+		public PageBuilder(CachedConfluenceClient confluence, TfsClient tfs, BuildOwners owners)
 		{
 			if (confluence == null)
-				throw new ArgumentNullException("confluence");
+				throw new ArgumentNullException(nameof(confluence));
 
 			if (tfs == null)
-				throw new ArgumentNullException("tfs");
+				throw new ArgumentNullException(nameof(tfs));
+
+			if (owners == null)
+				throw new ArgumentNullException(nameof(owners));
 
 			m_confluence = confluence;
 			m_tfs = tfs;
+			m_owners = owners;
 		}
 
 		public void Rebuild(string spaceCode, string pageName)
@@ -84,11 +89,9 @@ namespace CCNet.Build.Reconfigure
 			var dup = map.GroupBy(i => i.Value).FirstOrDefault(g => g.Count() > 1);
 			if (dup != null)
 			{
+				var list = String.Join(", ", dup.Select(i => "'" + i.Key + "'"));
 				throw new InvalidOperationException(
-					String.Format(
-						"Project UID = {0} seems not unique and belongs to projects {1}.",
-						dup.Key.ToString("B").ToUpper(),
-						String.Join(", ", dup.Select(i => "'" + i.Key + "'"))));
+					$"Project UID = {dup.Key.ToString("B").ToUpper()} seems not unique and belongs to projects {list}.");
 			}
 
 			return map;
@@ -152,10 +155,7 @@ namespace CCNet.Build.Reconfigure
 			};
 
 			if (!knownAreas.Contains(areaName))
-			{
-				throw new InvalidOperationException(
-					String.Format("Unknown area name '{0}'.", area.Name));
-			}
+				throw new InvalidOperationException($"Unknown area name '{area.Name}'.");
 
 			var result = new ConcurrentBag<IProjectPage>();
 
@@ -222,20 +222,17 @@ namespace CCNet.Build.Reconfigure
 		private static string ResolveAreaName(string pageName)
 		{
 			if (pageName != pageName.AsciiOnly(' ').CleanWhitespaces())
-				throw new ArgumentException(
-					String.Format("Area name '{0}' does not look well-formed.", pageName));
+				throw new ArgumentException($"Area name '{pageName}' does not look well-formed.");
 
 			var parts = pageName.Split(new[] { ' ' }, 2);
 			if (parts.Length != 2)
-				throw new ArgumentException(
-					String.Format("Page name '{0}' does not look well-formed.", pageName));
+				throw new ArgumentException($"Page name '{pageName}' does not look well-formed.");
 
 			var name = parts[0];
 			var type = parts[1];
 
 			if (type != "area")
-				throw new InvalidOperationException(
-					String.Format("Invalid area name '{0}'.", pageName));
+				throw new InvalidOperationException($"Invalid area name '{pageName}'.");
 
 			return name;
 		}
@@ -256,40 +253,40 @@ namespace CCNet.Build.Reconfigure
 				switch (projectType)
 				{
 					case ProjectType.Library:
-						page = new LibraryProjectPage(areaName, projectName, project.Name, document);
+						page = new LibraryProjectPage(areaName, projectName, project.Name, document, m_owners);
 						break;
 
 					case ProjectType.Website:
-						page = new WebsiteProjectPage(areaName, projectName, project.Name, document);
+						page = new WebsiteProjectPage(areaName, projectName, project.Name, document, m_owners);
 						break;
 
 					case ProjectType.Webservice:
-						page = new WebserviceProjectPage(areaName, projectName, project.Name, document);
+						page = new WebserviceProjectPage(areaName, projectName, project.Name, document, m_owners);
 						break;
 
 					case ProjectType.Service:
-						page = new ServiceProjectPage(areaName, projectName, project.Name, document);
+						page = new ServiceProjectPage(areaName, projectName, project.Name, document, m_owners);
 						break;
 
 					case ProjectType.Console:
-						page = new ConsoleProjectPage(areaName, projectName, project.Name, document);
+						page = new ConsoleProjectPage(areaName, projectName, project.Name, document, m_owners);
 						break;
 
 					case ProjectType.Windows:
-						page = new WindowsProjectPage(areaName, projectName, project.Name, document);
+						page = new WindowsProjectPage(areaName, projectName, project.Name, document, m_owners);
 						break;
 
 					case ProjectType.CloudRole:
-						page = new CloudRoleProjectPage(areaName, projectName, project.Name, document);
+						page = new CloudRoleProjectPage(areaName, projectName, project.Name, document, m_owners);
 						break;
 
 					case ProjectType.CloudService:
-						page = new CloudServiceProjectPage(areaName, projectName, project.Name, document);
+						page = new CloudServiceProjectPage(areaName, projectName, project.Name, document, m_owners);
 						break;
 
 					default:
 						throw new InvalidOperationException(
-							String.Format("Unknown how to process project of type '{0}'.", projectType.ToString().ToLowerInvariant()));
+							$"Unknown how to process project of type '{projectType.ToString().ToLowerInvariant()}'.");
 				}
 
 				page.CheckPage(m_tfs);
@@ -307,7 +304,7 @@ namespace CCNet.Build.Reconfigure
 			catch (Exception e)
 			{
 				throw new InvalidOperationException(
-					String.Format("An error occurred while processing page '{0}' version {1}.", project.Name, project.Version),
+					$"An error occurred while processing page '{project.Name}' version {project.Version}.",
 					e);
 			}
 
@@ -333,13 +330,11 @@ namespace CCNet.Build.Reconfigure
 		private static string ResolveProjectName(string pageName, out ProjectType projectType)
 		{
 			if (pageName != pageName.AsciiOnly('.', ' ').CleanWhitespaces())
-				throw new ArgumentException(
-					String.Format("Page name '{0}' does not look well-formed.", pageName));
+				throw new ArgumentException($"Page name '{pageName}' does not look well-formed.");
 
 			var parts = pageName.Split(new[] { ' ' }, 2);
 			if (parts.Length != 2)
-				throw new ArgumentException(
-					String.Format("Page name '{0}' does not look well-formed.", pageName));
+				throw new ArgumentException($"Page name '{pageName}' does not look well-formed.");
 
 			var name = parts[0];
 			var type = parts[1];
@@ -379,8 +374,7 @@ namespace CCNet.Build.Reconfigure
 					break;
 
 				default:
-					throw new InvalidOperationException(
-						String.Format("Unknown project type '{0}'.", type));
+					throw new InvalidOperationException($"Unknown project type '{type}'.");
 			}
 
 			return name;

@@ -12,33 +12,38 @@ namespace CCNet.Build.Reconfigure
 	{
 		protected readonly string m_page;
 		protected readonly XElement m_root;
+		protected readonly BuildOwners m_owners;
 		protected readonly Dictionary<string, string> m_properties;
 
-		public string AreaName { get; private set; }
-		public string ProjectName { get; private set; }
-		public string Description { get; private set; }
-		public string Owner { get; private set; }
-		public ProjectStatus Status { get; private set; }
+		public string AreaName { get; }
+		public string ProjectName { get; }
+		public string Description { get; }
+		public string Owner { get; }
+		public ProjectStatus Status { get; }
 
-		protected ProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument)
+		protected ProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument, BuildOwners buildOwners)
 		{
 			if (String.IsNullOrEmpty(areaName))
-				throw new ArgumentNullException("areaName");
+				throw new ArgumentNullException(nameof(areaName));
 
 			if (String.IsNullOrEmpty(projectName))
-				throw new ArgumentNullException("projectName");
+				throw new ArgumentNullException(nameof(projectName));
 
 			if (String.IsNullOrEmpty(pageName))
-				throw new ArgumentNullException("pageName");
+				throw new ArgumentNullException(nameof(pageName));
 
 			if (pageDocument == null)
-				throw new ArgumentNullException("pageDocument");
+				throw new ArgumentNullException(nameof(pageDocument));
+
+			if (buildOwners == null)
+				throw new ArgumentNullException(nameof(buildOwners));
 
 			AreaName = areaName;
 			ProjectName = projectName;
 
 			m_page = pageName;
 			m_root = pageDocument.Root;
+			m_owners = buildOwners;
 			m_properties = ParseProperties(m_root);
 
 			Description = ParseDescription(m_properties);
@@ -46,10 +51,7 @@ namespace CCNet.Build.Reconfigure
 			Status = ParseStatus(m_properties);
 		}
 
-		public string OrderKey
-		{
-			get { return AreaName + ":" + ProjectName; }
-		}
+		public string OrderKey => AreaName + ":" + ProjectName;
 
 		private Dictionary<string, string> ParseProperties(XElement page)
 		{
@@ -121,93 +123,16 @@ namespace CCNet.Build.Reconfigure
 
 		private string NormalizeOwner(string owner)
 		{
-			switch (owner.AsciiOnly().ToLowerInvariant())
+			var user = owner.AsciiOnly().ToLowerInvariant();
+
+			switch (user)
 			{
 				case "na":
 				case "none":
 					return String.Empty;
 
-				case "agolyakov":
-				case "8a99855552936a300152936cbec64c67":
-					return "8a99855552936a300152936cbec64c67";
-
-				case "akovalenko":
-				case "8a99855552936a300152936cb7cf1681":
-					return "8a99855552936a300152936cb7cf1681";
-
-				case "alisitsyn":
-				case "8a99855552936a300152936cb0a65fbd":
-					return "8a99855552936a300152936cb0a65fbd";
-
-				case "aryzhkov":
-				case "8a99855552936a300152936ca5340e71":
-					return "8a99855552936a300152936ca5340e71";
-
-				case "dbaranov":
-				case "8a99855552936a300152936ca3210228":
-					return "8a99855552936a300152936ca3210228";
-
-				case "dsemikolenov":
-				case "8a99855552936a300152936cbc1c37ac":
-					return "8a99855552936a300152936cbc1c37ac";
-
-				case "eelokhov":
-				case "8a99855552936a300152936cbbb53498":
-					return "8a99855552936a300152936cbbb53498";
-
-				case "itirskaya":
-				case "8a99855552936a300152936cb588051e":
-					return "8a99855552936a300152936cb588051e";
-
-				case "kluzin":
-				case "8a99855552936a300152936cc08259d7":
-					return "8a99855552936a300152936cc08259d7";
-
-				case "nsavelieva":
-				case "8a99855552936a300152936caaf434a9":
-					return "8a99855552936a300152936caaf434a9";
-
-				case "oshuruev":
-				case "olshuruev":
-				case "8a99855552936a300152936cadf74b66":
-					return "8a99855552936a300152936cadf74b66";
-
-				case "pbelousov":
-				case "8a99855552936a300152936cbe1246f1":
-					return "8a99855552936a300152936cbe1246f1";
-
-				case "pkashirin":
-				case "8a99855552936a300152936cb51901bc":
-					return "8a99855552936a300152936cb51901bc";
-
-				case "psvintsov":
-				case "8a99855552936a300152936cb15d6557":
-					return "8a99855552936a300152936cb15d6557";
-
-				case "rpusenkov":
-				case "8a99855552936a300152936ca5f61316":
-					return "8a99855552936a300152936ca5f61316";
-
-				case "skolemasov":
-				case "kolemasovs":
-				case "8a99855552936a300152936cb4a77e8a":
-					return "8a99855552936a300152936cb4a77e8a";
-
-				case "skonkin":
-				case "8a99855552936a300152936cabe33b9b":
-					return "8a99855552936a300152936cabe33b9b";
-
-				case "vilyin":
-				case "8a99855552936a300152936caec65198":
-					return "8a99855552936a300152936caec65198";
-
-				case "vperfilieva":
-				case "8a99855552936a300152936cb85b1ac8":
-					return "8a99855552936a300152936cb85b1ac8";
-
 				default:
-					throw new InvalidOperationException(
-						String.Format("Unknown user '{0}'.", owner));
+					return m_owners.GetUid(user);
 			}
 		}
 
@@ -315,6 +240,31 @@ namespace CCNet.Build.Reconfigure
 				new XElement("td", na),
 				new XElement("td", BuildOwner(Owner)),
 				new XElement("td", BuildStatus(Status)));
+		}
+
+		protected void ApplyTo(ProjectConfiguration config)
+		{
+			config.Name = ProjectName;
+			config.Description = Description;
+			config.Category = AreaName;
+
+			if (!String.IsNullOrEmpty(Owner))
+				config.OwnerEmail = m_owners.GetEmail(Owner);
+
+			switch (Status)
+			{
+				case ProjectStatus.Active:
+					config.BuildEvery = TimeSpan.FromSeconds(30);
+					break;
+
+				case ProjectStatus.Normal:
+					config.BuildEvery = TimeSpan.FromMinutes(5);
+					break;
+
+				case ProjectStatus.Legacy:
+					config.BuildEvery = TimeSpan.FromHours(3);
+					break;
+			}
 		}
 
 		public abstract List<ProjectConfiguration> ExportConfigurations();

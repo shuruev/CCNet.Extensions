@@ -9,16 +9,13 @@ namespace CCNet.Build.Reconfigure
 	{
 		public bool ClickOnce { get; set; }
 
-		public WindowsProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument)
-			: base(areaName, projectName, pageName, pageDocument)
+		public WindowsProjectPage(string areaName, string projectName, string pageName, PageDocument pageDocument, BuildOwners buildOwners)
+			: base(areaName, projectName, pageName, pageDocument, buildOwners)
 		{
 			ClickOnce = ParseClickOnce(m_properties);
 		}
 
-		public override ProjectType Type
-		{
-			get { return ProjectType.Windows; }
-		}
+		public override ProjectType Type => ProjectType.Windows;
 
 		private bool ParseClickOnce(Dictionary<string, string> properties)
 		{
@@ -46,23 +43,10 @@ namespace CCNet.Build.Reconfigure
 
 		public override List<ProjectConfiguration> ExportConfigurations()
 		{
-			return new List<ProjectConfiguration>
-			{
-				new WindowsProjectConfiguration
-				{
-					Name = ProjectName,
-					Title = Title,
-					Description = Description,
-					Category = AreaName,
-					TfsPath = TfsPath,
-					//xxx
-					OwnerEmail = "oleg.shuruev@cbsinteractive.com",
-					Framework = Framework,
-					Documentation = Documentation,
-					RootNamespace = Namespace,
-					ClickOnce = ClickOnce
-				}
-			};
+			var config = new WindowsProjectConfiguration();
+			ApplyTo(config);
+
+			return new List<ProjectConfiguration> { config };
 		}
 	}
 }

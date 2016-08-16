@@ -64,8 +64,7 @@ namespace CCNet.Build.Reconfigure
 					return "4.6.1";
 
 				default:
-					throw new InvalidOperationException(
-						String.Format("Unknown target framework '{0}'.", framework));
+					throw new InvalidOperationException($"Unknown target framework '{framework}'.");
 			}
 		}
 
