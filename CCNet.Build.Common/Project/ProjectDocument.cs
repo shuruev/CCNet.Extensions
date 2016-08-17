@@ -281,6 +281,7 @@ namespace CCNet.Build.Common
 				.Where(e => e.Name.LocalName != "WCFMetadataStorage")
 				.Where(e => e.Name.LocalName != "AppDesigner")
 				.Where(e => e.Name.LocalName != "COMReference")
+				.Where(e => e.Name.LocalName != "ProjectConfiguration")
 				.Select(e => new ProjectFile(e))
 				.ToList();
 		}

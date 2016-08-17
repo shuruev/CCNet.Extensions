@@ -80,6 +80,7 @@ If you beleive everything is correct please talk to Oleg Shuruev to improve this
 				case "F06": return new PackagesFolderShouldNotHavePackages();
 				case "F07": return new LocalFilesShouldMatchProjectFiles();
 				case "F08": return new CloudProjectFileShouldExist();
+				case "F09": return new FabricProjectFileShouldExist();
 
 				// file contents
 				case "C01": return new AllFilesShouldUseUtf8();

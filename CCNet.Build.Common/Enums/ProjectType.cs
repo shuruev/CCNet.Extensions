@@ -43,6 +43,16 @@
 		/// <summary>
 		/// Azure cloud service.
 		/// </summary>
-		CloudService
+		CloudService,
+
+		/// <summary>
+		/// Service Fabric service.
+		/// </summary>
+		FabricService,
+
+		/// <summary>
+		/// Service Fabric application.
+		/// </summary>
+		FabricApplication
 	}
 }

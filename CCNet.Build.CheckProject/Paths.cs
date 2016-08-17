@@ -24,6 +24,11 @@ namespace CCNet.Build.CheckProject
 				if (File.Exists(filePath))
 					return filePath;
 
+				fileName = String.Format("{0}.sfproj", folderName);
+				filePath = Path.Combine(Args.ProjectPath, fileName);
+				if (File.Exists(filePath))
+					return filePath;
+
 				throw new FileNotFoundException(
 					String.Format("Could not find project file '{0}'.", filePath));
 			}

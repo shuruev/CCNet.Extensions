@@ -284,6 +284,14 @@ namespace CCNet.Build.Reconfigure
 						page = new CloudServiceProjectPage(areaName, projectName, project.Name, document, m_owners);
 						break;
 
+					case ProjectType.FabricService:
+						page = new FabricServiceProjectPage(areaName, projectName, project.Name, document, m_owners);
+						break;
+
+					case ProjectType.FabricApplication:
+						page = new FabricApplicationProjectPage(areaName, projectName, project.Name, document, m_owners);
+						break;
+
 					default:
 						throw new InvalidOperationException(
 							$"Unknown how to process project of type '{projectType.ToString().ToLowerInvariant()}'.");
@@ -371,6 +379,14 @@ namespace CCNet.Build.Reconfigure
 
 				case "cloud service":
 					projectType = ProjectType.CloudService;
+					break;
+
+				case "fabric service":
+					projectType = ProjectType.FabricService;
+					break;
+
+				case "fabric application":
+					projectType = ProjectType.FabricApplication;
 					break;
 
 				default:

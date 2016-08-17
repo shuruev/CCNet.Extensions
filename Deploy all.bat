@@ -31,6 +31,6 @@ XCOPY "CCNet.Build.CheckProject\bin\Debug\CCNet.Build.CheckProject.exe" "%ccnetP
 :XCOPY "CCNet.Build.SetupPackages\bin\Debug\Lean.Database.dll" "%ccnetPath%\CCNet.Build" /D /Y
 :XCOPY "CCNet.Build.SetupPackages\bin\Debug\CCNet.Build.SetupPackages.exe" "%ccnetPath%\CCNet.Build" /D /Y
 
-:XCOPY "CCNet.Build.SetupProject\bin\Debug\CCNet.Build.SetupProject.exe" "%ccnetPath%\CCNet.Build" /D /Y
+XCOPY "CCNet.Build.SetupProject\bin\Debug\CCNet.Build.SetupProject.exe" "%ccnetPath%\CCNet.Build" /D /Y
 
 PAUSE

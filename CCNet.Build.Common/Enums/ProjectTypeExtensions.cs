@@ -30,6 +30,8 @@ namespace CCNet.Build.Common
 
 				case ProjectType.CloudRole:
 				case ProjectType.CloudService:
+				case ProjectType.FabricService:
+				case ProjectType.FabricApplication:
 					return "Azure";
 
 				default:

@@ -67,7 +67,9 @@ namespace CCNet.Build.Reconfigure
 
 				BuildAzureConfig(
 					FilterByType<CloudRoleProjectConfiguration>(configs),
-					FilterByType<CloudServiceProjectConfiguration>(configs));
+					FilterByType<CloudServiceProjectConfiguration>(configs),
+					FilterByType<FabricServiceProjectConfiguration>(configs),
+					FilterByType<FabricApplicationProjectConfiguration>(configs));
 			}
 
 			using (Execute.Step("SAVE GUID MAP"))
@@ -506,7 +508,9 @@ namespace CCNet.Build.Reconfigure
 
 		private static void BuildAzureConfig(
 			IEnumerable<CloudRoleProjectConfiguration> cloudRoles,
-			IEnumerable<CloudServiceProjectConfiguration> cloudServices)
+			IEnumerable<CloudServiceProjectConfiguration> cloudServices,
+			IEnumerable<FabricServiceProjectConfiguration> fabricServices,
+			IEnumerable<FabricApplicationProjectConfiguration> fabricApplications)
 		{
 			Console.WriteLine("Generate azure config...");
 			Console.WriteLine("Output file: {0}", Paths.AzureConfig);
@@ -530,6 +534,18 @@ namespace CCNet.Build.Reconfigure
 				foreach (var config in cloudServices)
 				{
 					WriteCloudServiceProject(writer, config);
+					Console.WriteLine("> {0}", config.UniqueName);
+				}
+
+				foreach (var config in fabricServices)
+				{
+					WriteApplicationProject(writer, config);
+					Console.WriteLine("> {0}", config.UniqueName);
+				}
+
+				foreach (var config in fabricApplications)
+				{
+					WriteFabricApplicationProject(writer, config);
 					Console.WriteLine("> {0}", config.UniqueName);
 				}
 
@@ -815,6 +831,21 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
+		private static void WriteNotifyProjects(XmlWriter writer, ProjectConfiguration project)
+		{
+			using (writer.OpenTag("exec"))
+			{
+				writer.WriteElementString("executable", "$(ccnetBuildNotifyProjects)");
+				writer.WriteBuildArgs(
+					new Arg("ProjectName", project.Name),
+					new Arg("BuildPath", "$(buildPath)"),
+					new Arg("ServerNames", "Library|Website|Service|Application|Azure"),
+					new Arg("ReferencesFolder", "references"));
+
+				writer.WriteElementString("description", "Notify other projects");
+			}
+		}
+
 		private static void WriteLibraryProject(XmlWriter writer, LibraryProjectConfiguration project)
 		{
 			writer.Comment($"PROJECT: {project.UniqueName}");
@@ -951,17 +982,7 @@ namespace CCNet.Build.Reconfigure
 					WriteAzureUploadPackages(writer, project);
 					WriteAzureUploadVersion(writer, project);
 
-					using (writer.OpenTag("exec"))
-					{
-						writer.WriteElementString("executable", "$(ccnetBuildNotifyProjects)");
-						writer.WriteBuildArgs(
-							new Arg("ProjectName", project.Name),
-							new Arg("BuildPath", "$(buildPath)"),
-							new Arg("ServerNames", "Library|Website|Service|Application|Azure"),
-							new Arg("ReferencesFolder", "references"));
-
-						writer.WriteElementString("description", "Notify other projects");
-					}
+					WriteNotifyProjects(writer, project);
 
 					// xxx temporarily copy release back to RUFRT-VXBUILD
 					if (project.Name == "V3.Storage"
@@ -1188,10 +1209,23 @@ namespace CCNet.Build.Reconfigure
 					writer.CbTag("EraseConfigFiles", "path", project.SourceDirectoryRelease);
 					writer.CbTag("CompressDirectory", "path", project.SourceDirectoryRelease, "output", project.ReleaseFileLocal());
 
+					var snapshot = project as IProjectSnapshot;
+					if (snapshot != null)
+					{
+						writer.CbTag("AppendToFile", "file", snapshot.TempFileExclude(), "text", "$tf");
+						writer.CbTag("CompressDirectoryExclude", "path", project.WorkingDirectorySource, "output", snapshot.TempFileSnapshot(), "exclude", snapshot.TempFileExclude());
+						WriteAzureUploadSnapshot(writer, snapshot);
+					}
+
 					WriteAzureUploadRelease(writer, project);
 					WriteAzureUploadSource(writer, project);
 					WriteAzureUploadPackages(writer, project);
 					WriteAzureUploadVersion(writer, project);
+
+					if (snapshot != null)
+					{
+						WriteNotifyProjects(writer, project);
+					}
 				}
 
 				using (writer.OpenTag("publishers"))
@@ -1252,17 +1286,7 @@ namespace CCNet.Build.Reconfigure
 					WriteAzureUploadPackages(writer, project);
 					WriteAzureUploadVersion(writer, project);
 
-					using (writer.OpenTag("exec"))
-					{
-						writer.WriteElementString("executable", "$(ccnetBuildNotifyProjects)");
-						writer.WriteBuildArgs(
-							new Arg("ProjectName", project.Name),
-							new Arg("BuildPath", "$(buildPath)"),
-							new Arg("ServerNames", "Library|Website|Service|Application|Azure"),
-							new Arg("ReferencesFolder", "references"));
-
-						writer.WriteElementString("description", "Notify other projects");
-					}
+					WriteNotifyProjects(writer, project);
 				}
 
 				using (writer.OpenTag("publishers"))
@@ -1386,6 +1410,127 @@ namespace CCNet.Build.Reconfigure
 				{
 					WriteDefaultPublishers(writer, project);
 					cleanup.Invoke();
+				}
+			}
+		}
+
+		private static void WriteFabricApplicationProject(XmlWriter writer, FabricApplicationProjectConfiguration project)
+		{
+			writer.Comment($"PROJECT: {project.UniqueName}");
+			if (project.BuildEvery == TimeSpan.Zero)
+			{
+				writer.Comment("Builds are disabled for this project.");
+				return;
+			}
+
+			Action cleanup = () =>
+			{
+				WriteDefaultCleanup(writer, project);
+				writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryRelated());
+				writer.CbTag("DeleteDirectory", "path", project.WorkingDirectoryPublish());
+			};
+
+			using (writer.OpenTag("project"))
+			{
+				WriteProjectHeader(writer, project);
+				WriteSourceControl(writer, project);
+
+				using (writer.OpenTag("prebuild"))
+				{
+					cleanup.Invoke();
+				}
+
+				using (writer.OpenTag("tasks"))
+				{
+					WriteCheckProject(writer, project);
+
+					using (writer.OpenTag("exec"))
+					{
+						writer.WriteElementString("executable", "$(ccnetBuildSetupProject)");
+						writer.WriteBuildArgs(
+							new Arg("ProjectType", project.Type),
+							new Arg("ProjectName", project.Name),
+							new Arg("ProjectPath", project.WorkingDirectorySource),
+							new Arg("ReferencesPath", project.WorkingDirectoryReferences),
+							new Arg("RelatedPath", project.WorkingDirectoryRelated()),
+							new Arg("TempPath", project.WorkingDirectoryTemp),
+							new Arg("TfsPath", project.TfsPath),
+							new Arg("CurrentVersion", "$[$CCNetLabel]"));
+
+						writer.WriteElementString("description", "Setup project");
+					}
+
+					using (writer.OpenTag("msbuild"))
+					{
+						writer.WriteElementString("executable", project.MsbuildExecutable);
+						writer.WriteElementString("targets", "Build;Package");
+						writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
+						writer.WriteElementString("buildArgs", $@"/noconsolelogger /p:Configuration=Release;Platform=x64;OutputPath={project.SourceDirectoryRelease}\");
+						writer.WriteElementString("description", "Publish fabric application");
+					}
+
+					/*xxxvar filesToUpload = new List<string>();
+
+					writer.CbTag("CopyFiles", "from", project.ReleaseFileServiceConfiguration, "to", project.WorkingDirectoryPublish());
+					filesToUpload.Add(Path.GetFileName(project.ReleaseFileServiceConfiguration));
+
+					foreach (var vmSize in project.VmSizes)
+					{
+						writer.CbTag(
+							"ReplaceInFile",
+							"file",
+							project.SourceFileServiceDefinition,
+							"regex",
+							@"vmsize=.(\w*_*)+",
+							"result",
+							$@"vmsize=""""{vmSize}");
+
+						using (writer.OpenTag("msbuild"))
+						{
+							writer.WriteElementString("executable", project.MsbuildExecutable);
+							writer.WriteElementString("targets", "CorePublish");
+							writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
+							writer.WriteElementString("buildArgs", "/noconsolelogger /p:Configuration=Release");
+							writer.WriteElementString("description", $"Publish cloud service with VM size '{vmSize}'");
+						}
+
+						writer.CbTag("CopyFiles", "from", project.PublishedFilePackage, "to", project.WorkingDirectoryPublish());
+
+						var publishName = $"{project.Name}.{vmSize}.cspkg";
+						writer.CbTag(
+							"RenameFile",
+							"old",
+							$@"{project.WorkingDirectoryPublish()}\{Path.GetFileName(project.PublishedFilePackage)}",
+							"new",
+							publishName);
+
+						filesToUpload.Add(publishName);
+					}
+
+					foreach (var fileToUpload in filesToUpload)
+					{
+						using (writer.OpenTag("exec"))
+						{
+							writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
+							writer.WriteBuildArgs(
+								new Arg("Storage", "Devbuild"),
+								new Arg("Container", "publish"),
+								new Arg("LocalFile", $@"{project.WorkingDirectoryPublish()}\{fileToUpload}"),
+								new Arg("BlobFile", $"{project.UniqueName}/$[$CCNetLabel]/{fileToUpload}"));
+
+							writer.WriteElementString("description", $"Save '{fileToUpload}' to blobs");
+						}
+					}*/
+
+					WriteAzureUploadSource(writer, project);
+					WriteAzureUploadPackages(writer, project);
+					WriteAzureUploadVersion(writer, project);
+				}
+
+				using (writer.OpenTag("publishers"))
+				{
+					WriteDefaultPublishers(writer, project);
+					//xxxcleanup.Invoke();
 				}
 			}
 		}

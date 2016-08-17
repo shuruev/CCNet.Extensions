@@ -44,9 +44,16 @@ namespace CCNet.Build.SetupProject
 					links = BuildLinksCloudService();
 					break;
 
+				case ProjectType.FabricService:
+					links = BuildLinksFabricService();
+					break;
+
+				case ProjectType.FabricApplication:
+					links = BuildLinksFabricApplication();
+					break;
+
 				default:
-					throw new InvalidOperationException(
-						String.Format("Unknown project type '{0}'.", Args.ProjectType));
+					throw new InvalidOperationException($"Unknown project type '{Args.ProjectType}'.");
 			}
 
 			foreach (var link in links)
@@ -61,12 +68,12 @@ namespace CCNet.Build.SetupProject
 			{
 				new
 				{
-					Url = String.Format("{0}/packages/{1}/", Config.NuGetUrl, Args.PackageId),
-					Image = String.Format("{0}/Content/Logos/nugetlogo.png", Config.NuGetUrl)
+					Url = $"{Config.NuGetUrl}/packages/{Args.PackageId}/",
+					Image = $"{Config.NuGetUrl}/Content/Logos/nugetlogo.png"
 				},
 				new
 				{
-					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+library", Args.ProjectName),
+					Url = $"https://owl.cbsi.com/confluence/display/CCSSEDRU/{Args.ProjectName}+library",
 					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
 				}
 			};
@@ -78,7 +85,7 @@ namespace CCNet.Build.SetupProject
 			{
 				new
 				{
-					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+web+site", Args.ProjectName),
+					Url = $"https://owl.cbsi.com/confluence/display/CCSSEDRU/{Args.ProjectName}+web+site",
 					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
 				}
 			};
@@ -90,7 +97,7 @@ namespace CCNet.Build.SetupProject
 			{
 				new
 				{
-					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+web+service", Args.ProjectName),
+					Url = $"https://owl.cbsi.com/confluence/display/CCSSEDRU/{Args.ProjectName}+web+service",
 					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
 				}
 			};
@@ -102,7 +109,7 @@ namespace CCNet.Build.SetupProject
 			{
 				new
 				{
-					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+service", Args.ProjectName),
+					Url = $"https://owl.cbsi.com/confluence/display/CCSSEDRU/{Args.ProjectName}+service",
 					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
 				}
 			};
@@ -114,7 +121,7 @@ namespace CCNet.Build.SetupProject
 			{
 				new
 				{
-					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+console", Args.ProjectName),
+					Url = $"https://owl.cbsi.com/confluence/display/CCSSEDRU/{Args.ProjectName}+console",
 					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
 				}
 			};
@@ -126,7 +133,7 @@ namespace CCNet.Build.SetupProject
 			{
 				new
 				{
-					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+application", Args.ProjectName),
+					Url = $"https://owl.cbsi.com/confluence/display/CCSSEDRU/{Args.ProjectName}+application",
 					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
 				}
 			};
@@ -138,7 +145,7 @@ namespace CCNet.Build.SetupProject
 			{
 				new
 				{
-					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+cloud+role", Args.ProjectName),
+					Url = $"https://owl.cbsi.com/confluence/display/CCSSEDRU/{Args.ProjectName}+cloud+role",
 					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
 				}
 			};
@@ -150,7 +157,31 @@ namespace CCNet.Build.SetupProject
 			{
 				new
 				{
-					Url = String.Format("https://owl.cbsi.com/confluence/display/CCSSEDRU/{0}+cloud+service", Args.ProjectName),
+					Url = $"https://owl.cbsi.com/confluence/display/CCSSEDRU/{Args.ProjectName}+cloud+service",
+					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
+				}
+			};
+		}
+
+		private static List<dynamic> BuildLinksFabricService()
+		{
+			return new List<dynamic>
+			{
+				new
+				{
+					Url = $"https://owl.cbsi.com/confluence/display/CCSSEDRU/{Args.ProjectName}+fabric+service",
+					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
+				}
+			};
+		}
+
+		private static List<dynamic> BuildLinksFabricApplication()
+		{
+			return new List<dynamic>
+			{
+				new
+				{
+					Url = $"https://owl.cbsi.com/confluence/display/CCSSEDRU/{Args.ProjectName}+fabric+application",
 					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
 				}
 			};

@@ -57,6 +57,7 @@
     <Compile Include="Issues\FileContents\CheckPrimarySolution.cs" />
     <Compile Include="Issues\FileContents\CheckAssemblyInfo.cs" />
     <Compile Include="Issues\FileContents\CheckNugetConfig.cs" />
+    <Compile Include="Issues\FileStructure\FabricProjectFileShouldExist.cs" />
     <Compile Include="Issues\FileStructure\PackagesFolderShouldNotHavePackages.cs" />
     <Compile Include="Issues\FileStructure\NugetConfigShouldExist.cs" />
     <Compile Include="Issues\FileStructure\PrimarySolutionShouldExist.cs" />

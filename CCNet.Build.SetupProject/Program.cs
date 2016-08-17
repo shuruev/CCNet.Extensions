@@ -78,7 +78,8 @@ namespace CCNet.Build.SetupProject
 
 		private static void UpdateAssemblyInfo()
 		{
-			if (Args.ProjectType == ProjectType.CloudService)
+			if (Args.ProjectType == ProjectType.CloudService
+				|| Args.ProjectType == ProjectType.FabricApplication)
 				return;
 
 			Console.Write("Updating assembly information... ");
@@ -98,8 +99,20 @@ namespace CCNet.Build.SetupProject
 
 		private static void SetupRelatedProjects()
 		{
-			if (Args.ProjectType != ProjectType.CloudService)
-				return;
+			string path;
+			switch (Args.ProjectType)
+			{
+				case ProjectType.CloudService:
+					path = Paths.CloudProjectFile;
+					break;
+
+				case ProjectType.FabricApplication:
+					path = Paths.FabricProjectFile;
+					break;
+
+				default:
+					return;
+			}
 
 			if (String.IsNullOrEmpty(Args.RelatedPath))
 				throw new InvalidOperationException("Configuration argument 'RelatedPath' is not set.");
@@ -112,12 +125,12 @@ namespace CCNet.Build.SetupProject
 
 			Console.Write("Converting paths for related projects... ");
 
-			var project = new ProjectDocument(Paths.CloudProjectFile);
+			var project = new ProjectDocument(path);
 			project.Load();
 
 			var references = project.GetProjectReferences();
 			if (references.Count == 0)
-				throw new InvalidOperationException("It is strange that cloud service does not have any referenced projects.");
+				throw new InvalidOperationException("It is strange that cloud service or fabric application does not have any referenced projects.");
 
 			var log = new LogPackages();
 			foreach (var reference in references)
@@ -142,13 +155,23 @@ namespace CCNet.Build.SetupProject
 		private static void SetupRelatedProject(ProjectReference reference, LogPackages log)
 		{
 			var fileName = Path.GetFileName(reference.Include);
-			var folderName = reference.Name;
-			var includePath = Path.Combine(Args.RelatedPath, folderName, fileName);
+			var localName = Path.GetFileName(Path.GetDirectoryName(reference.Include));
+			var referenceName = reference.Name;
 
-			// xxx quick dirty hardcode below with calling tools with specific paths and arguments
+			// another hardcode for resolving the names quickly
+			if (String.IsNullOrEmpty(referenceName))
+			{
+				referenceName = localName;
+				if (referenceName.StartsWith("Metro."))
+					referenceName = "CnetContent." + localName;
+			}
 
-			var blobVersion = String.Format("{0}/version.txt", reference.Name);
-			var localVersion = String.Format(@"{0}\{1}.txt", Args.RelatedPath, folderName);
+			var includePath = Path.Combine(Args.RelatedPath, localName, fileName);
+
+			// quick dirty hardcode below with calling tools with specific paths and arguments
+
+			var blobVersion = String.Format("{0}/version.txt", referenceName);
+			var localVersion = String.Format(@"{0}\{1}.txt", Args.RelatedPath, localName);
 
 			Execute.Run(
 				"CCNet.Build.AzureDownload.exe",
@@ -159,8 +182,8 @@ namespace CCNet.Build.SetupProject
 
 			var version = File.ReadAllText(localVersion);
 
-			var blobSnapshot = String.Format("{0}/{1}/{2}.snapshot.zip", reference.Name, version, folderName);
-			var localSnapshot = String.Format(@"{0}\{1}.zip", Args.RelatedPath, folderName);
+			var blobSnapshot = String.Format("{0}/{1}/{0}.snapshot.zip", referenceName, version);
+			var localSnapshot = String.Format(@"{0}\{1}.zip", Args.RelatedPath, localName);
 
 			Execute.Run(
 				"CCNet.Build.AzureDownload.exe",
@@ -169,7 +192,7 @@ namespace CCNet.Build.SetupProject
 					blobSnapshot,
 					localSnapshot));
 
-			var localFolder = String.Format(@"{0}\{1}", Args.RelatedPath, folderName);
+			var localFolder = String.Format(@"{0}\{1}", Args.RelatedPath, localName);
 
 			Execute.Run(
 				@"C:\Program Files\7-Zip\7z.exe",
@@ -178,12 +201,12 @@ namespace CCNet.Build.SetupProject
 			reference.UpdateLocation(includePath);
 
 			log.Add(
-				folderName,
+				referenceName,
 				new LogPackage
 				{
-					PackageId = folderName,
-					ProjectName = folderName,
-					ProjectUrl = String.Format("http://rufc-devbuild.cneu.cnwk/ccnet/server/Azure/project/{0}/ViewProjectReport.aspx", folderName),
+					PackageId = referenceName,
+					ProjectName = referenceName,
+					ProjectUrl = String.Format("http://rufc-devbuild.cneu.cnwk/ccnet/server/Azure/project/{0}/ViewProjectReport.aspx", referenceName),
 					IsLocal = true,
 					SourceVersion = null,
 					BuildVersion = new Version(version),
