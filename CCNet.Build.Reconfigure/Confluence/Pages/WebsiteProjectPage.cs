@@ -13,12 +13,12 @@ namespace CCNet.Build.Reconfigure
 
 		public override ProjectType Type => ProjectType.Website;
 
-		public override List<ProjectConfiguration> ExportConfigurations()
+		public override List<IProjectConfigurationTemp> ExportConfigurations()
 		{
 			var config = new WebsiteProjectConfiguration();
 			ApplyTo(config);
 
-			return new List<ProjectConfiguration> { config };
+			return new List<IProjectConfigurationTemp> { config };
 		}
 	}
 }

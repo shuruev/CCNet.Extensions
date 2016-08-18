@@ -70,6 +70,7 @@
     <Compile Include="Security\SecureConfig.cs" />
     <Compile Include="Enums\TargetFramework.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

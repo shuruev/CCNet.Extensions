@@ -110,12 +110,12 @@ namespace CCNet.Build.Reconfigure
 			config.RootNamespace = Namespace;
 		}
 
-		public override List<ProjectConfiguration> ExportConfigurations()
+		public override List<IProjectConfigurationTemp> ExportConfigurations()
 		{
 			var config = new LibraryProjectConfiguration();
 			ApplyTo(config);
 
-			return new List<ProjectConfiguration> { config };
+			return new List<IProjectConfigurationTemp> { config };
 		}
 	}
 }

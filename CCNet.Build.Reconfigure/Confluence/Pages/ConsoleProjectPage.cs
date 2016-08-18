@@ -13,12 +13,20 @@ namespace CCNet.Build.Reconfigure
 
 		public override ProjectType Type => ProjectType.Console;
 
-		public override List<ProjectConfiguration> ExportConfigurations()
+		public override List<IProjectConfigurationTemp> ExportConfigurations()
 		{
 			var config = new ConsoleProjectConfiguration();
 			ApplyTo(config);
 
-			return new List<ProjectConfiguration> { config };
+			var config2 = new ConsoleProjectConfiguration2
+			{
+				Area = AreaName,
+				Name = ProjectName,
+				Description = Description,
+				OwnerEmail = config.OwnerEmail
+			};
+
+			return new List<IProjectConfigurationTemp> { config, config2 };
 		}
 	}
 }

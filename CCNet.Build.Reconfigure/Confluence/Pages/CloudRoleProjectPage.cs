@@ -13,12 +13,12 @@ namespace CCNet.Build.Reconfigure
 
 		public override ProjectType Type => ProjectType.CloudRole;
 
-		public override List<ProjectConfiguration> ExportConfigurations()
+		public override List<IProjectConfigurationTemp> ExportConfigurations()
 		{
 			var config = new CloudRoleProjectConfiguration();
 			ApplyTo(config);
 
-			return new List<ProjectConfiguration> { config };
+			return new List<IProjectConfigurationTemp> { config };
 		}
 	}
 }

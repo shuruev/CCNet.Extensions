@@ -50,7 +50,8 @@ namespace CCNet.Build.Reconfigure
 
 			using (Execute.Step("UPDATE CONFIG"))
 			{
-				var configs = builder.ExportConfigurations();
+				var all = builder.ExportConfigurations();
+				var configs = all.Where(c => c is ProjectConfiguration).Cast<ProjectConfiguration>().ToList();
 				ApplyCustomizations(configs);
 
 				BuildLibraryConfig(FilterByType<LibraryProjectConfiguration>(configs));
@@ -70,6 +71,24 @@ namespace CCNet.Build.Reconfigure
 					FilterByType<CloudServiceProjectConfiguration>(configs),
 					FilterByType<FabricServiceProjectConfiguration>(configs),
 					FilterByType<FabricApplicationProjectConfiguration>(configs));
+
+				var configs2 = all
+					.Where(c => c is IProjectConfiguration)
+					.Cast<IProjectConfiguration>()
+					.GroupBy(c => c.Server)
+					.ToDictionary(g => g.Key, g => g.ToList());
+
+				foreach (var server in configs2.Keys)
+				{
+					var file = Path.Combine(Args.OutputDirectory, $"xxx_CCNet{server}.config");
+					using (var builder2 = new ConfigurationBuilder(server, file))
+					{
+						foreach (var config in configs2[server])
+						{
+							builder2.Write(config);
+						}
+					}
+				}
 			}
 
 			using (Execute.Step("SAVE GUID MAP"))
@@ -395,6 +414,7 @@ namespace CCNet.Build.Reconfigure
 				.Cast<T>()
 				.ToList();
 		}
+
 
 		private static XmlWriter WriteConfig(string filePath)
 		{

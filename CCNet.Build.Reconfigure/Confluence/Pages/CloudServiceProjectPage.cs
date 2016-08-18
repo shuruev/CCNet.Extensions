@@ -87,12 +87,12 @@ namespace CCNet.Build.Reconfigure
 			return row;
 		}
 
-		public override List<ProjectConfiguration> ExportConfigurations()
+		public override List<IProjectConfigurationTemp> ExportConfigurations()
 		{
 			var config = new CloudServiceProjectConfiguration();
 			ApplyTo(config);
 
-			return new List<ProjectConfiguration> { config };
+			return new List<IProjectConfigurationTemp> { config };
 		}
 	}
 }

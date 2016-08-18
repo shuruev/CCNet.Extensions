@@ -267,7 +267,7 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
-		public abstract List<ProjectConfiguration> ExportConfigurations();
+		public abstract List<IProjectConfigurationTemp> ExportConfigurations();
 
 		public abstract Tuple<string, Guid> ExportMap();
 	}

@@ -49,7 +49,7 @@ namespace CCNet.Build.Reconfigure
 			var areas = m_children[root.Id];
 			Parallel.ForEach(
 				areas,
-				new ParallelOptions { MaxDegreeOfParallelism = 2 },
+				new ParallelOptions { MaxDegreeOfParallelism = 5 },
 				area =>
 				{
 					var pages = RebuildArea(area);
@@ -72,7 +72,7 @@ namespace CCNet.Build.Reconfigure
 			m_pages = result.ToList();
 		}
 
-		public List<ProjectConfiguration> ExportConfigurations()
+		public List<IProjectConfigurationTemp> ExportConfigurations()
 		{
 			return m_pages
 				.SelectMany(p => p.ExportConfigurations())

@@ -34,7 +34,7 @@ namespace CCNet.Build.Reconfigure
 		/// <summary>
 		/// Exports configurations for build server.
 		/// </summary>
-		List<ProjectConfiguration> ExportConfigurations();
+		List<IProjectConfigurationTemp> ExportConfigurations();
 
 		/// <summary>
 		/// Exports unique ID for referencing this project.
