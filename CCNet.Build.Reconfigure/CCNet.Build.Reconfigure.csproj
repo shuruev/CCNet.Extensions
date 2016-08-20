@@ -62,13 +62,13 @@
     <Compile Include="Configuration2\Directories\IPackagesDirectory.cs" />
     <Compile Include="Configuration2\Directories\ISourceDirectory.cs" />
     <Compile Include="Configuration2\Directories\IReferencesDirectory.cs" />
-    <Compile Include="Configuration2\INetAssemblyDll.cs" />
-    <Compile Include="Configuration2\INetAssemblyExe.cs" />
-    <Compile Include="Configuration2\INetAssembly.cs" />
+    <Compile Include="Configuration2\IAssembly.cs" />
     <Compile Include="Configuration2\ICsProj.cs" />
     <Compile Include="Configuration2\IProjectConfigurationTemp.cs" />
     <Compile Include="Configuration2\ITfsPath.cs" />
     <Compile Include="Configuration2\IProjectConfiguration.cs" />
+    <Compile Include="ConfigurationBuilder.Tasks.cs" />
+    <Compile Include="ConfigurationBuilder.Properties.cs" />
     <Compile Include="ConfigurationBuilder.Helpers.cs" />
     <Compile Include="ConfigurationBuilder.cs" />
     <Compile Include="Configuration\Settings\FabricApplicationProjectConfiguration.cs" />

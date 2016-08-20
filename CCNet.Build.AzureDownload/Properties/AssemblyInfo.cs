@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -8,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("CCNet.Build.AzureDownload")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("CBS Interactive")]
+[assembly: AssemblyCompany("Oleg Shuruev")]
 [assembly: AssemblyProduct("CCNet.Build.AzureDownload")]
-[assembly: AssemblyCopyright("Copyright © CBS Interactive 2016")]
+[assembly: AssemblyCopyright("Copyright © Oleg Shuruev 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

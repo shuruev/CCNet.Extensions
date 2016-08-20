@@ -12,11 +12,6 @@ namespace CCNet.Build.CheckProject
 			get { return Current.Get<string>("ProjectName"); }
 		}
 
-		public static string ProjectTitle
-		{
-			get { return Current.Get("ProjectTitle", ProjectName); }
-		}
-
 		public static string CompanyName
 		{
 			get { return Current.Get<string>("CompanyName"); }

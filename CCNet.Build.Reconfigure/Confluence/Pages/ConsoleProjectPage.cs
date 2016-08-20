@@ -23,7 +23,9 @@ namespace CCNet.Build.Reconfigure
 				Area = AreaName,
 				Name = ProjectName,
 				Description = Description,
-				OwnerEmail = config.OwnerEmail
+				OwnerEmail = config.OwnerEmail,
+				TfsPath = TfsPath,
+				CheckEvery = config.BuildEvery
 			};
 
 			return new List<IProjectConfigurationTemp> { config, config2 };

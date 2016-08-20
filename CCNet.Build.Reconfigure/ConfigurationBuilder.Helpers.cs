@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace CCNet.Build.Reconfigure
 {
-	public partial class ConfigurationBuilder : IDisposable
+	public partial class ConfigurationBuilder
 	{
 		private class TagElement : IDisposable
 		{

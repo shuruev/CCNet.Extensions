@@ -47,7 +47,8 @@ namespace CCNet.Build.Reconfigure
 					GetIssuesToCheck()
 						.Except(IgnoreChecks)
 						.Union(ForceChecks)
-						.Where(code => code != null));
+						.Where(code => code != null)
+						.OrderBy(code => code));
 			}
 		}
 

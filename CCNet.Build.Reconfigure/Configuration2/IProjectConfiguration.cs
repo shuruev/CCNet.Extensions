@@ -37,6 +37,11 @@ namespace CCNet.Build.Reconfigure
 		/// Gets owner email (e.g. will be notified about failed builds).
 		/// </summary>
 		string OwnerEmail { get; }
+
+		/// <summary>
+		/// Gets or sets how often source control changes should be checked.
+		/// </summary>
+		TimeSpan CheckEvery { get; set; }
 	}
 
 	public static partial class ProjectConfigurationMethods

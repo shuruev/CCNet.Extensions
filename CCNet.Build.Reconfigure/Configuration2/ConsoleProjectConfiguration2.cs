@@ -1,9 +1,11 @@
-﻿namespace CCNet.Build.Reconfigure
+﻿using System;
+
+namespace CCNet.Build.Reconfigure
 {
 	public class ConsoleProjectConfiguration2 :
 		IProjectConfiguration,
 		IReferencesDirectory,
-		ISourceDirectory,
+		ITfsPath,
 		IPackagesDirectory
 	{
 		public string Area { get; set; }
@@ -11,6 +13,9 @@
 		public string Branch { get; set; }
 		public string Description { get; set; }
 		public string OwnerEmail { get; set; }
+
+		public string TfsPath { get; set; }
+		public TimeSpan CheckEvery { get; set; }
 
 		public string Server => "Application";
 	}
