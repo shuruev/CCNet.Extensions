@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace NetBuild.ConsoleApp
 {
@@ -212,17 +211,21 @@ namespace NetBuild.ConsoleApp
 		/// <summary>
 		/// Handles run-time error.
 		/// </summary>
-		private static int RuntimeError(Exception error)
+		private int RuntimeError(Exception error)
 		{
-			Console.Error.WriteLine(
-				@"
-Running {0} has failed:
-{1}
-
-Please contact build adminstrator for more information.
-",
-				Assembly.GetEntryAssembly().GetName().Name,
-				error);
+			if (!m_args.DebugMode)
+			{
+				Console.Error.WriteLine();
+				Console.Error.WriteLine(error.Message);
+			}
+			else
+			{
+				Console.Error.WriteLine(
+					$@"
+Running {m_info.Executable} has failed:
+{error}
+");
+			}
 
 			return -1;
 		}

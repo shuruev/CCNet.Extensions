@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{62229A30-C8E1-4348-BA47-67E0FFD78A1D}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{4B2C1ADC-AD90-49F3-99AB-70C2B5DD670E}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NetBuild.CheckProject</RootNamespace>
-    <AssemblyName>NetBuild.CheckProject</AssemblyName>
+    <AssemblyName>NetBuild.CheckProject.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -47,37 +44,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App.cs" />
-    <Compile Include="Args.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="CheckArgs.cs" />
+    <Compile Include="CheckContext.cs" />
+    <Compile Include="CheckException.cs" />
+    <Compile Include="ICheckIssue.cs" />
+    <Compile Include="IContextProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NetBuild.CheckProject.Core\NetBuild.CheckProject.Core.csproj">
-      <Project>{4b2c1adc-ad90-49f3-99ab-70c2b5dd670e}</Project>
-      <Name>NetBuild.CheckProject.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetBuild.CheckProject.Legacy\NetBuild.CheckProject.Legacy.csproj">
-      <Project>{37a720c6-d664-4e62-bfd6-1c4e1a5abb03}</Project>
-      <Name>NetBuild.CheckProject.Legacy</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetBuild.CheckProject.Standard\NetBuild.CheckProject.Standard.csproj">
-      <Project>{d38f1127-3fbe-44ea-a0e2-6726444c1e4b}</Project>
-      <Name>NetBuild.CheckProject.Standard</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetBuild.ConsoleApp\NetBuild.ConsoleApp.csproj">
       <Project>{353b252e-aab0-4cb1-ae6b-5b34b3288f34}</Project>
       <Name>NetBuild.ConsoleApp</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>..\..\..\packages\ILMerge.2.14.1208\tools\ILMerge.exe /wildcards /target:exe /out:NetBuild.CheckProject.Run.exe NetBuild.CheckProject.exe *.dll</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
