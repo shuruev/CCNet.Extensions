@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\NetBuild.CheckProject.Core.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\NetBuild.CheckProject.Core.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Atom.Module.Configuration, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -35,6 +37,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,11 +47,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CheckArgs.cs" />
+    <Compile Include="Context\ConfigurationValue.cs" />
+    <Compile Include="Context\ArgumentValue.cs" />
     <Compile Include="CheckContext.cs" />
     <Compile Include="CheckException.cs" />
+    <Compile Include="Context\ConfigurationContext.cs" />
     <Compile Include="ICheckIssue.cs" />
     <Compile Include="IContextProvider.cs" />
+    <Compile Include="Context\ValueProviderExtensions.cs" />
+    <Compile Include="Context\ValueProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

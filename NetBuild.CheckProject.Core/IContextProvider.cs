@@ -8,6 +8,6 @@
 		/// <summary>
 		/// Loads required data.
 		/// </summary>
-		void Load(CheckContext context, CheckArgs args);
+		void Load(CheckContext context);
 	}
 }

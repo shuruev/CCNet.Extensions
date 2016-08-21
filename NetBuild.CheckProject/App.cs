@@ -32,7 +32,7 @@ namespace NetBuild.CheckProject
 
 				try
 				{
-					checker.Check(m_context, m_args);
+					checker.Check(m_context);
 				}
 				catch (CheckException e)
 				{
@@ -49,7 +49,7 @@ namespace NetBuild.CheckProject
 						e);
 				}
 
-				Console.WriteLine($"{issue} // {checker.GetType().FullName} > OK");
+				Console.WriteLine($"{issue} // {checker.GetType().Name} > OK");
 			}
 		}
 

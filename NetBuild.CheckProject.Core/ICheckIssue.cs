@@ -13,6 +13,6 @@
 		/// <summary>
 		/// Performs checking procedure.
 		/// </summary>
-		void Check(CheckContext context, CheckArgs args);
+		void Check(CheckContext context);
 	}
 }
