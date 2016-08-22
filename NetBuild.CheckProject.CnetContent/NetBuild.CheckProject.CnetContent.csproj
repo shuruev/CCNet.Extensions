@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{37A720C6-D664-4E62-BFD6-1C4E1A5ABB03}</ProjectGuid>
+    <ProjectGuid>{68B2F777-FB52-4404-A183-2CD6EC4485CD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetBuild.CheckProject.Legacy</RootNamespace>
-    <AssemblyName>NetBuild.CheckProject.Legacy</AssemblyName>
+    <RootNamespace>NetBuild.CheckProject.CnetContent</RootNamespace>
+    <AssemblyName>NetBuild.CheckProject.CnetContent</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Atom.Module.Configuration, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Atom.Module.Configuration.1.0.1\lib\net45\Atom.Module.Configuration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,24 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LocalName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetBuild.CheckProject.Core\NetBuild.CheckProject.Core.csproj">
-      <Project>{4b2c1adc-ad90-49f3-99ab-70c2b5dd670e}</Project>
+      <Project>{4B2C1ADC-AD90-49F3-99AB-70C2B5DD670E}</Project>
       <Name>NetBuild.CheckProject.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetBuild.CheckProject.Standard\NetBuild.CheckProject.Standard.csproj">
-      <Project>{d38f1127-3fbe-44ea-a0e2-6726444c1e4b}</Project>
+      <Project>{D38F1127-3FBE-44EA-A0E2-6726444C1E4B}</Project>
       <Name>NetBuild.CheckProject.Standard</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetBuild.ConsoleApp\NetBuild.ConsoleApp.csproj">
-      <Project>{353b252e-aab0-4cb1-ae6b-5b34b3288f34}</Project>
-      <Name>NetBuild.ConsoleApp</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

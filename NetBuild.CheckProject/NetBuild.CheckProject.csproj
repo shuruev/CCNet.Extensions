@@ -53,10 +53,26 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+      <TransformOnBuild>true</TransformOnBuild>
+    </None>
+    <None Include="App.Debug.config">
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="App.Release.config">
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
     <None Include="packages.config" />
+    <None Include="Properties\SlowCheetah\SlowCheetah.Transforms.targets" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NetBuild.CheckProject.CnetContent\NetBuild.CheckProject.CnetContent.csproj">
+      <Project>{68b2f777-fb52-4404-a183-2cd6ec4485cd}</Project>
+      <Name>NetBuild.CheckProject.CnetContent</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetBuild.CheckProject.Core\NetBuild.CheckProject.Core.csproj">
       <Project>{4b2c1adc-ad90-49f3-99ab-70c2b5dd670e}</Project>
       <Name>NetBuild.CheckProject.Core</Name>
@@ -64,6 +80,14 @@
     <ProjectReference Include="..\NetBuild.CheckProject.Legacy\NetBuild.CheckProject.Legacy.csproj">
       <Project>{37a720c6-d664-4e62-bfd6-1c4e1a5abb03}</Project>
       <Name>NetBuild.CheckProject.Legacy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetBuild.CheckProject.SourceControl.Tfs\NetBuild.CheckProject.SourceControl.Tfs.csproj">
+      <Project>{67ffd56d-3ff1-4fa0-801e-519c8acb1b87}</Project>
+      <Name>NetBuild.CheckProject.SourceControl.Tfs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetBuild.CheckProject.SourceControl\NetBuild.CheckProject.SourceControl.csproj">
+      <Project>{8327bee7-c400-4c75-b3fb-8f811904051a}</Project>
+      <Name>NetBuild.CheckProject.SourceControl</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetBuild.CheckProject.Standard\NetBuild.CheckProject.Standard.csproj">
       <Project>{d38f1127-3fbe-44ea-a0e2-6726444c1e4b}</Project>
@@ -76,8 +100,15 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>..\..\..\packages\ILMerge.2.14.1208\tools\ILMerge.exe /wildcards /target:exe /out:NetBuild.CheckProject.Run.exe NetBuild.CheckProject.exe *.dll</PostBuildEvent>
+    <PostBuildEvent>..\..\..\packages\ILMerge.2.14.1208\tools\ILMerge.exe /wildcards /target:exe /out:NetBuild.CheckProject.Run.exe NetBuild.CheckProject.exe NetBuild.*.dll Atom.*.dll</PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup Label="SlowCheetah">
+    <SlowCheetahToolsPath>$([System.IO.Path]::GetFullPath( $(MSBuildProjectDirectory)\..\packages\SlowCheetah.2.5.15\tools\))</SlowCheetahToolsPath>
+    <SlowCheetah_EnableImportFromNuGet Condition=" '$(SlowCheetah_EnableImportFromNuGet)'=='' ">true</SlowCheetah_EnableImportFromNuGet>
+    <SlowCheetah_NuGetImportPath Condition=" '$(SlowCheetah_NuGetImportPath)'=='' ">$([System.IO.Path]::GetFullPath( $(MSBuildProjectDirectory)\Properties\SlowCheetah\SlowCheetah.Transforms.targets ))</SlowCheetah_NuGetImportPath>
+    <SlowCheetahTargets Condition=" '$(SlowCheetah_EnableImportFromNuGet)'=='true' and Exists('$(SlowCheetah_NuGetImportPath)') ">$(SlowCheetah_NuGetImportPath)</SlowCheetahTargets>
+  </PropertyGroup>
+  <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

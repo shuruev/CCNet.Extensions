@@ -48,10 +48,12 @@
     <Compile Include="Configuration\CompanyName.cs" />
     <Compile Include="Arguments\ProjectName.cs" />
     <Compile Include="Arguments\ProjectExtension.cs" />
+    <Compile Include="Context\LocalPathItems.cs" />
     <Compile Include="Context\ProjectFile.cs" />
     <Compile Include="Context\LocalName.cs" />
+    <Compile Include="FileStructure\AssemblyInfoShouldExist.cs" />
+    <Compile Include="FileStructure\ProjectFileShouldExist.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test1.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetBuild.CheckProject.Core\NetBuild.CheckProject.Core.csproj">

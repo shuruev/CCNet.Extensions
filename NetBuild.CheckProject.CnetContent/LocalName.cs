@@ -1,6 +1,6 @@
 ﻿using NetBuild.CheckProject.Standard;
 
-namespace NetBuild.CheckProject.Legacy
+namespace NetBuild.CheckProject.CnetContent
 {
 	public class CnetLocalName : LocalName
 	{
@@ -8,7 +8,7 @@ namespace NetBuild.CheckProject.Legacy
 		{
 			const string prefix = "CnetContent.";
 
-			var name = context.Value<ProjectName>();
+			var name = context.Of<ProjectName>().Value;
 			if (name.StartsWith(prefix))
 				name = name.Substring(prefix.Length);
 

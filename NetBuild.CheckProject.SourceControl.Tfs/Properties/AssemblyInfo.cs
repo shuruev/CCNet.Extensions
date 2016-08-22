@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NetBuild.Tfs")]
+[assembly: AssemblyTitle("NetBuild.CheckProject.SourceControl.Tfs")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Oleg Shuruev")]
-[assembly: AssemblyProduct("NetBuild.Tfs")]
+[assembly: AssemblyProduct("NetBuild.CheckProject.SourceControl.Tfs")]
 [assembly: AssemblyCopyright("Copyright © Oleg Shuruev 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("79954a6f-d979-49db-8112-6ab4b8a4a9cd")]
+[assembly: Guid("67ffd56d-3ff1-4fa0-801e-519c8acb1b87")]
 
 // Version information for an assembly consists of the following four values:
 //

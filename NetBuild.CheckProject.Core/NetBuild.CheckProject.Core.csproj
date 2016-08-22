@@ -54,7 +54,6 @@
     <Compile Include="Context\ConfigurationContext.cs" />
     <Compile Include="ICheckIssue.cs" />
     <Compile Include="IContextProvider.cs" />
-    <Compile Include="Context\ValueProviderExtensions.cs" />
     <Compile Include="Context\ValueProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

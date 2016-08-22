@@ -14,13 +14,5 @@ namespace NetBuild.CheckProject
 			: base(message)
 		{
 		}
-
-		/// <summary>
-		/// Initializes a new instance.
-		/// </summary>
-		public CheckException(string format, params object[] args)
-			: base(String.Format(format, args))
-		{
-		}
 	}
 }
