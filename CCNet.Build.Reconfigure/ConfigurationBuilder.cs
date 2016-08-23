@@ -167,7 +167,11 @@ namespace CCNet.Build.Reconfigure
 
 		private void WriteTasks(IProjectConfiguration config)
 		{
-			WriteCheckProject(config);
+			using (Tag("tasks"))
+			{
+				WriteCheckProject(config);
+				WritePrepareProject(config);
+			}
 		}
 
 		private void WritePublishers(IProjectConfiguration config)

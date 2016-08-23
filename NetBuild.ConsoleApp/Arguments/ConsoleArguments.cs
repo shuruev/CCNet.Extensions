@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Atom.Toolbox;
 
 namespace NetBuild.ConsoleApp
 {
@@ -8,7 +9,7 @@ namespace NetBuild.ConsoleApp
 	/// Works with command line arguments.
 	/// Expected arguments represent unnamed properties which can be specified at the beginning, before named properties.
 	/// </summary>
-	public class ConsoleArguments : ConsoleArgumentsReader
+	public class ConsoleArguments : MemoryConfigReader
 	{
 		private readonly string[] m_expected;
 

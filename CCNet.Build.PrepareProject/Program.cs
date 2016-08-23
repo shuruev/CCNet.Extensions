@@ -1,4 +1,4 @@
-﻿namespace NetBuild.CheckProject
+﻿namespace CCNet.Build.PrepareProject
 {
 	public static class Program
 	{

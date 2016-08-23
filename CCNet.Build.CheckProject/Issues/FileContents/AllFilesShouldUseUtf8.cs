@@ -116,6 +116,7 @@ This should help other team memebers to avoid possible conflicts while working w
 			if (name.EndsWith(".cs")
 				|| name.EndsWith(".asax")
 				|| name.EndsWith(".ascx")
+				|| name.EndsWith(".asmx")
 				|| name.EndsWith(".aspx")
 				|| name.EndsWith(".config")
 				|| name.EndsWith(".config.default")

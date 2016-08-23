@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Atom.Module.Configuration, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Atom.Module.Configuration.1.0.1\lib\net45\Atom.Module.Configuration.dll</HintPath>
+    <Reference Include="Atom.Module.Configuration, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Atom.Module.Configuration.1.0.3\lib\net45\Atom.Module.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -48,6 +48,8 @@
     <Compile Include="Context\RemoteSolution.cs" />
     <Compile Include="Context\SolutionPathItems.cs" />
     <Compile Include="ISourceControl.cs" />
+    <Compile Include="PackagesFolderShouldNotExist.cs" />
+    <Compile Include="NugetFolderShouldNotExist.cs" />
     <Compile Include="PrimarySolutionShouldExist.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProjectFolderShouldHaveProjectName.cs" />

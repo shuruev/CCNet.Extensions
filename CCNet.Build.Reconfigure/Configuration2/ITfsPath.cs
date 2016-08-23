@@ -1,12 +1,12 @@
 ﻿namespace CCNet.Build.Reconfigure
 {
 	/// <summary>
-	/// Build project use TFS location.
+	/// Build project uses TFS source control location.
 	/// </summary>
 	public interface ITfsPath : ISourceDirectory
 	{
 		/// <summary>
-		/// Gets or sets source control path.
+		/// Gets source control path.
 		/// </summary>
 		string TfsPath { get; set; }
 	}

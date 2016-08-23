@@ -2,7 +2,7 @@
 
 namespace CCNet.Build.Reconfigure
 {
-	public class ConsoleProjectConfiguration2 :
+	public class FabricServiceProjectConfiguration2 :
 		IReferencesDirectory,
 		ITfsPath,
 		IPackagesDirectory
@@ -17,6 +17,6 @@ namespace CCNet.Build.Reconfigure
 		public string TfsPath { get; set; }
 		public string CustomIssues { get; set; }
 
-		public string Server => "Application";
+		public string Server => "Azure";
 	}
 }

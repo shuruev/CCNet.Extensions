@@ -1,9 +1,11 @@
-﻿namespace CCNet.Build.Common
+﻿using System.IO;
+
+namespace CCNet.Build.Common
 {
 	/// <summary>
 	/// Some utility methods which are hard to be categorized yet.
 	/// </summary>
-	public static class Util
+	public static partial class Util
 	{
 		/// <summary>
 		/// Gets local name used for project files and folders.

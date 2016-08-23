@@ -18,7 +18,17 @@ namespace CCNet.Build.Reconfigure
 			var config = new FabricServiceProjectConfiguration();
 			ApplyTo(config);
 
-			return new List<IProjectConfigurationTemp> { config };
+			var config2 = new FabricServiceProjectConfiguration2
+			{
+				Area = AreaName,
+				Name = ProjectName,
+				Description = Description,
+				OwnerEmail = config.OwnerEmail,
+				CheckEvery = config.BuildEvery,
+				TfsPath = TfsPath
+			};
+
+			return new List<IProjectConfigurationTemp> { config, config2 };
 		}
 	}
 }

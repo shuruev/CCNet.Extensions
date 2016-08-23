@@ -25,7 +25,7 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
-		private void ExecTask(string executable, string description, params Arg[] arguments)
+		private void ExecTaskLegacy(string executable, string description, params Arg[] arguments)
 		{
 			using (Tag("exec"))
 			{
@@ -53,20 +53,48 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
+		private void ExecTask(string executable, string description, params Arg[] arguments)
+		{
+			using (Tag("exec"))
+			{
+				Tag("executable", executable);
+				Tag("buildTimeoutSeconds", "45");
+
+				var args = arguments.Where(arg => arg != null).ToList();
+				if (args.Count > 0)
+				{
+					var sb = new StringBuilder();
+					foreach (var arg in args)
+					{
+						var line = $"/{arg.Name}:{arg.Value}";
+						sb.Append($"\r\n\"{line.Replace("\"", "\"\"")}\"");
+					}
+
+					sb.Append("\r\n\t\t\t\t");
+					Tag("buildArgs", sb.ToString());
+				}
+
+				if (!String.IsNullOrEmpty(description))
+				{
+					Tag("description", description);
+				}
+			}
+		}
+
 		private void WriteCheckProject(IProjectConfiguration config)
 		{
-			var tfs = config as ITfsPath;
-			if (tfs == null)
+			var check = config as ICheckProject;
+			if (check == null)
 				return;
 
 			var args = new List<Arg>
 			{
-				new Arg("ProjectName", config.Name),
-				new Arg("ProjectPath", tfs.SourceDirectory()),
-				new Arg("TfsPath", tfs.TfsPath)
+				new Arg("projectName", config.Name),
+				new Arg("localPath", check.SourceDirectory()),
+				new Arg("remotePath", check.TfsPath)
 			};
 
-			var company = "CNET Content Solutions";
+			/*var company = "CNET Content Solutions";
 
 			var assembly = config as IAssembly;
 			if (assembly != null)
@@ -81,20 +109,57 @@ namespace CCNet.Build.Reconfigure
 					company = assembly.CustomCompanyName;
 			}
 
-			args.Add(new Arg("CompanyName", company));
+			args.Add(new Arg("CompanyName", company));*/
+
+			var issues = new List<string>();
+
+			issues.Add(F01_ProjectFileShouldExist);
+			issues.Add(F02_AssemblyInfoShouldExist);
+
+			issues.Add(S01_ProjectFolderShouldHaveProjectName);
+			issues.Add(S02_PrimarySolutionShouldExist);
+			issues.Add(S03_NugetFolderShouldNotExist);
+			issues.Add(S04_PackagesFolderShouldNotExist);
+
+			if (!String.IsNullOrWhiteSpace(check.CustomIssues))
+			{
+				var all = check.CustomIssues.Split('|');
+				var force = all.Where(code => code.StartsWith("+")).Select(code => code.Substring(1)).ToList();
+				var ignore = all.Where(code => code.StartsWith("+")).Select(code => code.Substring(1)).ToList();
+				issues = issues.Union(force).Except(ignore).ToList();
+			}
+
+			args.Add(new Arg("issues", String.Join("|", issues)));
 
 			ExecTask(
-				"$(ccnetBuildCheckProject)",
+				"$(netBuildCheckProject)",
 				"Check project",
 				args.ToArray());
+		}
 
-			/*xxxusing (Tag("exec"))
+		private void WritePrepareProject(IProjectConfiguration config)
+		{
+			var prepare = config as IPrepareProject;
+			if (prepare == null)
+				return;
+
+			var args = new List<Arg>
 			{
-				args.Add(new Arg("CheckIssues", project.CheckIssues));
+				new Arg("path", prepare.SourceDirectory()),
+				new Arg("version", "$[$CCNetLabel]"),
+				new Arg("tfs", prepare.TfsPath),
+				new Arg("output", prepare.TempDirectory())
+			};
 
-				writer.WriteBuildArgs(args.ToArray());
-				writer.WriteElementString("description", );
-			}*/
+			if (config is ICsProj)
+			{
+				args.Add(new Arg("updateAssemblyInfo", "true"));
+			}
+
+			ExecTask(
+				"$(ccnetBuildPrepareProject)",
+				"Prepare project",
+				args.ToArray());
 		}
 	}
 }

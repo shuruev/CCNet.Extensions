@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Args.cs" />
+    <Compile Include="Configuration2\FabricServiceProjectConfiguration2.cs" />
     <Compile Include="Configuration2\ConsoleProjectConfiguration2.cs" />
     <Compile Include="Configuration2\Directories\IAdminDirectory.cs" />
     <Compile Include="Configuration2\Directories\ITempDirectory.cs" />
@@ -63,10 +64,15 @@
     <Compile Include="Configuration2\Directories\ISourceDirectory.cs" />
     <Compile Include="Configuration2\Directories\IReferencesDirectory.cs" />
     <Compile Include="Configuration2\IAssembly.cs" />
-    <Compile Include="Configuration2\ICsProj.cs" />
+    <Compile Include="Configuration2\IPrepareProject.cs" />
+    <Compile Include="Configuration2\ICheckProject.cs" />
+    <Compile Include="Configuration2\ProjFile\ICcProj.cs" />
+    <Compile Include="Configuration2\ProjFile\ISfProj.cs" />
+    <Compile Include="Configuration2\ProjFile\ICsProj.cs" />
     <Compile Include="Configuration2\IProjectConfigurationTemp.cs" />
     <Compile Include="Configuration2\ITfsPath.cs" />
     <Compile Include="Configuration2\IProjectConfiguration.cs" />
+    <Compile Include="ConfigurationBuilder.Tasks.Issues.cs" />
     <Compile Include="ConfigurationBuilder.Tasks.cs" />
     <Compile Include="ConfigurationBuilder.Properties.cs" />
     <Compile Include="ConfigurationBuilder.Helpers.cs" />

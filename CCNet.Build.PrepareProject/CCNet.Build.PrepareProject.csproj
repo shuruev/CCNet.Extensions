@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D38F1127-3FBE-44EA-A0E2-6726444C1E4B}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{B1C79926-7C50-4385-9331-5DE82F69AFE0}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetBuild.CheckProject.Standard</RootNamespace>
-    <AssemblyName>NetBuild.CheckProject.Standard</AssemblyName>
+    <RootNamespace>CCNet.Build.PrepareProject</RootNamespace>
+    <AssemblyName>CCNet.Build.PrepareProject</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -44,31 +47,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arguments\LocalPath.cs" />
-    <Compile Include="Configuration\CompanyName.cs" />
-    <Compile Include="Arguments\ProjectName.cs" />
-    <Compile Include="Arguments\ProjectExtension.cs" />
-    <Compile Include="Context\LocalPathItems.cs" />
-    <Compile Include="Context\ProjectFile.cs" />
-    <Compile Include="Context\LocalName.cs" />
-    <Compile Include="FileStructure\AssemblyInfoShouldExist.cs" />
-    <Compile Include="FileStructure\ProjectFileShouldExist.cs" />
+    <Compile Include="App.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Args.cs" />
+    <Compile Include="Paths.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetBuild.CheckProject.Core\NetBuild.CheckProject.Core.csproj">
-      <Project>{4b2c1adc-ad90-49f3-99ab-70c2b5dd670e}</Project>
-      <Name>NetBuild.CheckProject.Core</Name>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CCNet.Build.Common\CCNet.Build.Common.csproj">
+      <Project>{439efe6a-a065-4346-8793-8540452b0924}</Project>
+      <Name>CCNet.Build.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetBuild.ConsoleApp\NetBuild.ConsoleApp.csproj">
       <Project>{353b252e-aab0-4cb1-ae6b-5b34b3288f34}</Project>
       <Name>NetBuild.ConsoleApp</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\NetBuild.Tfs\NetBuild.Tfs.csproj">
+      <Project>{79954A6F-D979-49DB-8112-6AB4B8A4A9CD}</Project>
+      <Name>NetBuild.Tfs</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>..\..\..\packages\ILMerge.2.14.1208\tools\ILMerge.exe /wildcards /target:exe /out:$(TargetName).Run.exe $(TargetFileName) CCNet.*.dll NetBuild.*.dll Atom.*.dll</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

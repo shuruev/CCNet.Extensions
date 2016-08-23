@@ -83,7 +83,7 @@ namespace CCNet.Build.Reconfigure
 					var file = Path.Combine(Args.OutputDirectory, $"xxx_CCNet{server}.config");
 					using (var builder2 = new ConfigurationBuilder(server, file))
 					{
-						foreach (var config in configs2[server])
+						foreach (var config in configs2[server].OrderBy(c => c.UniqueName()))
 						{
 							builder2.Write(config);
 						}

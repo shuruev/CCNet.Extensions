@@ -16,8 +16,10 @@ namespace NetBuild.CheckProject.SourceControl
 				.Where(item => Path.GetFileName(item) == solutionName)
 				.FirstOrDefault();
 
-			if (solution == null)
-				throw new CheckException($"Project should have a primary solution file '{solutionName}' placed in parent folder.");
+			if (solution != null)
+				return;
+
+			throw new CheckException($"Project should have a primary solution file '{solutionName}' placed in parent folder.");
 		}
 	}
 }

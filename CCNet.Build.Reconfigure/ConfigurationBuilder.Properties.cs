@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace CCNet.Build.Reconfigure
+﻿namespace CCNet.Build.Reconfigure
 {
 	public partial class ConfigurationBuilder
 	{
