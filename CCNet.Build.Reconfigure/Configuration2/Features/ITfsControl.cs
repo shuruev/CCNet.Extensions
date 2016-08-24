@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Build project uses TFS source control location.
 	/// </summary>
-	public interface ITfsPath : ISourceDirectory
+	public interface ITfsControl : ISourceDirectory
 	{
 		/// <summary>
 		/// Gets source control path.

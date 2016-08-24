@@ -2,11 +2,19 @@
 
 namespace CCNet.Build.Reconfigure
 {
-	public class FabricServiceProjectConfiguration2 :
-		IReferencesDirectory,
-		ITfsPath,
-		IPackagesDirectory
+	public class FabricServiceProjectConfiguration :
+		ICheckProject,
+		IPrepareProject,
+		ICustomReport,
+		ISetupPackages,
+		IBuildAssembly,
+		IPublishRelease,
+		ISaveSnapshot,
+		INotifyProjects
 	{
+		public string ConfluencePage { get; set; }
+		public string Server => "Azure";
+
 		public string Area { get; set; }
 		public string Name { get; set; }
 		public string Branch { get; set; }
@@ -16,7 +24,7 @@ namespace CCNet.Build.Reconfigure
 
 		public string TfsPath { get; set; }
 		public string CustomIssues { get; set; }
-
-		public string Server => "Azure";
+		public string CustomVersions { get; set; }
+		public string ExcludeFromPublish { get; set; }
 	}
 }

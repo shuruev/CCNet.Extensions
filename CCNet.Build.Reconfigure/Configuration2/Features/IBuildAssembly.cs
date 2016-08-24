@@ -1,13 +1,11 @@
-﻿using CCNet.Build.Common;
-
-namespace CCNet.Build.Reconfigure
+﻿namespace CCNet.Build.Reconfigure
 {
 	/// <summary>
 	/// Build project can be built as .NET assembly.
 	/// </summary>
-	public interface IAssembly
+	public interface IBuildAssembly : ISourceDirectory
 	{
-		/// <summary>
+		/*xxx/// <summary>
 		/// Gets target .NET Framework version.
 		/// </summary>
 		TargetFramework Framework { get; }
@@ -31,10 +29,17 @@ namespace CCNet.Build.Reconfigure
 		/// Gets custom company name.
 		/// </summary>
 		string CustomCompanyName { get; }
+		*/
+	}
 
+	public static partial class ProjectConfigurationMethods
+	{
 		/// <summary>
-		/// Gets custom versions definition, which should be used when building a project.
+		/// Gets directory which stores primary release output.
 		/// </summary>
-		string CustomVersions { get; }
+		public static string SourceDirectoryRelease(this IBuildAssembly config)
+		{
+			return $@"{config.SourceDirectory()}\bin\Release";
+		}
 	}
 }

@@ -54,6 +54,12 @@ namespace CCNet.Build.Reconfigure
 				var configs = all.Where(c => c is ProjectConfiguration).Cast<ProjectConfiguration>().ToList();
 				ApplyCustomizations(configs);
 
+				var configs2 = all
+					.Where(c => c is IProjectConfiguration)
+					.Cast<IProjectConfiguration>()
+					.GroupBy(c => c.Server)
+					.ToDictionary(g => g.Key, g => g.ToList());
+
 				BuildLibraryConfig(FilterByType<LibraryProjectConfiguration>(configs));
 
 				BuildWebsiteConfig(
@@ -69,14 +75,7 @@ namespace CCNet.Build.Reconfigure
 				BuildAzureConfig(
 					FilterByType<CloudRoleProjectConfiguration>(configs),
 					FilterByType<CloudServiceProjectConfiguration>(configs),
-					FilterByType<FabricServiceProjectConfiguration>(configs),
-					FilterByType<FabricApplicationProjectConfiguration>(configs));
-
-				var configs2 = all
-					.Where(c => c is IProjectConfiguration)
-					.Cast<IProjectConfiguration>()
-					.GroupBy(c => c.Server)
-					.ToDictionary(g => g.Key, g => g.ToList());
+					configs2);
 
 				foreach (var server in configs2.Keys)
 				{
@@ -85,6 +84,7 @@ namespace CCNet.Build.Reconfigure
 					{
 						foreach (var config in configs2[server].OrderBy(c => c.UniqueName()))
 						{
+							ApplyCustomizations2(config);
 							builder2.Write(config);
 						}
 					}
@@ -388,6 +388,15 @@ namespace CCNet.Build.Reconfigure
 				"Lean.Security.Auth");
 		}
 
+		private static void ApplyCustomizations2(IProjectConfiguration config)
+		{
+			var fabricService = config as FabricServiceProjectConfiguration;
+			if (fabricService != null)
+			{
+				fabricService.ExcludeFromPublish = "en-us|Microsoft.ServiceFabric.*";
+			}
+		}
+
 		private static void SetupDependencies(IEnumerable<ProjectConfiguration> configs, string libraryName, params string[] dependencies)
 		{
 			var library = configs.FirstOrDefault(item => item.Name == libraryName) as LibraryProjectConfiguration;
@@ -529,47 +538,31 @@ namespace CCNet.Build.Reconfigure
 		private static void BuildAzureConfig(
 			IEnumerable<CloudRoleProjectConfiguration> cloudRoles,
 			IEnumerable<CloudServiceProjectConfiguration> cloudServices,
-			IEnumerable<FabricServiceProjectConfiguration> fabricServices,
-			IEnumerable<FabricApplicationProjectConfiguration> fabricApplications)
+			Dictionary<string, List<IProjectConfiguration>> configs2)
 		{
 			Console.WriteLine("Generate azure config...");
 			Console.WriteLine("Output file: {0}", Paths.AzureConfig);
 
-			using (var writer = WriteConfig(Paths.AzureConfig))
+			var server = "Azure";
+			using (var builder2 = new ConfigurationBuilder(server, Paths.AzureConfig))
 			{
-				writer.Begin();
-
-				writer.Comment("SERVER NAME");
-				writer.CbTag("define", "serverName", "Azure");
-
-				writer.Comment("IMPORT GLOBAL");
-				writer.CbTag("include", "href", "Global.config");
-
 				foreach (var config in cloudRoles)
 				{
-					WriteCloudRoleProject(writer, config);
+					WriteCloudRoleProject(builder2.XXX_writer, config);
 					Console.WriteLine("> {0}", config.UniqueName);
 				}
 
 				foreach (var config in cloudServices)
 				{
-					WriteCloudServiceProject(writer, config);
+					WriteCloudServiceProject(builder2.XXX_writer, config);
 					Console.WriteLine("> {0}", config.UniqueName);
 				}
 
-				foreach (var config in fabricServices)
+				foreach (var config in configs2[server].OrderBy(c => c.UniqueName()))
 				{
-					WriteApplicationProject(writer, config);
-					Console.WriteLine("> {0}", config.UniqueName);
+					ApplyCustomizations2(config);
+					builder2.Write(config);
 				}
-
-				foreach (var config in fabricApplications)
-				{
-					WriteFabricApplicationProject(writer, config);
-					Console.WriteLine("> {0}", config.UniqueName);
-				}
-
-				writer.End();
 			}
 		}
 

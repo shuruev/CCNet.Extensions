@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.PrepareProject"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "New", "New", "{964B31D3-D70B-4187-A2B8-CBE63DA8F2E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCNet.Build.CustomReport", "CCNet.Build.CustomReport\CCNet.Build.CustomReport.csproj", "{4714D6BC-6D7E-46F7-8471-A748B7A650C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -161,6 +163,10 @@ Global
 		{B1C79926-7C50-4385-9331-5DE82F69AFE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1C79926-7C50-4385-9331-5DE82F69AFE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1C79926-7C50-4385-9331-5DE82F69AFE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4714D6BC-6D7E-46F7-8471-A748B7A650C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4714D6BC-6D7E-46F7-8471-A748B7A650C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4714D6BC-6D7E-46F7-8471-A748B7A650C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4714D6BC-6D7E-46F7-8471-A748B7A650C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -181,6 +187,7 @@ Global
 		{68B2F777-FB52-4404-A183-2CD6EC4485CD} = {F0723BCA-221F-43D5-A412-393A7C074A5E}
 		{67FFD56D-3FF1-4FA0-801E-519C8ACB1B87} = {B3B00883-94C5-4B4D-9298-5CA258D8107B}
 		{B1C79926-7C50-4385-9331-5DE82F69AFE0} = {964B31D3-D70B-4187-A2B8-CBE63DA8F2E4}
+		{4714D6BC-6D7E-46F7-8471-A748B7A650C1} = {964B31D3-D70B-4187-A2B8-CBE63DA8F2E4}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = CCNet.Extensions.vsmdi

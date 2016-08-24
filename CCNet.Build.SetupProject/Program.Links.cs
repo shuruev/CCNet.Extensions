@@ -44,14 +44,6 @@ namespace CCNet.Build.SetupProject
 					links = BuildLinksCloudService();
 					break;
 
-				case ProjectType.FabricService:
-					links = BuildLinksFabricService();
-					break;
-
-				case ProjectType.FabricApplication:
-					links = BuildLinksFabricApplication();
-					break;
-
 				default:
 					throw new InvalidOperationException($"Unknown project type '{Args.ProjectType}'.");
 			}
@@ -158,30 +150,6 @@ namespace CCNet.Build.SetupProject
 				new
 				{
 					Url = $"https://owl.cbsi.com/confluence/display/CCSSEDRU/{Args.ProjectName}+cloud+service",
-					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
-				}
-			};
-		}
-
-		private static List<dynamic> BuildLinksFabricService()
-		{
-			return new List<dynamic>
-			{
-				new
-				{
-					Url = $"https://owl.cbsi.com/confluence/display/CCSSEDRU/{Args.ProjectName}+fabric+service",
-					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
-				}
-			};
-		}
-
-		private static List<dynamic> BuildLinksFabricApplication()
-		{
-			return new List<dynamic>
-			{
-				new
-				{
-					Url = $"https://owl.cbsi.com/confluence/display/CCSSEDRU/{Args.ProjectName}+fabric+application",
 					Image = "https://owl.cbsi.com/images/confluence_logo_landing.png"
 				}
 			};

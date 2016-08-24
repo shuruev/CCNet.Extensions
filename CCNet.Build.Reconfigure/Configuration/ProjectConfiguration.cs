@@ -2,7 +2,7 @@
 
 namespace CCNet.Build.Reconfigure
 {
-	public abstract class ProjectConfiguration : IProjectConfigurationTemp
+	public class ProjectConfiguration : IProjectConfigurationTemp
 	{
 		public string Branch { get; set; }
 		public string Name { get; set; }

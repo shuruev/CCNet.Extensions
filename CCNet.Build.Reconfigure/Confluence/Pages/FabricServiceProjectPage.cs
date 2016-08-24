@@ -15,20 +15,21 @@ namespace CCNet.Build.Reconfigure
 
 		public override List<IProjectConfigurationTemp> ExportConfigurations()
 		{
-			var config = new FabricServiceProjectConfiguration();
-			ApplyTo(config);
+			var config1 = new ProjectConfiguration();
+			ApplyTo(config1);
 
-			var config2 = new FabricServiceProjectConfiguration2
+			var config = new FabricServiceProjectConfiguration
 			{
+				ConfluencePage = $"{ProjectName}+fabric+service",
 				Area = AreaName,
 				Name = ProjectName,
 				Description = Description,
-				OwnerEmail = config.OwnerEmail,
-				CheckEvery = config.BuildEvery,
+				OwnerEmail = config1.OwnerEmail,
+				CheckEvery = config1.BuildEvery,
 				TfsPath = TfsPath
 			};
 
-			return new List<IProjectConfigurationTemp> { config, config2 };
+			return new List<IProjectConfigurationTemp> { config };
 		}
 	}
 }

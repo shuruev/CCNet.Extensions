@@ -7,7 +7,7 @@
 	public class RemotePath : ArgumentValue<string>
 	{
 		public RemotePath()
-			: base("RemotePath")
+			: base("remote")
 		{
 		}
 	}

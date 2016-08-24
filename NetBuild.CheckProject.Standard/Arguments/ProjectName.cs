@@ -7,7 +7,7 @@
 	public class ProjectName : ArgumentValue<string>
 	{
 		public ProjectName()
-			: base("ProjectName")
+			: base("name")
 		{
 		}
 	}

@@ -7,7 +7,7 @@
 	public class ProjectExtension : ArgumentValue<string>
 	{
 		public ProjectExtension()
-			: base("ProjectExtension", "csproj")
+			: base("extension", "csproj")
 		{
 		}
 	}

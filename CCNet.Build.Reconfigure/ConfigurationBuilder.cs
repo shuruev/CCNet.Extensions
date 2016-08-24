@@ -6,6 +6,8 @@ namespace CCNet.Build.Reconfigure
 {
 	public partial class ConfigurationBuilder : IDisposable
 	{
+		public XmlWriter XXX_writer => m_writer;
+
 		private readonly XmlWriter m_writer;
 
 		public ConfigurationBuilder(string serverName, string filePath)
@@ -92,7 +94,7 @@ namespace CCNet.Build.Reconfigure
 				Attr("type", "multi");
 				using (Tag("sourceControls"))
 				{
-					var tfs = config as ITfsPath;
+					var tfs = config as ITfsControl;
 					if (tfs != null)
 					{
 						using (Tag("vsts"))
@@ -104,7 +106,7 @@ namespace CCNet.Build.Reconfigure
 							Tag("applyLabel", "false");
 							Tag("autoGetSource", "true");
 							Tag("cleanCopy", "true");
-							Tag("workspace", $"CCNET_{config.Server}_{GetQueue(config)}");
+							Tag("workspace", $"CCNET_{tfs.Server}_{GetQueue(config)}");
 							Tag("deleteWorkspace", "true");
 						}
 					}
@@ -162,6 +164,15 @@ namespace CCNet.Build.Reconfigure
 				{
 					Attr("path", config.WorkingDirectory());
 				}
+
+				var temp = config as ITempDirectory;
+				if (temp != null)
+				{
+					using (CbTag("CreateDirectory"))
+					{
+						Attr("path", temp.TempDirectory());
+					}
+				}
 			}
 		}
 
@@ -171,6 +182,13 @@ namespace CCNet.Build.Reconfigure
 			{
 				WriteCheckProject(config);
 				WritePrepareProject(config);
+				WriteCustomReport(config);
+				WriteSetupPackages(config);
+				WriteBuildAssembly(config);
+				WritePublishRelease(config);
+				WriteSaveSnapshot(config);
+				WriteCompleteBuild(config);
+				WriteNotifyProjects(config);
 			}
 		}
 

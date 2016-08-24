@@ -4,7 +4,7 @@ namespace CCNet.Build.Reconfigure
 {
 	public class ConsoleProjectConfiguration2 :
 		IReferencesDirectory,
-		ITfsPath,
+		ITfsControl,
 		IPackagesDirectory
 	{
 		public string Area { get; set; }

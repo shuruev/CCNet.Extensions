@@ -1,9 +1,9 @@
 ﻿namespace CCNet.Build.Reconfigure
 {
 	/// <summary>
-	/// Build project will be checked during the scenario.
+	/// Build project should notify other projects after successfull build.
 	/// </summary>
-	public interface ICheckProject : ITfsPath
+	public interface INotifyProjects
 	{
 		/// <summary>
 		/// Gets custom issues to check (force or ignore).
