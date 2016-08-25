@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using CCNet.Build.Common;
 
 namespace CCNet.Build.SetupPackages
@@ -11,24 +12,24 @@ namespace CCNet.Build.SetupPackages
 		public ReferencesHelper(PackageChecker checker, LogPackages log)
 		{
 			if (checker == null)
-				throw new ArgumentNullException("checker");
+				throw new ArgumentNullException(nameof(checker));
 
 			if (log == null)
-				throw new ArgumentNullException("log");
+				throw new ArgumentNullException(nameof(log));
 
 			m_checker = checker;
 			m_log = log;
 		}
 
-		public void PreAdjust()
+		public void Adjust()
 		{
 			Console.Write("Loading project... ");
-			var project = new ProjectDocument(Paths.ProjectFile);
-			project.Load();
+			var project = new ProjectDocument(Args.ProjectFile);
 			Console.WriteLine("OK");
 
 			ConvertProjectReferences(project);
 			UpdateReferenceVersions(project);
+			SetupRelatedProjects(project);
 
 			Console.Write("Saving project... ");
 			project.Save();
@@ -37,27 +38,28 @@ namespace CCNet.Build.SetupPackages
 
 		private void ConvertProjectReferences(ProjectDocument project)
 		{
+			if (Path.GetExtension(Args.ProjectFile) == ".sfproj")
+				return;
+
 			Console.Write("Resolving project references... ");
 
 			foreach (var reference in project.GetProjectReferences())
 			{
-				var name = reference.Name;
-
-				if (!m_log.ContainsKey(name))
+				string name = null;
+				foreach (var check in Util.LocalNameToProjectNames(reference.Name))
 				{
-					const string prefix = "CnetContent.";
-
-					// another attempt to resolve name due to CnetContent.* exception
-					name = prefix + name;
-
-					if (!m_log.ContainsKey(name))
+					if (m_log.ContainsKey(check))
 					{
-						throw new InvalidOperationException(
-							String.Format(
-								@"Referenced project '{0}' was not found in 'packages.config'.
-Please add it as a NuGet reference first, and only after that you can convert it into project reference.",
-								reference.Name));
+						name = check;
+						break;
 					}
+				}
+
+				if (name == null)
+				{
+					throw new InvalidOperationException(
+						$@"Referenced project '{reference.Name}' was not found in 'packages.config'.
+Please add it as a NuGet reference first, and only after that you can convert it into project reference.");
 				}
 
 				m_log[name].ProjectReference = true;
@@ -105,27 +107,94 @@ Please add it as a NuGet reference first, and only after that you can convert it
 			Console.WriteLine("OK");
 		}
 
-		public void PostAdjust()
+		private void SetupRelatedProjects(ProjectDocument project)
 		{
-			Console.Write("Loading project... ");
-			var project = new ProjectDocument(Paths.ProjectFile);
-			project.Load();
-			Console.WriteLine("OK");
+			if (Path.GetExtension(Args.ProjectFile) != ".sfproj")
+				return;
 
-			UpdateReferenceProperties(project);
+			Console.WriteLine("Converting paths for related projects...");
 
-			Console.Write("Saving project... ");
-			project.Save();
+			if (String.IsNullOrEmpty(Args.RelatedPath))
+				throw new InvalidOperationException("Related path is not set.");
+
+			var references = project.GetProjectReferences();
+			if (references.Count == 0)
+				throw new InvalidOperationException("Cannot find any related projects from a project file.");
+
+			foreach (var reference in references)
+			{
+				SetupRelatedProject(reference);
+			}
+
 			Console.WriteLine("OK");
 		}
 
-		private static void UpdateReferenceProperties(ProjectDocument project)
+		private void SetupRelatedProject(ProjectReference reference)
 		{
-			Console.Write("Update reference properties... ");
+			var fileName = Path.GetFileName(reference.Include);
+			var folderName = Path.GetFileName(Path.GetDirectoryName(reference.Include));
+			var referenceName = reference.Name;
 
-			// xxx nothing here
+			Console.WriteLine($"Resolving related project '{fileName}'...");
 
-			Console.WriteLine("OK");
+			if (String.IsNullOrEmpty(referenceName))
+			{
+				referenceName = folderName;
+
+				// quick dirty hardcode below for resolving names
+
+				if (referenceName.StartsWith("Metro."))
+					referenceName = "CnetContent." + folderName;
+			}
+
+			// quick dirty hardcode below with calling tools with specific paths and arguments
+
+			var versionBlob = $"{referenceName}/version.txt";
+			var versionLocal = $@"{Args.RelatedPath}\{folderName}.txt";
+
+			Execute.Run(
+				"CCNet.Build.AzureDownload.exe",
+				$@"Storage=Devbuild Container=build ""BlobFile={versionBlob}"" ""LocalFile={versionLocal}""");
+
+			var version = File.ReadAllText(versionLocal);
+
+			var sourceBlob = $"{referenceName}/{version}/source.zip";
+			var sourceLocal = $@"{Args.RelatedPath}\{folderName}.source.zip";
+
+			Execute.Run(
+				"CCNet.Build.AzureDownload.exe",
+				$@"Storage=Devbuild Container=snapshot ""BlobFile={sourceBlob}"" ""LocalFile={sourceLocal}""");
+
+			var packagesBlob = $"{referenceName}/{version}/packages.zip";
+			var packagesLocal = $@"{Args.RelatedPath}\{folderName}.packages.zip";
+
+			Execute.Run(
+				"CCNet.Build.AzureDownload.exe",
+				$@"Storage=Devbuild Container=snapshot ""BlobFile={packagesBlob}"" ""LocalFile={packagesLocal}""");
+
+			var sourceFolder = $@"{Args.RelatedPath}\{folderName}";
+			Execute.Run(@"C:\Program Files\7-Zip\7z.exe", $@"x ""-o{sourceFolder}"" ""{sourceLocal}""");
+
+			var packagesFolder = $@"{Args.RelatedPath}\packages";
+			Execute.Run(@"C:\Program Files\7-Zip\7z.exe", $@"x ""-o{packagesFolder}"" ""{packagesLocal}""");
+
+			// update project location and report as referenced package
+
+			var includePath = Path.Combine(Args.RelatedPath, folderName, fileName);
+			reference.UpdateLocation(includePath);
+
+			m_log.Add(
+				referenceName,
+				new LogPackage
+				{
+					PackageId = referenceName,
+					ProjectName = referenceName,
+					ProjectUrl = $"http://rufc-devbuild.cneu.cnwk/ccnet/server/Azure/project/{referenceName}/ViewProjectReport.aspx",
+					IsLocal = true,
+					SourceVersion = null,
+					BuildVersion = new Version(version),
+					ProjectReference = true
+				});
 		}
 	}
 }

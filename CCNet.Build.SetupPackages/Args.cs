@@ -8,19 +8,9 @@ namespace CCNet.Build.SetupPackages
 	{
 		public static ArgumentProperties Current { get; set; }
 
-		public static string ProjectName
+		public static string ProjectFile
 		{
-			get { return Current.Get<string>("ProjectName"); }
-		}
-
-		public static string ProjectPath
-		{
-			get { return Current.Get<string>("ProjectPath"); }
-		}
-
-		public static string PackagesPath
-		{
-			get { return Current.Get<string>("PackagesPath"); }
+			get { return Current.Get<string>("ProjectFile"); }
 		}
 
 		public static string ReferencesPath
@@ -31,6 +21,16 @@ namespace CCNet.Build.SetupPackages
 		public static string TempPath
 		{
 			get { return Current.Get<string>("TempPath"); }
+		}
+
+		public static string PackagesPath
+		{
+			get { return Current.Get("PackagesPath", String.Empty); }
+		}
+
+		public static string RelatedPath
+		{
+			get { return Current.Get("RelatedPath", String.Empty); }
 		}
 
 		public static string CustomVersions

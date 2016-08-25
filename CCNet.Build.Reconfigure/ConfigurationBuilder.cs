@@ -173,6 +173,15 @@ namespace CCNet.Build.Reconfigure
 						Attr("path", temp.TempDirectory());
 					}
 				}
+
+				var related = config as IRelatedDirectory;
+				if (related != null)
+				{
+					using (CbTag("CreateDirectory"))
+					{
+						Attr("path", related.RelatedDirectory());
+					}
+				}
 			}
 		}
 
@@ -183,9 +192,15 @@ namespace CCNet.Build.Reconfigure
 				WriteCheckProject(config);
 				WritePrepareProject(config);
 				WriteCustomReport(config);
+
 				WriteSetupPackages(config);
 				WriteBuildAssembly(config);
+				WritePackageFabric(config);
+
 				WritePublishRelease(config);
+				WritePublishFabric(config);
+				WritePublishCompressed(config);
+
 				WriteSaveSnapshot(config);
 				WriteCompleteBuild(config);
 				WriteNotifyProjects(config);

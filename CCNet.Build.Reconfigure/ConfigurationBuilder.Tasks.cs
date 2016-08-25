@@ -16,7 +16,8 @@ namespace CCNet.Build.Reconfigure
 			{
 				new Arg("name", check.Name),
 				new Arg("local", check.SourceDirectory()),
-				new Arg("remote", check.TfsPath)
+				new Arg("remote", check.TfsPath),
+				new Arg("extension", check.ProjectExtension)
 			};
 
 			/*var company = "CNET Content Solutions";
@@ -45,6 +46,11 @@ namespace CCNet.Build.Reconfigure
 			issues.Add(S02_PrimarySolutionShouldExist);
 			//xxxissues.Add(S03_NugetFolderShouldNotExist);
 			issues.Add(S04_PackagesFolderShouldNotExist);
+
+			if (config is FabricApplicationProjectConfiguration)
+			{
+				issues.Remove(F02_AssemblyInfoShouldExist);
+			}
 
 			if (!String.IsNullOrWhiteSpace(check.CustomIssues))
 			{
@@ -76,7 +82,7 @@ namespace CCNet.Build.Reconfigure
 				new Arg("output", prepare.TempDirectory())
 			};
 
-			if (config is ICsProj)
+			if (prepare.ProjectExtension == "csproj")
 			{
 				args.Add(new Arg("updateAssemblyInfo", "true"));
 			}
@@ -118,14 +124,17 @@ namespace CCNet.Build.Reconfigure
 
 			var args = new List<Arg>
 			{
-				new Arg("ProjectName", setup.Name),
-				new Arg("ProjectPath", setup.SourceDirectory()),
+				new Arg("ProjectFile", setup.ProjectFilePath()),
 				new Arg("PackagesPath", setup.PackagesDirectory()),
 				new Arg("ReferencesPath", setup.ReferencesDirectory()),
 				new Arg("TempPath", setup.TempDirectory()),
 				new Arg("NuGetExecutable", "$(nugetExecutable)"),
 				new Arg("NuGetUrl", setup.NugetRestoreUrl())
 			};
+
+			var related = config as IResolveRelated;
+			if (related != null)
+				args.Add(new Arg("RelatedPath", related.RelatedDirectory()));
 
 			if (setup.CustomVersions != null)
 				args.Add(new Arg("CustomVersions", setup.CustomVersions));
@@ -164,60 +173,92 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
-		private void WritePublishRelease(IProjectConfiguration config)
+		private void WritePackageFabric(IProjectConfiguration config)
 		{
-			var publish = config as IPublishRelease;
-			if (publish == null)
+			var fabric = config as FabricApplicationProjectConfiguration;
+			if (fabric == null)
 				return;
 
-			var assembly = config as IBuildAssembly;
-			if (assembly != null)
+			using (Tag("msbuild"))
 			{
-				using (CbTag("CopyFiles"))
-				{
-					Attr("from", assembly.SourceDirectoryRelease() + @"\*");
-					Attr("to", publish.TempDirectoryPublish());
-				}
+				Tag("executable", "$(msbuildExecutable)");
+				Tag("targets", "Package");
+				Tag("workingDirectory", fabric.SourceDirectory());
+				Tag("buildArgs", "/noconsolelogger /p:Configuration=Release");
+				Tag("description", "Package fabric application");
+			}
+		}
+
+		private void WritePublishRelease(IProjectConfiguration config)
+		{
+			var release = config as IPublishRelease;
+			if (release == null)
+				return;
+
+			using (CbTag("CopyFiles"))
+			{
+				Attr("from", $@"{release.SourceDirectoryRelease()}\*");
+				Attr("to", release.TempDirectoryPublish());
 			}
 
 			using (CbTag("EraseXmlDocs"))
 			{
-				Attr("path", publish.TempDirectoryPublish());
+				Attr("path", release.TempDirectoryPublish());
 			}
 
 			using (CbTag("EraseConfigFiles"))
 			{
-				Attr("path", publish.TempDirectoryPublish());
+				Attr("path", release.TempDirectoryPublish());
 			}
+		}
 
-			if (publish.ExcludeFromPublish != null)
+		private void WritePublishFabric(IProjectConfiguration config)
+		{
+			var fabric = config as FabricApplicationProjectConfiguration;
+			if (fabric == null)
+				return;
+
+			using (CbTag("CopyFiles"))
 			{
-				foreach (var exclude in publish.ExcludeFromPublish.Split('|'))
+				Attr("from", $@"{fabric.SourceDirectoryPackage()}\*");
+				Attr("to", fabric.TempDirectoryPublish());
+			}
+		}
+
+		private void WritePublishCompressed(IProjectConfiguration config)
+		{
+			var compressed = config as IPublishCompressed;
+			if (compressed == null)
+				return;
+
+			if (compressed.ExcludeFromPublish != null)
+			{
+				foreach (var exclude in compressed.ExcludeFromPublish.Split('|'))
 				{
 					using (CbTag("AppendToFile"))
 					{
-						Attr("file", publish.TempFileExcludeFromPublish());
+						Attr("file", compressed.TempFileExcludeFromPublish());
 						Attr("text", exclude);
 					}
 				}
 
 				using (CbTag("CompressDirectoryExclude"))
 				{
-					Attr("path", publish.TempDirectoryPublish());
-					Attr("output", publish.PublishReleaseFile());
-					Attr("exclude", publish.TempFileExcludeFromPublish());
+					Attr("path", compressed.TempDirectoryPublish());
+					Attr("output", compressed.PublishReleaseFile());
+					Attr("exclude", compressed.TempFileExcludeFromPublish());
 				}
 			}
 			else
 			{
 				using (CbTag("CompressDirectory"))
 				{
-					Attr("path", publish.TempDirectoryPublish());
-					Attr("output", publish.PublishReleaseFile());
+					Attr("path", compressed.TempDirectoryPublish());
+					Attr("output", compressed.PublishReleaseFile());
 				}
 			}
 
-			AzureUpload(config, "publish", publish.PublishReleaseFile());
+			AzureUpload(config, "publish", compressed.PublishReleaseFile());
 		}
 
 		private void WriteSaveSnapshot(IProjectConfiguration config)

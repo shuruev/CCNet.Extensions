@@ -126,7 +126,6 @@ namespace CCNet.Build.SetupProject
 			Console.Write("Converting paths for related projects... ");
 
 			var project = new ProjectDocument(path);
-			project.Load();
 
 			var references = project.GetProjectReferences();
 			if (references.Count == 0)

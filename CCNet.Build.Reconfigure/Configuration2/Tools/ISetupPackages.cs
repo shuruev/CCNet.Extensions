@@ -6,7 +6,7 @@ namespace CCNet.Build.Reconfigure
 	/// Build project should setup NuGet packages prepared during the scenario.
 	/// </summary>
 	public interface ISetupPackages :
-		ISourceDirectory,
+		IProjectFile,
 		IPackagesDirectory,
 		IReferencesDirectory,
 		ITempDirectory

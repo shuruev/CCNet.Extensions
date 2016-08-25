@@ -17,7 +17,7 @@ namespace CCNet.Build.Common
 		private static readonly XmlNamespaceManager s_namespaces;
 
 		private readonly string m_projectFile;
-		private XDocument m_document;
+		private readonly XDocument m_document;
 
 		static ProjectDocument()
 		{
@@ -29,74 +29,41 @@ namespace CCNet.Build.Common
 		/// <summary>
 		/// Initializes a new instance.
 		/// </summary>
-		public ProjectDocument()
+		public ProjectDocument(string projectFile)
 		{
+			if (String.IsNullOrEmpty(projectFile))
+				throw new ArgumentNullException(nameof(projectFile));
+
+			m_projectFile = projectFile;
+
+			var xml = File.ReadAllText(m_projectFile);
+			m_document = XDocument.Parse(xml);
 		}
 
 		/// <summary>
 		/// Initializes a new instance.
 		/// </summary>
-		public ProjectDocument(string projectFile)
-			: this()
+		public ProjectDocument(Func<string> getXml)
 		{
-			if (String.IsNullOrEmpty(projectFile))
-				throw new ArgumentNullException("projectFile");
+			if (getXml == null)
+				throw new ArgumentNullException(nameof(getXml));
 
-			m_projectFile = projectFile;
+			var xml = getXml.Invoke();
+			m_document = XDocument.Parse(xml);
 		}
 
 		/// <summary>
 		/// Gets standard namespace for a project XML document.
 		/// </summary>
-		public static XNamespace Ns
-		{
-			get { return s_ns; }
-		}
-
-		/// <summary>
-		/// Ensures project is associated with local file.
-		/// </summary>
-		private void EnsureLocal()
-		{
-			if (String.IsNullOrEmpty(m_projectFile))
-				throw new InvalidOperationException("Project is not associated with local file.");
-		}
-
-		/// <summary>
-		/// Ensures project document is loaded.
-		/// </summary>
-		private void EnsureLoaded()
-		{
-			if (m_document == null)
-				throw new InvalidOperationException("Project document is not loaded.");
-		}
-
-		/// <summary>
-		/// Loads project file from disk.
-		/// </summary>
-		public void Load()
-		{
-			EnsureLocal();
-
-			string xml = File.ReadAllText(m_projectFile);
-			Load(xml);
-		}
-
-		/// <summary>
-		/// Loads project file from external XML data.
-		/// </summary>
-		public void Load(string xml)
-		{
-			m_document = XDocument.Parse(xml);
-		}
+		public static XNamespace Ns => s_ns;
 
 		/// <summary>
 		/// Saves project file to disk.
 		/// </summary>
 		public void Save()
 		{
-			EnsureLocal();
-			EnsureLoaded();
+			if (String.IsNullOrEmpty(m_projectFile))
+				throw new InvalidOperationException("Project is not associated with local file.");
 
 			m_document.Save(m_projectFile);
 		}
@@ -106,7 +73,6 @@ namespace CCNet.Build.Common
 		/// </summary>
 		private XElement SelectElement(string xpath)
 		{
-			EnsureLoaded();
 			return m_document.XPathSelectElement(xpath, s_namespaces);
 		}
 
@@ -115,7 +81,6 @@ namespace CCNet.Build.Common
 		/// </summary>
 		private IEnumerable<XElement> SelectElements(string xpath)
 		{
-			EnsureLoaded();
 			return m_document.XPathSelectElements(xpath, s_namespaces);
 		}
 
@@ -241,7 +206,7 @@ namespace CCNet.Build.Common
 		/// </summary>
 		private Dictionary<string, string> GetConditionProperties(string condition)
 		{
-			var group = SelectElement(String.Format("/ms:Project/ms:PropertyGroup[contains(@Condition, '{0}')]", condition));
+			var group = SelectElement($"/ms:Project/ms:PropertyGroup[contains(@Condition, '{condition}')]");
 			if (group == null)
 				return new Dictionary<string, string>();
 

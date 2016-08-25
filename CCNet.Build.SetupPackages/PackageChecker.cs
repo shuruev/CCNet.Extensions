@@ -30,10 +30,7 @@ namespace CCNet.Build.SetupPackages
 			m_bundles = ParseCustomPackages(bundles);
 		}
 
-		public int PackageCount
-		{
-			get { return m_localPackages.Count; }
-		}
+		public int PackageCount => m_localPackages.Count;
 
 		private static Dictionary<string, Version> ParseCustomVersions(string customVersions)
 		{

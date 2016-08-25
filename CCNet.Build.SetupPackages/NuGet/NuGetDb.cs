@@ -57,12 +57,7 @@ DROP TABLE #Latest
 							var title = reader.ReadStringOrNull("Title");
 							var tags = reader.ReadStringOrNull("Tags");
 
-							var package = new NuGetPackage(id, version, framework)
-							{
-								Title = title,
-								Tags = tags
-							};
-
+							var package = new NuGetPackage(id, version, framework, title, tags);
 							result.Add(package);
 						}
 					}

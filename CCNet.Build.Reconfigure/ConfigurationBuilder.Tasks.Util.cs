@@ -70,7 +70,7 @@ namespace CCNet.Build.Reconfigure
 
 				if (arguments.Length > 0)
 				{
-					var sb = new StringBuilder("-debug");
+					var sb = new StringBuilder();
 					foreach (var arg in arguments)
 					{
 						var line = $"/{arg.Name}:{arg.Value}";

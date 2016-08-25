@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
 
 namespace CCNet.Build.Common
 {
@@ -19,6 +19,21 @@ namespace CCNet.Build.Common
 				return projectName;
 
 			return projectName.Substring(prefix.Length);
+		}
+
+		/// <summary>
+		/// Gets potenial project names which may correspond to the specified local name.
+		/// E.g. for the local name "MyProject" it could be just "MyProject" or "CnetContent.MyProject".
+		/// </summary>
+		public static List<string> LocalNameToProjectNames(string localName)
+		{
+			const string prefix = "CnetContent.";
+
+			return new List<string>
+			{
+				localName,
+				prefix + localName
+			};
 		}
 	}
 }

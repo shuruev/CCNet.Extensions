@@ -66,7 +66,6 @@ namespace CCNet.Build.CheckProject
 		{
 			Console.WriteLine("Loading project...");
 			var project = new ProjectDocument(Paths.ProjectFile);
-			project.Load();
 
 			return project;
 		}

@@ -4,6 +4,7 @@
 	/// Build project will be prepared during the scenario.
 	/// </summary>
 	public interface IPrepareProject :
+		IProjectFile,
 		ITfsControl,
 		ITempDirectory
 	{

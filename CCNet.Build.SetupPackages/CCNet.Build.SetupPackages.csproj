@@ -57,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Args.cs" />
+    <Compile Include="NuGet\PackagesConfigExtensions.cs" />
+    <Compile Include="NuGet\PackagesConfig.cs" />
+    <Compile Include="NuGet\NuGetReference.cs" />
     <Compile Include="Run\NuGetHelper.cs" />
     <Compile Include="Run\PackagesHelper.cs" />
     <Compile Include="Run\ReferencesHelper.cs" />

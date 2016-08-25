@@ -3,7 +3,9 @@
 	/// <summary>
 	/// Build project will be checked during the scenario.
 	/// </summary>
-	public interface ICheckProject : ITfsControl
+	public interface ICheckProject :
+		IProjectFile,
+		ITfsControl
 	{
 		/// <summary>
 		/// Gets custom issues to check (force or ignore).

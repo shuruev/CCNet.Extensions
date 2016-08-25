@@ -235,9 +235,7 @@ namespace CCNet.Build.Reconfigure
 			if (!CheckTfsPathProject(path, ProjectName))
 				throw new InvalidOperationException($"TFS path '{path}' seems not conforming with project name '{ProjectName}'.");
 
-			var xml = client.ReadFile(ProjectFile);
-			var project = new ProjectDocument();
-			project.Load(xml);
+			var project = new ProjectDocument(() => client.ReadFile(ProjectFile));
 
 			ProjectUid = project.GetProjectGuid();
 		}

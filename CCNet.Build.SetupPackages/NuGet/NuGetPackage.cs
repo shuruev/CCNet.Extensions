@@ -1,46 +1,30 @@
 ﻿using System;
-using System.Xml.Linq;
 using CCNet.Build.Common;
 
 namespace CCNet.Build.SetupPackages
 {
-	public class NuGetPackage
+	public class NuGetPackage : NuGetReference
 	{
-		public string Id { get; private set; }
-		public Version Version { get; private set; }
 		public TargetFramework Framework { get; private set; }
+		public string Title { get; private set; }
+		public string Tags { get; private set; }
 
-		public string Title { get; set; }
-		public string Tags { get; set; }
-
-		public NuGetPackage(string id, string version, string framework)
+		public NuGetPackage(string id, string version, string framework, string title, string tags)
+			: base(id, version)
 		{
-			if (String.IsNullOrEmpty(id))
-				throw new ArgumentNullException("id");
-
-			if (String.IsNullOrEmpty(version))
-				throw new ArgumentNullException("version");
-
 			if (String.IsNullOrEmpty(framework))
-				throw new ArgumentNullException("framework");
+				throw new ArgumentNullException(nameof(framework));
 
-			// so far we just ignore additional marks, like aplha, beta, preview, prerelase, etc.
-			version = version.Split('-')[0];
-
-			Id = id;
-			Version = new Version(version);
 			Framework = ParseFramework(framework);
+
+			if (!String.IsNullOrEmpty(Suffix))
+				throw new ArgumentException("Version is not expected to have suffixes here.", nameof(version));
+
+			Title = title;
+			Tags = tags;
 		}
 
-		public NuGetPackage(XElement config)
-			: this(
-				config.Attribute("id").Value,
-				config.Attribute("version").Value,
-				config.Attribute("targetFramework").Value)
-		{
-		}
-
-		private static TargetFramework ParseFramework(string framework)
+		protected static TargetFramework ParseFramework(string framework)
 		{
 			switch (framework)
 			{
@@ -63,8 +47,7 @@ namespace CCNet.Build.SetupPackages
 					return TargetFramework.Net461;
 
 				default:
-					throw new InvalidOperationException(
-						String.Format("Unknown target framework '{0}'.", framework));
+					throw new InvalidOperationException($"Unknown target framework '{framework}'.");
 			}
 		}
 	}

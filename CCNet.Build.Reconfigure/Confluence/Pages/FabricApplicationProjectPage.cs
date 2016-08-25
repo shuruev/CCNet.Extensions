@@ -27,8 +27,19 @@ namespace CCNet.Build.Reconfigure
 
 		public override List<IProjectConfigurationTemp> ExportConfigurations()
 		{
-			var config = new FabricApplicationProjectConfiguration();
-			ApplyTo(config);
+			var config1 = new ProjectConfiguration();
+			ApplyTo(config1);
+
+			var config = new FabricApplicationProjectConfiguration
+			{
+				ConfluencePage = $"{ProjectName}+fabric+application",
+				Area = AreaName,
+				Name = ProjectName,
+				Description = Description,
+				OwnerEmail = config1.OwnerEmail,
+				CheckEvery = config1.BuildEvery,
+				TfsPath = TfsPath
+			};
 
 			return new List<IProjectConfigurationTemp> { config };
 		}

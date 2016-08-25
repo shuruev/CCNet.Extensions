@@ -2,19 +2,17 @@
 
 namespace CCNet.Build.Reconfigure
 {
-	public class FabricServiceProjectConfiguration :
+	public class FabricApplicationProjectConfiguration :
 		ICheckProject,
 		IPrepareProject,
 		ICustomReport,
+		IResolveRelated,
 		ISetupPackages,
-		IBuildAssembly,
-		IPublishRelease,
-		ISaveSnapshot,
-		INotifyProjects
+		IPublishCompressed
 	{
 		public string ConfluencePage { get; set; }
 		public string Server => "Azure";
-		public string ProjectExtension => "csproj";
+		public string ProjectExtension => "sfproj";
 
 		public string Area { get; set; }
 		public string Name { get; set; }
@@ -27,5 +25,16 @@ namespace CCNet.Build.Reconfigure
 		public string CustomIssues { get; set; }
 		public string CustomVersions { get; set; }
 		public string ExcludeFromPublish { get; set; }
+	}
+
+	public static partial class ProjectConfigurationMethods
+	{
+		/// <summary>
+		/// Gets directory which stores released package.
+		/// </summary>
+		public static string SourceDirectoryPackage(this FabricApplicationProjectConfiguration config)
+		{
+			return $@"{config.SourceDirectory()}\pkg\Release";
+		}
 	}
 }

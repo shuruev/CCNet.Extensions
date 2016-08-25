@@ -56,8 +56,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Args.cs" />
+    <Compile Include="Configuration2\Directories\IRelatedDirectory.cs" />
     <Compile Include="Configuration2\Directories\ISnapshotDirectory.cs" />
     <Compile Include="Configuration2\Directories\IPublishDirectory.cs" />
+    <Compile Include="Configuration2\FabricApplicationProjectConfiguration.cs" />
     <Compile Include="Configuration2\FabricServiceProjectConfiguration.cs" />
     <Compile Include="Configuration2\ConsoleProjectConfiguration2.cs" />
     <Compile Include="Configuration2\Directories\IAdminDirectory.cs" />
@@ -65,8 +67,11 @@
     <Compile Include="Configuration2\Directories\IPackagesDirectory.cs" />
     <Compile Include="Configuration2\Directories\ISourceDirectory.cs" />
     <Compile Include="Configuration2\Directories\IReferencesDirectory.cs" />
+    <Compile Include="Configuration2\Features\IPublishCompressed.cs" />
+    <Compile Include="Configuration2\Features\IResolveRelated.cs" />
     <Compile Include="Configuration2\Features\ISaveSnapshot.cs" />
     <Compile Include="Configuration2\Features\IPublishRelease.cs" />
+    <Compile Include="Configuration2\Features\IProjectFile.cs" />
     <Compile Include="Configuration2\Features\ITfsControl.cs" />
     <Compile Include="Configuration2\Features\INugetPackage.cs" />
     <Compile Include="Configuration2\Features\IMakeBundle.cs" />
@@ -76,9 +81,6 @@
     <Compile Include="Configuration2\Tools\ISetupPackages.cs" />
     <Compile Include="Configuration2\Tools\IPrepareProject.cs" />
     <Compile Include="Configuration2\Tools\ICheckProject.cs" />
-    <Compile Include="Configuration2\Proj\ICcProj.cs" />
-    <Compile Include="Configuration2\Proj\ISfProj.cs" />
-    <Compile Include="Configuration2\Proj\ICsProj.cs" />
     <Compile Include="Configuration2\IProjectConfigurationTemp.cs" />
     <Compile Include="Configuration2\IProjectConfiguration.cs" />
     <Compile Include="ConfigurationBuilder.Tasks.Util.cs" />
@@ -86,7 +88,6 @@
     <Compile Include="ConfigurationBuilder.Properties.cs" />
     <Compile Include="ConfigurationBuilder.Helpers.cs" />
     <Compile Include="ConfigurationBuilder.cs" />
-    <Compile Include="Configuration\Settings\FabricApplicationProjectConfiguration.cs" />
     <Compile Include="Configuration\Settings\CloudServiceProjectConfiguration.cs" />
     <Compile Include="Configuration\Settings\CloudRoleProjectConfiguration.cs" />
     <Compile Include="Configuration\Shared\IProjectRelated.cs" />

@@ -5,9 +5,5 @@
 	/// </summary>
 	public interface INotifyProjects
 	{
-		/// <summary>
-		/// Gets custom issues to check (force or ignore).
-		/// </summary>
-		string CustomIssues { get; }
 	}
 }
