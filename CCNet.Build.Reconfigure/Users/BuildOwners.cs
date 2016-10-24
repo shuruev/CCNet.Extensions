@@ -32,6 +32,7 @@ namespace CCNet.Build.Reconfigure
 			AddUser("8a99855552936a300152936cabe33b9b", "sergei.konkin@cbsinteractive.com", "skonkin");
 			AddUser("8a99855552936a300152936caec65198", "valeri.ilyin@cbsinteractive.com", "vilyin");
 			AddUser("8a99855552936a300152936cb85b1ac8", "vera.perfilieva@cbsinteractive.com", "vperfilieva");
+			AddUser("8a99855552936a300152936cb4727cd2", "eugeni.popodyanets@cbsinteractive.com", "epopodyanets");
 		}
 
 		private void AddUser(
