@@ -56,7 +56,7 @@ namespace CCNet.Build.Reconfigure
 			{
 				var all = check.CustomIssues.Split('|');
 				var force = all.Where(code => code.StartsWith("+")).Select(code => code.Substring(1)).ToList();
-				var ignore = all.Where(code => code.StartsWith("+")).Select(code => code.Substring(1)).ToList();
+				var ignore = all.Where(code => code.StartsWith("-")).Select(code => code.Substring(1)).ToList();
 				issues = issues.Union(force).Except(ignore).ToList();
 			}
 
@@ -116,10 +116,42 @@ namespace CCNet.Build.Reconfigure
 				args.ToArray());
 		}
 
+		private void WriteXxx(IProjectConfiguration config)
+		{
+			var xxx = config as FabricServiceProjectConfiguration;
+			if (xxx == null)
+				return;
+
+			if (xxx.Name == "Metro.Portal.Web")
+			{
+				using (Tag("exec"))
+				{
+					Tag("executable", @"C:\Program Files\nodejs\npm.cmd");
+					Tag("buildTimeoutSeconds", "180");
+					Tag("buildArgs", "install");
+					Tag("baseDirectory", xxx.SourceDirectory());
+					Tag("description", "XXX npm");
+				}
+
+				using (Tag("msbuild"))
+				{
+					Tag("executable", "$(msbuildExecutable)");
+					Tag("targets", "Build");
+					Tag("workingDirectory", xxx.SourceDirectory());
+					Tag("buildArgs", "/noconsolelogger /p:Configuration=Release");
+					Tag("description", "Build XXX project");
+				}
+			}
+		}
+
 		private void WriteSetupPackages(IProjectConfiguration config)
 		{
 			var setup = config as ISetupPackages;
 			if (setup == null)
+				return;
+
+			//xxx working on xproj here
+			if (setup.ProjectExtension == "xproj")
 				return;
 
 			var args = new List<Arg>
@@ -162,6 +194,13 @@ namespace CCNet.Build.Reconfigure
 			var build = config as IBuildAssembly;
 			if (build == null)
 				return;
+
+			//xxx working on xproj here
+			if (config is IProjectFile)
+			{
+				if (((IProjectFile)config).ProjectExtension == "xproj")
+				return;
+			}
 
 			using (Tag("msbuild"))
 			{

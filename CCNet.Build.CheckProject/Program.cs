@@ -1,6 +1,6 @@
 ﻿using System;
 using CCNet.Build.Common;
-using CCNet.Build.Tfs;
+using NetBuild.Tfs;
 
 namespace CCNet.Build.CheckProject
 {

@@ -20,9 +20,12 @@ namespace CCNet.Build.Reconfigure
 			AddUser("8a99855552936a300152936ca3210228", "dmitri.baranov@cbsinteractive.com", "dbaranov");
 			AddUser("8a99855552936a300152936cbc1c37ac", "dmitri.semikolenov@cbsinteractive.com", "dsemikolenov");
 			AddUser("8a99855552936a300152936cbbb53498", "eugeni.elokhov@cbsinteractive.com", "eelokhov");
+			AddUser("8a99855552936a300152936cbb8f334d", "igor.rybin@cbsinteractive.com", "irybin");
 			AddUser("8a99855552936a300152936cb588051e", "irina.tirskaya@cbsinteractive.com", "itirskaya");
 			AddUser("8a99855552936a300152936cc08259d7", "kirill.luzin@cbsinteractive.com", "kluzin");
+			AddUser("8a99855552936a300152936cb6400a8a", "maria.melnikova@cbsinteractive.com", "mmelnikova");
 			AddUser("8a99855552936a300152936caaf434a9", "natalia.savelieva@cbsinteractive.com", "nsavelieva");
+			AddUser("8a99855552936a300152936cc2836991", "nikita.serduk@cbsinteractive.com", "nserduk");
 			AddUser("8a99855552936a300152936cadf74b66", "oleg.shuruev@cbsinteractive.com", "oshuruev", "olshuruev");
 			AddUser("8a99855552936a300152936cbe1246f1", "pavel.belousov@cbsinteractive.com", "pbelousov");
 			AddUser("8a99855552936a300152936cb51901bc", "pavel.kashirin@cbsinteractive.com", "pkashirin");

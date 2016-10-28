@@ -26,7 +26,8 @@ namespace CCNet.Build.Reconfigure
 				Description = Description,
 				OwnerEmail = config1.OwnerEmail,
 				CheckEvery = config1.BuildEvery,
-				TfsPath = TfsPath
+				TfsPath = TfsPath,
+				ProjectExtension = "csproj"
 			};
 
 			return new List<IProjectConfigurationTemp> { config };

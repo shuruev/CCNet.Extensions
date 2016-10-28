@@ -160,6 +160,15 @@ namespace CCNet.Build.Reconfigure
 		{
 			using (Tag("prebuild"))
 			{
+				//xxx
+				if (config.Name == "Metro.Portal.Web")
+				{
+					using (CbTag("PurgeDirectory"))
+					{
+						Attr("path", config.WorkingDirectory() + @"\source");
+					}
+				}
+
 				using (CbTag("DeleteDirectory"))
 				{
 					Attr("path", config.WorkingDirectory());
@@ -192,6 +201,8 @@ namespace CCNet.Build.Reconfigure
 				WriteCheckProject(config);
 				WritePrepareProject(config);
 				WriteCustomReport(config);
+
+				WriteXxx(config);
 
 				WriteSetupPackages(config);
 				WriteBuildAssembly(config);
@@ -238,6 +249,10 @@ namespace CCNet.Build.Reconfigure
 						Attr("mailto", config.OwnerEmail);
 					}
 				}
+
+				//xxx
+				if (config.Name == "Metro.Portal.Web")
+					return;
 
 				using (CbTag("DeleteDirectory"))
 				{

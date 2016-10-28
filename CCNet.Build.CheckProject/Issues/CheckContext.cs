@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using CCNet.Build.Common;
-using CCNet.Build.Tfs;
+using NetBuild.Tfs;
 
 namespace CCNet.Build.CheckProject
 {
@@ -13,19 +13,19 @@ namespace CCNet.Build.CheckProject
 
 		private readonly TfsClient m_tfs;
 
-		public CheckContextService<List<string>> LocalFiles { get; private set; }
-		public CheckContextService<ProjectDocument> ProjectDocument { get; private set; }
-		public CheckContextService<Dictionary<string, string>> ProjectCommonProperties { get; private set; }
-		public CheckContextService<Dictionary<string, string>> ProjectDebugProperties { get; private set; }
-		public CheckContextService<Dictionary<string, string>> ProjectReleaseProperties { get; private set; }
-		public CheckContextService<bool> ProjectIsWeb { get; private set; }
-		public CheckContextService<List<ProjectFile>> ProjectFiles { get; private set; }
+		public CheckContextService<List<string>> LocalFiles { get; }
+		public CheckContextService<ProjectDocument> ProjectDocument { get; }
+		public CheckContextService<Dictionary<string, string>> ProjectCommonProperties { get; }
+		public CheckContextService<Dictionary<string, string>> ProjectDebugProperties { get; }
+		public CheckContextService<Dictionary<string, string>> ProjectReleaseProperties { get; }
+		public CheckContextService<bool> ProjectIsWeb { get; }
+		public CheckContextService<List<ProjectFile>> ProjectFiles { get; }
 
-		public CheckContextService<List<string>> TfsSolutionItems { get; private set; }
-		public CheckContextService<List<string>> TfsNugetItems { get; private set; }
-		public CheckContextService<List<string>> TfsPackagesItems { get; private set; }
-		public CheckContextService<string> TfsSolutionFile { get; private set; }
-		public CheckContextService<string> TfsNugetConfig { get; private set; }
+		public CheckContextService<List<string>> TfsSolutionItems { get; }
+		public CheckContextService<List<string>> TfsNugetItems { get; }
+		public CheckContextService<List<string>> TfsPackagesItems { get; }
+		public CheckContextService<string> TfsSolutionFile { get; }
+		public CheckContextService<string> TfsNugetConfig { get; }
 
 		public CheckContext(TfsClient tfs)
 		{
@@ -46,10 +46,7 @@ namespace CCNet.Build.CheckProject
 			TfsNugetConfig = new CheckContextService<string>(GetTfsNugetConfig);
 		}
 
-		public TfsClient Tfs
-		{
-			get { return m_tfs; }
-		}
+		public TfsClient Tfs => m_tfs;
 
 		private List<string> GetLocalFiles()
 		{
@@ -102,7 +99,10 @@ namespace CCNet.Build.CheckProject
 		private List<string> GetTfsSolutionItems()
 		{
 			Console.WriteLine("Getting TFS items from parent folder...");
-			var items = m_tfs.GetChildItems(Paths.TfsSolutionPath);
+			var items = m_tfs.GetChildItems(Paths.TfsSolutionPath)
+				.Select(item => item.ServerPath)
+				.Where(path => String.Compare(Paths.TfsSolutionPath, path, StringComparison.OrdinalIgnoreCase) != 0)
+				.ToList();
 
 			Console.WriteLine("Found {0} solution items.", items.Count);
 			return items;
@@ -111,7 +111,10 @@ namespace CCNet.Build.CheckProject
 		private List<string> GetTfsNugetItems()
 		{
 			Console.WriteLine("Getting TFS items from '.nuget' folder...");
-			var items = m_tfs.GetChildItems(Paths.TfsNugetPath);
+			var items = m_tfs.GetChildItems(Paths.TfsNugetPath)
+				.Select(item => item.ServerPath)
+				.Where(path => String.Compare(Paths.TfsNugetPath, path, StringComparison.OrdinalIgnoreCase) != 0)
+				.ToList();
 
 			Console.WriteLine("Found {0} files.", items.Count);
 			return items;
@@ -120,7 +123,10 @@ namespace CCNet.Build.CheckProject
 		private List<string> GetTfsPackagesItems()
 		{
 			Console.WriteLine("Getting TFS items from 'packages' folder...");
-			var items = m_tfs.GetChildItems(Paths.TfsPackagesPath);
+			var items = m_tfs.GetChildItems(Paths.TfsPackagesPath)
+				.Select(item => item.ServerPath)
+				.Where(path => String.Compare(Paths.TfsPackagesPath, path, StringComparison.OrdinalIgnoreCase) != 0)
+				.ToList();
 
 			Console.WriteLine("Found {0} files.", items.Count);
 			return items;

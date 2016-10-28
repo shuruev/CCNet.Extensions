@@ -8,13 +8,11 @@ namespace CCNet.Build.Reconfigure
 		ICustomReport,
 		ISetupPackages,
 		IBuildAssembly,
-		IPublishRelease,
 		ISaveSnapshot,
 		INotifyProjects
 	{
 		public string ConfluencePage { get; set; }
 		public string Server => "Azure";
-		public string ProjectExtension => "csproj";
 
 		public string Area { get; set; }
 		public string Name { get; set; }
@@ -24,6 +22,7 @@ namespace CCNet.Build.Reconfigure
 		public TimeSpan CheckEvery { get; set; }
 
 		public string TfsPath { get; set; }
+		public string ProjectExtension { get; set; }
 		public string CustomIssues { get; set; }
 		public string CustomVersions { get; set; }
 		public string ExcludeFromPublish { get; set; }

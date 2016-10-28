@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.Text.RegularExpressions;
 
 namespace CCNet.Build.Common
 {
@@ -24,6 +24,21 @@ namespace CCNet.Build.Common
 				version.Minor,
 				Math.Max(version.Build, 0),
 				Math.Max(version.Revision, 0));
+		}
+
+		/// <summary>
+		/// Performs case-insensitive string replacement.
+		/// </summary>
+		public static string ReplaceIgnoreCase(this string input, string search, string replacement)
+		{
+			// xxx TODO: put into Atom
+			// xxx maybe this is faster http://stackoverflow.com/questions/6025560/how-to-ignore-case-in-string-replace
+			return Regex.Replace(
+				input,
+				Regex.Escape(search),
+				replacement.Replace("$", "$$"),
+				RegexOptions.IgnoreCase
+			);
 		}
 	}
 }

@@ -11,6 +11,7 @@ namespace CCNet.Build.CheckProject
 			var items = context.LocalFiles.Result
 				.Where(item => item != Paths.ProjectFileName + ".vspscc")
 				.Where(item => !item.StartsWith(@"$tf\"))
+				.Where(item => !item.EndsWith(".DotSettings"))
 				.ToList();
 
 			var required = context.ProjectFiles.Result

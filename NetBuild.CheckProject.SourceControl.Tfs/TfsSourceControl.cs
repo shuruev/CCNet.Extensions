@@ -18,6 +18,7 @@ namespace NetBuild.CheckProject.SourceControl.Tfs
 		{
 			path = path.TrimEnd('/');
 
+			// xxx TODO: here we should use case-insensitive replacement
 			return m_tfs.GetChildItems(path)
 				.Select(item => item.IsFolder
 					? item.ServerPath + '/'

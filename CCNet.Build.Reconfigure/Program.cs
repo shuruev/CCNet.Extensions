@@ -51,6 +51,8 @@ namespace CCNet.Build.Reconfigure
 			using (Execute.Step("UPDATE CONFIG"))
 			{
 				var all = builder.ExportConfigurations();
+				AddCustomProjects(all);
+
 				var configs = all.Where(c => c is ProjectConfiguration).Cast<ProjectConfiguration>().ToList();
 				ApplyCustomizations(configs);
 
@@ -99,6 +101,22 @@ namespace CCNet.Build.Reconfigure
 					SaveProjectUid(item.Key, item.Value);
 				}
 			}
+		}
+
+		private static void AddCustomProjects(ICollection<IProjectConfigurationTemp> configs)
+		{
+			configs.Add(new FabricServiceProjectConfiguration
+			{
+				ConfluencePage = "My+fabric+service",
+				Area = "Production",
+				Name = "Metro.Portal.Web",
+				Description = "???",
+				OwnerEmail = "oleg.shuruev@cbsinteractive.com",
+				CheckEvery = TimeSpan.FromSeconds(45),
+				TfsPath = "$/Main/Production/Metro/Portal/Metro.Portal/Metro.Portal.Web",
+				ProjectExtension = "xproj",
+				CustomIssues = "-F02"
+			});
 		}
 
 		private static void ApplyCustomizations(List<ProjectConfiguration> configs)
@@ -236,26 +254,22 @@ namespace CCNet.Build.Reconfigure
 
 			SetupDependencies(
 				configs,
-				"CnetContent.Metro.Common",
+				"CnetContent.Metro.Core",
 				"Newtonsoft.Json");
 
 			SetupDependencies(
 				configs,
-				"CnetContent.Metro.Core",
-				"CnetContent.Metro.Common");
-
-			SetupDependencies(
-				configs,
 				"CnetContent.Metro.Api",
-				"CnetContent.Metro.Api.Web",
-				"CnetContent.Metro.Api.Fabric",
 				"CnetContent.Metro.Core",
-				"Lean.Rest.Server",
 				"Microsoft.AspNet.WebApi.Owin",
 				"Microsoft.Owin.Hosting",
 				"Microsoft.Owin.Host.HttpListener",
-				"Microsoft.Owin.Host.SystemWeb",
-				"Microsoft.ServiceFabric.Services");
+				"Microsoft.Owin.Host.SystemWeb");
+
+			foreach (var library in configs.Where(item => item.Name.StartsWith("CnetContent.Metro.") && item.Name.EndsWith(".Client")).Cast<LibraryProjectConfiguration>())
+			{
+				library.Dependencies = "CnetContent.Metro.Core";
+			}
 
 			SetupDependencies(
 				configs,
@@ -372,10 +386,38 @@ namespace CCNet.Build.Reconfigure
 		{
 			SetupBundles(
 				configs,
-				"CnetContent.Metro.Common",
+				"CnetContent.Metro.Core",
 				"Atom.Module.Base64Url",
 				"Atom.Module.Configuration",
-				"Lean.Rest.Client");
+				"Dapper",
+				"Elasticsearch.Net",
+				"FluentValidation",
+				"Humanizer",
+				"Lean.Rest.Client",
+				"morelinq",
+				"Serilog",
+				"Serilog.Extensions.Logging",
+				"Serilog.Sinks.ColoredConsole",
+				"Serilog.Sinks.Elasticsearch",
+				"Serilog.Sinks.File",
+				"Serilog.Sinks.PeriodicBatching",
+				"Serilog.Sinks.RollingFile",
+				"Serilog.Sinks.Trace",
+				"StackExchange.Redis",
+				"System.Spatial",
+				"Microsoft.Data.Edm",
+				"Microsoft.Data.OData",
+				"Microsoft.WindowsAzure.Storage");
+
+			SetupBundles(
+				configs,
+				"CnetContent.Metro.Api",
+				"CnetContent.Metro.Api.Fabric",
+				"CnetContent.Metro.Api.Web",
+				"Lean.Rest.Server",
+				"SimpleInjector",
+				"SimpleInjector.Extensions.ExecutionContextScoping",
+				"SimpleInjector.Integration.WebApi");
 
 			SetupBundles(
 				configs,
@@ -930,8 +972,23 @@ namespace CCNet.Build.Reconfigure
 							}
 
 							args.Append(" /xmldocs");
-							//xxx experimenting
-							args.Append(" /allowDup:AuthHeaders /allowDup:HmacAuth /allowDup:HmacGenerator /allowDup:HmacValidator /allowDup:HmacSignature");
+
+							// xxx temporary allowing duplicates by hardcoding them
+							if (false)
+							{
+								args.Append(" /allowDup:AuthHeaders /allowDup:HmacAuth /allowDup:HmacGenerator /allowDup:HmacValidator /allowDup:HmacSignature");
+							}
+
+							if (project.Name == "CnetContent.Metro.Api")
+							{
+								//args.Append(" /allowDup:HttpRequestMessageExtensions");
+								//args.Append(" /allowDup:MediaTypeFormatterExtensions");
+							}
+
+							if (project.Name == "CnetContent.Metro.Core")
+							{
+								args.Append(" /closed");
+							}
 
 							writer.WriteElementString("executable", "$(ilmergeExecutable)");
 							writer.WriteElementString("buildTimeoutSeconds", "45");

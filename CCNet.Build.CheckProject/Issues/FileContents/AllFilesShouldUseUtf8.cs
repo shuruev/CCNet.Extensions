@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CCNet.Build.Common;
 
 namespace CCNet.Build.CheckProject
 {
@@ -131,11 +132,11 @@ This should help other team memebers to avoid possible conflicts while working w
 		private Dictionary<string, int> GetTfsEncodings(CheckContext context)
 		{
 			Console.WriteLine("Getting file encodings from TFS...");
-			var files = context.Tfs.GetAllFileEncodings(Args.TfsPath)
-				.Where(i => i.Value > 0)
+			var files = context.Tfs.GetAllItems(Args.TfsPath)
+				.Where(item => item.Encoding > 0)
 				.ToDictionary(
-					item => item.Key.Replace(Args.TfsPath + '/', String.Empty),
-					item => item.Value);
+					item => item.ServerPath.ReplaceIgnoreCase(Args.TfsPath + '/', String.Empty),
+					item => item.Encoding);
 
 			Console.WriteLine("Found {0} text files.", files.Count);
 			return files;
