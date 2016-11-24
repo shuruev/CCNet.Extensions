@@ -36,6 +36,8 @@ namespace CCNet.Build.Reconfigure
 			AddUser("8a99855552936a300152936caec65198", "valeri.ilyin@cbsinteractive.com", "vilyin");
 			AddUser("8a99855552936a300152936cb85b1ac8", "vera.perfilieva@cbsinteractive.com", "vperfilieva");
 			AddUser("8a99855552936a300152936cb4727cd2", "eugeni.popodyanets@cbsinteractive.com", "epopodyanets");
+			AddUser("8a99855552936a300152936cc3ee745f", "alexander.ageev@cbsinteractive.com", "aageev");
+			AddUser("8a99855552936a300152936cbd654199", "ekaterina.marchenkova@cbsinteractive.com ", "emarchenkova");
 		}
 
 		private void AddUser(
