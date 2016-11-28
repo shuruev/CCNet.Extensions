@@ -161,8 +161,12 @@ namespace CCNet.Build.SetupProject
 			if (String.IsNullOrEmpty(referenceName))
 			{
 				referenceName = localName;
-				if (referenceName.StartsWith("Metro."))
+
+				if (referenceName.StartsWith("Metro.")
+					|| referenceName.StartsWith("FlexQueue."))
+				{
 					referenceName = "CnetContent." + localName;
+				}
 			}
 
 			var includePath = Path.Combine(Args.RelatedPath, localName, fileName);

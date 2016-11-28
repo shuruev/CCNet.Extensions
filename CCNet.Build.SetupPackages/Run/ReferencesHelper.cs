@@ -142,9 +142,11 @@ Please add it as a NuGet reference first, and only after that you can convert it
 				referenceName = folderName;
 
 				// quick dirty hardcode below for resolving names
-
-				if (referenceName.StartsWith("Metro."))
+				if (referenceName.StartsWith("Metro.")
+					|| referenceName.StartsWith("FlexQueue."))
+				{
 					referenceName = "CnetContent." + folderName;
+				}
 			}
 
 			// quick dirty hardcode below with calling tools with specific paths and arguments
