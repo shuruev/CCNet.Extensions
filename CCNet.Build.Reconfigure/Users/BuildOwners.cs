@@ -14,12 +14,15 @@ namespace CCNet.Build.Reconfigure
 			m_aliases = new Dictionary<string, string>();
 
 			AddUser("8a99855552936a300152936cbec64c67", "andrei.golyakov@cbsinteractive.com", "agolyakov");
+			AddUser("8a99855552936a300152936cc3ee745f", "alexander.ageev@cbsinteractive.com", "aageev");
 			AddUser("8a99855552936a300152936cb7cf1681", "alexander.kovalenko@cbsinteractive.com", "akovalenko");
 			AddUser("8a99855552936a300152936cb0a65fbd", "anton.lisitsyn@cbsinteractive.com", "alisitsyn");
 			AddUser("8a99855552936a300152936ca5340e71", "artem.ryzhkov@cbsinteractive.com", "aryzhkov");
 			AddUser("8a99855552936a300152936ca3210228", "dmitri.baranov@cbsinteractive.com", "dbaranov");
 			AddUser("8a99855552936a300152936cbc1c37ac", "dmitri.semikolenov@cbsinteractive.com", "dsemikolenov");
+			AddUser("8a99855552936a300152936cbd654199", "ekaterina.marchenkova@cbsinteractive.com ", "emarchenkova");
 			AddUser("8a99855552936a300152936cbbb53498", "eugeni.elokhov@cbsinteractive.com", "eelokhov");
+			AddUser("8a99855552936a300152936cb4727cd2", "eugeni.popodyanets@cbsinteractive.com", "epopodyanets");
 			AddUser("8a99855552936a300152936cbb8f334d", "igor.rybin@cbsinteractive.com", "irybin");
 			AddUser("8a99855552936a300152936cb588051e", "irina.tirskaya@cbsinteractive.com", "itirskaya");
 			AddUser("8a99855552936a300152936cc08259d7", "kirill.luzin@cbsinteractive.com", "kluzin");
@@ -35,9 +38,6 @@ namespace CCNet.Build.Reconfigure
 			AddUser("8a99855552936a300152936cabe33b9b", "sergei.konkin@cbsinteractive.com", "skonkin");
 			AddUser("8a99855552936a300152936caec65198", "valeri.ilyin@cbsinteractive.com", "vilyin");
 			AddUser("8a99855552936a300152936cb85b1ac8", "vera.perfilieva@cbsinteractive.com", "vperfilieva");
-			AddUser("8a99855552936a300152936cb4727cd2", "eugeni.popodyanets@cbsinteractive.com", "epopodyanets");
-			AddUser("8a99855552936a300152936cc3ee745f", "alexander.ageev@cbsinteractive.com", "aageev");
-			AddUser("8a99855552936a300152936cbd654199", "ekaterina.marchenkova@cbsinteractive.com ", "emarchenkova");
 		}
 
 		private void AddUser(
