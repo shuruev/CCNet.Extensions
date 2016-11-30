@@ -200,7 +200,7 @@ namespace CCNet.Build.Reconfigure
                 cloudService.VmSizes = new List<string> { "Small", "Medium" };
             }
 
-            cloudService = configs.FirstOrDefault(item => item.Name == "CC.DataImport.Cloud") as CloudServiceProjectConfiguration;
+            cloudService = configs.FirstOrDefault(item => item.Name == "CC.DataImport.HostedService") as CloudServiceProjectConfiguration;
             if (cloudService != null)
             {
                 cloudService.VmSizes = new List<string> { "Small", "Medium" };
