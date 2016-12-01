@@ -188,7 +188,25 @@ namespace CCNet.Build.Reconfigure
 				cloudService.VmSizes = new List<string> { "Small", "Large" };
 			}
 
-			ApplyDependencies(configs);
+            cloudService = configs.FirstOrDefault(item => item.Name == "CC.MediaServer.Cloud") as CloudServiceProjectConfiguration;
+            if (cloudService != null)
+            {
+                cloudService.VmSizes = new List<string> { "Small" };
+            }
+
+            cloudService = configs.FirstOrDefault(item => item.Name == "CC.Portal.Cloud") as CloudServiceProjectConfiguration;
+            if (cloudService != null)
+            {
+                cloudService.VmSizes = new List<string> { "Small", "Medium" };
+            }
+
+            cloudService = configs.FirstOrDefault(item => item.Name == "CC.DataImport.HostedService") as CloudServiceProjectConfiguration;
+            if (cloudService != null)
+            {
+                cloudService.VmSizes = new List<string> { "Small", "Medium" };
+            }
+
+            ApplyDependencies(configs);
 			ApplyBundles(configs);
 		}
 
