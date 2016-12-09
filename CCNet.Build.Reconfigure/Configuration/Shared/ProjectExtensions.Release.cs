@@ -9,14 +9,16 @@ namespace CCNet.Build.Reconfigure
 			return String.Format(@"{0}\release", project.WorkingDirectory);
 		}
 
-		public static string ReleaseFileName(this IProjectRelease project)
+		public static string ReleaseFileName(this IProjectRelease project, bool isClickOnce = false)
 		{
-			return String.Format(@"{0}.zip", project.Name);
+			return isClickOnce 
+                ? String.Format(@"{0}.publish.zip", project.Name) 
+                : String.Format(@"{0}.zip", project.Name);
 		}
 
-		public static string ReleaseFileLocal(this IProjectRelease project)
+		public static string ReleaseFileLocal(this IProjectRelease project, bool isClickOnce = false)
 		{
-			return String.Format(@"{0}\{1}", project.WorkingDirectoryRelease(), project.ReleaseFileName());
+            return String.Format(@"{0}\{1}", project.WorkingDirectoryRelease(), project.ReleaseFileName(isClickOnce));
 		}
-	}
+    }
 }
