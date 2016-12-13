@@ -188,25 +188,25 @@ namespace CCNet.Build.Reconfigure
 				cloudService.VmSizes = new List<string> { "Small", "Large" };
 			}
 
-            cloudService = configs.FirstOrDefault(item => item.Name == "CC.MediaServer.Cloud") as CloudServiceProjectConfiguration;
-            if (cloudService != null)
-            {
-                cloudService.VmSizes = new List<string> { "Small" };
-            }
+			cloudService = configs.FirstOrDefault(item => item.Name == "CC.MediaServer.Cloud") as CloudServiceProjectConfiguration;
+			if (cloudService != null)
+			{
+				cloudService.VmSizes = new List<string> { "Small" };
+			}
 
-            cloudService = configs.FirstOrDefault(item => item.Name == "CC.Portal.Cloud") as CloudServiceProjectConfiguration;
-            if (cloudService != null)
-            {
-                cloudService.VmSizes = new List<string> { "Small", "Medium" };
-            }
+			cloudService = configs.FirstOrDefault(item => item.Name == "CC.Portal.Cloud") as CloudServiceProjectConfiguration;
+			if (cloudService != null)
+			{
+				cloudService.VmSizes = new List<string> { "Small", "Medium" };
+			}
 
-            cloudService = configs.FirstOrDefault(item => item.Name == "CC.DataImport.HostedService") as CloudServiceProjectConfiguration;
-            if (cloudService != null)
-            {
-                cloudService.VmSizes = new List<string> { "Small", "Medium" };
-            }
+			cloudService = configs.FirstOrDefault(item => item.Name == "CC.DataImport.HostedService") as CloudServiceProjectConfiguration;
+			if (cloudService != null)
+			{
+				cloudService.VmSizes = new List<string> { "Small", "Medium" };
+			}
 
-            ApplyDependencies(configs);
+			ApplyDependencies(configs);
 			ApplyBundles(configs);
 		}
 
@@ -237,7 +237,8 @@ namespace CCNet.Build.Reconfigure
 				"Elasticsearch.Net",
 				"Newtonsoft.Json",
 				"Serilog",
-				"Serilog.Sinks.Elasticsearch");
+				"Serilog.Sinks.Elasticsearch",
+				"Serilog.Sinks.Literate");
 
 			SetupDependencies(
 				configs,
