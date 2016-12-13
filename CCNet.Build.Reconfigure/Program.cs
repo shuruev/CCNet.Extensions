@@ -844,6 +844,21 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
+		private static void WriteAzureUploadClickOnce(XmlWriter writer, IProjectRelease project)
+		{
+			using (writer.OpenTag("exec"))
+			{
+				writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
+				writer.WriteBuildArgs(
+					new Arg("Storage", "Devbuild"),
+					new Arg("Container", "publish"),
+					new Arg("LocalFile", project.ClickOnceFileLocal()),
+					new Arg("BlobFile", $"{project.UniqueName}/$[$CCNetLabel]/{project.ClickOnceFileName()}"));
+
+				writer.WriteElementString("description", "Save ClickOnce package to blobs");
+			}
+		}
+
 		private static void WriteAzureUploadSnapshot(XmlWriter writer, IProjectSnapshot project)
 		{
 			using (writer.OpenTag("exec"))
@@ -1262,6 +1277,8 @@ namespace CCNet.Build.Reconfigure
 				}
 			};
 
+			bool isClickOnce = (project as WindowsProjectConfiguration)?.ClickOnce == true;
+
 			using (writer.OpenTag("project"))
 			{
 				WriteProjectHeader(writer, project);
@@ -1291,9 +1308,30 @@ namespace CCNet.Build.Reconfigure
 					}
 
 					WriteSetupPackages(writer, project);
-					WriteBuildProject(writer, project);
+
+					if (isClickOnce)
+					{
+						using (writer.OpenTag("msbuild"))
+						{
+							writer.WriteElementString("executable", project.MsbuildExecutable);
+							writer.WriteElementString("targets", "Build;Publish");
+							writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
+							writer.WriteElementString("buildArgs", $@"/noconsolelogger /p:Configuration=Release;OutDir={project.SourceDirectoryRelease}\");
+							writer.WriteElementString("description", "Publish ClickOnce");
+						}
+					}
+					else
+					{
+						WriteBuildProject(writer, project);
+					}
 
 					writer.CbTag("EraseXmlDocs", "path", project.SourceDirectoryRelease);
+
+					if (isClickOnce)
+					{
+						//xxx
+					}
+
 					writer.CbTag("EraseConfigFiles", "path", project.SourceDirectoryRelease);
 					writer.CbTag("CompressDirectory", "path", project.SourceDirectoryRelease, "output", project.ReleaseFileLocal());
 
@@ -1306,6 +1344,10 @@ namespace CCNet.Build.Reconfigure
 					}
 
 					WriteAzureUploadRelease(writer, project);
+
+					if (isClickOnce)
+						WriteAzureUploadClickOnce(writer, project);
+
 					WriteAzureUploadSource(writer, project);
 					WriteAzureUploadPackages(writer, project);
 					WriteAzureUploadVersion(writer, project);
