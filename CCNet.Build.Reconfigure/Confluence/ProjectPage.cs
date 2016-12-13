@@ -254,7 +254,7 @@ namespace CCNet.Build.Reconfigure
 			switch (Status)
 			{
 				case ProjectStatus.Active:
-					config.BuildEvery = TimeSpan.FromSeconds(30);
+					config.BuildEvery = TimeSpan.FromSeconds(45);
 					break;
 
 				case ProjectStatus.Normal:
