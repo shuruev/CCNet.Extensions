@@ -1329,11 +1329,25 @@ namespace CCNet.Build.Reconfigure
 
 					if (isClickOnce)
 					{
-						//xxx
-					}
+						writer.CbTag("PrepareClickOnce",
+							"sourcePath", project.SourceDirectoryRelease,
+							"tempPath", project.WorkingDirectoryTemp);
 
-					writer.CbTag("EraseConfigFiles", "path", project.SourceDirectoryRelease);
-					writer.CbTag("CompressDirectory", "path", project.SourceDirectoryRelease, "output", project.ReleaseFileLocal());
+						writer.CbTag("CompressDirectory",
+							"path", $@"{project.WorkingDirectoryTemp}\app",
+							"output", project.ReleaseFileLocal());
+						writer.CbTag("CompressDirectory",
+							"path", $@"{project.WorkingDirectoryTemp}\app.publish",
+							"output", project.ClickOnceFileLocal());
+					}
+					else
+					{
+						writer.CbTag("EraseConfigFiles",
+							"path", project.SourceDirectoryRelease);
+						writer.CbTag("CompressDirectory",
+							"path", project.SourceDirectoryRelease,
+							"output", project.ReleaseFileLocal());
+					}
 
 					var snapshot = project as IProjectSnapshot;
 					if (snapshot != null)
