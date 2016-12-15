@@ -1314,7 +1314,7 @@ namespace CCNet.Build.Reconfigure
 						using (writer.OpenTag("msbuild"))
 						{
 							writer.WriteElementString("executable", project.MsbuildExecutable);
-							writer.WriteElementString("targets", "Build;Publish");
+							writer.WriteElementString("targets", "Publish");
 							writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
 							writer.WriteElementString("buildArgs", $@"/noconsolelogger /p:Configuration=Release;OutDir={project.SourceDirectoryRelease}\");
 							writer.WriteElementString("description", "Publish ClickOnce");
@@ -1329,25 +1329,21 @@ namespace CCNet.Build.Reconfigure
 
 					if (isClickOnce)
 					{
-						writer.CbTag("PrepareClickOnce",
-							"sourcePath", project.SourceDirectoryRelease,
-							"tempPath", project.WorkingDirectoryTemp);
-
 						writer.CbTag("CompressDirectory",
-							"path", $@"{project.WorkingDirectoryTemp}\app",
-							"output", project.ReleaseFileLocal());
-						writer.CbTag("CompressDirectory",
-							"path", $@"{project.WorkingDirectoryTemp}\app.publish",
+							"path", $@"{project.SourceDirectoryRelease}\app.publish",
 							"output", project.ClickOnceFileLocal());
+						writer.CbTag("DeleteDirectory",
+							"path", $@"{project.SourceDirectoryRelease}\app.publish");
 					}
 					else
 					{
 						writer.CbTag("EraseConfigFiles",
 							"path", project.SourceDirectoryRelease);
-						writer.CbTag("CompressDirectory",
-							"path", project.SourceDirectoryRelease,
-							"output", project.ReleaseFileLocal());
 					}
+
+					writer.CbTag("CompressDirectory",
+						"path", project.SourceDirectoryRelease,
+						"output", project.ReleaseFileLocal());
 
 					var snapshot = project as IProjectSnapshot;
 					if (snapshot != null)
