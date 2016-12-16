@@ -1329,16 +1329,12 @@ namespace CCNet.Build.Reconfigure
 
 					if (isClickOnce)
 					{
-						writer.CbTag("CompressDirectory",
-							"path", $@"{project.SourceDirectoryRelease}\app.publish",
-							"output", project.ClickOnceFileLocal());
-						writer.CbTag("DeleteDirectory",
-							"path", $@"{project.SourceDirectoryRelease}\app.publish");
+						writer.CbTag("CompressDirectory", "path", project.SourceDirectoryAppPublish, "output", project.ClickOnceFileLocal());
+						writer.CbTag("DeleteDirectory", "path", project.SourceDirectoryAppPublish);
 					}
 					else
 					{
-						writer.CbTag("EraseConfigFiles",
-							"path", project.SourceDirectoryRelease);
+						writer.CbTag("EraseConfigFiles", "path", project.SourceDirectoryRelease);
 					}
 
 					writer.CbTag("CompressDirectory",

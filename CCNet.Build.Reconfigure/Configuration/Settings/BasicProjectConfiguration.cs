@@ -22,6 +22,7 @@ namespace CCNet.Build.Reconfigure
 		}
 
 		public virtual string SourceDirectoryRelease => $@"{WorkingDirectorySource}\bin\Release";
+		public string SourceDirectoryAppPublish => $@"{SourceDirectoryRelease}\app.publish";
 
 		public string MsbuildExecutable => @"C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe";
 
