@@ -5,7 +5,7 @@ namespace CCNet.Build.SetupProject
 	public static class Paths
 	{
 		private const string c_prefix = "CnetContent.";
-
+		
 		public static string CloudProjectFile
 		{
 			get
@@ -23,6 +23,18 @@ namespace CCNet.Build.SetupProject
 			get
 			{
 				var fileName = $"{Args.ProjectName}.sfproj";
+				if (fileName.StartsWith(c_prefix))
+					fileName = fileName.Substring(c_prefix.Length);
+
+				return Path.Combine(Args.ProjectPath, fileName);
+			}
+		}
+
+		public static string WindowsProjectFile
+		{
+			get
+			{
+				var fileName = $"{Args.ProjectName}.csproj";
 				if (fileName.StartsWith(c_prefix))
 					fileName = fileName.Substring(c_prefix.Length);
 
