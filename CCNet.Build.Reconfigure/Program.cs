@@ -234,11 +234,11 @@ namespace CCNet.Build.Reconfigure
 				"Lean.ResourceLocators",
 				"Lean.Rest",
 				"Lean.Serialization",
-				"Newtonsoft.Json",
 				"Elasticsearch.Net",
+				"Newtonsoft.Json",
 				"Serilog",
-				"Serilog.Sinks.Literate",
-				"Serilog.Sinks.Elasticsearch");
+				"Serilog.Sinks.Elasticsearch",
+				"Serilog.Sinks.Literate");
 
 			SetupDependencies(
 				configs,
@@ -418,10 +418,7 @@ namespace CCNet.Build.Reconfigure
 				"Humanizer",
 				"Lean.Rest.Client",
 				"Microsoft.Extensions.Logging.Abstractions",
-				"Microsoft.Extensions.DependencyInjection.Abstractions",
-				"Microsoft.Extensions.Logging",
 				"morelinq",
-				"Serilog.Extensions.Logging",
 				"StackExchange.Redis",
 				"System.Spatial",
 				"Microsoft.Data.Edm",
@@ -431,6 +428,8 @@ namespace CCNet.Build.Reconfigure
 			SetupBundles(
 				configs,
 				"CnetContent.Metro.Api",
+				"Microsoft.Extensions.Logging",
+				"Microsoft.Extensions.Logging.Abstractions",
 				"Elasticsearch.Net",
 				"Serilog",
 				"Serilog.Sinks.File",
@@ -438,6 +437,7 @@ namespace CCNet.Build.Reconfigure
 				"Serilog.Sinks.PeriodicBatching",
 				"Serilog.Sinks.RollingFile",
 				"Serilog.Sinks.Elasticsearch",
+				"Serilog.Extensions.Logging",
 				"CnetContent.Metro.Api.Web",
 				"CnetContent.Metro.Api.Fabric",
 				"Lean.Rest.Server",
@@ -448,6 +448,8 @@ namespace CCNet.Build.Reconfigure
 			SetupBundles(
 				configs,
 				"CnetContent.Metro.Worker",
+				"Microsoft.Extensions.Logging",
+				"Microsoft.Extensions.Logging.Abstractions",
 				"Elasticsearch.Net",
 				"Serilog",
 				"Serilog.Sinks.File",
@@ -455,6 +457,7 @@ namespace CCNet.Build.Reconfigure
 				"Serilog.Sinks.PeriodicBatching",
 				"Serilog.Sinks.RollingFile",
 				"Serilog.Sinks.Elasticsearch",
+				"Serilog.Extensions.Logging",
 				"CnetContent.ExtConfig.Client",
 				"CnetContent.ExtConfig.Common",
 				"CnetContent.FlexQueue.Client",
@@ -1043,14 +1046,7 @@ namespace CCNet.Build.Reconfigure
 								args.Append(" /allowDup:AuthHeaders /allowDup:HmacAuth /allowDup:HmacGenerator /allowDup:HmacValidator /allowDup:HmacSignature");
 							}
 
-							if (project.Name == "CnetContent.Metro.Api")
-							{
-								//args.Append(" /allowDup:HttpRequestMessageExtensions");
-								//args.Append(" /allowDup:MediaTypeFormatterExtensions");
-							}
-
-							if (project.Name == "CnetContent.Metro.Core"
-								|| project.Name == "CnetContent.Metro.Worker")
+							if (project.Name == "CnetContent.Metro.Core")
 							{
 								args.Append(" /closed");
 							}
