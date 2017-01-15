@@ -234,11 +234,11 @@ namespace CCNet.Build.Reconfigure
 				"Lean.ResourceLocators",
 				"Lean.Rest",
 				"Lean.Serialization",
-				"Elasticsearch.Net",
 				"Newtonsoft.Json",
+				"Elasticsearch.Net",
 				"Serilog",
-				"Serilog.Sinks.Elasticsearch",
-				"Serilog.Sinks.Literate");
+				"Serilog.Sinks.Literate",
+				"Serilog.Sinks.Elasticsearch");
 
 			SetupDependencies(
 				configs,
@@ -284,6 +284,11 @@ namespace CCNet.Build.Reconfigure
 				"Microsoft.Owin.Hosting",
 				"Microsoft.Owin.Host.HttpListener",
 				"Microsoft.Owin.Host.SystemWeb");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.Metro.Worker",
+				"CnetContent.Metro.Core");
 
 			foreach (var library in configs.Where(item => item.Name.StartsWith("CnetContent.Metro.") && item.Name.EndsWith(".Client")).Cast<LibraryProjectConfiguration>())
 			{
@@ -409,20 +414,14 @@ namespace CCNet.Build.Reconfigure
 				"Atom.Module.Base64Url",
 				"Atom.Module.Configuration",
 				"Dapper",
-				"Elasticsearch.Net",
 				"FluentValidation",
 				"Humanizer",
 				"Lean.Rest.Client",
-				"Microsoft.Extensions.Logging",
 				"Microsoft.Extensions.Logging.Abstractions",
+				"Microsoft.Extensions.DependencyInjection.Abstractions",
+				"Microsoft.Extensions.Logging",
 				"morelinq",
-				"Serilog",
 				"Serilog.Extensions.Logging",
-				"Serilog.Sinks.Elasticsearch",
-				"Serilog.Sinks.File",
-				"Serilog.Sinks.Literate",
-				"Serilog.Sinks.PeriodicBatching",
-				"Serilog.Sinks.RollingFile",
 				"StackExchange.Redis",
 				"System.Spatial",
 				"Microsoft.Data.Edm",
@@ -432,12 +431,42 @@ namespace CCNet.Build.Reconfigure
 			SetupBundles(
 				configs,
 				"CnetContent.Metro.Api",
-				"CnetContent.Metro.Api.Fabric",
+				"Elasticsearch.Net",
+				"Serilog",
+				"Serilog.Sinks.File",
+				"Serilog.Sinks.Literate",
+				"Serilog.Sinks.PeriodicBatching",
+				"Serilog.Sinks.RollingFile",
+				"Serilog.Sinks.Elasticsearch",
 				"CnetContent.Metro.Api.Web",
+				"CnetContent.Metro.Api.Fabric",
 				"Lean.Rest.Server",
 				"SimpleInjector",
 				"SimpleInjector.Extensions.ExecutionContextScoping",
 				"SimpleInjector.Integration.WebApi");
+
+			SetupBundles(
+				configs,
+				"CnetContent.Metro.Worker",
+				"Elasticsearch.Net",
+				"Serilog",
+				"Serilog.Sinks.File",
+				"Serilog.Sinks.Literate",
+				"Serilog.Sinks.PeriodicBatching",
+				"Serilog.Sinks.RollingFile",
+				"Serilog.Sinks.Elasticsearch",
+				"CnetContent.ExtConfig.Client",
+				"CnetContent.ExtConfig.Common",
+				"CnetContent.FlexQueue.Client",
+				"CnetContent.FlexQueue.Core",
+				"CnetContent.Jobs.Core",
+				"CnetContent.Jobs.Services",
+				"CnetContent.Jobs.Services.Azure",
+				"CnetContent.Jobs.Workers",
+				"CnetContent.Jobs.Workers.Bootstrap",
+				"Lean.ResourceLocators",
+				"Lean.Rest",
+				"Lean.Serialization");
 
 			SetupBundles(
 				configs,
@@ -1020,7 +1049,8 @@ namespace CCNet.Build.Reconfigure
 								//args.Append(" /allowDup:MediaTypeFormatterExtensions");
 							}
 
-							if (project.Name == "CnetContent.Metro.Core")
+							if (project.Name == "CnetContent.Metro.Core"
+								|| project.Name == "CnetContent.Metro.Worker")
 							{
 								args.Append(" /closed");
 							}
