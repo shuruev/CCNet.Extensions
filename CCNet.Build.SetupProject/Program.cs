@@ -39,6 +39,7 @@ namespace CCNet.Build.SetupProject
 			SaveVersion();
 			RenderLinks();
 			UpdateAssemblyInfo();
+			UpdateProjectProperties();
 			SetupRelatedProjects();
 		}
 
@@ -94,6 +95,29 @@ namespace CCNet.Build.SetupProject
 				.Replace(text, String.Format("[assembly: AssemblyFileVersion(\"{0}\")]", version));
 
 			File.WriteAllText(Paths.AssemblyInfoFile, text, Encoding.UTF8);
+			Console.WriteLine("OK");
+		}
+
+		private static void UpdateProjectProperties()
+		{
+			if (Args.ProjectType != ProjectType.Windows)
+				return;
+
+			Console.Write("Updating project properties... ");
+
+			string text = File.ReadAllText(Paths.WindowsProjectFile);
+
+			Regex regex = new Regex("<MinimumRequiredVersion>[0-9\\.\\*]+</MinimumRequiredVersion>");
+			text = regex.Replace(text, "<MinimumRequiredVersion>" + Args.CurrentVersion + "</MinimumRequiredVersion>");
+
+			regex = new Regex("<ApplicationVersion>[0-9\\.\\*]+</ApplicationVersion>");
+			text = regex.Replace(text, "<ApplicationVersion>" + Args.CurrentVersion + "</ApplicationVersion>");
+
+			text = text.Replace(
+				"<GenerateManifests>false</GenerateManifests>",
+				"<GenerateManifests>true</GenerateManifests>");
+
+			File.WriteAllText(Paths.WindowsProjectFile, text, Encoding.UTF8);
 			Console.WriteLine("OK");
 		}
 
