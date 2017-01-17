@@ -280,6 +280,7 @@ namespace CCNet.Build.Reconfigure
 				configs,
 				"CnetContent.Metro.Api",
 				"CnetContent.Metro.Core",
+				"CnetContent.Metro.Log",
 				"Microsoft.AspNet.WebApi.Owin",
 				"Microsoft.Owin.Hosting",
 				"Microsoft.Owin.Host.HttpListener",
@@ -288,7 +289,8 @@ namespace CCNet.Build.Reconfigure
 			SetupDependencies(
 				configs,
 				"CnetContent.Metro.Worker",
-				"CnetContent.Metro.Core");
+				"CnetContent.Metro.Core",
+				"CnetContent.Metro.Log");
 
 			foreach (var library in configs.Where(item => item.Name.StartsWith("CnetContent.Metro.") && item.Name.EndsWith(".Client")).Cast<LibraryProjectConfiguration>())
 			{
@@ -417,13 +419,17 @@ namespace CCNet.Build.Reconfigure
 				"FluentValidation",
 				"Humanizer",
 				"Lean.Rest.Client",
-				"Microsoft.Extensions.Logging.Abstractions",
 				"morelinq",
 				"StackExchange.Redis",
 				"System.Spatial",
 				"Microsoft.Data.Edm",
 				"Microsoft.Data.OData",
 				"Microsoft.WindowsAzure.Storage");
+
+			SetupBundles(
+				configs,
+				"CnetContent.Metro.Log",
+				"Microsoft.Extensions.Logging.Abstractions");
 
 			SetupBundles(
 				configs,
@@ -440,7 +446,10 @@ namespace CCNet.Build.Reconfigure
 				"Serilog.Extensions.Logging",
 				"CnetContent.Metro.Api.Web",
 				"CnetContent.Metro.Api.Fabric",
+				"Lean.Rest",
 				"Lean.Rest.Server",
+				"CnetContent.ExtConfig.Common",
+				"CnetContent.ExtConfig.Client",
 				"SimpleInjector",
 				"SimpleInjector.Extensions.ExecutionContextScoping",
 				"SimpleInjector.Integration.WebApi");
@@ -458,18 +467,18 @@ namespace CCNet.Build.Reconfigure
 				"Serilog.Sinks.RollingFile",
 				"Serilog.Sinks.Elasticsearch",
 				"Serilog.Extensions.Logging",
-				"CnetContent.ExtConfig.Client",
+				"Lean.Rest",
+				"Lean.ResourceLocators",
+				"Lean.Serialization",
 				"CnetContent.ExtConfig.Common",
-				"CnetContent.FlexQueue.Client",
+				"CnetContent.ExtConfig.Client",
 				"CnetContent.FlexQueue.Core",
+				"CnetContent.FlexQueue.Client",
 				"CnetContent.Jobs.Core",
 				"CnetContent.Jobs.Services",
 				"CnetContent.Jobs.Services.Azure",
 				"CnetContent.Jobs.Workers",
-				"CnetContent.Jobs.Workers.Bootstrap",
-				"Lean.ResourceLocators",
-				"Lean.Rest",
-				"Lean.Serialization");
+				"CnetContent.Jobs.Workers.Bootstrap");
 
 			SetupBundles(
 				configs,
