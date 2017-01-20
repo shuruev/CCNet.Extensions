@@ -1523,6 +1523,7 @@ namespace CCNet.Build.Reconfigure
 					var filesToUpload = new List<string>();
 
 					writer.CbTag("CopyFiles", "from", project.ReleaseFileServiceConfiguration, "to", project.WorkingDirectoryPublish());
+					writer.CbTag("CopyFiles", "from", project.ReleaseDirectoryExtensions, "to", project.WorkingDirectoryPublishExtensions());
 					filesToUpload.Add(Path.GetFileName(project.ReleaseFileServiceConfiguration));
 
 					foreach (var vmSize in project.VmSizes)
