@@ -76,6 +76,9 @@ namespace CCNet.Build.Reconfigure
 					case TargetFramework.Net461:
 						return "P18"; // ProjectTargetFramework461
 
+					case TargetFramework.Net462:
+						return "P22"; // ProjectTargetFramework462
+
 					default:
 						throw new InvalidOperationException(
 							$"Unknown target framework '{Framework}'.");
