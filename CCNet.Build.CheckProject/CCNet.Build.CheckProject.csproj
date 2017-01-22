@@ -83,6 +83,7 @@
     <Compile Include="Issues\ProjectProperties\CheckProjectAssemblyName.cs" />
     <Compile Include="Issues\ProjectProperties\TargetFramework\ProjectTargetFramework452.cs" />
     <Compile Include="Issues\ProjectProperties\TargetFramework\ProjectTargetFramework461.cs" />
+    <Compile Include="Issues\ProjectProperties\TargetFramework\ProjectTargetFramework462.cs" />
     <Compile Include="Issues\ProjectProperties\TargetFramework\ProjectTargetFramework45.cs" />
     <Compile Include="Issues\ProjectProperties\TargetFramework\ProjectTargetFramework40.cs" />
     <Compile Include="Issues\ProjectProperties\TargetFramework\ProjectTargetFramework35.cs" />

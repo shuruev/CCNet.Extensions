@@ -33,6 +33,11 @@
 		/// <summary>
 		/// Represents ".NET Framework 4.6.1" target.
 		/// </summary>
-		Net461
+		Net461,
+
+		/// <summary>
+		/// Represents ".NET Framework 4.6.2" target.
+		/// </summary>
+		Net462
 	}
 }
