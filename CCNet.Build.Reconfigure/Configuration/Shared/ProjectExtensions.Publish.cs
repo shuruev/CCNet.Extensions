@@ -9,11 +9,6 @@ namespace CCNet.Build.Reconfigure
 			return String.Format(@"{0}\publish", project.WorkingDirectory);
 		}
 
-		public static string WorkingDirectoryPublishExtensions(this IProjectPublish project)
-		{
-			return String.Format(@"{0}\publish\Extensions", project.WorkingDirectory);
-		}
-
 		public static string PublishFileName(this IProjectPublish project)
 		{
 			return String.Format(@"{0}.publish.zip", project.Name);
