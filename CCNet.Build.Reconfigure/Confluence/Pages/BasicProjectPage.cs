@@ -290,7 +290,14 @@ namespace CCNet.Build.Reconfigure
 			if (ProjectUid == Guid.Empty)
 				return null;
 
-			return new Tuple<string, Guid>(ProjectName, ProjectUid);
+			if (ProjectBranch == null)
+			{
+				return new Tuple<string, Guid>(ProjectName, ProjectUid);
+			}
+
+			return new Tuple<string, Guid>(
+					string.Format("{0}-{1}", ProjectName, ProjectBranch),
+					ProjectUid);
 		}
 
 		protected new void ApplyTo(ProjectConfiguration config)
