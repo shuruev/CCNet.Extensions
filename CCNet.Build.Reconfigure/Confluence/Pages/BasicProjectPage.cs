@@ -229,8 +229,10 @@ namespace CCNet.Build.Reconfigure
 
 			var path = TfsPath;
 
-			if (!CheckTfsPathArea(path, AreaName))
+			if (ProjectBranch == null && !CheckTfsPathArea(path, AreaName))
+			{
 				throw new InvalidOperationException($"TFS path '{path}' seems not conforming with area name '{AreaName}'.");
+			}
 
 			if (!CheckTfsPathProject(path, ProjectName))
 				throw new InvalidOperationException($"TFS path '{path}' seems not conforming with project name '{ProjectName}'.");

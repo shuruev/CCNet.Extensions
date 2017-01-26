@@ -337,8 +337,19 @@ namespace CCNet.Build.Reconfigure
 
 		private static string ResolveProjectName(string pageName, out ProjectType projectType)
 		{
+			if (pageName.Contains("//"))
+			{
+				var pair = pageName.Split(new[] { "//" }, StringSplitOptions.RemoveEmptyEntries);
+				if (pair.Length != 2)
+				{
+					throw new ArgumentException($"Page name '{pageName}' does not look well-formed.");
+				}
+
+				pageName = pair[1].TrimStart();
+			}
+
 			if (pageName != pageName.AsciiOnly('.', ' ').CleanWhitespaces())
-				throw new ArgumentException($"Page name '{pageName}' does not look well-formed.");
+			throw new ArgumentException($"Page name '{pageName}' does not look well-formed.");
 
 			var parts = pageName.Split(new[] { ' ' }, 2);
 			if (parts.Length != 2)
