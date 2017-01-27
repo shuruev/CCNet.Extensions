@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using CCNet.Build.Common;
 using CCNet.Build.Confluence;
 using CCNet.Build.Tfs;
+using System.Text;
 
 namespace CCNet.Build.Reconfigure
 {
@@ -86,12 +87,29 @@ namespace CCNet.Build.Reconfigure
 				.Where(i => i != null)
 				.ToDictionary(i => i.Item1, i => i.Item2);
 
-			var dup = map.GroupBy(i => i.Value).FirstOrDefault(g => g.Count() > 1);
-			if (dup != null)
+			var dups = map.GroupBy(i => i.Value).Where(g => g.Count() > 1).ToList();
+			if (dups.Count > 0)
 			{
-				var list = String.Join(", ", dup.Select(i => "'" + i.Key + "'"));
-				throw new InvalidOperationException(
-					$"Project UID = {dup.Key.ToString("B").ToUpper()} seems not unique and belongs to projects {list}.");
+				StringBuilder sb = new StringBuilder();
+
+				foreach (var dup in dups)
+				{
+					var projectNames = dup.Select(i => i.Key);
+					var shortName = projectNames.OrderBy(i => i.Length).First();
+
+					if (projectNames.Where(p => !p.StartsWith(shortName + "-")).All(p => p == shortName))
+					{
+						continue;
+					}
+
+					var list = string.Join(", ", dup.Select(i => "'" + i.Key + "'"));
+					sb.AppendLine($"Project UID = {dup.Key.ToString("B").ToUpper()} seems not unique and belongs to projects {list}.");
+				}
+
+				if (sb.Length > 0)
+				{
+					throw new InvalidOperationException(sb.ToString());
+				}
 			}
 
 			return map;
@@ -349,7 +367,7 @@ namespace CCNet.Build.Reconfigure
 			}
 
 			if (pageName != pageName.AsciiOnly('.', ' ').CleanWhitespaces())
-			throw new ArgumentException($"Page name '{pageName}' does not look well-formed.");
+				throw new ArgumentException($"Page name '{pageName}' does not look well-formed.");
 
 			var parts = pageName.Split(new[] { ' ' }, 2);
 			if (parts.Length != 2)
