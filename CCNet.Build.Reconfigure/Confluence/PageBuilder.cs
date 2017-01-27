@@ -150,7 +150,7 @@ namespace CCNet.Build.Reconfigure
 				return false;
 
 			existing.Content = content;
-			//XXXAGOm_confluence.UpdatePage(existing);
+			m_confluence.UpdatePage(existing);
 			return true;
 		}
 
@@ -233,7 +233,7 @@ namespace CCNet.Build.Reconfigure
 				return false;
 
 			existing.Content = content;
-			//XXXAGOm_confluence.UpdatePage(existing);
+			m_confluence.UpdatePage(existing);
 			return true;
 		}
 
@@ -349,7 +349,7 @@ namespace CCNet.Build.Reconfigure
 				return false;
 
 			existing.Content = content;
-			//XXXAGOm_confluence.UpdatePage(existing);
+			m_confluence.UpdatePage(existing);
 			return true;
 		}
 
