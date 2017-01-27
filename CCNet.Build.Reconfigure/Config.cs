@@ -9,11 +9,12 @@ namespace CCNet.Build.Reconfigure
 		{
 			var config = new AppConfigReader();
 
-			var thumbprint = config.Get<string>("Security.Thumbprint");
-			SecureConfig.Initialize(thumbprint);
+			//var thumbprint = config.Get<string>("Security.Thumbprint");
+			//SecureConfig.Initialize(thumbprint);
 
 			ConfluenceUsername = config.Get<string>("Confluence.Username");
-			ConfluencePassword = SecureConfig.Decrypt(config.Get<string>("Confluence.Password"));
+			ConfluencePassword = config.Get<string>("Confluence.Password");
+			
 
 			CCNetUrl = config.Get<string>("CCNet.Url");
 			NuGetUrl = config.Get<string>("NuGet.Url");
