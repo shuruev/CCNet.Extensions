@@ -17,6 +17,7 @@ namespace CCNet.Build.Reconfigure
 
 		public string AreaName { get; }
 		public string ProjectName { get; }
+		public string ProjectBranch { get; }
 		public string Description { get; }
 		public string Owner { get; }
 		public ProjectStatus Status { get; }
@@ -40,6 +41,7 @@ namespace CCNet.Build.Reconfigure
 
 			AreaName = areaName;
 			ProjectName = projectName;
+			ProjectBranch = ParseProjectBranch(pageName, projectName);
 
 			m_page = pageName;
 			m_root = pageDocument.Root;
@@ -76,11 +78,11 @@ namespace CCNet.Build.Reconfigure
 				if (code != null)
 					value = code.XValue();
 
-				var status = td.XElement("ac:structured-macro[@ac:name='status']/ac:parameter[@ac:name='title']");
+				var status = td.XElement("div/ac:structured-macro[@ac:name='status']/ac:parameter[@ac:name='title']|ac:structured-macro[@ac:name='status']/ac:parameter[@ac:name='title']");
 				if (status != null)
 					value = status.XValue();
 
-				var user = td.XElements("ac:link/ri:user").Select(e => e.XAttribute("ri:userkey").Value).FirstOrDefault();
+				var user = td.XElements("div/ac:link/ri:user|ac:link/ri:user").Select(e => e.XAttribute("ri:userkey").Value).FirstOrDefault();
 				if (user != null)
 					value = user;
 
@@ -95,6 +97,14 @@ namespace CCNet.Build.Reconfigure
 				throw new InvalidOperationException("Cannot locate any rows in properties.");
 
 			return map;
+		}
+
+		private string ParseProjectBranch(string pageName, string projectName)
+		{
+			if (pageName.IndexOf("//") < 0)
+				return null;
+
+			return pageName.Substring(0, pageName.IndexOf("//")).TrimEnd();
 		}
 
 		private string ParseDescription(Dictionary<string, string> properties)
@@ -245,6 +255,7 @@ namespace CCNet.Build.Reconfigure
 		protected void ApplyTo(ProjectConfiguration config)
 		{
 			config.Name = ProjectName;
+			config.Branch = ProjectBranch;
 			config.Description = Description;
 			config.Category = AreaName;
 

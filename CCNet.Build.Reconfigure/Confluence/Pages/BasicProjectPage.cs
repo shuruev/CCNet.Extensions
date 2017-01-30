@@ -229,8 +229,10 @@ namespace CCNet.Build.Reconfigure
 
 			var path = TfsPath;
 
-			if (!CheckTfsPathArea(path, AreaName))
+			if (ProjectBranch == null && !CheckTfsPathArea(path, AreaName))
+			{
 				throw new InvalidOperationException($"TFS path '{path}' seems not conforming with area name '{AreaName}'.");
+			}
 
 			if (!CheckTfsPathProject(path, ProjectName))
 				throw new InvalidOperationException($"TFS path '{path}' seems not conforming with project name '{ProjectName}'.");
@@ -288,7 +290,14 @@ namespace CCNet.Build.Reconfigure
 			if (ProjectUid == Guid.Empty)
 				return null;
 
-			return new Tuple<string, Guid>(ProjectName, ProjectUid);
+			if (ProjectBranch == null)
+			{
+				return new Tuple<string, Guid>(ProjectName, ProjectUid);
+			}
+
+			return new Tuple<string, Guid>(
+					string.Format("{0}-{1}", ProjectName, ProjectBranch),
+					ProjectUid);
 		}
 
 		protected new void ApplyTo(ProjectConfiguration config)
