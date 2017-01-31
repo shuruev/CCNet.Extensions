@@ -78,11 +78,13 @@ namespace CCNet.Build.Reconfigure
 				if (code != null)
 					value = code.XValue();
 
-				var status = td.XElement("div/ac:structured-macro[@ac:name='status']/ac:parameter[@ac:name='title']|ac:structured-macro[@ac:name='status']/ac:parameter[@ac:name='title']");
+				const string statusXPath = "ac:structured-macro[@ac:name='status']/ac:parameter[@ac:name='title']";
+				var status = td.XElement($"div/p/{statusXPath}|div/{statusXPath}|{statusXPath}");
 				if (status != null)
 					value = status.XValue();
 
-				var user = td.XElements("div/ac:link/ri:user|ac:link/ri:user").Select(e => e.XAttribute("ri:userkey").Value).FirstOrDefault();
+				const string userXPath = "ac:link/ri:user";
+				var user = td.XElements($"div/{userXPath}|{userXPath}").Select(e => e.XAttribute("ri:userkey").Value).FirstOrDefault();
 				if (user != null)
 					value = user;
 
@@ -160,18 +162,26 @@ namespace CCNet.Build.Reconfigure
 		{
 			return new XElement(
 				"td",
-				BuildExplain(
-					"Владелецпроекта(Owner)",
-					BuildOwner(Owner)));
+				new XElement(
+					"div",
+					new XAttribute("class", "content-wrapper"),
+					BuildExplain(
+						"Владелецпроекта(Owner)",
+						BuildOwner(Owner))));
 		}
 
 		private XElement RenderStatus()
 		{
 			return new XElement(
 				"td",
-				BuildExplain(
-					"Статуспроекта(Status)",
-					BuildStatus(Status)));
+				new XElement(
+					"div",
+					new XAttribute("class", "content-wrapper"),
+					new XElement(
+						"p",
+						BuildExplain(
+							"Статуспроекта(Status)",
+							BuildStatus(Status)))));
 		}
 
 		private XElement RenderProperties()
