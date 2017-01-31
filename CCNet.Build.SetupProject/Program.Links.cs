@@ -165,7 +165,7 @@ namespace CCNet.Build.SetupProject
 			string projectConfluenceName = Args.ProjectName;
 			if (Args.ProjectBranch != null)
 			{
-				projectConfluenceName = $"{Args.ProjectBranch}+//+{Args.ProjectName}";
+				projectConfluenceName = $"~{Args.ProjectBranch}+~+{Args.ProjectName}";
 			}
 
 			return string.Format(m_confluencePageTemplate, projectConfluenceName, suffix);
