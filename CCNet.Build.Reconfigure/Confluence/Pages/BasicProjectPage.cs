@@ -139,7 +139,9 @@ namespace CCNet.Build.Reconfigure
 					"p",
 					new XElement(
 						"a",
-						new XAttribute("href", $"{Config.NuGetUrl}/packages/{ProjectName}/"),
+						ProjectBranch == null
+							? new XAttribute("href", $"{Config.NuGetUrl}/packages/{ProjectName}/")
+							: new XAttribute("href", $"{Config.NuGetUrl}/private/{ProjectBranch}/packages/{ProjectName}/"),
 						PageDocument.BuildImage($"{Config.NuGetUrl}/favicon.ico"),
 						"$nbsp$NuGet package"));
 
@@ -150,7 +152,11 @@ namespace CCNet.Build.Reconfigure
 				"p",
 				new XElement(
 					"a",
-					new XAttribute("href", $"{Config.CCNetUrl}/server/{Type.ServerName()}/project/{ProjectName}/ViewProjectReport.aspx"),
+					new XAttribute(
+						"href",
+						ProjectBranch == null
+							? $"{Config.CCNetUrl}/server/{Type.ServerName()}/project/{ProjectName}/ViewProjectReport.aspx"
+							: $"{Config.CCNetUrl}/server/{Type.ServerName()}/project/{ProjectName}-{ProjectBranch}/ViewProjectReport.aspx"),
 					PageDocument.BuildImage($"{Config.CCNetUrl}/favicon.ico"),
 					"$nbsp$Build project"));
 
