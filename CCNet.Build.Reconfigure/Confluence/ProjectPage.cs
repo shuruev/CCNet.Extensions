@@ -55,7 +55,7 @@ namespace CCNet.Build.Reconfigure
 
 		public string OrderKey =>
 			AreaName + ":"
-			+ ProjectBranch != null
+			+ "ZZZ" + ProjectBranch != null
 				? ProjectBranch + ":"
 				: null
 			+ ProjectName;
