@@ -53,7 +53,12 @@ namespace CCNet.Build.Reconfigure
 			Status = ParseStatus(m_properties);
 		}
 
-		public string OrderKey => AreaName + ":" + ProjectName;
+		public string OrderKey =>
+			AreaName + ":"
+			+ ProjectBranch != null
+				? ProjectBranch + ":"
+				: null
+			+ ProjectName;
 
 		private Dictionary<string, string> ParseProperties(XElement page)
 		{
@@ -215,14 +220,18 @@ namespace CCNet.Build.Reconfigure
 		{
 			return new XElement(
 				"td",
-				PageDocument.BuildPageLink(m_page, ProjectName));
+				PageDocument.BuildPageLink(
+					m_page,
+					ProjectBranch == null
+						? ProjectName
+						: $"~ {ProjectBranch} ~ {ProjectName}"));
 		}
 
 		private XElement RenderTypeColumn()
 		{
 			return new XElement(
 				"td",
-				m_page.Replace(ProjectName, String.Empty).Trim());
+				m_page.Substring(m_page.IndexOf(ProjectName) + ProjectName.Length + 1));
 		}
 
 		public virtual void CheckPage(TfsClient client)
