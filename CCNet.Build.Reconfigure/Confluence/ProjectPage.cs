@@ -41,7 +41,7 @@ namespace CCNet.Build.Reconfigure
 
 			AreaName = areaName;
 			ProjectName = projectName;
-			ProjectBranch = ParseProjectBranch(pageName, projectName);
+			ProjectBranch = ParseProjectBranch(pageName);
 
 			m_page = pageName;
 			m_root = pageDocument.Root;
@@ -99,12 +99,12 @@ namespace CCNet.Build.Reconfigure
 			return map;
 		}
 
-		private string ParseProjectBranch(string pageName, string projectName)
+		private string ParseProjectBranch(string pageName)
 		{
-			if (pageName.IndexOf("//") < 0)
+			if (!pageName.StartsWith("~"))
 				return null;
 
-			return pageName.Substring(0, pageName.IndexOf("//")).TrimEnd();
+			return pageName.Substring(2, pageName.IndexOf("~", 2) - 3);
 		}
 
 		private string ParseDescription(Dictionary<string, string> properties)

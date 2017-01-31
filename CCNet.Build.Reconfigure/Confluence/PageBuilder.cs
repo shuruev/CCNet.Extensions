@@ -349,21 +349,24 @@ namespace CCNet.Build.Reconfigure
 				return false;
 
 			existing.Content = content;
-			m_confluence.UpdatePage(existing);
+		m_confluence.UpdatePage(existing);
 			return true;
 		}
 
 		private static string ResolveProjectName(string pageName, out ProjectType projectType)
 		{
-			if (pageName.Contains("//"))
+			if (pageName.StartsWith("~"))
 			{
-				var pair = pageName.Split(new[] { "//" }, StringSplitOptions.RemoveEmptyEntries);
-				if (pair.Length != 2)
+				var pair = pageName.Split(new[] { "~" }, StringSplitOptions.None);
+				if (pair.Length != 3
+					|| !pair[1].StartsWith(" ")
+					|| !pair[1].EndsWith(" ")
+					|| !pair[2].StartsWith(" "))
 				{
 					throw new ArgumentException($"Page name '{pageName}' does not look well-formed.");
 				}
 
-				pageName = pair[1].TrimStart();
+				pageName = pair[2].TrimStart();
 			}
 
 			if (pageName != pageName.AsciiOnly('.', ' ').CleanWhitespaces())
