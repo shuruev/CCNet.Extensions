@@ -55,9 +55,7 @@ namespace CCNet.Build.Reconfigure
 
 		public string OrderKey =>
 			AreaName + ":"
-			+ "ZZZ" + ProjectBranch != null
-				? ProjectBranch + ":"
-				: null
+			+ ("ZZZ" + ProjectBranch != null ? ProjectBranch + ":" : null)
 			+ ProjectName;
 
 		private Dictionary<string, string> ParseProperties(XElement page)
