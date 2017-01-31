@@ -1505,6 +1505,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("ProjectBranch", project.Branch),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("ReferencesPath", project.WorkingDirectoryReferences),
 							new Arg("RelatedPath", project.WorkingDirectoryRelated()),
