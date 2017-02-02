@@ -16,10 +16,6 @@ namespace CCNet.Build.SetupPackages
 				throw new ArgumentNullException(nameof(framework));
 
 			Framework = ParseFramework(framework);
-
-			if (!String.IsNullOrEmpty(Suffix))
-				throw new ArgumentException("Version is not expected to have suffixes here.", nameof(version));
-
 			Title = title;
 			Tags = tags;
 		}

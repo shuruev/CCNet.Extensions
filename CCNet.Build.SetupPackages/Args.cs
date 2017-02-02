@@ -12,6 +12,10 @@ namespace CCNet.Build.SetupPackages
 		{
 			get { return Current.Get<string>("ProjectFile"); }
 		}
+		public static string BranchName
+		{
+			get { return Current.IsEmpty("BranchName") ? null : Current.Get<string>("BranchName"); }
+		}
 
 		public static string ReferencesPath
 		{

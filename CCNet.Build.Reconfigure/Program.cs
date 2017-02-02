@@ -527,7 +527,6 @@ namespace CCNet.Build.Reconfigure
 				.ToList();
 		}
 
-
 		private static XmlWriter WriteConfig(string filePath)
 		{
 			return new XmlTextWriter(filePath, Encoding.UTF8)
@@ -817,6 +816,7 @@ namespace CCNet.Build.Reconfigure
 				var args = new List<Arg>
 				{
 					new Arg("ProjectFile", Path.Combine(project.WorkingDirectorySource, $"{Util.ProjectNameToLocalName(project.Name)}.csproj")),
+					new Arg("BranchName", project.Branch),
 					new Arg("PackagesPath", project.WorkingDirectoryPackages),
 					new Arg("ReferencesPath", project.WorkingDirectoryReferences),
 					new Arg("TempPath", project.WorkingDirectoryTemp),
@@ -1012,6 +1012,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg(project.CustomAssemblyName != null ? "PackageId" : null, project.CustomAssemblyName),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("TempPath", project.WorkingDirectoryTemp),
@@ -1190,6 +1191,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("TempPath", project.WorkingDirectoryTemp),
 							new Arg("TfsPath", project.TfsPath),
@@ -1263,6 +1265,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("TempPath", project.WorkingDirectoryTemp),
 							new Arg("TfsPath", project.TfsPath),
@@ -1335,6 +1338,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("TempPath", project.WorkingDirectoryTemp),
 							new Arg("TfsPath", project.TfsPath),
@@ -1439,6 +1443,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("TempPath", project.WorkingDirectoryTemp),
 							new Arg("TfsPath", project.TfsPath),
@@ -1505,6 +1510,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("ReferencesPath", project.WorkingDirectoryReferences),
 							new Arg("RelatedPath", project.WorkingDirectoryRelated()),
@@ -1557,6 +1563,14 @@ namespace CCNet.Build.Reconfigure
 
 						filesToUpload.Add(publishName);
 					}
+
+					writer.CbTag("CreateDirectory", "path", project.WorkingDirectoryPublishExtensions());
+					writer.CbTag("CopyFilesWildcard",
+						"from", project.ReleaseDirectoryExtensions,
+						"wildcard", "*",
+						"to", project.WorkingDirectoryPublishExtensions());
+
+					filesToUpload.Add(Path.GetFileName(project.ReleaseDirectoryExtensions));
 
 					foreach (var fileToUpload in filesToUpload)
 					{
