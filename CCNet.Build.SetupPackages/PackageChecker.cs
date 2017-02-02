@@ -68,7 +68,19 @@ namespace CCNet.Build.SetupPackages
 
 		public void Load()
 		{
-			m_localPackages = m_db.GetLatestVersions().ToDictionary(p => p.Id, StringComparer.OrdinalIgnoreCase);
+			var allLocalPackages = m_db.GetLatestVersions().ToList();
+
+			m_localPackages = allLocalPackages
+				.Where(p => p.Branch == null)
+				.ToDictionary(p => p.Id, StringComparer.OrdinalIgnoreCase);
+
+			if (Args.BranchName != null)
+			{
+				foreach(var p in allLocalPackages.Where(p => p.Branch == Args.BranchName.ToLower()))
+				{
+					m_localPackages[p.Id] = p;
+				}
+			}
 		}
 
 		public bool IsLocal(string id)
@@ -101,7 +113,7 @@ namespace CCNet.Build.SetupPackages
 			return m_bundles.Contains(id);
 		}
 
-		public TargetFramework TargetFramework(string id)
+		public TargetFramework? TargetFramework(string id)
 		{
 			if (!IsLocal(id))
 				throw new InvalidOperationException("Target framework versions are available for local packages only.");

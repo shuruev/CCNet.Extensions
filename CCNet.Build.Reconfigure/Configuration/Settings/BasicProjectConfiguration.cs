@@ -33,7 +33,7 @@ namespace CCNet.Build.Reconfigure
 				if (String.IsNullOrEmpty(Branch))
 					return "$(nugetUrl)/api/v2";
 
-				return $"$(nugetUrl)/private/{Branch}/api/v2";
+				return $"$(nugetUrl)/private/{Branch}/api/v2;$(nugetUrl)/api/v2";
 			}
 		}
 
