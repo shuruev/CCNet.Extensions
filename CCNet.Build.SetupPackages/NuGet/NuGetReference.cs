@@ -6,6 +6,7 @@ namespace CCNet.Build.SetupPackages
 	{
 		public string Id { get; private set; }
 		public Version Version { get; private set; }
+		public string Suffix { get; private set; }
 		public string Branch { get; private set; }
 
 		public NuGetReference(string id, string version)
@@ -23,7 +24,16 @@ namespace CCNet.Build.SetupPackages
 			if (String.IsNullOrEmpty(version))
 				throw new ArgumentNullException(nameof(version));
 
-			Version = new Version(version);
+			if (version.Contains("-"))
+			{
+				var parts = version.Split(new[] { '-' }, 2);
+				Version = new Version(parts[0]);
+				Suffix = parts[1];
+			}
+			else
+			{
+				Version = new Version(version);
+			}
 		}
 
 		private static string ParseId(string id, out string prefix)
