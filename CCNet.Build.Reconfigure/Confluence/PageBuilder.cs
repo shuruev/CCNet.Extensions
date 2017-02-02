@@ -349,7 +349,7 @@ namespace CCNet.Build.Reconfigure
 				return false;
 
 			existing.Content = content;
-		m_confluence.UpdatePage(existing);
+			m_confluence.UpdatePage(existing);
 			return true;
 		}
 

@@ -817,6 +817,7 @@ namespace CCNet.Build.Reconfigure
 				var args = new List<Arg>
 				{
 					new Arg("ProjectFile", Path.Combine(project.WorkingDirectorySource, $"{Util.ProjectNameToLocalName(project.Name)}.csproj")),
+					new Arg("BranchName", project.Branch),
 					new Arg("PackagesPath", project.WorkingDirectoryPackages),
 					new Arg("ReferencesPath", project.WorkingDirectoryReferences),
 					new Arg("TempPath", project.WorkingDirectoryTemp),
@@ -1012,6 +1013,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg(project.CustomAssemblyName != null ? "PackageId" : null, project.CustomAssemblyName),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("TempPath", project.WorkingDirectoryTemp),
@@ -1190,6 +1192,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("TempPath", project.WorkingDirectoryTemp),
 							new Arg("TfsPath", project.TfsPath),
@@ -1263,6 +1266,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("TempPath", project.WorkingDirectoryTemp),
 							new Arg("TfsPath", project.TfsPath),
@@ -1335,6 +1339,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("TempPath", project.WorkingDirectoryTemp),
 							new Arg("TfsPath", project.TfsPath),
@@ -1439,6 +1444,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("TempPath", project.WorkingDirectoryTemp),
 							new Arg("TfsPath", project.TfsPath),
@@ -1505,7 +1511,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
-							new Arg("ProjectBranch", project.Branch),
+							new Arg("BranchName", project.Branch),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("ReferencesPath", project.WorkingDirectoryReferences),
 							new Arg("RelatedPath", project.WorkingDirectoryRelated()),

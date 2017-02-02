@@ -139,9 +139,9 @@ namespace CCNet.Build.Reconfigure
 					"p",
 					new XElement(
 						"a",
-						ProjectBranch == null
+						BranchName == null
 							? new XAttribute("href", $"{Config.NuGetUrl}/packages/{ProjectName}/")
-							: new XAttribute("href", $"{Config.NuGetUrl}/private/{ProjectBranch}/packages/{ProjectName}/"),
+							: new XAttribute("href", $"{Config.NuGetUrl}/private/{BranchName}/packages/__{BranchName.ToLower()}__{ProjectName}/"),
 						PageDocument.BuildImage($"{Config.NuGetUrl}/favicon.ico"),
 						"$nbsp$NuGet package"));
 
@@ -154,9 +154,9 @@ namespace CCNet.Build.Reconfigure
 					"a",
 					new XAttribute(
 						"href",
-						ProjectBranch == null
+						BranchName == null
 							? $"{Config.CCNetUrl}/server/{Type.ServerName()}/project/{ProjectName}/ViewProjectReport.aspx"
-							: $"{Config.CCNetUrl}/server/{Type.ServerName()}/project/{ProjectName}-{ProjectBranch}/ViewProjectReport.aspx"),
+							: $"{Config.CCNetUrl}/server/{Type.ServerName()}/project/{ProjectName}-{BranchName}/ViewProjectReport.aspx"),
 					PageDocument.BuildImage($"{Config.CCNetUrl}/favicon.ico"),
 					"$nbsp$Build project"));
 
@@ -235,7 +235,7 @@ namespace CCNet.Build.Reconfigure
 
 			var path = TfsPath;
 
-			if (ProjectBranch == null && !CheckTfsPathArea(path, AreaName))
+			if (BranchName == null && !CheckTfsPathArea(path, AreaName))
 			{
 				throw new InvalidOperationException($"TFS path '{path}' seems not conforming with area name '{AreaName}'.");
 			}
@@ -296,13 +296,13 @@ namespace CCNet.Build.Reconfigure
 			if (ProjectUid == Guid.Empty)
 				return null;
 
-			if (ProjectBranch == null)
+			if (BranchName == null)
 			{
 				return new Tuple<string, Guid>(ProjectName, ProjectUid);
 			}
 
 			return new Tuple<string, Guid>(
-					string.Format("{0}-{1}", ProjectName, ProjectBranch),
+					string.Format("{0}-{1}", ProjectName, BranchName),
 					ProjectUid);
 		}
 

@@ -17,7 +17,7 @@ namespace CCNet.Build.Reconfigure
 
 		public string AreaName { get; }
 		public string ProjectName { get; }
-		public string ProjectBranch { get; }
+		public string BranchName { get; }
 		public string Description { get; }
 		public string Owner { get; }
 		public ProjectStatus Status { get; }
@@ -41,7 +41,7 @@ namespace CCNet.Build.Reconfigure
 
 			AreaName = areaName;
 			ProjectName = projectName;
-			ProjectBranch = ParseProjectBranch(pageName);
+			BranchName = ParseBranchName(pageName);
 
 			m_page = pageName;
 			m_root = pageDocument.Root;
@@ -55,7 +55,7 @@ namespace CCNet.Build.Reconfigure
 
 		public string OrderKey =>
 			AreaName + ":"
-			+ ("ZZZ" + ProjectBranch != null ? ProjectBranch + ":" : null)
+			+ ("ZZZ" + BranchName != null ? BranchName + ":" : null)
 			+ ProjectName;
 
 		private Dictionary<string, string> ParseProperties(XElement page)
@@ -104,7 +104,7 @@ namespace CCNet.Build.Reconfigure
 			return map;
 		}
 
-		private string ParseProjectBranch(string pageName)
+		private string ParseBranchName(string pageName)
 		{
 			if (!pageName.StartsWith("~"))
 				return null;
@@ -220,9 +220,9 @@ namespace CCNet.Build.Reconfigure
 				"td",
 				PageDocument.BuildPageLink(
 					m_page,
-					ProjectBranch == null
+					BranchName == null
 						? ProjectName
-						: $"~ {ProjectBranch} ~ {ProjectName}"));
+						: $"~ {BranchName} ~ {ProjectName}"));
 		}
 
 		private XElement RenderTypeColumn()
@@ -272,7 +272,7 @@ namespace CCNet.Build.Reconfigure
 		protected void ApplyTo(ProjectConfiguration config)
 		{
 			config.Name = ProjectName;
-			config.Branch = ProjectBranch;
+			config.Branch = BranchName;
 			config.Description = Description;
 			config.Category = AreaName;
 

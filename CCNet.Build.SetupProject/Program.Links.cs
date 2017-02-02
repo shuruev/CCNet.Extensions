@@ -163,9 +163,9 @@ namespace CCNet.Build.SetupProject
 		private static object GetConfluenceUrl(string suffix)
 		{
 			string projectConfluenceName = Args.ProjectName;
-			if (Args.ProjectBranch != null)
+			if (Args.BranchName != null)
 			{
-				projectConfluenceName = $"~{Args.ProjectBranch}+~+{Args.ProjectName}";
+				projectConfluenceName = $"~+{Args.BranchName}+~+{Args.ProjectName}";
 			}
 
 			return string.Format(m_confluencePageTemplate, projectConfluenceName, suffix);
@@ -174,9 +174,9 @@ namespace CCNet.Build.SetupProject
 		private static object GetNugetUrl()
 		{
 			string url = $"{Config.NuGetUrl}/packages/{Args.PackageId}/";
-			if (Args.ProjectBranch != null)
+			if (Args.BranchName != null)
 			{
-				url = $"{Config.NuGetUrl}/private/{Args.ProjectBranch}/packages/{Args.PackageId}/";
+				url = $"{Config.NuGetUrl}/private/{Args.BranchName}/packages/__{Args.BranchName.ToLower()}__{Args.PackageId}/";
 			}
 
 			return url;
