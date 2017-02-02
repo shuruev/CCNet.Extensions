@@ -30,7 +30,7 @@ namespace CCNet.Build.Reconfigure
 
 		public string ReleaseDirectoryExtensions
 		{
-			get { return String.Format(@"{0}\Extensions", SourceDirectoryRelease); }
+			get { return String.Format(@"{0}\app.publish\Extensions", SourceDirectoryRelease); }
 		}
 
 		public string SourceDirectoryPublished
