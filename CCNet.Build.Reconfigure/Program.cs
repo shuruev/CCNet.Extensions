@@ -527,7 +527,6 @@ namespace CCNet.Build.Reconfigure
 				.ToList();
 		}
 
-
 		private static XmlWriter WriteConfig(string filePath)
 		{
 			return new XmlTextWriter(filePath, Encoding.UTF8)
@@ -1523,7 +1522,14 @@ namespace CCNet.Build.Reconfigure
 					var filesToUpload = new List<string>();
 
 					writer.CbTag("CopyFiles", "from", project.ReleaseFileServiceConfiguration, "to", project.WorkingDirectoryPublish());
+					writer.CbTag("CreateDirectory", "path", project.WorkingDirectoryPublishExtensions());
+					writer.CbTag("CopyFilesWildcard",
+						"from", project.ReleaseDirectoryExtensions,
+						"wildcard", "*",
+						"to", project.WorkingDirectoryPublishExtensions());
+
 					filesToUpload.Add(Path.GetFileName(project.ReleaseFileServiceConfiguration));
+					filesToUpload.Add(Path.GetFileName(project.ReleaseDirectoryExtensions));
 
 					foreach (var vmSize in project.VmSizes)
 					{

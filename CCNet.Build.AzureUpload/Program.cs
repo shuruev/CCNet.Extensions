@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using CCNet.Build.Common;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
@@ -41,35 +42,40 @@ namespace CCNet.Build.AzureUpload
 			var client = account.CreateCloudBlobClient();
 			var container = client.GetContainerReference(Args.Container);
 
-			var localFile = Args.LocalFile;
-			var extension = Path.GetExtension(localFile).ToLowerInvariant();
-			var name = Args.BlobFile
+			var local = Args.LocalFile;
+			var remote = Args.BlobFile
 				.Replace("[datetime]", DateTime.UtcNow.ToString("yyyyMMdd-HHmm"));
 
-			var blob = container.GetBlockBlobReference(name);
+			var attr = File.GetAttributes(local);
+			var isFolder = ((attr & FileAttributes.Directory) == FileAttributes.Directory);
 
-			switch (extension)
+			if (!isFolder)
 			{
-				case ".txt":
-					blob.Properties.ContentType = "text/plain";
-					break;
-
-				case ".xml":
-				case ".cscfg":
-					blob.Properties.ContentType = "text/xml";
-					break;
-
-				case ".zip":
-					blob.Properties.ContentType = "application/zip";
-					break;
+				container.UploadFile(
+					file: local,
+					blobName: remote);
 			}
+			else
+			{
+				var files = Directory.GetFiles(local, "*", SearchOption.AllDirectories);
+				var filesToBlobs = files.Select(
+					file =>
+					{
+						var bloblFileName = file
+							.Replace(local, string.Empty)
+							.Replace("\\", "/");
 
-			Console.WriteLine("Local name: {0}", localFile);
-			Console.WriteLine("Blob name: {0}", blob.Name);
+						var blobFilePath = remote + bloblFileName;
+						return new Tuple<string, string>(file, blobFilePath);
+					});
 
-			Console.Write("Uploading file... ");
-			blob.UploadFromFile(localFile, FileMode.Open);
-			Console.WriteLine("OK");
+				foreach (var filesToBlob in filesToBlobs)
+				{
+					container.UploadFile(
+						file: filesToBlob.Item1,
+						blobName: filesToBlob.Item2);
+				}
+			}
 		}
 	}
 }

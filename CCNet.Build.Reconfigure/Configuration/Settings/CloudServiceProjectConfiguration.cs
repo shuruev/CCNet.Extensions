@@ -28,6 +28,11 @@ namespace CCNet.Build.Reconfigure
 			get { return String.Format(@"{0}\ServiceConfiguration.cscfg", SourceDirectoryRelease); }
 		}
 
+		public string ReleaseDirectoryExtensions
+		{
+			get { return String.Format(@"{0}\Extensions", SourceDirectoryRelease); }
+		}
+
 		public string SourceDirectoryPublished
 		{
 			get { return String.Format(@"{0}\app.publish", SourceDirectoryRelease); }
