@@ -1045,6 +1045,13 @@ namespace CCNet.Build.Reconfigure
 
 							foreach (var bundle in new[] { project.Name }.Union(project.Bundles.Split('|')))
 							{
+								// xxx temporary hardcode
+								if (project.Name == "CnetContent.Metro.Worker"
+									&& (bundle == "Microsoft.Extensions.Logging" || bundle == "Microsoft.Extensions.Logging.Abstractions"))
+								{
+									continue;
+								}
+
 								args.AppendFormat(" \"{0}\\{1}.dll\"", project.SourceDirectoryRelease, bundle);
 							}
 
@@ -1061,10 +1068,45 @@ namespace CCNet.Build.Reconfigure
 								args.Append(" /closed");
 							}
 
+							if (project.Name == "CnetContent.Metro.Core")
+							{
+								args.Append(" /internalize:exclude.txt");
+							}
+
 							writer.WriteElementString("executable", "$(ilmergeExecutable)");
 							writer.WriteElementString("buildTimeoutSeconds", "45");
 							writer.WriteElementString("buildArgs", args.ToString());
 							writer.WriteElementString("description", "Merge bundles package");
+						}
+
+						// xxx temporary hardcode
+						if (project.Name == "CnetContent.Metro.Worker")
+						{
+							// copy output files to the release folder, including satellite assemblies
+							writer.CbTag(
+								"CopyFilesWildcard",
+								"from",
+								project.WorkingDirectoryRelease(),
+								"wildcard",
+								$"{project.Name}.???",
+								"to",
+								project.SourceDirectoryRelease);
+
+							using (writer.OpenTag("exec"))
+							{
+								var args = new StringBuilder();
+								args.AppendFormat("/out:\"{0}\\{1}.dll\"", project.WorkingDirectoryRelease(), project.Name);
+
+								args.AppendFormat(" \"{0}\\{1}.dll\"", project.SourceDirectoryRelease, project.Name);
+								args.AppendFormat(" \"{0}\\{1}.dll\"", project.SourceDirectoryRelease, "Microsoft.Extensions.Logging");
+								args.AppendFormat(" \"{0}\\{1}.dll\"", project.SourceDirectoryRelease, "Microsoft.Extensions.Logging.Abstractions");
+								args.Append(" /internalize");
+
+								writer.WriteElementString("executable", "$(ilmergeExecutable)");
+								writer.WriteElementString("buildTimeoutSeconds", "45");
+								writer.WriteElementString("buildArgs", args.ToString());
+								writer.WriteElementString("description", "Merge bundles package (custom)");
+							}
 						}
 					}
 
