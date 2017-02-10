@@ -1057,20 +1057,10 @@ namespace CCNet.Build.Reconfigure
 
 							args.Append(" /xmldocs");
 
-							// xxx temporary allowing duplicates by hardcoding them
-							if (false)
-							{
-								args.Append(" /allowDup:AuthHeaders /allowDup:HmacAuth /allowDup:HmacGenerator /allowDup:HmacValidator /allowDup:HmacSignature");
-							}
-
+							// xxx manual exceptions
 							if (project.Name == "CnetContent.Metro.Core")
 							{
 								args.Append(" /closed");
-							}
-
-							if (project.Name == "CnetContent.Metro.Core")
-							{
-								args.Append(" /internalize:exclude.txt");
 							}
 
 							writer.WriteElementString("executable", "$(ilmergeExecutable)");
