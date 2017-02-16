@@ -48,7 +48,7 @@ namespace CCNet.Build.Reconfigure
 			if (path == null)
 				throw new InvalidOperationException("Cannot find TFS path.");
 
-			if (path != path.AsciiOnly('$', '/', '.').CleanWhitespaces())
+			if (path != path.AsciiOnly('$', '/', '.', '-').CleanWhitespaces())
 				throw new ArgumentException($"TFS path '{path}' does not look well-formed.");
 
 			return path.TrimEnd('/');
