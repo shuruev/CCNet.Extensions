@@ -439,7 +439,9 @@ namespace CCNet.Build.Reconfigure
 				macro.XAttribute("ac:schema-version").RemoveIfExists();
 			}
 
-			return doc.Render();
+			return doc.Render()
+				.CleanWhitespaces()
+				.Replace("<table class=\"wrapped\"><colgroup><col /><col /></colgroup>", "<table>");
 		}
 	}
 }
