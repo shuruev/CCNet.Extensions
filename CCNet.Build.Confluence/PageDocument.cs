@@ -123,7 +123,8 @@ namespace CCNet.Build.Confluence
 			if (content == null)
 				throw new ArgumentNullException("content");
 
-			content = content.CleanWhitespaces();
+			// TODO: temporary disabled because it broke formatting for CDATA content, like code macros
+			// content = content.CleanWhitespaces();
 			content = EncodeEntities(content);
 
 			return XDocument.Parse(s_beforePage + content + s_afterPage);
@@ -187,7 +188,9 @@ namespace CCNet.Build.Confluence
 				xml = xml.Replace(item.Key, item.Value);
 			}
 
-			return xml.CleanWhitespaces();
+			// TODO: temporary disabled because it broke formatting for CDATA content, like code macros
+			// return xml.CleanWhitespaces();
+			return xml;
 		}
 	}
 }
