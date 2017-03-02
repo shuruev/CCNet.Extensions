@@ -292,6 +292,18 @@ namespace CCNet.Build.Reconfigure
 				"CnetContent.Metro.Core",
 				"CnetContent.Metro.Log");
 
+			SetupDependencies(
+				configs,
+				"CnetContent.Metro.Processor.Common",
+				"CnetContent.Metro.Worker",
+				"CnetContent.Metro.Reporting.Client");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.Metro.Executor.Common",
+				"CnetContent.Metro.Worker",
+				"CnetContent.Metro.Workflow.Client");
+
 			foreach (var library in configs.Where(item => item.Name.StartsWith("CnetContent.Metro.") && item.Name.EndsWith(".Client")).Cast<LibraryProjectConfiguration>())
 			{
 				library.Dependencies = "CnetContent.Metro.Core";
