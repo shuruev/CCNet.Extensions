@@ -49,6 +49,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,6 +62,7 @@
     <Compile Include="NuGet\PackagesConfig.cs" />
     <Compile Include="NuGet\NuGetReference.cs" />
     <Compile Include="Run\NuGetHelper.cs" />
+    <Compile Include="Run\NuGetSubstitute.cs" />
     <Compile Include="Run\PackagesHelper.cs" />
     <Compile Include="Run\ReferencesHelper.cs" />
     <Compile Include="Config.cs" />
@@ -74,6 +76,7 @@
   <ItemGroup>
     <None Include="App.config">
       <TransformOnBuild>true</TransformOnBuild>
+      <SubType>Designer</SubType>
     </None>
     <None Include="App.Debug.config">
       <DependentUpon>App.config</DependentUpon>
