@@ -84,16 +84,7 @@ namespace CCNet.Build.SetupPackages
 			string mainNuGetUrl = Args.NuGetUrl;
 			if (Args.BranchName != null)
 			{
-				var nuGetUrls = Args.NuGetUrl.Split(new[] { ';' });
-				string branchNuGetUrl = nuGetUrls[0];
-				mainNuGetUrl = nuGetUrls[1];
-
-				// we shouldn't cache branched components to avoid affe
-				Run(
-					@"restore ""{0}"" -PackagesDirectory ""{1}"" -Source ""{2}"" -MSBuildVersion 14 -NonInteractive -Verbosity Detailed -nocache",
-					Paths.PackagesConfig,
-					Args.PackagesPath,
-					branchNuGetUrl);
+				mainNuGetUrl = Args.NuGetUrl.Split(new[] { ';' })[1];
 			}
 
 			Run(
