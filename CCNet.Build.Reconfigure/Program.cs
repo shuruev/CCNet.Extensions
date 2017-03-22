@@ -303,7 +303,8 @@ namespace CCNet.Build.Reconfigure
 				"CnetContent.Metro.Executor.Common",
 				"CnetContent.Metro.Worker",
 				"CnetContent.Metro.Workflow.Client",
-				"CnetContent.Metro.Reporting.Client");
+				"CnetContent.Metro.Reporting.Client",
+				"CnetContent.Metro.Transform.Client");
 
 			foreach (var library in configs.Where(item => item.Name.StartsWith("CnetContent.Metro.") && item.Name.EndsWith(".Client")).Cast<LibraryProjectConfiguration>())
 			{
