@@ -236,9 +236,15 @@ namespace CCNet.Build.Reconfigure
 				"Lean.Serialization",
 				"Elasticsearch.Net",
 				"Newtonsoft.Json",
+				"lz4net",
 				"Serilog",
 				"Serilog.Sinks.Elasticsearch",
 				"Serilog.Sinks.Literate");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.Jobs.Workers.Bootstrap.DataLake",
+				"CnetContent.Jobs.Services.DataLake");
 
 			SetupDependencies(
 				configs,
@@ -256,6 +262,23 @@ namespace CCNet.Build.Reconfigure
 				"Lean.Rest",
 				"Lean.Serialization",
 				"Newtonsoft.Json");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.DataLake.Analytics.Client",
+				"Microsoft.Azure.Management.DataLake.Analytics");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.DataLake.Store.Client",
+				"Microsoft.Azure.Management.DataLake.Store",
+				"Microsoft.Azure.Management.DataLake.StoreUploader",
+				"Microsoft.Rest.ClientRuntime.Azure.Authentication");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.Jobs.Services.DataLake",
+				"CnetContent.DataLake.Store.Client");
 
 			SetupDependencies(
 				configs,
