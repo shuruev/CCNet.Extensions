@@ -272,7 +272,6 @@ namespace CCNet.Build.Reconfigure
 				configs,
 				"CnetContent.DataLake.Store.Client",
 				"Microsoft.Azure.Management.DataLake.Store",
-				"Microsoft.Azure.Management.DataLake.StoreUploader",
 				"Microsoft.Rest.ClientRuntime.Azure.Authentication");
 
 			SetupDependencies(
