@@ -270,6 +270,11 @@ namespace CCNet.Build.Reconfigure
 
 			SetupDependencies(
 				configs,
+				"CnetContent.DataLake.Analytics.Client",
+				"CnetContent.DataLake.Store.Client");
+
+			SetupDependencies(
+				configs,
 				"CnetContent.Jobs.Services.DataLake",
 				"CnetContent.DataLake.Store.Client");
 
@@ -450,11 +455,7 @@ namespace CCNet.Build.Reconfigure
 				"Humanizer",
 				"Lean.Rest.Client",
 				"morelinq",
-				"StackExchange.Redis",
-				"System.Spatial",
-				"Microsoft.Data.Edm",
-				"Microsoft.Data.OData",
-				"Microsoft.WindowsAzure.Storage");
+				"StackExchange.Redis");
 
 			SetupBundles(
 				configs,
@@ -466,6 +467,10 @@ namespace CCNet.Build.Reconfigure
 				"CnetContent.Metro.Api",
 				"Microsoft.Extensions.Logging",
 				"Microsoft.Extensions.Logging.Abstractions",
+				"System.Spatial",
+				"Microsoft.Data.Edm",
+				"Microsoft.Data.OData",
+				"Microsoft.WindowsAzure.Storage",
 				"Elasticsearch.Net",
 				"Serilog",
 				"Serilog.Sinks.File",
@@ -489,6 +494,10 @@ namespace CCNet.Build.Reconfigure
 				"CnetContent.Metro.Worker",
 				"Microsoft.Extensions.Logging",
 				"Microsoft.Extensions.Logging.Abstractions",
+				"System.Spatial",
+				"Microsoft.Data.Edm",
+				"Microsoft.Data.OData",
+				"Microsoft.WindowsAzure.Storage",
 				"Elasticsearch.Net",
 				"Serilog",
 				"Serilog.Sinks.File",
