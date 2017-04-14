@@ -194,10 +194,13 @@ namespace CCNet.Build.Reconfigure
 				cloudService.VmSizes = new List<string> { "Small" };
 			}
 
-			cloudService = configs.FirstOrDefault(item => item.Name == "CC.Portal.Cloud") as CloudServiceProjectConfiguration;
-			if (cloudService != null)
+			foreach (var cfg in configs.Where(item => item.Name == "CC.Portal.Cloud"))
 			{
-				cloudService.VmSizes = new List<string> { "Small", "Medium" };
+				cloudService = cfg as CloudServiceProjectConfiguration; 
+				if (cloudService != null)
+				{
+					cloudService.VmSizes = new List<string> { "Small", "Medium" };
+				}
 			}
 
 			cloudService = configs.FirstOrDefault(item => item.Name == "CC.DataImport.HostedService") as CloudServiceProjectConfiguration;
