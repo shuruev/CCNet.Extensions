@@ -37,7 +37,7 @@ namespace CCNet.Build.CheckProject
 
 		private void CheckVisualStudioVersion()
 		{
-			if (IsVs2013() || IsVs2015())
+			if (IsVs2013() || IsVs2015() || IsVs2017())
 			{
 				return;
 			}
@@ -60,6 +60,13 @@ Please make sure solution file is saved with Visual Studio 2013 or above, so the
 			return m_lines[0].StartsWith("Microsoft Visual Studio Solution File, Format Version 12.")
 				&& m_lines[1] == "# Visual Studio 14"
 				&& m_lines[2].StartsWith("VisualStudioVersion = 14.");
+		}
+		
+		private bool IsVs2017()
+		{
+			return m_lines[0].StartsWith("Microsoft Visual Studio Solution File, Format Version 12.")
+				&& m_lines[1] == "# Visual Studio 15"
+				&& m_lines[2].StartsWith("VisualStudioVersion = 15.");
 		}
 
 		private void CheckTeamFoundationServer()
