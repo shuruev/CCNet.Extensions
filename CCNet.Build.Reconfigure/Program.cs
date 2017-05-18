@@ -935,11 +935,15 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
-		private static void WriteAzureUploadSnapshot(XmlWriter writer, IProjectSnapshot project)
+		private static void WriteAzureUploadSnapshot(XmlWriter writer, IProjectSnapshot project, TimeSpan? timeout = null)
 		{
 			using (writer.OpenTag("exec"))
 			{
 				writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
+
+				if (timeout.HasValue)
+					writer.WriteElementString("buildTimeoutSeconds", timeout.Value.TotalSeconds.ToString());
+
 				writer.WriteBuildArgs(
 					new Arg("Storage", "Devbuild"),
 					new Arg("Container", "snapshot"),
@@ -1524,7 +1528,7 @@ namespace CCNet.Build.Reconfigure
 					writer.CbTag("AppendToFile", "file", project.TempFileExclude(), "text", "$tf");
 					writer.CbTag("CompressDirectoryExclude", "path", project.WorkingDirectorySource, "output", project.TempFileSnapshot(), "exclude", project.TempFileExclude());
 
-					WriteAzureUploadSnapshot(writer, project);
+					WriteAzureUploadSnapshot(writer, project, TimeSpan.FromMinutes(20));
 					WriteAzureUploadSource(writer, project);
 					WriteAzureUploadPackages(writer, project);
 					WriteAzureUploadVersion(writer, project);
