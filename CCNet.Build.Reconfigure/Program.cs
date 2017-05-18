@@ -196,7 +196,7 @@ namespace CCNet.Build.Reconfigure
 
 			foreach (var cfg in configs.Where(item => item.Name == "CC.Portal.Cloud"))
 			{
-				cloudService = cfg as CloudServiceProjectConfiguration; 
+				cloudService = cfg as CloudServiceProjectConfiguration;
 				if (cloudService != null)
 				{
 					cloudService.VmSizes = new List<string> { "Small", "Medium" };
@@ -1643,6 +1643,10 @@ namespace CCNet.Build.Reconfigure
 						using (writer.OpenTag("exec"))
 						{
 							writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
+
+							if (fileToUpload.EndsWith(".cspkg"))
+								writer.WriteElementString("buildTimeoutSeconds", "1200");
+
 							writer.WriteBuildArgs(
 								new Arg("Storage", "Devbuild"),
 								new Arg("Container", "publish"),
