@@ -17,6 +17,7 @@ namespace CCNet.Build.Reconfigure
 
 		public string AreaName { get; }
 		public string ProjectName { get; }
+		public string BranchName { get; }
 		public string Description { get; }
 		public string Owner { get; }
 		public ProjectStatus Status { get; }
@@ -40,6 +41,7 @@ namespace CCNet.Build.Reconfigure
 
 			AreaName = areaName;
 			ProjectName = projectName;
+			BranchName = ParseBranchName(pageName);
 
 			m_page = pageName;
 			m_root = pageDocument.Root;
@@ -51,7 +53,10 @@ namespace CCNet.Build.Reconfigure
 			Status = ParseStatus(m_properties);
 		}
 
-		public string OrderKey => AreaName + ":" + ProjectName;
+		public string OrderKey =>
+			AreaName + ":"
+			+ ("ZZZ" + BranchName != null ? BranchName + ":" : null)
+			+ ProjectName;
 
 		private Dictionary<string, string> ParseProperties(XElement page)
 		{
@@ -76,11 +81,13 @@ namespace CCNet.Build.Reconfigure
 				if (code != null)
 					value = code.XValue();
 
-				var status = td.XElement("ac:structured-macro[@ac:name='status']/ac:parameter[@ac:name='title']");
+				const string statusXPath = "ac:structured-macro[@ac:name='status']/ac:parameter[@ac:name='title']";
+				var status = td.XElement($"div/p/{statusXPath}|div/{statusXPath}|{statusXPath}");
 				if (status != null)
 					value = status.XValue();
 
-				var user = td.XElements("ac:link/ri:user").Select(e => e.XAttribute("ri:userkey").Value).FirstOrDefault();
+				const string userXPath = "ac:link/ri:user";
+				var user = td.XElements($"div/{userXPath}|{userXPath}").Select(e => e.XAttribute("ri:userkey").Value).FirstOrDefault();
 				if (user != null)
 					value = user;
 
@@ -95,6 +102,14 @@ namespace CCNet.Build.Reconfigure
 				throw new InvalidOperationException("Cannot locate any rows in properties.");
 
 			return map;
+		}
+
+		private string ParseBranchName(string pageName)
+		{
+			if (!pageName.StartsWith("~"))
+				return null;
+
+			return pageName.Substring(2, pageName.IndexOf("~", 2) - 3);
 		}
 
 		private string ParseDescription(Dictionary<string, string> properties)
@@ -150,18 +165,26 @@ namespace CCNet.Build.Reconfigure
 		{
 			return new XElement(
 				"td",
-				BuildExplain(
-					"Владелецпроекта(Owner)",
-					BuildOwner(Owner)));
+				new XElement(
+					"div",
+					new XAttribute("class", "content-wrapper"),
+					BuildExplain(
+						"Владелецпроекта(Owner)",
+						BuildOwner(Owner))));
 		}
 
 		private XElement RenderStatus()
 		{
 			return new XElement(
 				"td",
-				BuildExplain(
-					"Статуспроекта(Status)",
-					BuildStatus(Status)));
+				new XElement(
+					"div",
+					new XAttribute("class", "content-wrapper"),
+					new XElement(
+						"p",
+						BuildExplain(
+							"Статуспроекта(Status)",
+							BuildStatus(Status)))));
 		}
 
 		private XElement RenderProperties()
@@ -195,14 +218,18 @@ namespace CCNet.Build.Reconfigure
 		{
 			return new XElement(
 				"td",
-				PageDocument.BuildPageLink(m_page, ProjectName));
+				PageDocument.BuildPageLink(
+					m_page,
+					BranchName == null
+						? ProjectName
+						: $"~ {BranchName} ~ {ProjectName}"));
 		}
 
 		private XElement RenderTypeColumn()
 		{
 			return new XElement(
 				"td",
-				m_page.Replace(ProjectName, String.Empty).Trim());
+				m_page.Substring(m_page.IndexOf(ProjectName) + ProjectName.Length + 1));
 		}
 
 		public virtual void CheckPage(TfsClient client)
@@ -245,6 +272,7 @@ namespace CCNet.Build.Reconfigure
 		protected void ApplyTo(ProjectConfiguration config)
 		{
 			config.Name = ProjectName;
+			config.Branch = BranchName;
 			config.Description = Description;
 			config.Category = AreaName;
 
@@ -254,7 +282,7 @@ namespace CCNet.Build.Reconfigure
 			switch (Status)
 			{
 				case ProjectStatus.Active:
-					config.BuildEvery = TimeSpan.FromSeconds(30);
+					config.BuildEvery = TimeSpan.FromSeconds(45);
 					break;
 
 				case ProjectStatus.Normal:

@@ -53,16 +53,28 @@ namespace CCNet.Build.Reconfigure
 
 		private XElement RenderFramework()
 		{
-			return new XElement("td", BuildFramework(Framework));
+			return new XElement(
+				"td",
+				new XElement(
+					"div",
+					new XAttribute("class", "content-wrapper"),
+					new XElement(
+						"p",
+						BuildFramework(Framework))));
 		}
 
 		private XElement RenderDocumentation()
 		{
 			return new XElement(
 				"td",
-				BuildExplain(
-					"Документацияпроекта(XMLdocumentation)",
-					BuildDocumentation(Documentation)));
+				new XElement(
+					"div",
+					new XAttribute("class", "content-wrapper"),
+					new XElement(
+						"p",
+						BuildExplain(
+							"Документацияпроекта(XMLdocumentation)",
+							BuildDocumentation(Documentation)))));
 		}
 
 		private XElement RenderNamespace()

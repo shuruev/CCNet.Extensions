@@ -65,7 +65,10 @@ Please add it as a NuGet reference first, and only after that you can convert it
 				m_log[name].ProjectReference = true;
 
 				var framework = m_checker.TargetFramework(name);
-				reference.ConvertToBinary(framework, name);
+				if (framework != null)
+				{
+					reference.ConvertToBinary(framework.Value, name);
+				}
 			}
 
 			Console.WriteLine("OK");
@@ -142,9 +145,11 @@ Please add it as a NuGet reference first, and only after that you can convert it
 				referenceName = folderName;
 
 				// quick dirty hardcode below for resolving names
-
-				if (referenceName.StartsWith("Metro."))
+				if (referenceName.StartsWith("Metro.")
+					|| referenceName.StartsWith("FlexQueue."))
+				{
 					referenceName = "CnetContent." + folderName;
+				}
 			}
 
 			// quick dirty hardcode below with calling tools with specific paths and arguments

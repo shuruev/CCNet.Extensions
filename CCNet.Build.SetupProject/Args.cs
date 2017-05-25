@@ -18,6 +18,11 @@ namespace CCNet.Build.SetupProject
 			get { return Current.Get<string>("ProjectName"); }
 		}
 
+		public static string BranchName
+		{
+			get { return Current.IsEmpty("BranchName") ? null : Current.Get<string>("BranchName"); }
+		}
+
 		public static string PackageId
 		{
 			get { return Current.Get("PackageId", ProjectName); }

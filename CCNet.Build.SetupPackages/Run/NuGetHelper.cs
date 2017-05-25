@@ -81,11 +81,17 @@ namespace CCNet.Build.SetupPackages
 			if (String.IsNullOrEmpty(Args.PackagesPath))
 				throw new InvalidOperationException("Packages path is not set.");
 
+			string mainNuGetUrl = Args.NuGetUrl;
+			if (Args.BranchName != null)
+			{
+				mainNuGetUrl = Args.NuGetUrl.Split(new[] { ';' })[1];
+			}
+
 			Run(
 				@"restore ""{0}"" -PackagesDirectory ""{1}"" -Source ""{2};http://www.nuget.org/api/v2"" -MSBuildVersion 14 -NonInteractive -Verbosity Detailed",
 				Paths.PackagesConfig,
 				Args.PackagesPath,
-				Args.NuGetUrl);
+				mainNuGetUrl);
 		}
 
 		private static void Run(string format, params object[] args)

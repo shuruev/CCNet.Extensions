@@ -27,7 +27,7 @@ namespace CCNet.Build.SetupPackages
 						@"
 SELECT MAX([Key]) AS LatestKey
 INTO #Latest
-FROM Packages
+FROM Packages WITH(NOLOCK)
 GROUP BY PackageRegistrationKey
 
 SELECT
@@ -37,11 +37,11 @@ SELECT
 	P.[Version],
 	PF.TargetFramework
 FROM #Latest T
-	INNER JOIN Packages P
+	INNER JOIN Packages P WITH(NOLOCK)
 	ON P.[Key] = T.LatestKey
-	INNER JOIN PackageRegistrations PR
+	INNER JOIN PackageRegistrations PR WITH(NOLOCK)
 	ON PR.[Key] = P.PackageRegistrationKey
-	INNER JOIN PackageFrameworks PF
+	INNER JOIN PackageFrameworks PF WITH(NOLOCK)
 	ON PF.[Key] = P.[Key]
 
 DROP TABLE #Latest

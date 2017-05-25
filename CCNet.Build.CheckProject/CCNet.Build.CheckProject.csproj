@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CCNet.Build.CheckProject</RootNamespace>
     <AssemblyName>CCNet.Build.CheckProject</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -82,6 +83,7 @@
     <Compile Include="Issues\ProjectProperties\CheckProjectAssemblyName.cs" />
     <Compile Include="Issues\ProjectProperties\TargetFramework\ProjectTargetFramework452.cs" />
     <Compile Include="Issues\ProjectProperties\TargetFramework\ProjectTargetFramework461.cs" />
+    <Compile Include="Issues\ProjectProperties\TargetFramework\ProjectTargetFramework462.cs" />
     <Compile Include="Issues\ProjectProperties\TargetFramework\ProjectTargetFramework45.cs" />
     <Compile Include="Issues\ProjectProperties\TargetFramework\ProjectTargetFramework40.cs" />
     <Compile Include="Issues\ProjectProperties\TargetFramework\ProjectTargetFramework35.cs" />
@@ -105,9 +107,9 @@
       <Project>{439EFE6A-A065-4346-8793-8540452B0924}</Project>
       <Name>CCNet.Build.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CCNet.Build.Tfs\CCNet.Build.Tfs.csproj">
-      <Project>{9671226B-2538-4E31-8929-BDA21D63E649}</Project>
-      <Name>CCNet.Build.Tfs</Name>
+    <ProjectReference Include="..\NetBuild.Tfs\NetBuild.Tfs.csproj">
+      <Project>{79954a6f-d979-49db-8112-6ab4b8a4a9cd}</Project>
+      <Name>NetBuild.Tfs</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

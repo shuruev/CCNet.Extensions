@@ -22,6 +22,7 @@ namespace CCNet.Build.Reconfigure
 		}
 
 		public virtual string SourceDirectoryRelease => $@"{WorkingDirectorySource}\bin\Release";
+		public string SourceDirectoryAppPublish => $@"{SourceDirectoryRelease}\app.publish";
 
 		public string MsbuildExecutable => @"C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe";
 
@@ -32,7 +33,7 @@ namespace CCNet.Build.Reconfigure
 				if (String.IsNullOrEmpty(Branch))
 					return "$(nugetUrl)/api/v2";
 
-				return $"$(nugetUrl)/private/{Branch}/api/v2";
+				return $"$(nugetUrl)/private/{Branch}/api/v2;$(nugetUrl)/api/v2";
 			}
 		}
 
@@ -74,6 +75,9 @@ namespace CCNet.Build.Reconfigure
 
 					case TargetFramework.Net461:
 						return "P18"; // ProjectTargetFramework461
+
+					case TargetFramework.Net462:
+						return "P22"; // ProjectTargetFramework462
 
 					default:
 						throw new InvalidOperationException(

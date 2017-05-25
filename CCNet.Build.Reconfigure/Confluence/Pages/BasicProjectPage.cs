@@ -48,7 +48,7 @@ namespace CCNet.Build.Reconfigure
 			if (path == null)
 				throw new InvalidOperationException("Cannot find TFS path.");
 
-			if (path != path.AsciiOnly('$', '/', '.').CleanWhitespaces())
+			if (path != path.AsciiOnly('$', '/', '.', '-').CleanWhitespaces())
 				throw new ArgumentException($"TFS path '{path}' does not look well-formed.");
 
 			return path.TrimEnd('/');
@@ -139,7 +139,9 @@ namespace CCNet.Build.Reconfigure
 					"p",
 					new XElement(
 						"a",
-						new XAttribute("href", $"{Config.NuGetUrl}/packages/{ProjectName}/"),
+						BranchName == null
+							? new XAttribute("href", $"{Config.NuGetUrl}/packages/{ProjectName}/")
+							: new XAttribute("href", $"{Config.NuGetUrl}/private/{BranchName}/packages/__{BranchName.ToLower()}__{ProjectName}/"),
 						PageDocument.BuildImage($"{Config.NuGetUrl}/favicon.ico"),
 						"$nbsp$NuGet package"));
 
@@ -150,7 +152,11 @@ namespace CCNet.Build.Reconfigure
 				"p",
 				new XElement(
 					"a",
-					new XAttribute("href", $"{Config.CCNetUrl}/server/{Type.ServerName()}/project/{ProjectName}/ViewProjectReport.aspx"),
+					new XAttribute(
+						"href",
+						BranchName == null
+							? $"{Config.CCNetUrl}/server/{Type.ServerName()}/project/{ProjectName}/ViewProjectReport.aspx"
+							: $"{Config.CCNetUrl}/server/{Type.ServerName()}/project/{ProjectName}-{BranchName}/ViewProjectReport.aspx"),
 					PageDocument.BuildImage($"{Config.CCNetUrl}/favicon.ico"),
 					"$nbsp$Build project"));
 
@@ -229,8 +235,10 @@ namespace CCNet.Build.Reconfigure
 
 			var path = TfsPath;
 
-			if (!CheckTfsPathArea(path, AreaName))
+			if (BranchName == null && !CheckTfsPathArea(path, AreaName))
+			{
 				throw new InvalidOperationException($"TFS path '{path}' seems not conforming with area name '{AreaName}'.");
+			}
 
 			if (!CheckTfsPathProject(path, ProjectName))
 				throw new InvalidOperationException($"TFS path '{path}' seems not conforming with project name '{ProjectName}'.");
@@ -288,7 +296,14 @@ namespace CCNet.Build.Reconfigure
 			if (ProjectUid == Guid.Empty)
 				return null;
 
-			return new Tuple<string, Guid>(ProjectName, ProjectUid);
+			if (BranchName == null)
+			{
+				return new Tuple<string, Guid>(ProjectName, ProjectUid);
+			}
+
+			return new Tuple<string, Guid>(
+					string.Format("{0}-{1}", ProjectName, BranchName),
+					ProjectUid);
 		}
 
 		protected new void ApplyTo(ProjectConfiguration config)

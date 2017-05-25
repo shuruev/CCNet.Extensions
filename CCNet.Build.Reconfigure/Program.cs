@@ -51,6 +51,8 @@ namespace CCNet.Build.Reconfigure
 			using (Execute.Step("UPDATE CONFIG"))
 			{
 				var all = builder.ExportConfigurations();
+				AddCustomProjects(all);
+
 				var configs = all.Where(c => c is ProjectConfiguration).Cast<ProjectConfiguration>().ToList();
 				ApplyCustomizations(configs);
 
@@ -99,6 +101,22 @@ namespace CCNet.Build.Reconfigure
 					SaveProjectUid(item.Key, item.Value);
 				}
 			}
+		}
+
+		private static void AddCustomProjects(ICollection<IProjectConfigurationTemp> configs)
+		{
+			configs.Add(new FabricServiceProjectConfiguration
+			{
+				ConfluencePage = "My+fabric+service",
+				Area = "Production",
+				Name = "Metro.Portal.Web",
+				Description = "???",
+				OwnerEmail = "oleg.shuruev@cbsinteractive.com",
+				CheckEvery = TimeSpan.FromSeconds(45),
+				TfsPath = "$/Main/Production/Metro/Portal/Metro.Portal/Metro.Portal.Web",
+				ProjectExtension = "xproj",
+				CustomIssues = "-F02"
+			});
 		}
 
 		private static void ApplyCustomizations(List<ProjectConfiguration> configs)
@@ -170,6 +188,27 @@ namespace CCNet.Build.Reconfigure
 				cloudService.VmSizes = new List<string> { "Small", "Large" };
 			}
 
+			cloudService = configs.FirstOrDefault(item => item.Name == "CC.MediaServer.Cloud") as CloudServiceProjectConfiguration;
+			if (cloudService != null)
+			{
+				cloudService.VmSizes = new List<string> { "Small" };
+			}
+
+			foreach (var cfg in configs.Where(item => item.Name == "CC.Portal.Cloud"))
+			{
+				cloudService = cfg as CloudServiceProjectConfiguration; 
+				if (cloudService != null)
+				{
+					cloudService.VmSizes = new List<string> { "Small", "Medium" };
+				}
+			}
+
+			cloudService = configs.FirstOrDefault(item => item.Name == "CC.DataImport.HostedService") as CloudServiceProjectConfiguration;
+			if (cloudService != null)
+			{
+				cloudService.VmSizes = new List<string> { "Small", "Medium" };
+			}
+
 			ApplyDependencies(configs);
 			ApplyBundles(configs);
 		}
@@ -200,8 +239,15 @@ namespace CCNet.Build.Reconfigure
 				"Lean.Serialization",
 				"Elasticsearch.Net",
 				"Newtonsoft.Json",
+				"lz4net",
 				"Serilog",
-				"Serilog.Sinks.Elasticsearch");
+				"Serilog.Sinks.Elasticsearch",
+				"Serilog.Sinks.Literate");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.Jobs.Workers.Bootstrap.DataLake",
+				"CnetContent.Jobs.Services.DataLake");
 
 			SetupDependencies(
 				configs,
@@ -222,6 +268,21 @@ namespace CCNet.Build.Reconfigure
 
 			SetupDependencies(
 				configs,
+				"CnetContent.DataLake.Store.Client",
+				"Microsoft.Rest.ClientRuntime.Azure.Authentication");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.DataLake.Analytics.Client",
+				"CnetContent.DataLake.Store.Client");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.Jobs.Services.DataLake",
+				"CnetContent.DataLake.Store.Client");
+
+			SetupDependencies(
+				configs,
 				"ClaimSystem.Storage",
 				"ClaimSystem.Core",
 				"VXSystem",
@@ -236,26 +297,43 @@ namespace CCNet.Build.Reconfigure
 
 			SetupDependencies(
 				configs,
-				"CnetContent.Metro.Common",
+				"CnetContent.Metro.Core",
 				"Newtonsoft.Json");
 
 			SetupDependencies(
 				configs,
-				"CnetContent.Metro.Core",
-				"CnetContent.Metro.Common");
-
-			SetupDependencies(
-				configs,
 				"CnetContent.Metro.Api",
-				"CnetContent.Metro.Api.Web",
-				"CnetContent.Metro.Api.Fabric",
 				"CnetContent.Metro.Core",
-				"Lean.Rest.Server",
+				"CnetContent.Metro.Log",
 				"Microsoft.AspNet.WebApi.Owin",
 				"Microsoft.Owin.Hosting",
 				"Microsoft.Owin.Host.HttpListener",
-				"Microsoft.Owin.Host.SystemWeb",
-				"Microsoft.ServiceFabric.Services");
+				"Microsoft.Owin.Host.SystemWeb");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.Metro.Worker",
+				"CnetContent.Metro.Core",
+				"CnetContent.Metro.Log");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.Metro.Processor.Common",
+				"CnetContent.Metro.Worker",
+				"CnetContent.Metro.Reporting.Client");
+
+			SetupDependencies(
+				configs,
+				"CnetContent.Metro.Executor.Common",
+				"CnetContent.Metro.Worker",
+				"CnetContent.Metro.Workflow.Client",
+				"CnetContent.Metro.Reporting.Client",
+				"CnetContent.Metro.Transform.Client");
+
+			foreach (var library in configs.Where(item => item.Name.StartsWith("CnetContent.Metro.") && item.Name.EndsWith(".Client")).Cast<LibraryProjectConfiguration>())
+			{
+				library.Dependencies = "CnetContent.Metro.Core";
+			}
 
 			SetupDependencies(
 				configs,
@@ -372,10 +450,69 @@ namespace CCNet.Build.Reconfigure
 		{
 			SetupBundles(
 				configs,
-				"CnetContent.Metro.Common",
+				"CnetContent.Metro.Core",
 				"Atom.Module.Base64Url",
 				"Atom.Module.Configuration",
-				"Lean.Rest.Client");
+				"Dapper",
+				"FluentValidation",
+				"Humanizer",
+				"Lean.Rest.Client",
+				"morelinq",
+				"StackExchange.Redis");
+
+			SetupBundles(
+				configs,
+				"CnetContent.Metro.Log",
+				"Microsoft.Extensions.Logging.Abstractions");
+
+			SetupBundles(
+				configs,
+				"CnetContent.Metro.Api",
+				"Microsoft.Extensions.Logging",
+				"Microsoft.Extensions.Logging.Abstractions",
+				"Elasticsearch.Net",
+				"Serilog",
+				"Serilog.Sinks.File",
+				"Serilog.Sinks.Literate",
+				"Serilog.Sinks.PeriodicBatching",
+				"Serilog.Sinks.RollingFile",
+				"Serilog.Sinks.Elasticsearch",
+				"Serilog.Extensions.Logging",
+				"CnetContent.Metro.Api.Web",
+				"CnetContent.Metro.Api.Fabric",
+				"Lean.Rest",
+				"Lean.Rest.Server",
+				"CnetContent.ExtConfig.Common",
+				"CnetContent.ExtConfig.Client",
+				"SimpleInjector",
+				"SimpleInjector.Extensions.ExecutionContextScoping",
+				"SimpleInjector.Integration.WebApi");
+
+			SetupBundles(
+				configs,
+				"CnetContent.Metro.Worker",
+				"Microsoft.Extensions.Logging",
+				"Microsoft.Extensions.Logging.Abstractions",
+				"Elasticsearch.Net",
+				"Serilog",
+				"Serilog.Sinks.File",
+				"Serilog.Sinks.Literate",
+				"Serilog.Sinks.PeriodicBatching",
+				"Serilog.Sinks.RollingFile",
+				"Serilog.Sinks.Elasticsearch",
+				"Serilog.Extensions.Logging",
+				"Lean.Rest",
+				"Lean.ResourceLocators",
+				"Lean.Serialization",
+				"CnetContent.ExtConfig.Common",
+				"CnetContent.ExtConfig.Client",
+				"CnetContent.FlexQueue.Core",
+				"CnetContent.FlexQueue.Client",
+				"CnetContent.Jobs.Core",
+				"CnetContent.Jobs.Services",
+				"CnetContent.Jobs.Services.Azure",
+				"CnetContent.Jobs.Workers",
+				"CnetContent.Jobs.Workers.Bootstrap");
 
 			SetupBundles(
 				configs,
@@ -423,7 +560,6 @@ namespace CCNet.Build.Reconfigure
 				.Cast<T>()
 				.ToList();
 		}
-
 
 		private static XmlWriter WriteConfig(string filePath)
 		{
@@ -714,6 +850,7 @@ namespace CCNet.Build.Reconfigure
 				var args = new List<Arg>
 				{
 					new Arg("ProjectFile", Path.Combine(project.WorkingDirectorySource, $"{Util.ProjectNameToLocalName(project.Name)}.csproj")),
+					new Arg("BranchName", project.Branch),
 					new Arg("PackagesPath", project.WorkingDirectoryPackages),
 					new Arg("ReferencesPath", project.WorkingDirectoryReferences),
 					new Arg("TempPath", project.WorkingDirectoryTemp),
@@ -780,6 +917,21 @@ namespace CCNet.Build.Reconfigure
 					new Arg("BlobFile", $"{project.UniqueName}/$[$CCNetLabel]/{project.ReleaseFileName()}"));
 
 				writer.WriteElementString("description", "Save packed release to blobs");
+			}
+		}
+
+		private static void WriteAzureUploadClickOnce(XmlWriter writer, IProjectRelease project)
+		{
+			using (writer.OpenTag("exec"))
+			{
+				writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
+				writer.WriteBuildArgs(
+					new Arg("Storage", "Devbuild"),
+					new Arg("Container", "publish"),
+					new Arg("LocalFile", project.ClickOnceFileLocal()),
+					new Arg("BlobFile", $"{project.UniqueName}/$[$CCNetLabel]/{project.ClickOnceFileName()}"));
+
+				writer.WriteElementString("description", "Save ClickOnce package to blobs");
 			}
 		}
 
@@ -894,6 +1046,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg(project.CustomAssemblyName != null ? "PackageId" : null, project.CustomAssemblyName),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("TempPath", project.WorkingDirectoryTemp),
@@ -926,17 +1079,58 @@ namespace CCNet.Build.Reconfigure
 
 							foreach (var bundle in new[] { project.Name }.Union(project.Bundles.Split('|')))
 							{
+								// xxx temporary hardcode
+								if (project.Name == "CnetContent.Metro.Worker"
+									&& (bundle == "Microsoft.Extensions.Logging" || bundle == "Microsoft.Extensions.Logging.Abstractions"))
+								{
+									continue;
+								}
+
 								args.AppendFormat(" \"{0}\\{1}.dll\"", project.SourceDirectoryRelease, bundle);
 							}
 
 							args.Append(" /xmldocs");
-							//xxx experimenting
-							args.Append(" /allowDup:AuthHeaders /allowDup:HmacAuth /allowDup:HmacGenerator /allowDup:HmacValidator /allowDup:HmacSignature");
+
+							// xxx manual exceptions
+							if (project.Name == "CnetContent.Metro.Core")
+							{
+								args.Append(" /closed");
+							}
 
 							writer.WriteElementString("executable", "$(ilmergeExecutable)");
 							writer.WriteElementString("buildTimeoutSeconds", "45");
 							writer.WriteElementString("buildArgs", args.ToString());
 							writer.WriteElementString("description", "Merge bundles package");
+						}
+
+						// xxx temporary hardcode
+						if (project.Name == "CnetContent.Metro.Worker")
+						{
+							// copy output files to the release folder, including satellite assemblies
+							writer.CbTag(
+								"CopyFilesWildcard",
+								"from",
+								project.WorkingDirectoryRelease(),
+								"wildcard",
+								$"{project.Name}.???",
+								"to",
+								project.SourceDirectoryRelease);
+
+							using (writer.OpenTag("exec"))
+							{
+								var args = new StringBuilder();
+								args.AppendFormat("/out:\"{0}\\{1}.dll\"", project.WorkingDirectoryRelease(), project.Name);
+
+								args.AppendFormat(" \"{0}\\{1}.dll\"", project.SourceDirectoryRelease, project.Name);
+								args.AppendFormat(" \"{0}\\{1}.dll\"", project.SourceDirectoryRelease, "Microsoft.Extensions.Logging");
+								args.AppendFormat(" \"{0}\\{1}.dll\"", project.SourceDirectoryRelease, "Microsoft.Extensions.Logging.Abstractions");
+								args.Append(" /internalize");
+
+								writer.WriteElementString("executable", "$(ilmergeExecutable)");
+								writer.WriteElementString("buildTimeoutSeconds", "45");
+								writer.WriteElementString("buildArgs", args.ToString());
+								writer.WriteElementString("description", "Merge bundles package (custom)");
+							}
 						}
 					}
 
@@ -1063,6 +1257,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("TempPath", project.WorkingDirectoryTemp),
 							new Arg("TfsPath", project.TfsPath),
@@ -1136,6 +1331,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("TempPath", project.WorkingDirectoryTemp),
 							new Arg("TfsPath", project.TfsPath),
@@ -1186,6 +1382,8 @@ namespace CCNet.Build.Reconfigure
 				}
 			};
 
+			bool isClickOnce = (project as WindowsProjectConfiguration)?.ClickOnce == true;
+
 			using (writer.OpenTag("project"))
 			{
 				WriteProjectHeader(writer, project);
@@ -1206,6 +1404,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("TempPath", project.WorkingDirectoryTemp),
 							new Arg("TfsPath", project.TfsPath),
@@ -1215,11 +1414,38 @@ namespace CCNet.Build.Reconfigure
 					}
 
 					WriteSetupPackages(writer, project);
-					WriteBuildProject(writer, project);
+
+					if (isClickOnce)
+					{
+						using (writer.OpenTag("msbuild"))
+						{
+							writer.WriteElementString("executable", project.MsbuildExecutable);
+							writer.WriteElementString("targets", "Publish");
+							writer.WriteElementString("workingDirectory", project.WorkingDirectorySource);
+							writer.WriteElementString("buildArgs", $@"/noconsolelogger /p:Configuration=Release;OutDir={project.SourceDirectoryRelease}\");
+							writer.WriteElementString("description", "Publish ClickOnce");
+						}
+					}
+					else
+					{
+						WriteBuildProject(writer, project);
+					}
 
 					writer.CbTag("EraseXmlDocs", "path", project.SourceDirectoryRelease);
-					writer.CbTag("EraseConfigFiles", "path", project.SourceDirectoryRelease);
-					writer.CbTag("CompressDirectory", "path", project.SourceDirectoryRelease, "output", project.ReleaseFileLocal());
+
+					if (isClickOnce)
+					{
+						writer.CbTag("CompressDirectory", "path", project.SourceDirectoryAppPublish, "output", project.ClickOnceFileLocal());
+						writer.CbTag("DeleteDirectory", "path", project.SourceDirectoryAppPublish);
+					}
+					else
+					{
+						writer.CbTag("EraseConfigFiles", "path", project.SourceDirectoryRelease);
+					}
+
+					writer.CbTag("CompressDirectory",
+						"path", project.SourceDirectoryRelease,
+						"output", project.ReleaseFileLocal());
 
 					var snapshot = project as IProjectSnapshot;
 					if (snapshot != null)
@@ -1230,6 +1456,10 @@ namespace CCNet.Build.Reconfigure
 					}
 
 					WriteAzureUploadRelease(writer, project);
+
+					if (isClickOnce)
+						WriteAzureUploadClickOnce(writer, project);
+
 					WriteAzureUploadSource(writer, project);
 					WriteAzureUploadPackages(writer, project);
 					WriteAzureUploadVersion(writer, project);
@@ -1279,6 +1509,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("TempPath", project.WorkingDirectoryTemp),
 							new Arg("TfsPath", project.TfsPath),
@@ -1345,6 +1576,7 @@ namespace CCNet.Build.Reconfigure
 						writer.WriteBuildArgs(
 							new Arg("ProjectType", project.Type),
 							new Arg("ProjectName", project.Name),
+							new Arg("BranchName", project.Branch),
 							new Arg("ProjectPath", project.WorkingDirectorySource),
 							new Arg("ReferencesPath", project.WorkingDirectoryReferences),
 							new Arg("RelatedPath", project.WorkingDirectoryRelated()),
@@ -1397,6 +1629,14 @@ namespace CCNet.Build.Reconfigure
 
 						filesToUpload.Add(publishName);
 					}
+
+					writer.CbTag("CreateDirectory", "path", project.WorkingDirectoryPublishExtensions());
+					writer.CbTag("CopyFilesWildcard",
+						"from", project.ReleaseDirectoryExtensions,
+						"wildcard", "*",
+						"to", project.WorkingDirectoryPublishExtensions());
+
+					filesToUpload.Add(Path.GetFileName(project.ReleaseDirectoryExtensions));
 
 					foreach (var fileToUpload in filesToUpload)
 					{

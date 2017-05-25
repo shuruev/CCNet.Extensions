@@ -43,7 +43,7 @@ namespace CCNet.Build.Reconfigure
 
 		public override List<IProjectConfigurationTemp> ExportConfigurations()
 		{
-			var config = new WindowsProjectConfiguration();
+			var config = new WindowsProjectConfiguration { ClickOnce = ClickOnce };
 			ApplyTo(config);
 
 			return new List<IProjectConfigurationTemp> { config };

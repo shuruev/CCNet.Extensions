@@ -1,6 +1,6 @@
 ﻿using System;
 using CCNet.Build.Common;
-using CCNet.Build.Tfs;
+using NetBuild.Tfs;
 
 namespace CCNet.Build.CheckProject
 {
@@ -104,6 +104,7 @@ If you beleive everything is correct please talk to Oleg Shuruev to improve this
 				case "P13": return new ProjectTargetFramework45();
 				case "P19": return new ProjectTargetFramework452();
 				case "P18": return new ProjectTargetFramework461();
+				case "P22": return new ProjectTargetFramework462();
 				case "P14": return new CheckProjectCompilation();
 				case "P20": return new OutputPathDefault();
 				case "P21": return new OutputPathBin();

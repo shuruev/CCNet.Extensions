@@ -79,7 +79,7 @@ namespace CCNet.Build.Reconfigure
 
 			foreach (var arg in arguments)
 			{
-				if (arg.Item1 == null)
+				if (arg.Item1 == null || arg.Item2 == null)
 					continue;
 
 				if (arg.Item1.Length == 0)

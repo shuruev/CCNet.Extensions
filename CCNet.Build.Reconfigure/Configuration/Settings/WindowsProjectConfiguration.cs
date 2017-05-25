@@ -21,6 +21,10 @@ namespace CCNet.Build.Reconfigure
 			checks.Insert(p05, "P06");
 			checks.Remove("P05");
 
+			// remove I02 (ShouldHaveAppConfigDefault)
+			if (ClickOnce)
+				checks.Remove("I02");
+
 			return checks;
 		}
 	}

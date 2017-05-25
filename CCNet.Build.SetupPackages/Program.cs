@@ -54,6 +54,14 @@ namespace CCNet.Build.SetupPackages
 				references.Adjust();
 			}
 
+			if (Args.BranchName != null)
+			{
+				using (Execute.Step("RESTORE (BRANCH)"))
+				{
+					(new NuGetSubstitute(Config.NuGetDbConnection)).RestoreBranchedPackages();
+				}
+			}
+
 			using (Execute.Step("RESTORE"))
 			{
 				nuget.RestoreAll();

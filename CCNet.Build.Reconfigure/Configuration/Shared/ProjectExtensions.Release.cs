@@ -18,5 +18,15 @@ namespace CCNet.Build.Reconfigure
 		{
 			return String.Format(@"{0}\{1}", project.WorkingDirectoryRelease(), project.ReleaseFileName());
 		}
+
+		public static string ClickOnceFileName(this IProjectRelease project)
+		{
+			return String.Format(@"{0}.publish.zip", project.Name);
+		}
+
+		public static string ClickOnceFileLocal(this IProjectRelease project)
+		{
+			return String.Format(@"{0}\{1}", project.WorkingDirectoryRelease(), project.ClickOnceFileName());
+		}
 	}
 }
