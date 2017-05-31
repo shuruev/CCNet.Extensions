@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -281,6 +282,32 @@ namespace CCNet.Build.Reconfigure
 				"CnetContent.Jobs.Services.DataLake",
 				"CnetContent.DataLake.Store.Client");
 
+			#region ClaimSystem
+
+			SetupDependencies(
+				configs,
+				"ClaimSystem.Core",
+				"ClaimSystem.Mail",
+				"protobuf-net");
+
+			SetupDependencies(
+				configs,
+				"ClaimSystem.Mail",
+				"RazorEngine",
+				"Microsoft.AspNet.Razor");
+
+			SetupDependencies(
+				configs,
+				"ClaimSystem.Domain",
+				"ClaimSystem.Core");
+
+			SetupDependencies(
+				configs,
+				"ClaimSystem.Domain.Server",
+				"ClaimSystem.Domain",
+				"ClaimSystem.Storage",
+				"ClaimSystem.Core");
+
 			SetupDependencies(
 				configs,
 				"ClaimSystem.Storage",
@@ -288,12 +315,10 @@ namespace CCNet.Build.Reconfigure
 				"VXSystem",
 				"Lucene.Net",
 				"EntityFramework",
-				"SharpZipLib");
+				"EntityFramework.BulkExtensions",
+				"EFUtilities");
 
-			SetupDependencies(
-				configs,
-				"ClaimSystem.Domain",
-				"ClaimSystem.Core");
+			#endregion
 
 			SetupDependencies(
 				configs,
