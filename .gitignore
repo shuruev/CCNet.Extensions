@@ -11,3 +11,4 @@ _ReSharper.*
 App.Debug.config
 App.Release.config
 SlowCheetah.Transforms.targets
+*.sqlite
