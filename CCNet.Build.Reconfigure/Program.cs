@@ -561,20 +561,32 @@ namespace CCNet.Build.Reconfigure
 
 		private static void SetupDependencies(IEnumerable<ProjectConfiguration> configs, string libraryName, params string[] dependencies)
 		{
-			var library = configs.FirstOrDefault(item => item.Name == libraryName) as LibraryProjectConfiguration;
-			if (library == null)
-				return;
+			var libraries = configs
+				.Where(item => item.Name == libraryName)
+				.Select(x => x as LibraryProjectConfiguration);
 
-			library.Dependencies = String.Join("|", dependencies);
+			foreach (var library in libraries)
+			{
+				if (library == null)
+					return;
+
+				library.Dependencies = String.Join("|", dependencies);
+			}
 		}
 
 		private static void SetupBundles(IEnumerable<ProjectConfiguration> configs, string libraryName, params string[] bundles)
 		{
-			var library = configs.FirstOrDefault(item => item.Name == libraryName) as LibraryProjectConfiguration;
-			if (library == null)
-				return;
+			var libraries = configs
+				.Where(item => item.Name == libraryName)
+				.Select(x => x as LibraryProjectConfiguration);
 
-			library.Bundles = String.Join("|", bundles);
+			foreach (var library in libraries)
+			{
+				if (library == null)
+					return;
+
+				library.Bundles = String.Join("|", bundles);
+			}
 		}
 
 		private static List<T> FilterByType<T>(IEnumerable<ProjectConfiguration> configs) where T : ProjectConfiguration
