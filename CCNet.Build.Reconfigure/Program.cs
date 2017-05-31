@@ -303,6 +303,22 @@ namespace CCNet.Build.Reconfigure
 
 			SetupDependencies(
 				configs,
+				"ClaimSystem.Web.Common",
+				"ClaimSystem.Core",
+				"ClaimSystem.Domain",
+				"AutoMapper",
+				"Newtonsoft.Json",
+				"System.Data.HashFunction.Interfaces",
+				"System.Data.HashFunction.Interfaces",
+				"System.Data.HashFunction.xxHash");
+
+			SetupDependencies(
+				configs,
+				"ClaimSystem.Web.Client",
+				"ClaimSystem.Web.Common");
+
+			SetupDependencies(
+				configs,
 				"ClaimSystem.Domain.Server",
 				"ClaimSystem.Domain",
 				"ClaimSystem.Storage",
