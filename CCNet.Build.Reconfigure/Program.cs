@@ -308,7 +308,7 @@ namespace CCNet.Build.Reconfigure
 				"ClaimSystem.Domain",
 				"AutoMapper",
 				"Newtonsoft.Json",
-				"System.Data.HashFunction.Interfaces",
+				"System.Data.HashFunction.Core",
 				"System.Data.HashFunction.Interfaces",
 				"System.Data.HashFunction.xxHash");
 
