@@ -197,8 +197,12 @@ namespace CCNet.Build.SetupProject
 
 			// quick dirty hardcode below with calling tools with specific paths and arguments
 
-			var blobVersion = String.Format("{0}/version.txt", referenceName);
-			var localVersion = String.Format(@"{0}\{1}.txt", Args.RelatedPath, localName);
+			string referenceNameWithBranch = referenceName;
+			if (!string.IsNullOrEmpty(Args.BranchName))
+				referenceNameWithBranch = $"{referenceName}-{Args.BranchName}";
+
+			string blobVersion = $"{referenceNameWithBranch}/version.txt";
+			var localVersion = $"{Args.RelatedPath}\\{localName}.txt";
 
 			Execute.Run(
 				"CCNet.Build.AzureDownload.exe",
@@ -209,8 +213,8 @@ namespace CCNet.Build.SetupProject
 
 			var version = File.ReadAllText(localVersion);
 
-			var blobSnapshot = String.Format("{0}/{1}/{0}.snapshot.zip", referenceName, version);
-			var localSnapshot = String.Format(@"{0}\{1}.zip", Args.RelatedPath, localName);
+			string blobSnapshot = $"{referenceNameWithBranch}/{version}/{referenceName}.snapshot.zip";
+			var localSnapshot = $"{Args.RelatedPath}\\{localName}.zip";
 
 			Execute.Run(
 				"CCNet.Build.AzureDownload.exe",
@@ -219,7 +223,7 @@ namespace CCNet.Build.SetupProject
 					blobSnapshot,
 					localSnapshot));
 
-			var localFolder = String.Format(@"{0}\{1}", Args.RelatedPath, localName);
+			var localFolder = $"{Args.RelatedPath}\\{localName}";
 
 			Execute.Run(
 				@"C:\Program Files\7-Zip\7z.exe",
@@ -231,9 +235,11 @@ namespace CCNet.Build.SetupProject
 				referenceName,
 				new LogPackage
 				{
-					PackageId = referenceName,
+					PackageId = referenceNameWithBranch,
 					ProjectName = referenceName,
-					ProjectUrl = String.Format("http://rufc-devbuild.cneu.cnwk/ccnet/server/Azure/project/{0}/ViewProjectReport.aspx", referenceName),
+					ProjectUrl = String.Format(
+						"http://rufc-devbuild.cneu.cnwk/ccnet/server/Azure/project/{0}/ViewProjectReport.aspx",
+						referenceNameWithBranch),
 					IsLocal = true,
 					SourceVersion = null,
 					BuildVersion = new Version(version),

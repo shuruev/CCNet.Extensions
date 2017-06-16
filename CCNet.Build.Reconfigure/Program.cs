@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -196,7 +197,7 @@ namespace CCNet.Build.Reconfigure
 
 			foreach (var cfg in configs.Where(item => item.Name == "CC.Portal.Cloud"))
 			{
-				cloudService = cfg as CloudServiceProjectConfiguration; 
+				cloudService = cfg as CloudServiceProjectConfiguration;
 				if (cloudService != null)
 				{
 					cloudService.VmSizes = new List<string> { "Small", "Medium" };
@@ -281,6 +282,48 @@ namespace CCNet.Build.Reconfigure
 				"CnetContent.Jobs.Services.DataLake",
 				"CnetContent.DataLake.Store.Client");
 
+			#region ClaimSystem
+
+			SetupDependencies(
+				configs,
+				"ClaimSystem.Core",
+				"ClaimSystem.Mail",
+				"protobuf-net");
+
+			SetupDependencies(
+				configs,
+				"ClaimSystem.Mail",
+				"RazorEngine",
+				"Microsoft.AspNet.Razor");
+
+			SetupDependencies(
+				configs,
+				"ClaimSystem.Domain",
+				"ClaimSystem.Core");
+
+			SetupDependencies(
+				configs,
+				"ClaimSystem.Web.Common",
+				"ClaimSystem.Core",
+				"ClaimSystem.Domain",
+				"AutoMapper",
+				"Newtonsoft.Json",
+				"System.Data.HashFunction.Core",
+				"System.Data.HashFunction.Interfaces",
+				"System.Data.HashFunction.xxHash");
+
+			SetupDependencies(
+				configs,
+				"ClaimSystem.Web.Client",
+				"ClaimSystem.Web.Common");
+
+			SetupDependencies(
+				configs,
+				"ClaimSystem.Domain.Server",
+				"ClaimSystem.Domain",
+				"ClaimSystem.Storage",
+				"ClaimSystem.Core");
+
 			SetupDependencies(
 				configs,
 				"ClaimSystem.Storage",
@@ -288,12 +331,10 @@ namespace CCNet.Build.Reconfigure
 				"VXSystem",
 				"Lucene.Net",
 				"EntityFramework",
-				"SharpZipLib");
+				"EntityFramework.BulkExtensions",
+				"EFUtilities");
 
-			SetupDependencies(
-				configs,
-				"ClaimSystem.Domain",
-				"ClaimSystem.Core");
+			#endregion
 
 			SetupDependencies(
 				configs,
@@ -536,20 +577,32 @@ namespace CCNet.Build.Reconfigure
 
 		private static void SetupDependencies(IEnumerable<ProjectConfiguration> configs, string libraryName, params string[] dependencies)
 		{
-			var library = configs.FirstOrDefault(item => item.Name == libraryName) as LibraryProjectConfiguration;
-			if (library == null)
-				return;
+			var libraries = configs
+				.Where(item => item.Name == libraryName)
+				.Select(x => x as LibraryProjectConfiguration);
 
-			library.Dependencies = String.Join("|", dependencies);
+			foreach (var library in libraries)
+			{
+				if (library == null)
+					return;
+
+				library.Dependencies = String.Join("|", dependencies);
+			}
 		}
 
 		private static void SetupBundles(IEnumerable<ProjectConfiguration> configs, string libraryName, params string[] bundles)
 		{
-			var library = configs.FirstOrDefault(item => item.Name == libraryName) as LibraryProjectConfiguration;
-			if (library == null)
-				return;
+			var libraries = configs
+				.Where(item => item.Name == libraryName)
+				.Select(x => x as LibraryProjectConfiguration);
 
-			library.Bundles = String.Join("|", bundles);
+			foreach (var library in libraries)
+			{
+				if (library == null)
+					return;
+
+				library.Bundles = String.Join("|", bundles);
+			}
 		}
 
 		private static List<T> FilterByType<T>(IEnumerable<ProjectConfiguration> configs) where T : ProjectConfiguration
@@ -935,11 +988,15 @@ namespace CCNet.Build.Reconfigure
 			}
 		}
 
-		private static void WriteAzureUploadSnapshot(XmlWriter writer, IProjectSnapshot project)
+		private static void WriteAzureUploadSnapshot(XmlWriter writer, IProjectSnapshot project, TimeSpan? timeout = null)
 		{
 			using (writer.OpenTag("exec"))
 			{
 				writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
+
+				if (timeout.HasValue)
+					writer.WriteElementString("buildTimeoutSeconds", timeout.Value.TotalSeconds.ToString());
+
 				writer.WriteBuildArgs(
 					new Arg("Storage", "Devbuild"),
 					new Arg("Container", "snapshot"),
@@ -1524,7 +1581,7 @@ namespace CCNet.Build.Reconfigure
 					writer.CbTag("AppendToFile", "file", project.TempFileExclude(), "text", "$tf");
 					writer.CbTag("CompressDirectoryExclude", "path", project.WorkingDirectorySource, "output", project.TempFileSnapshot(), "exclude", project.TempFileExclude());
 
-					WriteAzureUploadSnapshot(writer, project);
+					WriteAzureUploadSnapshot(writer, project, TimeSpan.FromMinutes(20));
 					WriteAzureUploadSource(writer, project);
 					WriteAzureUploadPackages(writer, project);
 					WriteAzureUploadVersion(writer, project);
@@ -1643,6 +1700,10 @@ namespace CCNet.Build.Reconfigure
 						using (writer.OpenTag("exec"))
 						{
 							writer.WriteElementString("executable", "$(ccnetBuildAzureUpload)");
+
+							if (fileToUpload.EndsWith(".cspkg"))
+								writer.WriteElementString("buildTimeoutSeconds", "1200");
+
 							writer.WriteBuildArgs(
 								new Arg("Storage", "Devbuild"),
 								new Arg("Container", "publish"),
