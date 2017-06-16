@@ -35,10 +35,15 @@ namespace CCNet.Build.Reconfigure
 
 		private void ExecTaskLegacy(string executable, string description, params Arg[] arguments)
 		{
+			ExecTaskLegacy(executable, description, TimeSpan.FromSeconds(45), arguments);
+		}
+
+		private void ExecTaskLegacy(string executable, string description, TimeSpan timeout, params Arg[] arguments)
+		{
 			using (Tag("exec"))
 			{
 				Tag("executable", executable);
-				Tag("buildTimeoutSeconds", "45");
+				Tag("buildTimeoutSeconds", Convert.ToInt32(timeout.TotalSeconds).ToString());
 
 				var args = arguments.Where(arg => arg != null).ToList();
 				if (args.Count > 0)

@@ -44,7 +44,7 @@ namespace CCNet.Build.Reconfigure
 
 			issues.Add(S01_ProjectFolderShouldHaveProjectName);
 			issues.Add(S02_PrimarySolutionShouldExist);
-			//xxxissues.Add(S03_NugetFolderShouldNotExist);
+			//xxx issues.Add(S03_NugetFolderShouldNotExist);
 			issues.Add(S04_PackagesFolderShouldNotExist);
 
 			if (config is FabricApplicationProjectConfiguration)
@@ -186,6 +186,7 @@ namespace CCNet.Build.Reconfigure
 			ExecTaskLegacy(
 				"$(ccnetBuildSetupPackages)",
 				"Setup packages",
+				TimeSpan.FromSeconds(120),
 				args.ToArray());
 		}
 
