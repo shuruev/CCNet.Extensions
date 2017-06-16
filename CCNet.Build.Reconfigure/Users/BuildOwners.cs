@@ -19,6 +19,7 @@ namespace CCNet.Build.Reconfigure
 			AddUser("8a99855552936a300152936cb7cf1681", "alexander.kovalenko@cbsinteractive.com", "akovalenko");
 			AddUser("8a99855552936a300152936cb9f92759", "alexander.yugov@cbsinteractive.com", "ayugov");
 			AddUser("8a99855552936a300152936cb0a65fbd", "anton.lisitsyn@cbsinteractive.com", "alisitsyn");
+			AddUser("8a99855557f83082015885b508d9030c", "anton.skorik@cbsinteractive.com", "askorik");
 			AddUser("8a99855552936a300152936ca5340e71", "artem.ryzhkov@cbsinteractive.com", "aryzhkov");
 			AddUser("8a99855552936a300152936ca3210228", "dmitri.baranov@cbsinteractive.com", "dbaranov");
 			AddUser("8a99855553d630f90157d22184df027e", "dmitri.egurnov@cbsinteractive.com", "degurnov");
