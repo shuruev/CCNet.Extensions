@@ -898,7 +898,7 @@ namespace CCNet.Build.Reconfigure
 			using (writer.OpenTag("exec"))
 			{
 				writer.WriteElementString("executable", "$(ccnetBuildSetupPackages)");
-				writer.WriteElementString("buildTimeoutSeconds", "45");
+				writer.WriteElementString("buildTimeoutSeconds", "120");
 
 				var args = new List<Arg>
 				{

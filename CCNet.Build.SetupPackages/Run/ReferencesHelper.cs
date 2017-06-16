@@ -146,7 +146,8 @@ Please add it as a NuGet reference first, and only after that you can convert it
 
 				// quick dirty hardcode below for resolving names
 				if (referenceName.StartsWith("Metro.")
-					|| referenceName.StartsWith("FlexQueue."))
+					|| referenceName.StartsWith("FlexQueue.")
+					|| referenceName.StartsWith("Jobs."))
 				{
 					referenceName = "CnetContent." + folderName;
 				}
