@@ -18,7 +18,7 @@ namespace CCNet.Build.Reconfigure
 
 		public string SourceDirectoryPublished
 		{
-			get { return String.Format(@"{0}\_PublishedWebsites\{1}", SourceDirectoryRelease, Name); }
+			get { return String.Format(@"{0}\_PublishedWebsites\{1}", SourceDirectoryRelease, Util.ProjectNameToLocalName(Name)); }
 		}
 
 		protected override List<string> GetIssuesToCheck()
