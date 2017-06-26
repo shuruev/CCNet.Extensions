@@ -146,7 +146,8 @@ Please add it as a NuGet reference first, and only after that you can convert it
 
 				// quick dirty hardcode below for resolving names
 				if (referenceName.StartsWith("Metro.")
-					|| referenceName.StartsWith("FlexQueue."))
+					|| referenceName.StartsWith("FlexQueue.")
+					|| referenceName.StartsWith("Jobs."))
 				{
 					referenceName = "CnetContent." + folderName;
 				}
@@ -178,10 +179,10 @@ Please add it as a NuGet reference first, and only after that you can convert it
 				$@"Storage=Devbuild Container=snapshot ""BlobFile={packagesBlob}"" ""LocalFile={packagesLocal}""");
 
 			var sourceFolder = $@"{Args.RelatedPath}\{folderName}";
-			Execute.Run(@"C:\Program Files\7-Zip\7z.exe", $@"x ""-o{sourceFolder}"" ""{sourceLocal}""");
+			Execute.Run(@"C:\Program Files\7-Zip\7z.exe", $@"x -aoa ""-o{sourceFolder}"" ""{sourceLocal}""");
 
 			var packagesFolder = $@"{Args.RelatedPath}\packages";
-			Execute.Run(@"C:\Program Files\7-Zip\7z.exe", $@"x ""-o{packagesFolder}"" ""{packagesLocal}""");
+			Execute.Run(@"C:\Program Files\7-Zip\7z.exe", $@"x -aoa ""-o{packagesFolder}"" ""{packagesLocal}""");
 
 			// update project location and report as referenced package
 
